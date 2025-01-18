@@ -1,0 +1,121 @@
+.header-pinjaman {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.header-pinjaman h1 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.header-pinjaman p {
+    color: #777;
+    font-size: 16px;
+}
+
+.riwayat-pinjaman {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.riwayat-pinjaman h2 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.riwayat-pinjaman table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.riwayat-pinjaman table th,
+.riwayat-pinjaman table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.riwayat-pinjaman table th {
+    background-color: #f8f9fa;
+    color: #555;
+}
+
+.riwayat-pinjaman table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+.pinjaman-aktif {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.pinjaman-aktif h2 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.pinjaman-aktif .card {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+}
+
+.pinjaman-aktif .card p {
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+.form-pinjaman {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-pinjaman h2 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.form-pinjaman form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-pinjaman input,
+.form-pinjaman select,
+.form-pinjaman textarea {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.form-pinjaman textarea {
+    resize: none;
+    height: 100px;
+}
+
+.form-pinjaman button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    background-color: #004794;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.form-pinjaman button:hover {
+    background-color: #001e3f;
+}
