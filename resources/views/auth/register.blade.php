@@ -1,50 +1,74 @@
+<!--
+Author: Colorlib
+Author URL: https://colorlib.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ asset('register_page/css/style.css') }}">
-    <title>Registrasi</title>
+<title>Registrasi</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- Custom Theme files -->
+<link href="{{asset('register-template/styles.css')}}" rel="stylesheet" type="text/css" media="all" />
+<link href="{{asset('register-template/img/Logo Koperasi STARBIN REAL (1).png')}}" rel="icon">
+<!-- //Custom Theme files -->
+<!-- web font -->
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i" rel="stylesheet">
+<!-- //web font -->
 </head>
 <body>
-    <div class="container">
-        <div class="register-box">
-            <h1>Registrasi</h1>
-            <form action="{{ route('registrasi') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            @if ($errors->any())
-                    <div class="alert alert-denger" style="background-color: lightcoral; margin: 20px; border-radius: 20px;">
-                        <ul>
-                            @foreach ($errors->all() as $item)
-                                <li>{{ $item }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-                @if (Session::get('success'))
-                    <div class="alert alert-success alert-dismissible fade show" style="background-color: lightgreen; margin:20px; border-radius:20px;">
-                        <ul>
-                            <li>{{ Session::get('success') }}</li>
-                        </ul>
-                    </div>
-                @endif
-                <input type="text" name="fullname" placeholder="Full Name" required>
-                <input type="email" name="email" placeholder="Email" required>
-                <input type="password" name="password" placeholder="Password" required>
-                <input type="tel" name="phone" placeholder="Nomor Telepon" required>
-                <textarea name="address" placeholder="Alamat" rows="3" style="resize: none; padding: 10px; border: 1px solid #ccc; border-radius: 20px; font-size: 16px; margin-bottom: 15px;" required></textarea>
-                <div>
-                    <label for="gambar"></label>
-                    <input type="file" name="gambar" id="gambar" requuired>
-                </div>
-                
-                <button type="submit" class="register-btn">Register</button>
-            </form>
-            <div class="links">
-                <p>Sudah punya akun? <a href="{{ route('login')}}">Login di sini</a></p>
-            </div>
-        </div>
-    </div>
+	<!-- main -->
+	<div class="main-w3layouts wrapper">
+		<h1>Registrasi</h1>
+		<div class="main-agileinfo" style="border-radius: 20px;">
+			<div class="agileits-top">
+				<form action="{{route('registrasi')}}" method="POST">
+					@csrf
+					@if ($errors->any())
+							<div class="alert alert-denger" style="background-color: lightcoral; margin: 20px; border-radius: 20px;">
+								<ul>
+									@foreach ($errors->all() as $item)
+										<li>{{ $item }}</li>
+									@endforeach
+								</ul>
+							</div>
+						@endif
+		
+						@if (Session::get('success'))
+							<div class="alert alert-success alert-dismissible fade show" style="background-color: lightgreen; margin:20px; border-radius:20px;">
+								<ul>
+									<li>{{ Session::get('success') }}</li>
+								</ul>
+							</div>
+						@endif
+					<input class="text" type="text" name="fullname" placeholder="Nama Lengkap" style="border-radius: 20px;" required>
+					<input class="text email" type="email" name="email" placeholder="Email" style="border-radius: 20px;" required>
+					<input class="text" type="password" name="password" placeholder="Password" style="border-radius: 20px;" required>
+					<input class="text" type="text" name="phone" placeholder="Nomor Telepon" style="border-radius: 20px; margin: 40px 0;" required>
+					<textarea class="text address" name="address" placeholder="Alamat" style="border-radius: 20px;" required></textarea>
+					<input type="submit" value="Registrasi" style="border-radius: 20px;">
+				</form>
+				
+				<p>Sudah punya akun?<a href="{{route('login')}}"> Login disini</a></p>
+			</div>
+		</div>
+		<!-- //copyright -->
+		<ul class="colorlib-bubbles">
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</div>
+	<!-- //main -->
 </body>
 </html>

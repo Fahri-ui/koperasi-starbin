@@ -35,24 +35,7 @@
 		<div class="container-login100" style="background-image: url('images/bg-01.jpg');">
 			<div class="wrap-login100">
 				<form class="login100-form validate-form" method="POST" action="{{ route('login') }}">
-					@csrf
-					@if ($errors->any())
-							<div class="alert alert-denger" style="background-color: lightcoral; margin: 20px; border-radius: 20px;">
-								<ul>
-									@foreach ($errors->all() as $item)
-										<li>{{ $item }}</li>
-									@endforeach
-								</ul>
-							</div>
-						@endif
-		
-						@if (Session::get('success'))
-							<div class="alert alert-success alert-dismissible fade show" style="background-color: lightgreen; margin:20px; border-radius:20px;">
-								<ul>
-									<li>{{ Session::get('success') }}</li>
-								</ul>
-							</div>
-						@endif
+
 					<span class="login100-form-logo">
 						<i class="zmdi zmdi-landscape"></i>
 					</span>

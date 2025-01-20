@@ -7,13 +7,13 @@
 
 	<link href="{{asset('login-template/images/Logo Koperasi STARBIN REAL (1).png')}}" rel="icon">
 <!--===============================================================================================-->	
-	<link rel="icon" type="image/png" href="{{asset('login-template/images/icons/favicon.ico')}}"/>
+	<link rel="icon" type="image/png" href="{{asset('login-template/images/icons/Logo Koperasi STARBIN REAL (1).png')}}">
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{asset('login-template/vendor/bootstrap/css/bootstrap.min.css')}}">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{{asset('login-template/fonts/font-awesome-4.7.0/css/font-awesome.min.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{asset('login-templatefonts/font-awesome-4.7.0/css/font-awesome.min.css')}}">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{{asset('login-template/fonts/iconic/css/material-design-iconic-font.min.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{asset('login-templatefonts/iconic/css/material-design-iconic-font.min.css')}}">
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{asset('login-template/vendor/animate/animate.css')}}">
 <!--===============================================================================================-->	
@@ -32,13 +32,27 @@
 <body>
 	
 	<div class="limiter">
-		<div class="container-login100" style="background-image: url('{{asset('login-template/images/bg-01.jpg')}}');">
+		<div class="container-login100" style="background-image: url('{{ asset('login-template/images/bg-01.jpg') }}');">
 			<div class="wrap-login100">
 				<form class="login100-form validate-form" method="POST" action="{{ route('login') }}">
-                    @csrf
-					<span class="login100-form-logo">
-						<i class="zmdi zmdi-landscape"></i>
-					</span>
+					@csrf
+					@if ($errors->any())
+							<div class="alert alert-denger" style="background-color: lightcoral; margin: 20px; border-radius: 20px;">
+								<ul>
+									@foreach ($errors->all() as $item)
+										<li>{{ $item }}</li>
+									@endforeach
+								</ul>
+							</div>
+						@endif
+		
+						@if (Session::get('success'))
+							<div class="alert alert-success alert-dismissible fade show" style="background-color: lightgreen; margin:20px; border-radius:20px;">
+								<ul>
+									<li>{{ Session::get('success') }}</li>
+								</ul>
+							</div>
+						@endif
 
 					<span class="login100-form-title p-b-34 p-t-27">
 						Login
@@ -62,7 +76,7 @@
 
 					<div class="text-center p-t-90">
 						Belum punya akun? 
-						<a class="txt1" href="{{ route('register') }}">
+						<a class="txt1" href="{{ route('registrasi') }}">
 							Registrasi Disini
 						</a>
 					</div>
@@ -75,21 +89,21 @@
 	<div id="dropDownSelect1"></div>
 	
 <!--===============================================================================================-->
-	<script src="{{asset('login-template/')}}vendor/jquery/jquery-3.2.1.min.js"></script>
+	<script src="{{asset('login-template/vendor/jquery/jquery-3.2.1.min.js')}}"></script>
 <!--===============================================================================================-->
-	<script src="{{asset('login-template/')}}vendor/animsition/js/animsition.min.js"></script>
+	<script src="{{asset('login-template/vendor/animsition/js/animsition.min.js')}}"></script>
 <!--===============================================================================================-->
-	<script src="{{asset('login-template/')}}vendor/bootstrap/js/popper.js"></script>
-	<script src="{{asset('login-template/')}}vendor/bootstrap/js/bootstrap.min.js"></script>
+	<script src="{{asset('login-template/vendor/bootstrap/js/popper.js')}}"></script>
+	<script src="{{asset('login-template/vendor/bootstrap/js/bootstrap.min.js')}}"></script>
 <!--===============================================================================================-->
-	<script src="{{asset('login-template/')}}vendor/select2/select2.min.js"></script>
+	<script src="{{asset('login-template/vendor/select2/select2.min.js')}}"></script>
 <!--===============================================================================================-->
-	<script src="{{asset('login-template/')}}vendor/daterangepicker/moment.min.js"></script>
-	<script src="{{asset('login-template/')}}vendor/daterangepicker/daterangepicker.js"></script>
+	<script src="{{asset('login-template/vendor/daterangepicker/moment.min.js')}}"></script>
+	<script src="{{asset('login-template/vendor/daterangepicker/daterangepicker.js')}}"></script>
 <!--===============================================================================================-->
-	<script src="{{asset('login-template/')}}vendor/countdowntime/countdowntime.js"></script>
+	<script src="{{asset('login-template/vendor/countdowntime/countdowntime.js')}}"></script>
 <!--===============================================================================================-->
-	<script src="{{asset('login-template/')}}js/main.js"></script>
+	<script src="{{asset('login-template/js/main.js')}}"></script>
 
 </body>
 </html>
