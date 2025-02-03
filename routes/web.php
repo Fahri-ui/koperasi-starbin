@@ -41,8 +41,10 @@ Route::middleware(['auth'])->group(function () {
     Route::redirect('/home', '/user'); 
 
     // Route untuk admin (dengan middleware userAkses:admin)
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin')->middleware('userAkses:admin'); 
-    Route::get('/usercontroll', [DashboardController::class, 'dashboard'])->name('usercontrol');    
+    Route::middleware(['userAkses:admin'])->group(function () {
+        Route::get('/admin', [AdminController::class, 'index'])->name('admin'); 
+        Route::get('/usercontroll', [DashboardController::class, 'dashboard'])->name('usercontrol');    
+    });
 
     // Grup Route untuk userakses
     Route::middleware(['userAkses:user'])->group(function () {
