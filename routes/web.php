@@ -2,6 +2,10 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BantuanController;
+use App\Http\Controllers\BuktiPembayaranController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\NotifikasiController;
 use App\Http\Controllers\PinjamanController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\SimpananController;
@@ -31,15 +35,31 @@ Route::middleware(['guest'])->group(function(){
     Route::post('/Registrasi',[AuthController::class,'register']);
 });
 
-// midleware auth agar yang bisa mengakses route ini adalah user yang sudah login/register
-Route::middleware(['auth'])->group(function(){
-        Route::redirect('/home', '/user'); // agar user yang sudah login ketika mengakses route login langsung di arahkan ke dashnord
-        Route::get('/admin',[AdminController::class,'index'])->name('admin')->middleware('userAkses:admin'); 
-        Route::get('/usercontroll',[UserControlController::class,'index'])->name('usercontrol');
+Route::middleware(['auth'])->group(function () {
 
-        Route::get('/user',[UserController::class,'index'])->name('user')->middleware('userAkses:user');// untuk mencegah user mengakses page admin
-        Route::get('/userProfil', [UserController::class,'profil'])->name('profil');
-        Route::get('/userPinjaman', [UserController::class,'pinjaman'])->name('pinjaman');
-        Route::get('/userSimpanan', [UserController::class,'simpanan'])->name('simpanan');
-        Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    // ketika user mencoba mengaskses landing tanpa log out
+    Route::redirect('/home', '/user'); 
+
+    // Route untuk admin (dengan middleware userAkses:admin)
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin')->middleware('userAkses:admin'); 
+    Route::get('/usercontroll', [DashboardController::class, 'dashboard'])->name('usercontrol');    
+
+    // Grup Route untuk userakses
+    Route::middleware(['userAkses:user'])->group(function () {
+        Route::get('/user', [DashboardController::class, 'dashboard'])->name('user');
+        Route::get('/userprofil', [ProfilController::class, 'profil'])->name('profil');
+        Route::put('/userprofil', [ProfilController::class, 'update']);
+        Route::get('/usersimpananwajib', [SimpananController::class, 'simpananwajib'])->name('simpananwajib');
+        Route::get('/usersimpanansukarela', [SimpananController::class, 'simpanansukarela'])->name('simpanansukarela');
+        Route::post('/simpanans', [SimpananController::class, 'store'])->name('simpanan.store');
+        Route::get('/pinjaman', [PinjamanController::class, 'pinjaman'])->name('pinjaman');
+        Route::post('/pinjaman/ajukan', [PinjamanController::class, 'ajukanPinjaman'])->name('pinjaman.ajukan');
+        Route::post('/pinjaman/bayar', [PinjamanController::class, 'bayarPinjaman'])->name('pinjaman.bayar');   
+        Route::get('/bukti/{bukti}', [BuktiPembayaranController::class, 'show'])->name('bukti.pembayaran');
+        Route::get('/notifikasi', [NotifikasiController::class, 'notifikasi'])->name('notifikasi');
+        Route::get('/bantuan', [BantuanController::class, 'bantuan'])->name('bantuan');
+    });
+
+    // Route logout tetap di luar grup agar bisa digunakan siapa saja yang sudah login
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });

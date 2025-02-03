@@ -4,13 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Pribadi Anda</title>
+    <title>Kelola Simpanan Sukarela</title>
     
-    <link rel="stylesheet" href="{{asset('dist/assets/css/main/app.css')}}">
-    <link rel="stylesheet" href="{{asset('dist/assets/css/main/app-dark.css')}}">
+    <link rel="stylesheet" href="{{asset('dist/assets/css/main/app')}}.css">
+    <link rel="stylesheet" href="{{asset('dist/assets/css/main/app-dark')}}.css">
     <link rel="shortcut icon" href="{{asset('dist/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/x-icon">
     <link rel="shortcut icon" href="{{asset('dist/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/png">
-    <link rel="stylesheet" href="{{asset('dist/assets/css/profil.css')}}">
     
 </head>
 
@@ -50,7 +49,7 @@
             </li>
 
             <li
-            class="sidebar-item active">
+            class="sidebar-item ">
             <a href="{{route('profil')}}" class='sidebar-link'>
                 <i class="bi bi-person-badge-fill"></i>
                 <span>Profil</span>
@@ -58,7 +57,7 @@
             </li>
             
             <li
-                class="sidebar-item  has-sub">
+                class="sidebar-item  has-sub active">
                 <a href="#" class='sidebar-link'>
                     <i class="bi bi-basket-fill"></i>
                     <span>Simpanan</span>
@@ -68,7 +67,7 @@
                         <a href="{{route('simpananwajib')}}">Simpanan Wajib</a>
                     </li>
                     <li class="submenu-item ">
-                        <a href="{{route('simpanansukarela')}}">Simpanan Sukarela</a>
+                        <a href="{{route('simpanansukarela')}}" >Simpanan Sukarela</a>
                     </li>
 
                 </ul>
@@ -122,124 +121,123 @@
                 </a>
             </header>
 
-            <!-- Jika ada error -->
-            @if ($errors->any())
-                <div class="alert alert-danger" style="background-color: salmon; color:black; font-weight:bold; border-radius:20px; padding:10px; margin-bottom:20px;">
+            @if (session('error'))
+                <div class="alert alert-danger" style="background-color: salmon; color:aliceblue; border-radius:20px; margin-bottom:20px;">
                     <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
+                        <li>{{ session('error') }}</li>
                     </ul>
                 </div>
             @endif
 
             <!-- Jika berhasil -->
             @if (Session::has('success'))
-                <div class="alert alert-success"  style="background-color: lightgreen; color:black; font-weight:bold; border-radius:20px;">
+                <div class="alert alert-success"  style="background-color: lightgreen; color:aliceblue; border-radius:20px;">
                     {{ Session::get('success') }}
                 </div>
             @endif
 
-            <div class="page-heading">
-                <center>
-                    <h2>Selamat Datang {{Auth::user()->fullname}}</h2>
-                </center>
-            </div>
-        
-            <div class="page-content">
-                <div class="container">
-                    <!-- Kotak Pertama: Profil User -->
-                    <div class="card mb-4">
-                        <div class="card-body text-center">
-                            <div class="poto-profil">
-                                <img src="{{asset('picture/account/'. Auth::user()->gambar)}}" alt="Foto Profil">
-                            </div>
-                            <h3 class="mt-3">{{Auth::user()->fullname}}</h3>
-                            <p>{{Auth::user()->email}}</p>
-                            <p>{{Auth::user()->phone}}</p>
-                            <p>{{Auth::user()->address}}</p>
-                        </div>
-                    </div>
-        
-                    <!-- Kotak Kedua: Detail Akun -->
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h5 style="margin-bottom: 10px;">Detail Akun</h5>
-                            <br>
-                            <p>Tanggal Bergabung: {{ Auth::user()->created_at->translatedFormat('d F Y') }}</p>
-                            <p>Terakhir Diperbarui: {{ Auth::user()->updated_at ? Auth::user()->updated_at->translatedFormat('d F Y') : 'Anda belum pernah mengupdate profil Anda' }}</p>
-                            <p>Total Simpanan: Rp {{ number_format($totalSukarela ?? 0, 0, ',', '.') }}</p>
-                            <p>Total Pinjaman: Rp Rp {{ number_format($totalPinjaman, 0, ',', '.') }}</p>
-                        </div>
-                    </div>  
-        
-                    <!-- Kotak Ketiga: Formulir Edit Profil -->
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <h5>Edit Profil</h5>
-                        </div>
-                        <div class="card-body">
-                            <form id="edit-profile-form" enctype="multipart/form-data" method="POST" action="{{ route('profil') }}">
-                                @csrf
-                            <input type="hidden" name="_method" value="PUT"> <!-- Metode PUT untuk update -->
-                                <!-- Nama -->
-                                <div class="mb-3">
-                                    <label for="fullname" class="form-label">Nama</label>
-                                    <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Nama Lengkap" value="{{ old('fullname', Auth::user()->fullname) }}" required>
-                                </div>
+            <h2 style="margin-bottom: 50px;">Simpanan Sukarela</h2>
+<!-- Definisi Simpanan Sukarela -->
+<section class="mb-4">
+    <div class="card">
+        <div class="card-body">
+            <h5>Definisi</h5>
+            <p>Simpanan Sukarela adalah simpanan fleksibel yang dapat disetor atau ditarik kapan saja oleh anggota koperasi. Nominal simpanan tidak dibatasi dan dapat digunakan sebagai tabungan atau investasi.</p>
+        </div>
+    </div>
+</section>
 
-                                <!-- Email -->
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="{{ old('email', Auth::user()->email) }}" required>
-                                </div>
+<!-- Saldo Simpanan Sukarela --> 
+<section class="mb-4">
+    <div class="card">
+        <div class="card-body text-center">
+            <h5>Saldo Simpanan Sukarela</h5>
+            <h2 class="font-extrabold mt-3">Rp {{ number_format($totalSukarela, 0, ',', '.') }}</h2>
+            <p class="text-muted">Saldo total Anda saat ini</p>
+        </div>
+    </div>
+</section>
 
-                                <!-- Password -->
-                                <div class="mb-3">
-                                    <label for="password" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-                                </div>
-
-                                <!-- Konfirmasi Password -->
-                                <div class="mb-3">
-                                    <label for="confirm-password" class="form-label">Konfirmasi Password</label>
-                                    <input type="password" class="form-control" id="confirm-password" name="confirm_password" placeholder="Konfirmasi Password">
-                                </div>
-
-                                <!-- Gambar -->
-                                <div class="mb-3">
-                                    <label for="gambar" class="form-label">Foto Profil</label>
-                                    <input type="file" class="form-control" id="gambar" name="gambar" accept="image/*">
-                                </div>
-
-                                <!-- Nomor Telepon -->
-                                <div class="mb-3">
-                                    <label for="phone" class="form-label">Nomor Telepon</label>
-                                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="Nomor Telepon" value="{{ old('phone', Auth::user()->phone) }}" required>
-                                </div>
-
-                                <!-- Alamat -->
-                                <div class="mb-3">
-                                    <label for="address" class="form-label">Alamat</label>
-                                    <textarea class="form-control" id="address" name="address" rows="5" placeholder="Alamat" required>{{ old('address', Auth::user()->address) }}</textarea>
-                                </div>
-
-                                <div class="text-end">
-                                    <button type="submit" class="btn btn-primary">Konfirmasi Edit Profil</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>                    
-                </div>
+<section class="mb-4">
+    <div class="card">
+        <div class="card-body">
+            <h5>Daftar Simpanan Sukarela</h5>
+            <div style="height: 400px; overflow-y: auto;"> <!-- Wrapper untuk overflow -->
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Kode Transaksi</th>
+                            <th>Tanggal</th>
+                            <th>Jenis Transaksi</th>
+                            <th>Jumlah</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($sukarela as $data)
+                            <tr>
+                                <td>{{ $data->kode_transaksi }}</td>
+                                <td>{{ \Carbon\Carbon::parse($data->tanggal_transaksi)->translatedFormat('d F Y') }}</td>
+                                <td>{{ ucfirst($data->jenis_transaksi) }}</td>
+                                <td>{{ number_format($data->jumlah, 0, ',', '.') }}</td>
+                                <td>{{ ucfirst($data->status) }}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5">Belum ada data transaksi.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
-        
+    </div>
+</section>
+
+<!-- Formulir Penyetoran dan Penarikan -->
+<section class="mb-4">
+    <div class="card">
+        <div class="card-body">
+            <h5>Formulir Penyetoran / Penarikan</h5>
+            <form action="{{ route('simpanan.store') }}" method="POST">
+                @csrf
+                <input type="hidden" name="jenis" value="sukarela"> <!-- Jenis simpanan -->
+
+                <div class="form-group">
+                    <label for="jenis_transaksi">Jenis Transaksi</label>
+                    <select name="jenis_transaksi" id="jenis_transaksi" class="form-control" required>
+                        <option value="penyetoran">Penyetoran</option>
+                        <option value="penarikan">Penarikan</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="jumlah">Jumlah</label>
+                    <input type="number" name="jumlah" id="jumlah" class="form-control" min="5000" step="5000" max="1000000000" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="metode_pembayaran">Metode Pembayaran</label>
+                    <select name="metode_pembayaran" id="metode_pembayaran" class="form-control" required>
+                        <option value="cash">Cash</option>
+                        <option value="transfer-bank">Transfer Bank</option>
+                        <option value="ewallet">E-Wallet</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Konfirmasi Transaksi</button>
+            </form>
+
+        </div>
+    </div>
+</section>
+
             <footer>
                 <div class="footer clearfix mb-0 text-muted">
-                    <div class="float-start" style="margin-left: 26%;">
+                    <div class="float-start">
                         <p>2025 &copy; STARBIN</p>
                     </div>
-                    <div class="float-end" style="margin-right: 30px;">
+                    <div class="float-end">
                         <p>Dibuat dengan <span class="text-danger"><i class="bi bi-heart"></i></span> oleh <a
                                 href="https://saugi.me">Bagas & Fahri</a></p>
                     </div>

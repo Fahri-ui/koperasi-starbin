@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Pribadi Anda</title>
+    <title>Pengingat dan Informasi</title>
     
-    <link rel="stylesheet" href="{{asset('dist/assets/css/main/app.css')}}">
-    <link rel="stylesheet" href="{{asset('dist/assets/css/main/app-dark.css')}}">
+    <link rel="stylesheet" href="{{asset('dist/assets/css/main/app.css/')}}">
+    <link rel="stylesheet" href="{{asset('dist/assets/css/main/app-dark.css/')}}">
     <link rel="shortcut icon" href="{{asset('dist/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/x-icon">
     <link rel="shortcut icon" href="{{asset('dist/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/png">
-    <link rel="stylesheet" href="{{asset('dist/assets/css/profil.css')}}">
+    <link rel="stylesheet" href="{{asset('dist/assets/css/notifikasi.css')}}">
     
 </head>
 
@@ -50,7 +50,7 @@
             </li>
 
             <li
-            class="sidebar-item active">
+            class="sidebar-item ">
             <a href="{{route('profil')}}" class='sidebar-link'>
                 <i class="bi bi-person-badge-fill"></i>
                 <span>Profil</span>
@@ -83,7 +83,7 @@
         </li>
 
             <li
-            class="sidebar-item  ">
+            class="sidebar-item active ">
             <a href="{{route('notifikasi')}}" class='sidebar-link'>
                 <i class="bi bi-chat-dots-fill"></i>
                 <span>Notifikasi</span>
@@ -110,7 +110,6 @@
                 </form>
             </li>
 
-
         </ul>
     </div>
 </div>
@@ -120,135 +119,71 @@
                 <a href="#" class="burger-btn d-block d-xl-none">
                     <i class="bi bi-justify fs-3"></i>
                 </a>
-            </header>
+            </header>         
 
-            <!-- Jika ada error -->
-            @if ($errors->any())
-                <div class="alert alert-danger" style="background-color: salmon; color:black; font-weight:bold; border-radius:20px; padding:10px; margin-bottom:20px;">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
-            <!-- Jika berhasil -->
-            @if (Session::has('success'))
-                <div class="alert alert-success"  style="background-color: lightgreen; color:black; font-weight:bold; border-radius:20px;">
-                    {{ Session::get('success') }}
-                </div>
-            @endif
-
-            <div class="page-heading">
-                <center>
-                    <h2>Selamat Datang {{Auth::user()->fullname}}</h2>
-                </center>
-            </div>
+            <div class="container py-4">
+                <h1 class="mb-4 text-center">Halaman Notifikasi</h1>
         
-            <div class="page-content">
-                <div class="container">
-                    <!-- Kotak Pertama: Profil User -->
-                    <div class="card mb-4">
-                        <div class="card-body text-center">
-                            <div class="poto-profil">
-                                <img src="{{asset('picture/account/'. Auth::user()->gambar)}}" alt="Foto Profil">
-                            </div>
-                            <h3 class="mt-3">{{Auth::user()->fullname}}</h3>
-                            <p>{{Auth::user()->email}}</p>
-                            <p>{{Auth::user()->phone}}</p>
-                            <p>{{Auth::user()->address}}</p>
+                <!-- Notifikasi Peringatan -->
+                <div class="card notification-card border-left-danger ">
+                    <div class="card-body d-flex">
+                        <div class="notification-icon text-danger">
+                            ⚠️
+                        </div>
+                        <div>
+                            <p class="notification-title text-danger mb-1">Peringatan</p>
+                            <p class="mb-0">Anda belum membayar tagihan bulan ini. Harap segera lakukan pembayaran!</p>
+                            <p class="notification-time">Diterima: 20 Januari 2025</p>
                         </div>
                     </div>
+                </div>
         
-                    <!-- Kotak Kedua: Detail Akun -->
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h5 style="margin-bottom: 10px;">Detail Akun</h5>
-                            <br>
-                            <p>Tanggal Bergabung: {{ Auth::user()->created_at->translatedFormat('d F Y') }}</p>
-                            <p>Terakhir Diperbarui: {{ Auth::user()->updated_at ? Auth::user()->updated_at->translatedFormat('d F Y') : 'Anda belum pernah mengupdate profil Anda' }}</p>
-                            <p>Total Simpanan: Rp {{ number_format($totalSukarela ?? 0, 0, ',', '.') }}</p>
-                            <p>Total Pinjaman: Rp Rp {{ number_format($totalPinjaman, 0, ',', '.') }}</p>
+                <!-- Notifikasi Pengingat -->
+                <div class="card notification-card border-left-warning ">
+                    <div class="card-body d-flex">
+                        <div class="notification-icon text-warning">
+                            ⏰
                         </div>
-                    </div>  
+                        <div>
+                            <p class="notification-title text-warning mb-1">Pengingat</p>
+                            <p class="mb-0">Jatuh tempo pinjaman Anda tinggal 5 hari lagi. Mohon persiapkan pembayaran Anda.</p>
+                            <p class="notification-time">Diterima: 19 Januari 2025</p>
+                        </div>
+                    </div>
+                </div>
         
-                    <!-- Kotak Ketiga: Formulir Edit Profil -->
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <h5>Edit Profil</h5>
+                <!-- Notifikasi Keberhasilan -->
+                <div class="card notification-card border-left-success ">
+                    <div class="card-body d-flex">
+                        <div class="notification-icon text-success">
+                            ✅
                         </div>
-                        <div class="card-body">
-                            <form id="edit-profile-form" enctype="multipart/form-data" method="POST" action="{{ route('profil') }}">
-                                @csrf
-                            <input type="hidden" name="_method" value="PUT"> <!-- Metode PUT untuk update -->
-                                <!-- Nama -->
-                                <div class="mb-3">
-                                    <label for="fullname" class="form-label">Nama</label>
-                                    <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Nama Lengkap" value="{{ old('fullname', Auth::user()->fullname) }}" required>
-                                </div>
-
-                                <!-- Email -->
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="{{ old('email', Auth::user()->email) }}" required>
-                                </div>
-
-                                <!-- Password -->
-                                <div class="mb-3">
-                                    <label for="password" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-                                </div>
-
-                                <!-- Konfirmasi Password -->
-                                <div class="mb-3">
-                                    <label for="confirm-password" class="form-label">Konfirmasi Password</label>
-                                    <input type="password" class="form-control" id="confirm-password" name="confirm_password" placeholder="Konfirmasi Password">
-                                </div>
-
-                                <!-- Gambar -->
-                                <div class="mb-3">
-                                    <label for="gambar" class="form-label">Foto Profil</label>
-                                    <input type="file" class="form-control" id="gambar" name="gambar" accept="image/*">
-                                </div>
-
-                                <!-- Nomor Telepon -->
-                                <div class="mb-3">
-                                    <label for="phone" class="form-label">Nomor Telepon</label>
-                                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="Nomor Telepon" value="{{ old('phone', Auth::user()->phone) }}" required>
-                                </div>
-
-                                <!-- Alamat -->
-                                <div class="mb-3">
-                                    <label for="address" class="form-label">Alamat</label>
-                                    <textarea class="form-control" id="address" name="address" rows="5" placeholder="Alamat" required>{{ old('address', Auth::user()->address) }}</textarea>
-                                </div>
-
-                                <div class="text-end">
-                                    <button type="submit" class="btn btn-primary">Konfirmasi Edit Profil</button>
-                                </div>
-                            </form>
+                        <div>
+                            <p class="notification-title text-success mb-1">Keberhasilan</p>
+                            <p class="mb-0">Pembayaran Anda sebesar Rp 50.000 telah berhasil diproses. Terima kasih!</p>
+                            <p class="notification-time">Diterima: 18 Januari 2025</p>
                         </div>
-                    </div>                    
+                    </div>
                 </div>
             </div>
-        </div>
-        
+
             <footer>
                 <div class="footer clearfix mb-0 text-muted">
-                    <div class="float-start" style="margin-left: 26%;">
-                        <p>2025 &copy; STARBIN</p>
+                    <div class="float-start">
+                        <p>2025 &copy; SATRBIN</p>
                     </div>
-                    <div class="float-end" style="margin-right: 30px;">
+                    <div class="float-end">
                         <p>Dibuat dengan <span class="text-danger"><i class="bi bi-heart"></i></span> oleh <a
                                 href="https://saugi.me">Bagas & Fahri</a></p>
                     </div>
                 </div>
             </footer>
         </div>
-    </div>
     <script src="{{asset('dist/assets/js/bootstrap.js')}}"></script>
     <script src="{{asset('dist/assets/js/app.js')}}"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     
 </body>
 

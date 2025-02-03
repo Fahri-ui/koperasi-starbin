@@ -1,0 +1,73 @@
+/* Gaya untuk Card */
+.card {
+    border: 1px solid #d9d9d9;
+    border-radius: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #ffffff;
+}
+
+.card-body {
+    text-align: center;
+}
+
+.card h6 {
+    margin-top: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.card .text-muted {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+/* Gaya untuk Ikon Statistik */
+.stats-icon {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+        justify-content: center;
+    margin: 0 auto;
+    font-size: 1.5rem;
+    color: #fff;
+}
+
+.stats-icon.blue {
+    background-color: #007bff;
+}
+
+.stats-icon.green {
+    background-color: #28a745;
+}
+
+.stats-icon.orange {
+    background-color: #fd7e14;
+}
+
+/* Tabel Transaksi */
+.table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+
+/* Gaya untuk Tombol */
+.btn-block {
+    width: 100%;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+/* Media Query */
+@media (max-width: 768px) {
+    .card-body {
+        text-align: left;
+    }
+}

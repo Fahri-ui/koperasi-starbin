@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Pribadi Anda</title>
+    <title>Pusat Bantuan</title>
     
     <link rel="stylesheet" href="{{asset('dist/assets/css/main/app.css')}}">
     <link rel="stylesheet" href="{{asset('dist/assets/css/main/app-dark.css')}}">
     <link rel="shortcut icon" href="{{asset('dist/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/x-icon">
     <link rel="shortcut icon" href="{{asset('dist/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/png">
-    <link rel="stylesheet" href="{{asset('dist/assets/css/profil.css')}}">
+    <link rel="stylesheet" href="{{asset('dist/assets/css/bantuan.css')}}">
     
 </head>
 
@@ -42,7 +42,7 @@
         <ul class="menu">
             <li class="sidebar-title" style="margin-top: 70px;">Menu</li>
             <li
-                class="sidebar-item ">
+                class="sidebar-item">
                 <a href="{{route('user')}}" class='sidebar-link'>
                     <i class="bi bi-grid-fill"></i>
                     <span>Dashboard</span>
@@ -50,7 +50,7 @@
             </li>
 
             <li
-            class="sidebar-item active">
+            class="sidebar-item ">
             <a href="{{route('profil')}}" class='sidebar-link'>
                 <i class="bi bi-person-badge-fill"></i>
                 <span>Profil</span>
@@ -59,7 +59,7 @@
             
             <li
                 class="sidebar-item  has-sub">
-                <a href="#" class='sidebar-link'>
+                <a href="" class='sidebar-link'>
                     <i class="bi bi-basket-fill"></i>
                     <span>Simpanan</span>
                 </a>
@@ -92,7 +92,7 @@
 
                         
             <li
-                class="sidebar-item  ">
+                class="sidebar-item active ">
                 <a href="{{route('bantuan')}}" class='sidebar-link'>
                     <i class="bi bi-envelope-fill"></i>
                     <span>Bantuan</span>
@@ -121,125 +121,118 @@
                     <i class="bi bi-justify fs-3"></i>
                 </a>
             </header>
-
-            <!-- Jika ada error -->
-            @if ($errors->any())
-                <div class="alert alert-danger" style="background-color: salmon; color:black; font-weight:bold; border-radius:20px; padding:10px; margin-bottom:20px;">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
+            <div class="container mt-4">
+                <!-- Judul Halaman -->
+                <div class="text-center mb-4">
+                    <h2>Pusat Bantuan</h2>
+                    <p class="text-muted">Kami di sini untuk membantu Anda. Temukan jawaban atas pertanyaan Anda atau hubungi kami langsung.</p>
                 </div>
-            @endif
-
-            <!-- Jika berhasil -->
-            @if (Session::has('success'))
-                <div class="alert alert-success"  style="background-color: lightgreen; color:black; font-weight:bold; border-radius:20px;">
-                    {{ Session::get('success') }}
-                </div>
-            @endif
-
-            <div class="page-heading">
-                <center>
-                    <h2>Selamat Datang {{Auth::user()->fullname}}</h2>
-                </center>
-            </div>
-        
-            <div class="page-content">
-                <div class="container">
-                    <!-- Kotak Pertama: Profil User -->
-                    <div class="card mb-4">
-                        <div class="card-body text-center">
-                            <div class="poto-profil">
-                                <img src="{{asset('picture/account/'. Auth::user()->gambar)}}" alt="Foto Profil">
+            
+                <!-- Daftar FAQ -->
+                <section class="mb-4">
+                    <div class="accordion mb-4" id="helpAccordion">
+                        <!-- Pertanyaan 1 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Bagaimana cara melakukan pembayaran simpanan pokok?
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#helpAccordion">
+                                <div class="accordion-body">
+                                    Anda dapat melakukan pembayaran melalui transfer bank, e-wallet, atau secara tunai di kantor koperasi kami.
+                                </div>
                             </div>
-                            <h3 class="mt-3">{{Auth::user()->fullname}}</h3>
-                            <p>{{Auth::user()->email}}</p>
-                            <p>{{Auth::user()->phone}}</p>
-                            <p>{{Auth::user()->address}}</p>
+                        </div>
+                    
+                        <!-- Pertanyaan 2 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    Apakah ada denda keterlambatan pembayaran simpanan wajib?
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#helpAccordion">
+                                <div class="accordion-body">
+                                    Ya, ada denda keterlambatan sebesar 1% dari jumlah yang harus dibayarkan jika melewati batas waktu pembayaran.
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <!-- Pertanyaan 3 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingThree">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    Bagaimana cara mengajukan pinjaman?
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#helpAccordion">
+                                <div class="accordion-body">
+                                    Anda dapat mengajukan pinjaman melalui halaman pinjaman di sistem kami atau datang langsung ke kantor koperasi untuk konsultasi.
+                                </div>
+                            </div>
                         </div>
                     </div>
-        
-                    <!-- Kotak Kedua: Detail Akun -->
-                    <div class="card mb-4">
+                </section>
+            
+                <!-- Formulir Hubungi Kami -->
+                <section class="mb-4">
+                    <div class="card">
                         <div class="card-body">
-                            <h5 style="margin-bottom: 10px;">Detail Akun</h5>
-                            <br>
-                            <p>Tanggal Bergabung: {{ Auth::user()->created_at->translatedFormat('d F Y') }}</p>
-                            <p>Terakhir Diperbarui: {{ Auth::user()->updated_at ? Auth::user()->updated_at->translatedFormat('d F Y') : 'Anda belum pernah mengupdate profil Anda' }}</p>
-                            <p>Total Simpanan: Rp {{ number_format($totalSukarela ?? 0, 0, ',', '.') }}</p>
-                            <p>Total Pinjaman: Rp Rp {{ number_format($totalPinjaman, 0, ',', '.') }}</p>
-                        </div>
-                    </div>  
-        
-                    <!-- Kotak Ketiga: Formulir Edit Profil -->
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <h5>Edit Profil</h5>
-                        </div>
-                        <div class="card-body">
-                            <form id="edit-profile-form" enctype="multipart/form-data" method="POST" action="{{ route('profil') }}">
-                                @csrf
-                            <input type="hidden" name="_method" value="PUT"> <!-- Metode PUT untuk update -->
+                            <h5>Hubungi Kami</h5>
+                            <form id="contact-form">
                                 <!-- Nama -->
-                                <div class="mb-3">
-                                    <label for="fullname" class="form-label">Nama</label>
-                                    <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Nama Lengkap" value="{{ old('fullname', Auth::user()->fullname) }}" required>
+                                <div class="form-group mb-3">
+                                    <label for="contact-name">Nama</label>
+                                    <input type="text" class="form-control" id="contact-name" name="contact-name" placeholder="Masukkan nama Anda" required>
                                 </div>
-
+            
                                 <!-- Email -->
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="{{ old('email', Auth::user()->email) }}" required>
+                                <div class="form-group mb-3">
+                                    <label for="contact-email">Email</label>
+                                    <input type="email" class="form-control" id="contact-email" name="contact-email" placeholder="Masukkan email Anda" required>
                                 </div>
-
-                                <!-- Password -->
-                                <div class="mb-3">
-                                    <label for="password" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+            
+                                <!-- Subjek -->
+                                <div class="form-group mb-3">
+                                    <label for="contact-subject">Subjek</label>
+                                    <input type="text" class="form-control" id="contact-subject" name="contact-subject" placeholder="Masukkan subjek pesan" required>
                                 </div>
-
-                                <!-- Konfirmasi Password -->
-                                <div class="mb-3">
-                                    <label for="confirm-password" class="form-label">Konfirmasi Password</label>
-                                    <input type="password" class="form-control" id="confirm-password" name="confirm_password" placeholder="Konfirmasi Password">
+            
+                                <!-- Isi Pesan -->
+                                <div class="form-group mb-3">
+                                    <label for="contact-message">Pesan</label>
+                                    <textarea class="form-control" id="contact-message" name="contact-message" rows="5" placeholder="Tuliskan pesan Anda di sini" required></textarea>
                                 </div>
-
-                                <!-- Gambar -->
-                                <div class="mb-3">
-                                    <label for="gambar" class="form-label">Foto Profil</label>
-                                    <input type="file" class="form-control" id="gambar" name="gambar" accept="image/*">
-                                </div>
-
-                                <!-- Nomor Telepon -->
-                                <div class="mb-3">
-                                    <label for="phone" class="form-label">Nomor Telepon</label>
-                                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="Nomor Telepon" value="{{ old('phone', Auth::user()->phone) }}" required>
-                                </div>
-
-                                <!-- Alamat -->
-                                <div class="mb-3">
-                                    <label for="address" class="form-label">Alamat</label>
-                                    <textarea class="form-control" id="address" name="address" rows="5" placeholder="Alamat" required>{{ old('address', Auth::user()->address) }}</textarea>
-                                </div>
-
-                                <div class="text-end">
-                                    <button type="submit" class="btn btn-primary">Konfirmasi Edit Profil</button>
+            
+                                <!-- Tombol Kirim -->
+                                <div class="form-group text-center">
+                                    <button type="submit" class="btn btn-primary">Kirim Pesan</button>
                                 </div>
                             </form>
                         </div>
-                    </div>                    
-                </div>
+                    </div>
+                </section>
+            
+                <!-- Informasi Kontak -->
+                <section>
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h5>Informasi Kontak</h5>
+                            <p>Email: support@koperasi.com</p>
+                            <p>Telepon: 021-12345678</p>
+                            <p>Alamat: Jl. Raya Koperasi No. 123, Jakarta</p>
+                        </div>
+                    </div>
+                </section>
             </div>
-        </div>
-        
+            
             <footer>
                 <div class="footer clearfix mb-0 text-muted">
-                    <div class="float-start" style="margin-left: 26%;">
+                    <div class="float-start">
                         <p>2025 &copy; STARBIN</p>
                     </div>
-                    <div class="float-end" style="margin-right: 30px;">
+                    <div class="float-end">
                         <p>Dibuat dengan <span class="text-danger"><i class="bi bi-heart"></i></span> oleh <a
                                 href="https://saugi.me">Bagas & Fahri</a></p>
                     </div>
@@ -249,6 +242,8 @@
     </div>
     <script src="{{asset('dist/assets/js/bootstrap.js')}}"></script>
     <script src="{{asset('dist/assets/js/app.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     
 </body>
 

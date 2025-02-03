@@ -45,4 +45,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Relasi dengan model Simpanan.
+     * Satu user memiliki banyak simpanan.
+     */
+    public function simpanans()
+    {
+        return $this->hasMany(Simpanan::class, 'user_id', 'id');
+    }
 }
