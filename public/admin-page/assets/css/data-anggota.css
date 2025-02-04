@@ -1,0 +1,81 @@
+/* Container untuk tabel */
+.table-container {
+  margin: 20px;
+}
+
+.table-container h2 {
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+/* Desain tabel */
+.anggota-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+}
+
+.anggota-table th, .anggota-table td {
+  text-align: left;
+  padding: 10px;
+  font-size: 24px;
+  color: #333;
+  border: 1px solid #ddd; /* Membuat tabel seperti Excel */
+}
+
+.anggota-table th {
+  background-color: #007bff;
+  color: #ffffff;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+.anggota-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.anggota-table tbody tr:hover {
+  background-color: #eaf4ff;
+  cursor: pointer;
+}
+
+/* Status badge */
+.status {
+  display: inline-block;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 15px;
+  color: #ffffff;
+}
+
+.status.active {
+  background-color: #28a745; /* Hijau untuk status aktif */
+}
+
+.status.inactive {
+  background-color: #dc3545; /* Merah untuk status non-aktif */
+}
+
+/* Tombol aksi */
+.btn-action {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  font-size: 16px;
+  color: #555;
+  transition: color 0.3s ease;
+}
+
+.btn-action:hover {
+  color: #007bff; /* Warna hover */
+}
+
+.btn-action .bi {
+  font-size: 18px; /* Ukuran ikon */
+}

@@ -1,0 +1,25 @@
+/* Container utama */
+.simpanan-pokok-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Judul */
+.simpanan-pokok-container h4 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Filter */
+.filter-simpanan-pokok {
+  margin-bottom: 15px;
+}
+
+.filter-simpanan-pokok input {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
