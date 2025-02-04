@@ -10,21 +10,41 @@ class SimpananController extends Controller
 {
     public function simpananwajib()
     {
-        // Ambil semua data simpanan wajib milik user yang sedang login
+        $userId = auth()->id();
+
+        // Ambil semua data simpanan wajib milik user
         $wajib = Simpanan::where('jenis', 'wajib')
-            ->where('user_id', auth()->id())
+            ->where('user_id', $userId)
             ->get();
-    
-        // Hitung total saldo simpanan wajib milik user yang sedang login
+
+        // Hitung total saldo simpanan wajib
         $totalWajib = Simpanan::where('jenis', 'wajib')
-            ->where('user_id', auth()->id())
+            ->where('user_id', $userId)
             ->sum('jumlah');
-    
+
+        // ✅ 1. Cek apakah pengguna sudah membayar bulan ini
+        $bulanIni = Carbon::now()->format('Y-m');
+        $sudahBayarBulanIni = Simpanan::where('jenis', 'wajib')
+            ->where('user_id', $userId)
+            ->where('tanggal_transaksi', 'like', "$bulanIni%")
+            ->where('status', 'completed')
+            ->exists();
+
+        // ✅ 2. Buat variabel notifikasi status pembayaran
+        if ($sudahBayarBulanIni) {
+            $statusPembayaran = 'success'; // Sudah membayar
+            $statusPesan = "Anda sudah membayar simpanan wajib bulan ini. Terima kasih!";
+        } else {
+            $statusPembayaran = 'warning'; // Belum membayar
+            $statusPesan = "Anda belum melakukan pembayaran untuk bulan ini.";
+        }
+
+        // ✅ 3. Tambahkan Notifikasi Pengingat
+        $pengingat = "Anda akan menerima pengingat otomatis setiap awal bulan jika belum melakukan pembayaran.";
+
         // Kirim data ke view
-        return view('user.simpanan-wajib', compact('wajib', 'totalWajib'));
+        return view('user.simpanan-wajib', compact('wajib', 'totalWajib', 'statusPembayaran', 'statusPesan', 'pengingat'));
     }
-    
-     
 
     public function simpanansukarela()
     {
@@ -35,14 +55,14 @@ class SimpananController extends Controller
 
         // Hitung total saldo simpanan sukarela milik user yang sedang login
         $totalSukarela = Simpanan::where('jenis', 'sukarela')
-        ->where('user_id', auth()->id())
-        ->sum('jumlah');
-    
-    
+            ->where('user_id', auth()->id())
+            ->sum('jumlah');
+
+
         // Kirim data ke view
         return view('user.simpanan-sukarela', compact('sukarela', 'totalSukarela'));
     }
-    
+
 
     public function store(Request $request)
     {
@@ -53,22 +73,22 @@ class SimpananController extends Controller
             'jumlah' => 'required|numeric',
             'metode_pembayaran' => 'required|in:transfer-bank,ewallet,cash', // Metode pembayaran
         ]);
-    
+
         // Ambil user yang sedang login
         $user = auth()->user();
-    
+
         // Hitung saldo saat ini berdasarkan jenis simpanan
         $saldoSaatIni = Simpanan::where('jenis', $validatedData['jenis'])
             ->where('user_id', $user->id)
             ->sum('jumlah');
-    
+
         // **Proses Penarikan**
         if ($validatedData['jenis_transaksi'] === 'penarikan') {
             if ($saldoSaatIni < $validatedData['jumlah']) {
                 // Jika saldo tidak mencukupi
                 return redirect()->back()->with('error', 'Saldo tidak mencukupi untuk penarikan.');
             }
-    
+
             // Simpan transaksi penarikan
             $data = [
                 'user_id' => $user->id,
@@ -82,12 +102,12 @@ class SimpananController extends Controller
             ];
 
             Simpanan::create($data);
-    
+
             return redirect()
                 ->route($validatedData['jenis'] === 'wajib' ? 'simpananwajib' : 'simpanansukarela')
                 ->with('success', 'Penarikan berhasil dilakukan!');
         }
-    
+
         // **Proses Penyetoran**
         $data = [
             'user_id' => $user->id,
@@ -99,20 +119,19 @@ class SimpananController extends Controller
             'status' => 'completed', // Status default "completed"
             'metode_pembayaran' => $validatedData['metode_pembayaran'],
         ];
-    
+
         Simpanan::create($data);
-    
+
         // Redirect ke halaman yang sesuai (wajib/sukarela)
         $redirectRoute = $validatedData['jenis'] === 'wajib' ? 'simpananwajib' : 'simpanansukarela';
-    
+
         return redirect()
             ->route($redirectRoute)
             ->with('success', 'Transaksi berhasil diajukan!');
-    }    
+    }
 
     public function boot()
     {
         Carbon::setLocale('id'); // Mengatur bahasa ke Indonesia
     }
-      
 }

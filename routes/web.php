@@ -25,28 +25,34 @@ use Illuminate\Support\Facades\Route;
 */
 
 // menambahkan pengahalang menggunakan midleware guest agar page dashboard admin/user tidak bisa di akses tanpa login/register
-Route::middleware(['guest'])->group(function(){
+Route::middleware(['guest'])->group(function () {
     Route::view('/', 'welcome');
 
-    Route::get('/Login',[AuthController::class,'index'])->name('login');
-    Route::post('/Login',[AuthController::class,'login']);
+    Route::get('/Login', [AuthController::class, 'index'])->name('login');
+    Route::post('/Login', [AuthController::class, 'login']);
 
-    Route::get('/Registrasi',[AuthController::class,'create'])->name('registrasi');
-    Route::post('/Registrasi',[AuthController::class,'register']);
+    Route::get('/Registrasi', [AuthController::class, 'create'])->name('registrasi');
+    Route::post('/Registrasi', [AuthController::class, 'register']);
 });
 
 Route::middleware(['auth'])->group(function () {
 
-    // ketika user mencoba mengaskses landing tanpa log out
-    Route::redirect('/home', '/user'); 
-
-    // Route untuk admin (dengan middleware userAkses:admin)
-    Route::middleware(['userAkses:admin'])->group(function () {
-        Route::get('/admin', [AdminController::class, 'index'])->name('admin'); 
-        Route::get('/usercontroll', [DashboardController::class, 'dashboard'])->name('usercontrol');    
+    // Redirect user ke halaman yang sesuai berdasarkan role
+    Route::get('/home', function () {
+        if (auth()->user()->role == 'admin') {
+            return redirect()->route('admin');
+        }
+        return redirect()->route('user');
     });
 
-    // Grup Route untuk userakses
+    // Grup Route untuk Admin (userAkses:admin)
+    Route::middleware(['userAkses:admin'])->group(function () {
+        Route::get('/admin', [AdminController::class, 'index'])->name('admin');
+        Route::get('/usercontroll', [DashboardController::class, 'dashboard'])->name('usercontrol');
+        // Tambahkan route admin lainnya di sini...
+    });
+
+    // Grup Route untuk User (userAkses:user)
     Route::middleware(['userAkses:user'])->group(function () {
         Route::get('/user', [DashboardController::class, 'dashboard'])->name('user');
         Route::get('/userprofil', [ProfilController::class, 'profil'])->name('profil');
@@ -56,12 +62,12 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/simpanans', [SimpananController::class, 'store'])->name('simpanan.store');
         Route::get('/pinjaman', [PinjamanController::class, 'pinjaman'])->name('pinjaman');
         Route::post('/pinjaman/ajukan', [PinjamanController::class, 'ajukanPinjaman'])->name('pinjaman.ajukan');
-        Route::post('/pinjaman/bayar', [PinjamanController::class, 'bayarPinjaman'])->name('pinjaman.bayar');   
+        Route::post('/pinjaman/bayar', [PinjamanController::class, 'bayarPinjaman'])->name('pinjaman.bayar');
         Route::get('/bukti/{bukti}', [BuktiPembayaranController::class, 'show'])->name('bukti.pembayaran');
         Route::get('/notifikasi', [NotifikasiController::class, 'notifikasi'])->name('notifikasi');
         Route::get('/bantuan', [BantuanController::class, 'bantuan'])->name('bantuan');
     });
 
-    // Route logout tetap di luar grup agar bisa digunakan siapa saja yang sudah login
+    // Route logout tetap di luar grup agar bisa digunakan oleh siapa saja yang sudah login
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str; 
+use Illuminate\Support\Str;
 use App\Models\User; // Model untuk tabel users di database
 
 class AuthController extends Controller
@@ -24,12 +24,12 @@ class AuthController extends Controller
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
-        ],[
+        ], [
             'email.required' => 'Email wajib diisi',
             'email.email' => 'Format email tidak valid', // Pesan kustom untuk validasi emailx
             'password.required' => 'Password wajib diisi',
         ]);
-    
+
         // Auth::attempt otomatis mencocokkan password yang di-hash
         if (Auth::attempt($request->only('email', 'password'))) {
             if (Auth::user()->role === 'admin') {
@@ -38,15 +38,15 @@ class AuthController extends Controller
                 return redirect()->route('user')->with('success', 'Berhasil login');
             }
         }
-    
+
         // Jika email atau password salah
         return back()->withErrors(['email' => 'Email atau Password salah']);
     }
-    
+
 
     // Menampilkan halaman registrasi
     function create()
-    { 
+    {
         return view('auth/register'); // Mengarahkan ke halaman register
     }
 
@@ -102,15 +102,14 @@ class AuthController extends Controller
         // Redirect ke halaman login dengan pesan sukses
         return redirect()->route('login')->with('success', 'Akun berhasil dibuat. Silakan login.');
     }
-    
+
     public function logout(Request $request)
     {
         Auth::logout(); // Menghapus sesi autentikasi pengguna
         $request->session()->invalidate(); // Menghapus data sesi
         $request->session()->regenerateToken(); // Membuat CSRF token baru
-        
+
         // Redirect ke landing page
         return redirect('/')->with('success', 'Anda berhasil logout');
     }
-
 }

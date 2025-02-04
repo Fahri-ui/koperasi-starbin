@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\User;
 use App\Models\Simpanan;
 use App\Models\Pinjaman;
@@ -14,17 +15,17 @@ class ProfilController extends Controller
     {
         // Ambil user yang sedang login
         $user = Auth::user();
-    
+
         // Hitung total saldo simpanan sukarela milik user yang sedang login
         $totalSukarela = Simpanan::where('user_id', $user->id)
             ->where('jenis', 'sukarela') // Hanya ambil simpanan jenis sukarela
             ->sum('jumlah'); // Menjumlahkan semua transaksi sukarela user
-    
+
         // Hitung total pinjaman yang diambil user (hanya yang statusnya tidak "Ditolak")
         $totalPinjaman = Pinjaman::where('user_id', $user->id)
             ->where('status', '!=', 'Ditolak') // Pastikan pinjaman yang dihitung bukan yang ditolak
             ->sum('jumlah_pinjaman');
-    
+
         // Kirim variabel ke view
         return view('user.profil', compact('totalSukarela', 'totalPinjaman'));
     }
@@ -57,45 +58,45 @@ class ProfilController extends Controller
             'address.required' => 'Alamat wajib diisi.',
             'address.min' => 'Alamat minimal 15 karakter.',
         ]);
-    
+
         // Ambil data pengguna
         $user = Auth::user();
 
-     // Debug apakah $user adalah instance User
-    if (!$user) {
-        return redirect()->back()->withErrors(['error' => 'Pengguna tidak ditemukan atau belum login.']);
-    }
+        // Debug apakah $user adalah instance User
+        if (!$user) {
+            return redirect()->back()->withErrors(['error' => 'Pengguna tidak ditemukan atau belum login.']);
+        }
 
-    if (!($user instanceof \App\Models\User)) {
-        return redirect()->back()->withErrors(['error' => 'Objek bukan instance dari User model.']);
-    }
-    
+        if (!($user instanceof \App\Models\User)) {
+            return redirect()->back()->withErrors(['error' => 'Objek bukan instance dari User model.']);
+        }
+
         if (!$user) {
             return redirect()->back()->withErrors(['error' => 'Pengguna tidak ditemukan.']);
         }
-    
+
         // Jika ada gambar yang diunggah
         if ($request->hasFile('gambar') && $request->file('gambar')->isValid()) {
             $gambar_file = $request->file('gambar');
             $nama_gambar = date('ymdhis') . '.' . $gambar_file->getClientOriginalExtension();
             $gambar_file->move(public_path('picture/account'), $nama_gambar);
-        
+
             // Hapus gambar lama jika ada
             if ($user->gambar && file_exists(public_path('picture/account/' . $user->gambar))) {
                 unlink(public_path('picture/account/' . $user->gambar));
             }
-        
+
             // Perbarui nama gambar pengguna
             $user->gambar = $nama_gambar;
         }
-    
+
         // Perbarui data pengguna
         $user->fullname = $request->fullname;
         $user->email = $request->email;
         $user->password = $request->password ? bcrypt($request->password) : $user->password;
         $user->phone = $request->phone;
         $user->address = $request->address;
-    
+
         // Simpan perubahan
         try {
             $user->save();
@@ -104,6 +105,4 @@ class ProfilController extends Controller
             return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage()]);
         }
     }
-    
-
 }
