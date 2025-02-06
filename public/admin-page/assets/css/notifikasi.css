@@ -1,0 +1,22 @@
+.list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .badge {
+    font-size: 0.875rem;
+    padding: 0.5rem;
+  }
+  
+  .bg-danger {
+    background-color: #dc3545;
+  }
+  
+  .bg-secondary {
+    background-color: #6c757d;  
+  }
+  

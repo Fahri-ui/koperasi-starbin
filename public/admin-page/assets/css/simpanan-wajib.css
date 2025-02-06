@@ -1,0 +1,19 @@
+/* Container utama */
+.data-simpanan-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+ 
+  /* Filter */
+  .filter-simpanan {
+    margin-bottom: 15px;
+  }
+  
+  .filter-simpanan input {
+    width: 100%;
+    padding: 6px 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  

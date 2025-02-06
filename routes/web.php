@@ -7,6 +7,7 @@ use App\Http\Controllers\BuktiPembayaranController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NotifikasiController;
 use App\Http\Controllers\PinjamanController;
+use App\Http\Controllers\ProfilAdminController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\SimpananController;
 use App\Http\Controllers\UserControlController;
@@ -47,9 +48,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Grup Route untuk Admin (userAkses:admin)
     Route::middleware(['userAkses:admin'])->group(function () {
-        Route::get('/admin', [AdminController::class, 'index'])->name('admin');
-        Route::get('/usercontroll', [DashboardController::class, 'dashboard'])->name('usercontrol');
-        // Tambahkan route admin lainnya di sini...
+        Route::get('/profiladmin', [ProfilAdminController::class, 'profiladmin'])->name('profiladmin');
     });
 
     // Grup Route untuk User (userAkses:user)
