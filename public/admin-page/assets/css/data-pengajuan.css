@@ -1,0 +1,24 @@
+.badge.bg-warning {
+    background-color: #ffc107;
+    color: #fff;
+  }
+  .badge.bg-success {
+    background-color: #28a745;
+    color: #fff;
+  }
+  .badge.bg-danger {
+    background-color: #dc3545;
+    color: #fff;
+  }
+  .table-responsive {
+    margin-top: 20px;
+  }
+  .card .card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  .card .card-text {
+    font-size: 1.2rem;
+    color: #333;
+  }
+  

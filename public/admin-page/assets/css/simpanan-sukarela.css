@@ -1,0 +1,28 @@
+/* Container utama */
+.simpanan-sukarela-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Judul */
+  .simpanan-sukarela-container h4{
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+    margin: auto;
+  }
+  
+  /* Filter */
+  .filter-simpanan-sukarela {
+    margin-bottom: 15px;
+  }
+  
+  .filter-simpanan-sukarela input {
+    width: 100%;
+    padding: 6px 12px; 
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+

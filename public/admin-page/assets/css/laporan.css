@@ -1,0 +1,18 @@
+.card {
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .table th, .table td {
+    vertical-align: middle;
+  }
+  
+  h6 {
+    font-weight: bold;
+  }
+  
+  .text-center p {
+    margin: 0;
+    font-size: 1.25rem;
+  }
+  

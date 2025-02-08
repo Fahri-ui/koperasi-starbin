@@ -1,14 +1,27 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AngsuranAdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BackupController;
 use App\Http\Controllers\BantuanController;
 use App\Http\Controllers\BuktiPembayaranController;
+use App\Http\Controllers\DashboardAdminController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DataAnggotaController;
+use App\Http\Controllers\DataPengajuanController;
+use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\LogAktivitasController;
+use App\Http\Controllers\NotifikasiAdminController;
 use App\Http\Controllers\NotifikasiController;
 use App\Http\Controllers\PinjamanController;
+use App\Http\Controllers\PinjmanAdminController;
+use App\Http\Controllers\ProfilAdminController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\SimpananController;
+use App\Http\Controllers\SimpananPokokAdminController;
+use App\Http\Controllers\SimpananSukareplaAdminController;
+use App\Http\Controllers\SimpananWajibAdminController;
 use App\Http\Controllers\UserControlController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -47,8 +60,21 @@ Route::middleware(['auth'])->group(function () {
 
     // Grup Route untuk Admin (userAkses:admin)
     Route::middleware(['userAkses:admin'])->group(function () {
-        Route::get('/admin', [AdminController::class, 'index'])->name('admin');
-        Route::get('/usercontroll', [DashboardController::class, 'dashboard'])->name('usercontrol');
+        Route::get('/admin', [DashboardAdminController::class, 'dashboard'])->name('dashboard');
+        Route::get('/Angsuran', [AngsuranAdminController::class, 'angsuran'])->name('angsuran');
+        Route::get('/Backup', [BackupController::class, 'backup'])->name('backup');
+        Route::get('/Data-Anggota', [DataAnggotaController::class, 'dataanggota'])->name('dataanggota');
+        Route::get('/Data-Pengajuan', [DataPengajuanController::class, 'pangajuan'])->name('pangajuan');
+        Route::get('/Laporan', [LaporanController::class, 'laporan'])->name('laporan');
+        Route::get('/Log-Aktivitas', [LogAktivitasController::class, 'logaktivitas'])->name('logaktivitas');
+        Route::get('/Notifikasi', [NotifikasiAdminController::class, 'notifikasiadmin'])->name('notifikasiadmin');
+        Route::get('/Pinjaman', [PinjmanAdminController::class, 'pinjamanadmin'])->name('pinjamanadmin');
+        Route::get('/Profil', [ProfilAdminController::class, 'profiladmin'])->name('profiladmin');
+        Route::get('/Simpanan-Pokok', [SimpananPokokAdminController::class, 'simpananpokokadmin'])->name('simpsimpananpokokadminananpokok');
+        Route::get('/Simpanan-Sukarela', [SimpananSukareplaAdminController::class, 'simpanansukarelaadmin'])->name('simpanansukarelaadmin');
+        Route::get('/Simpanan-Wajib', [SimpananWajibAdminController::class, 'simpananwajibadmin'])->name('simpananwajibadmin');
+        Route::get('/Statistik-Keuangan', [DashboardAdminController::class, 'dashboard'])->name('dashboard');
+        Route::get('/admin', [DashboardAdminController::class, 'dashboard'])->name('dashboard');
         // Tambahkan route admin lainnya di sini...
     });
 

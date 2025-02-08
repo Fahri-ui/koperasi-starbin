@@ -1,0 +1,40 @@
+/* Style untuk Card */
+.card {
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  background-color: #ffffff;
+  padding: 20px;
+}
+
+/* Style untuk Foto Profil */
+.poto-profil {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  margin-bottom: 30px;
+}
+
+.poto-profil img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Style untuk Container */
+.container {
+  max-width: 1000px; /* Lebar maksimal container */
+  margin: 0 auto;   /* Agar konten berada di tengah halaman */
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+  .poto-profil {
+      width: 150px;
+      height: 150px;
+    }
+}
