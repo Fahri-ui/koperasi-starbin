@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Simpanan; 
-use App\Models\Pinjaman; 
+use App\Models\Simpanan;
+use App\Models\Pinjaman;
 use App\Models\RiwayatPembayaran; // Import model RiwayatPembayaran
-use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Auth;
+use App\Models\Notifikasi; // Tambahkan model Notifikasi
 use Carbon\Carbon;
 
 class DashboardController extends Controller
@@ -25,6 +26,11 @@ class DashboardController extends Controller
         $totalPinjaman = Pinjaman::where('user_id', $user->id)
             ->where('status', '!=', 'Ditolak')
             ->sum('jumlah_pinjaman');
+
+        // Ambil jumlah notifikasi terbaru yang belum dibaca
+        $jumlahNotifikasiBaru = Notifikasi::where('user_id', $user->id)
+            ->where('is_read', false)
+            ->count();
 
         // Ambil semua transaksi (gabungan dari Simpanan, Pinjaman, dan Riwayat Pembayaran)
         $riwayatTransaksi = collect([]);
@@ -65,14 +71,14 @@ class DashboardController extends Controller
                 ];
             });
 
-       // Gabungkan semua transaksi, urutkan berdasarkan tanggal DESC, dan reset indeks
+        // Gabungkan semua transaksi, urutkan berdasarkan tanggal DESC, dan reset indeks
         $riwayatTransaksi = $simpanans
-        ->merge($pinjamans)
-        ->merge($pembayarans)
-        ->sortByDesc('tanggal')
-        ->values(); // Reset indeks agar urutan angka sesuai dengan tabel
+            ->merge($pinjamans)
+            ->merge($pembayarans)
+            ->sortByDesc('tanggal')
+            ->values(); // Reset indeks agar urutan angka sesuai dengan tabel
 
         // Kirim ke view
-        return view('user.dashboard', compact('totalSukarela', 'totalPinjaman', 'riwayatTransaksi'));
+        return view('user.dashboard', compact('totalSukarela', 'totalPinjaman', 'riwayatTransaksi', 'jumlahNotifikasiBaru'));
     }
 }

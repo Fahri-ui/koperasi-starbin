@@ -92,15 +92,18 @@
                                 <span>Pinjaman</span>
                             </a>
                         </li>
-
-                        <li
-                            class="sidebar-item  ">
-                            <a href="{{route('notifikasi')}}" class='sidebar-link'>
-                                <i class="bi bi-chat-dots-fill"></i>
+                        <li class="nav-item sidebar-item position-relative">
+                            <a href="{{ route('notifikasi') }}" class="nav-link sidebar-link">
+                                <i class="bi bi-bell"></i>
                                 <span>Notifikasi</span>
+                                @if ($jumlahNotifikasiBaru > 0)
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{ $jumlahNotifikasiBaru }}
+                                    <span class="visually-hidden">notifikasi baru</span>
+                                </span>
+                                @endif
                             </a>
                         </li>
-
 
                         <li
                             class="sidebar-item  ">
@@ -149,29 +152,6 @@
             <h2>Pinjaman</h2>
 
             <div class="container mt-5">
-                <!-- Notifikasi -->
-                <section class="mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5>Notifikasi</h5>
-                            @if(isset($notifikasi) && count($notifikasi) > 0)
-                            <!-- Ambil hanya notifikasi terbaru -->
-                            @php $notif = $notifikasi[0]; @endphp
-                            <div class="alert alert-{{ $notif['type'] }} d-flex align-items-center" role="alert">
-                                <i class="bi {{ $notif['icon'] }} me-2" style="margin-bottom: 15px;"></i>
-                                <span>{{ $notif['message'] }}</span>
-                            </div>
-                            @else
-                            <div class="alert alert-info d-flex align-items-center" role="alert">
-                                <i class="bi bi-info-circle me-2" style="margin-bottom: 15px;"></i>
-                                <span>Tidak ada notifikasi terbaru.</span>
-                            </div>
-                            @endif
-                        </div>
-                    </div>
-                </section>
-
-
                 <!-- Definisi Pinjaman -->
                 <section class="mb-4">
                     <div class="card">
@@ -270,7 +250,7 @@
                                         @forelse ($riwayatTransaksi as $transaksi)
                                         <tr>
                                             <td>{{ $transaksi['kode'] }}</td>
-                                            <td>{{ date('d F Y H:i', strtotime($transaksi['tanggal'])) }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($transaksi->tanggal)->format('d F Y') }}</td>
                                             <td>Rp {{ number_format($transaksi['jumlah'], 0, ',', '.') }}</td>
                                             <td>{{ $transaksi['tipe'] }}</td>
                                             <td>{{ $transaksi['metode'] ?? '-' }}</td>

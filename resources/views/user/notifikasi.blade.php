@@ -11,8 +11,46 @@
     <link rel="shortcut icon" href="{{asset('dist/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/x-icon">
     <link rel="shortcut icon" href="{{asset('dist/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/png">
     <link rel="stylesheet" href="{{asset('dist/assets/css/notifikasi.css')}}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
 </head>
+
+<style>
+    .card {
+        width: 98%;
+        max-width: 1000px;
+        border-radius: 10px;
+        padding: 15px;
+        display: flex;
+        align-items: left;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .icon-container i {
+        font-size: 24px;
+        padding: 10px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .text-success {
+        color: #28a745 !important;
+    }
+
+    .text-warning {
+        color: #ff9800 !important;
+    }
+
+    .text-danger {
+        color: #dc3545 !important;
+    }
+
+    .text-primary {
+        color: #007bff !important;
+    }
+</style>
 
 <body>
     <div id="app">
@@ -93,11 +131,16 @@
                             </a>
                         </li>
 
-                        <li
-                            class="sidebar-item active ">
-                            <a href="{{route('notifikasi')}}" class='sidebar-link'>
-                                <i class="bi bi-chat-dots-fill"></i>
+                        <li class="nav-item sidebar-item position-relative">
+                            <a href="{{ route('notifikasi') }}" class="nav-link sidebar-link">
+                                <i class="bi bi-bell"></i>
                                 <span>Notifikasi</span>
+                                @if ($jumlahNotifikasiBaru > 0)
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{ $jumlahNotifikasiBaru }}
+                                    <span class="visually-hidden">notifikasi baru</span>
+                                </span>
+                                @endif
                             </a>
                         </li>
 
@@ -132,49 +175,44 @@
                 </a>
             </header>
 
-            <div class="container py-4">
-                <h1 class="mb-4 text-center">Halaman Notifikasi</h1>
+            <div class="container">
+                <h2 class="text-center fw-bold my-4">📢 Halaman Notifikasi</h2>
 
-                <!-- Notifikasi Peringatan -->
-                <div class="card notification-card border-left-danger ">
-                    <div class="card-body d-flex">
-                        <div class="notification-icon text-danger">
-                            ⚠️
-                        </div>
-                        <div>
-                            <p class="notification-title text-danger mb-1">Peringatan</p>
-                            <p class="mb-0">Anda belum membayar tagihan bulan ini. Harap segera lakukan pembayaran!</p>
-                            <p class="notification-time">Diterima: 20 Januari 2025</p>
+                <div class="d-flex flex-column align-items-center">
+                    @foreach ($notifikasiPerBulan as $bulan => $notifikasi)
+                    <h4 class="text-primary fw-bold mt-3">
+                        {{ \Carbon\Carbon::parse($bulan . '-01')->translatedFormat('F Y') }}
+                    </h4>
+
+                    @foreach ($notifikasi as $item)
+                    <div class="card shadow-sm p-4 mb-6 rounded border-1 
+                    {{ $item->is_read ? '' : 'border-primary' }}">
+                        <div class="d-flex align-items-start">
+                            <div class="icon-container">
+                                <i class="bi {{ $item->icon }} text-{{ $item->type }}"></i>
+                            </div>
+                            <div class="ms-3">
+                                <h6 class="fw-bold text-{{ $item->type }}">
+                                    {{ ucfirst($item->type) }}
+                                </h6>
+                                <p class="mb-1">
+                                    {{ $item->message }}
+                                    @if (!$item->is_read)
+                                    <span class="badge bg-primary ms-2">Baru</span>
+                                    @endif
+                                </p>
+                                <small class="text-muted">Diterima: {{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d F Y') }}</small>
+                            </div>
                         </div>
                     </div>
-                </div>
+                    @endforeach
+                    @endforeach
 
-                <!-- Notifikasi Pengingat -->
-                <div class="card notification-card border-left-warning ">
-                    <div class="card-body d-flex">
-                        <div class="notification-icon text-warning">
-                            ⏰
-                        </div>
-                        <div>
-                            <p class="notification-title text-warning mb-1">Pengingat</p>
-                            <p class="mb-0">Jatuh tempo pinjaman Anda tinggal 5 hari lagi. Mohon persiapkan pembayaran Anda.</p>
-                            <p class="notification-time">Diterima: 19 Januari 2025</p>
-                        </div>
+                    @if ($notifikasiPerBulan->isEmpty())
+                    <div class="alert alert-info text-center mt-4">
+                        <i class="bi bi-info-circle-fill"></i> Tidak ada notifikasi terbaru.
                     </div>
-                </div>
-
-                <!-- Notifikasi Keberhasilan -->
-                <div class="card notification-card border-left-success ">
-                    <div class="card-body d-flex">
-                        <div class="notification-icon text-success">
-                            ✅
-                        </div>
-                        <div>
-                            <p class="notification-title text-success mb-1">Keberhasilan</p>
-                            <p class="mb-0">Pembayaran Anda sebesar Rp 50.000 telah berhasil diproses. Terima kasih!</p>
-                            <p class="notification-time">Diterima: 18 Januari 2025</p>
-                        </div>
-                    </div>
+                    @endif
                 </div>
             </div>
 

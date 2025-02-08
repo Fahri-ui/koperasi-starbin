@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{{asset('dist/assets/css/main/app-dark.css')}}">
     <link rel="shortcut icon" href="{{asset('dist/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/x-icon">
     <link rel="shortcut icon" href="{{asset('dist/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/png">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 
 <body>
@@ -91,15 +91,18 @@
                                 <span>Pinjaman</span>
                             </a>
                         </li>
-
-                        <li
-                            class="sidebar-item  ">
-                            <a href="{{route('notifikasi')}}" class='sidebar-link'>
-                                <i class="bi bi-chat-dots-fill"></i>
+                        <li class="nav-item sidebar-item position-relative">
+                            <a href="{{ route('notifikasi') }}" class="nav-link sidebar-link">
+                                <i class="bi bi-bell"></i>
                                 <span>Notifikasi</span>
+                                @if ($jumlahNotifikasiBaru > 0)
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{ $jumlahNotifikasiBaru }}
+                                    <span class="visually-hidden">notifikasi baru</span>
+                                </span>
+                                @endif
                             </a>
                         </li>
-
 
                         <li
                             class="sidebar-item  ">
@@ -177,6 +180,7 @@
                 </div>
             </section>
 
+
             <!-- Saldo Simpanan Wajib -->
             <section class="mb-4">
                 <div class="card">
@@ -192,7 +196,7 @@
             <section class="mb-4">
                 <div class="card">
                     <div class="card-body">
-                        <h5>Daftar Simpanan Sukarela</h5>
+                        <h5>Daftar Simpanan Wajib</h5>
                         <div style="height: 400px; overflow-y: auto;"> <!-- Wrapper untuk overflow -->
                             <table class="table table-striped">
                                 <thead>
@@ -226,10 +230,23 @@
             </section>
 
             <!-- Formulir Penyetoran dan Penarikan -->
+            <!-- Formulir Penyetoran dan Penarikan -->
             <section class="mb-4" id="bayar">
                 <div class="card">
                     <div class="card-body">
-                        <h5>Formulir Penyetoran / Penarikan</h5>
+                        @if ($sudahBayarBulanIni)
+                        <!-- Jika sudah membayar bulan ini, tampilkan pesan terima kasih -->
+                        <div class="alert alert-success d-flex align-items-center" role="alert">
+                            <!-- Ikon terima kasih -->
+                            <i class="bi bi-check-circle-fill me-2" style="font-size: 1.5rem; margin-top:10px;"></i>
+                            <div>
+                                <h5 class="alert-heading">Terima Kasih!</h5>
+                                <p style="margin-left:20px;"><strong>{{ $statusPesan }}</strong></p>
+                            </div>
+                        </div>
+                        @else
+                        <!-- Jika belum membayar bulan ini, tampilkan formulir pembayaran -->
+                        <h5>Formulir Penyetoran</h5>
                         <form action="{{ route('simpanan.store') }}" method="POST">
                             @csrf
                             <input type="hidden" name="jenis" value="wajib"> <!-- Jenis simpanan -->
@@ -257,10 +274,12 @@
 
                             <button type="submit" class="btn btn-primary">Konfirmasi Transaksi</button>
                         </form>
-
+                        @endif
                     </div>
                 </div>
             </section>
+
+
 
         </div>
         <footer>

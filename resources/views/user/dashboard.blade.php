@@ -93,12 +93,16 @@
                                 <span>Pinjaman</span>
                             </a>
                         </li>
-
-                        <li
-                            class="sidebar-item  ">
-                            <a href="{{route('notifikasi')}}" class='sidebar-link'>
-                                <i class="bi bi-chat-dots-fill"></i>
+                        <li class="nav-item sidebar-item position-relative">
+                            <a href="{{ route('notifikasi') }}" class="nav-link sidebar-link">
+                                <i class="bi bi-bell"></i>
                                 <span>Notifikasi</span>
+                                @if ($jumlahNotifikasiBaru > 0)
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{ $jumlahNotifikasiBaru }}
+                                    <span class="visually-hidden">notifikasi baru</span>
+                                </span>
+                                @endif
                             </a>
                         </li>
 
@@ -179,11 +183,11 @@
                     <div class="col-12 col-md-6 col-lg-4">
                         <div class="card">
                             <div class="card-body">
-                                <div class="stats-icon orange" style="margin-right:10px; margin-bottom: 22px;">
+                                <div class="stats-icon orange">
                                     <i class="bi bi-bell" style="margin-right:10px; margin-bottom: 22px;"></i>
                                 </div>
                                 <h6 class="text-muted font-semibold">Notifikasi</h6>
-                                <h6 class="font-extrabold mb-0">3</h6>
+                                <h6 class="font-extrabold mb-0">{{ $jumlahNotifikasiBaru }}</h6>
                             </div>
                         </div>
                     </div>
@@ -282,39 +286,39 @@
     <script src="{{asset('dist/assets/js/dashboard.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var ctx = document.getElementById('financialChart').getContext('2d');
+        document.addEventListener("DOMContentLoaded", function() {
+            var ctx = document.getElementById('financialChart').getContext('2d');
 
-        var financialChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Simpanan Sukarela', 'Pinjaman'],
-                datasets: [{
-                    data: [
-                        <?php echo $totalSukarela; ?>, // Data simpanan sukarela dari controller
-                        <?php echo $totalPinjaman; ?>  // Data pinjaman dari controller
-                    ],
-                    backgroundColor: ['#007bff', '#28a745'], // Warna untuk simpanan (biru) dan pinjaman (hijau)
-                    borderColor: ['#007bff', '#28a745'],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
+            var financialChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Simpanan Sukarela', 'Pinjaman'],
+                    datasets: [{
+                        data: [
+                            <?php echo $totalSukarela; ?>, // Data simpanan sukarela dari controller
+                            <?php echo $totalPinjaman; ?> // Data pinjaman dari controller
+                        ],
+                        backgroundColor: ['#007bff', '#28a745'], // Warna untuk simpanan (biru) dan pinjaman (hijau)
+                        borderColor: ['#007bff', '#28a745'],
+                        borderWidth: 1
+                    }]
                 },
-                plugins: {
-                    legend: {
-                        display: false // Menghilangkan legenda
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false // Menghilangkan legenda
+                        }
                     }
                 }
-            }
+            });
         });
-    });
-</script>
+    </script>
 
 
 </body>

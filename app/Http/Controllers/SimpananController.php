@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Simpanan; // Mengimpor model Simpanan
 use Carbon\Carbon; // Tambahkan di bagian atas file
 use Illuminate\Http\Request;
+use App\Models\Notifikasi;
 
 class SimpananController extends Controller
 {
@@ -12,17 +13,14 @@ class SimpananController extends Controller
     {
         $userId = auth()->id();
 
-        // Ambil semua data simpanan wajib milik user
+        // Ambil data dan hitung total simpanan wajib
         $wajib = Simpanan::where('jenis', 'wajib')
             ->where('user_id', $userId)
             ->get();
 
-        // Hitung total saldo simpanan wajib
-        $totalWajib = Simpanan::where('jenis', 'wajib')
-            ->where('user_id', $userId)
-            ->sum('jumlah');
+        $totalWajib = $wajib->sum('jumlah');
 
-        // ✅ 1. Cek apakah pengguna sudah membayar bulan ini
+        // Cek apakah sudah membayar bulan ini
         $bulanIni = Carbon::now()->format('Y-m');
         $sudahBayarBulanIni = Simpanan::where('jenis', 'wajib')
             ->where('user_id', $userId)
@@ -30,20 +28,34 @@ class SimpananController extends Controller
             ->where('status', 'completed')
             ->exists();
 
-        // ✅ 2. Buat variabel notifikasi status pembayaran
-        if ($sudahBayarBulanIni) {
-            $statusPembayaran = 'success'; // Sudah membayar
-            $statusPesan = "Anda sudah membayar simpanan wajib bulan ini. Terima kasih!";
-        } else {
-            $statusPembayaran = 'warning'; // Belum membayar
-            $statusPesan = "Anda belum melakukan pembayaran untuk bulan ini.";
+        // **🔹 Notifikasi Pembayaran**
+        $statusPembayaran = $sudahBayarBulanIni ? 'success' : 'warning';
+        $statusPesan = $sudahBayarBulanIni ? "Anda sudah membayar simpanan wajib bulan ini. Terima kasih!" : "Anda belum melakukan pembayaran untuk bulan ini.";
+
+        $notifikasiMessage = $sudahBayarBulanIni ? 'Anda telah membayar simpanan wajib bulan ini.' : 'Anda belum membayar simpanan wajib bulan ini. Harap segera melakukan pembayaran.';
+        $notifikasiIcon = $sudahBayarBulanIni ? 'bi-check-circle' : 'bi-exclamation-triangle-fill';
+        $notifikasiType = $sudahBayarBulanIni ? 'success' : 'warning';
+
+        // Pastikan notifikasi belum ada
+        $notifikasiAda = Notifikasi::where('user_id', $userId)
+            ->where('message', $notifikasiMessage)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->doesntExist();
+
+        if ($notifikasiAda) {
+            Notifikasi::create([
+                'user_id' => $userId,
+                'message' => $notifikasiMessage,
+                'type' => $notifikasiType,
+                'icon' => $notifikasiIcon,
+                'expired_at' => now()->addMonth(),
+            ]);
         }
 
-        // ✅ 3. Tambahkan Notifikasi Pengingat
+        // Pengingat
         $pengingat = "Anda akan menerima pengingat otomatis setiap awal bulan jika belum melakukan pembayaran.";
 
-        // Kirim data ke view
-        return view('user.simpanan-wajib', compact('wajib', 'totalWajib', 'statusPembayaran', 'statusPesan', 'pengingat'));
+        return view('user.simpanan-wajib', compact('wajib', 'totalWajib', 'statusPembayaran', 'statusPesan', 'pengingat', 'sudahBayarBulanIni'));
     }
 
     public function simpanansukarela()

@@ -7,97 +7,133 @@ use App\Models\Pinjaman;
 use App\Models\RiwayatPembayaran;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log; // Pastikan Log diimport
+
 use Carbon\Carbon;
+use App\Models\Notifikasi; // Tambahkan ini di atas
 
 class PinjamanController extends Controller
 {
     public function pinjaman()
     {
         $userId = Auth::id();
+        $tanggalHariIni = Carbon::today();
 
-        // Ambil semua riwayat pengajuan pinjaman
-        $riwayatPinjaman = Pinjaman::where('user_id', $userId)
+        // Ambil semua riwayat transaksi
+        $riwayatTransaksi = Pinjaman::where('user_id', $userId)
             ->select(
                 'id as kode',
                 'tanggal_pengajuan as tanggal',
                 'jumlah_pinjaman as jumlah',
-                'status',
                 DB::raw("'Pengajuan Pinjaman' as tipe"),
                 DB::raw("NULL as metode"),
-                DB::raw("NULL as bukti")
+                DB::raw("NULL as bukti"),
+                'status'
             )
-            ->orderBy('tanggal_pengajuan', 'desc')
+            ->union(
+                RiwayatPembayaran::join('pinjaman', 'riwayat_pembayaran.pinjaman_id', '=', 'pinjaman.id')
+                    ->where('riwayat_pembayaran.user_id', $userId)
+                    ->select(
+                        'riwayat_pembayaran.pinjaman_id as kode',
+                        'riwayat_pembayaran.tanggal_pembayaran as tanggal',
+                        'riwayat_pembayaran.jumlah_pembayaran as jumlah',
+                        DB::raw("'Pembayaran Pinjaman' as tipe"),
+                        'riwayat_pembayaran.metode_pembayaran as metode',
+                        'riwayat_pembayaran.bukti_pembayaran as bukti',
+                        DB::raw("'Berhasil' as status")
+                    )
+            )
+            ->orderByDesc('tanggal')
             ->get();
 
-        // Ambil semua riwayat pembayaran
-        $riwayatPembayaran = RiwayatPembayaran::join('pinjaman', 'riwayat_pembayaran.pinjaman_id', '=', 'pinjaman.id')
-            ->where('riwayat_pembayaran.user_id', $userId)
-            ->select(
-                'riwayat_pembayaran.pinjaman_id as kode',
-                'riwayat_pembayaran.tanggal_pembayaran as tanggal',
-                'riwayat_pembayaran.jumlah_pembayaran as jumlah',
-                DB::raw("'Pembayaran Pinjaman' as tipe"),
-                'riwayat_pembayaran.metode_pembayaran as metode',
-                'riwayat_pembayaran.bukti_pembayaran as bukti',
-                'pinjaman.status as status'
-            )
-            ->orderBy('riwayat_pembayaran.tanggal_pembayaran', 'desc')
-            ->get();
+        // Ambil total pinjaman pengguna yang tidak ditolak
+        $totalPinjaman = Pinjaman::where('user_id', $userId)
+            ->whereNotIn('status', ['Ditolak'])
+            ->sum('jumlah_pinjaman');
 
-        // Gabungkan semua transaksi tanpa menghapus duplikasi agar semua pembayaran muncul
-        $riwayatTransaksi = collect($riwayatPinjaman)->concat($riwayatPembayaran)->sortByDesc('tanggal')->values();
+        // Ambil pinjaman aktif
+        $pinjamanAktif = Pinjaman::where('user_id', $userId)
+            ->where('status', 'Aktif')
+            ->first();
 
-        // Ambil total pinjaman pengguna
-        $totalPinjaman = Pinjaman::where('user_id', $userId)->where('status', '!=', 'Ditolak')->sum('jumlah_pinjaman');
-
-        // Cek apakah ada pinjaman aktif
-        $pinjamanAktif = Pinjaman::where('user_id', $userId)->where('status', 'Aktif')->first();
-
-        // Cek apakah ada pinjaman sebelumnya dengan status "Dalam Proses"
-        $pinjamanSebelumnya = Pinjaman::where('user_id', auth()->id())->where('status', 'Dalam Proses')->orderBy('updated_at', 'desc')->first();
-
-        // Inisialisasi array notifikasi
-        $notifikasi = [];
-
-        // Cek apakah ada pinjaman aktif
-        if ($pinjamanAktif) {
+        // 🔹 Notifikasi Jatuh Tempo
+        if ($pinjamanAktif && $pinjamanAktif->tanggal_jatuh_tempo) {
             $tanggalJatuhTempo = Carbon::parse($pinjamanAktif->tanggal_jatuh_tempo);
             $hariMenujuJatuhTempo = Carbon::now()->diffInDays($tanggalJatuhTempo, false);
 
-            // Notifikasi untuk jatuh tempo dalam 7 hari
-            if ($hariMenujuJatuhTempo <= 7 && $hariMenujuJatuhTempo > 0) {
-                $notifikasi[] = [
-                    'type' => 'warning',
-                    'message' => 'Angsuran pinjaman jatuh tempo dalam ' . $hariMenujuJatuhTempo . ' hari.',
-                    'icon' => 'bi-calendar-check'
-                ];
-            }
+            if ($hariMenujuJatuhTempo <= 5 && $hariMenujuJatuhTempo > 0) {
+                $pesan = "Angsuran pinjaman dengan ID {$pinjamanAktif->id} jatuh tempo dalam {$hariMenujuJatuhTempo} hari.";
 
-            // Notifikasi untuk jatuh tempo dalam 3 hari
-            if ($hariMenujuJatuhTempo <= 3 && $hariMenujuJatuhTempo > 0) {
-                $notifikasi[] = [
+                Notifikasi::updateOrCreate([
+                    'user_id' => $userId,
+                    'message' => $pesan
+                ], [
                     'type' => 'danger',
-                    'message' => 'Angsuran pinjaman jatuh tempo dalam ' . $hariMenujuJatuhTempo . ' hari.',
-                    'icon' => 'bi-calendar-x'
-                ];
+                    'icon' => 'bi-calendar-x',
+                    'expired_at' => $tanggalHariIni->addDay()
+                ]);
             }
         }
 
-        // Cek jika ada perubahan status pinjaman dari "Pengajuan" ke "Aktif"
-        if ($pinjamanAktif && $pinjamanAktif->status == 'Aktif' && $pinjamanAktif->status_sebelumnya == 'Dalam Proses') {
-            $notifikasi = [ // Reset notifikasi sebelumnya dan tampilkan hanya ini
-                [
+        // 🔹 Notifikasi Pinjaman Aktif (Disetujui)
+        if ($pinjamanAktif) {
+            $statusSebelumnya = Pinjaman::where('id', $pinjamanAktif->id)->value('status_sebelumnya');
+
+            if ($statusSebelumnya === 'Dalam Proses' && $pinjamanAktif->status === 'Aktif') {
+                Notifikasi::updateOrCreate([
+                    'user_id' => $userId,
+                    'message' => "Pengajuan pinjaman dengan ID {$pinjamanAktif->id} telah disetujui. Anda sekarang memiliki pinjaman aktif."
+                ], [
                     'type' => 'success',
-                    'message' => 'Pengajuan pinjaman telah disetujui. Anda sekarang memiliki pinjaman aktif.',
-                    'icon' => 'bi-check-circle'
-                ]
-            ];
+                    'icon' => 'bi-check-circle',
+                    'expired_at' => $tanggalHariIni->addDay()
+                ]);
+            }
         }
 
-       
+        // 🔹 Notifikasi Pinjaman Ditolak
+        $pinjamanDitolak = Pinjaman::where('user_id', $userId)
+            ->where('status', 'Ditolak')
+            ->latest()
+            ->first();
 
-        // Return view dengan notifikasi terbaru
+        if ($pinjamanDitolak) {
+            Notifikasi::updateOrCreate([
+                'user_id' => $userId,
+                'message' => "Pengajuan pinjaman dengan ID {$pinjamanDitolak->id} telah ditolak."
+            ], [
+                'type' => 'danger',
+                'icon' => 'bi-x-circle',
+                'expired_at' => $tanggalHariIni->addDay()
+            ]);
+        }
+
+        // 🔹 Notifikasi Pinjaman Lunas
+        $pinjamanLunas = Pinjaman::where('user_id', $userId)
+            ->where('status', 'Lunas')
+            ->latest()
+            ->first();
+
+        if ($pinjamanLunas) {
+            Notifikasi::updateOrCreate([
+                'user_id' => $userId,
+                'message' => "Pinjaman dengan ID {$pinjamanLunas->id} telah lunas. Terima kasih atas pembayaran Anda."
+            ], [
+                'type' => 'success',
+                'icon' => 'bi-star',
+                'expired_at' => $tanggalHariIni->addDay()
+            ]);
+        }
+
+        // Ambil semua notifikasi yang dibuat hari ini
+        $notifikasi = Notifikasi::where('user_id', $userId)
+            ->whereDate('created_at', Carbon::today())
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $pinjaman = Pinjaman::find(55);
+        $pinjaman->status = 'Aktif';
+        $pinjaman->save();
+
         return view('user.pinjaman', compact('riwayatTransaksi', 'totalPinjaman', 'pinjamanAktif', 'notifikasi'));
     }
 
@@ -110,15 +146,16 @@ class PinjamanController extends Controller
 
         $userId = Auth::id();
 
-        // Simpan pengajuan pinjaman
+        // Simpan pengajuan pinjaman dengan tanggal tanpa jam
         Pinjaman::create([
             'user_id' => $userId,
             'jumlah_pinjaman' => $request->input('loan-amount'),
             'sisa_angsuran' => $request->input('loan-amount'),
             'tujuan' => $request->input('loan-purpose'),
             'status' => 'Dalam Proses',
-            'tanggal_pengajuan' => now(),
-            'tanggal_jatuh_tempo' => now()->addMonths(3),
+            // Format tanggal untuk menghilangkan jam
+            'tanggal_pengajuan' => Carbon::now()->format('Y-m-d'), // Hanya tanggal
+            'tanggal_jatuh_tempo' => Carbon::now()->addMonths(3)->format('Y-m-d'), // Hanya tanggal
         ]);
 
         return redirect()->back()->with('success', 'Pengajuan pinjaman berhasil dikirim.');
@@ -176,7 +213,8 @@ class PinjamanController extends Controller
             'jumlah_pembayaran' => $jumlahPembayaran,
             'metode_pembayaran' => $request->input('payment-method'),
             'bukti_pembayaran' => $buktiPath, // Simpan path relatif
-            'tanggal_pembayaran' => now(),
+            // Format tanggal untuk menghilangkan jam
+            'tanggal_pembayaran' => Carbon::now()->format('Y-m-d'), // Hanya tanggal
         ]);
 
         // **Hitung sisa angsuran berdasarkan total pembayaran**

@@ -93,11 +93,16 @@
                             </a>
                         </li>
 
-                        <li
-                            class="sidebar-item  ">
-                            <a href="{{route('notifikasi')}}" class='sidebar-link'>
-                                <i class="bi bi-chat-dots-fill"></i>
+                        <li class="nav-item sidebar-item position-relative">
+                            <a href="{{ route('notifikasi') }}" class="nav-link sidebar-link">
+                                <i class="bi bi-bell"></i>
                                 <span>Notifikasi</span>
+                                @if ($jumlahNotifikasiBaru > 0)
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{ $jumlahNotifikasiBaru }}
+                                    <span class="visually-hidden">notifikasi baru</span>
+                                </span>
+                                @endif
                             </a>
                         </li>
 
@@ -165,7 +170,7 @@
                             </h2>
                             <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#helpAccordion">
                                 <div class="accordion-body">
-                                    Ya, ada denda keterlambatan sebesar 1% dari jumlah yang harus dibayarkan jika melewati batas waktu pembayaran.
+                                    Tidak ada, Tidak ada denda kami adalah koperasi PALIINGGGG BAIKKK SEDUNIA 
                                 </div>
                             </div>
                         </div>

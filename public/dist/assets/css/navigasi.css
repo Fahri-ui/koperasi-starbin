@@ -1,0 +1,9 @@
+.badge {
+    font-weight: bold;
+    border-radius: 50%;
+    min-width: 20px;
+    min-height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
