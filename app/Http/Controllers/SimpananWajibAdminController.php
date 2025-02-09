@@ -8,6 +8,6 @@ class SimpananWajibAdminController extends Controller
 {
     public function simpananwajibadmin()
     {
-        return view('admin.simpanan-wajib');
+        return view('admin.simpanan-wajib-admin');
     }
 }

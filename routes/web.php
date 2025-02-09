@@ -20,8 +20,9 @@ use App\Http\Controllers\ProfilAdminController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\SimpananController;
 use App\Http\Controllers\SimpananPokokAdminController;
-use App\Http\Controllers\SimpananSukareplaAdminController;
+use App\Http\Controllers\SimpananSukarelaAdminController;
 use App\Http\Controllers\SimpananWajibAdminController;
+use App\Http\Controllers\StatistikKeuanganController;
 use App\Http\Controllers\UserControlController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -53,29 +54,27 @@ Route::middleware(['auth'])->group(function () {
     // Redirect user ke halaman yang sesuai berdasarkan role
     Route::get('/home', function () {
         if (auth()->user()->role == 'admin') {
-            return redirect()->route('admin');
+            return redirect()->route('min');
         }
         return redirect()->route('user');
     });
 
     // Grup Route untuk Admin (userAkses:admin)
     Route::middleware(['userAkses:admin'])->group(function () {
-        Route::get('/admin', [DashboardAdminController::class, 'dashboard'])->name('dashboard');
-        Route::get('/Angsuran', [AngsuranAdminController::class, 'angsuran'])->name('angsuran');
-        Route::get('/Backup', [BackupController::class, 'backup'])->name('backup');
+        Route::get('/adminDashboard', [DashboardAdminController::class, 'dashboard'])->name('min');
         Route::get('/Data-Anggota', [DataAnggotaController::class, 'dataanggota'])->name('dataanggota');
-        Route::get('/Data-Pengajuan', [DataPengajuanController::class, 'pangajuan'])->name('pangajuan');
-        Route::get('/Laporan', [LaporanController::class, 'laporan'])->name('laporan');
+        Route::get('/Simpanan-Pokok', [SimpananPokokAdminController::class, 'simpananpokokadmin'])->name('simpananpokokadmin');
+        Route::get('/Simpanan-Wajib', [SimpananWajibAdminController::class, 'simpananwajibadmin'])->name('simpananwajibadmin');
+        Route::get('/Simpanan-Sukarela', [SimpananSukarelaAdminController::class, 'simpanansukarelaadmin'])->name('simpanansukarelaadmin');
+        Route::get('/Pinjaman', [PinjmanAdminController::class, 'pinjamanadmin'])->name('pinjamanadmin');
+        Route::get('/Angsuran', [AngsuranAdminController::class, 'angsuran'])->name('angsuran');
+        Route::get('/Data-Pengajuan', [DataPengajuanController::class, 'pengajuan'])->name('pangajuan');
+        Route::get('/Statistik-Keuangan', [StatistikKeuanganController::class, 'statistikkeuangan'])->name('statistikkeuangan');
+        Route::get('/Profil', [ProfilAdminController::class, 'profiladmin'])->name('profiladmin');
+        Route::get('/Backup', [BackupController::class, 'backup'])->name('backup');
         Route::get('/Log-Aktivitas', [LogAktivitasController::class, 'logaktivitas'])->name('logaktivitas');
         Route::get('/Notifikasi', [NotifikasiAdminController::class, 'notifikasiadmin'])->name('notifikasiadmin');
-        Route::get('/Pinjaman', [PinjmanAdminController::class, 'pinjamanadmin'])->name('pinjamanadmin');
-        Route::get('/Profil', [ProfilAdminController::class, 'profiladmin'])->name('profiladmin');
-        Route::get('/Simpanan-Pokok', [SimpananPokokAdminController::class, 'simpananpokokadmin'])->name('simpsimpananpokokadminananpokok');
-        Route::get('/Simpanan-Sukarela', [SimpananSukareplaAdminController::class, 'simpanansukarelaadmin'])->name('simpanansukarelaadmin');
-        Route::get('/Simpanan-Wajib', [SimpananWajibAdminController::class, 'simpananwajibadmin'])->name('simpananwajibadmin');
-        Route::get('/Statistik-Keuangan', [DashboardAdminController::class, 'dashboard'])->name('dashboard');
-        Route::get('/admin', [DashboardAdminController::class, 'dashboard'])->name('dashboard');
-        // Tambahkan route admin lainnya di sini...
+        Route::get('/Laporan', [LaporanController::class, 'laporan'])->name('laporan');
     });
 
     // Grup Route untuk User (userAkses:user)

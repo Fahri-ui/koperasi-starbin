@@ -10,8 +10,6 @@ use App\Models\User; // Model untuk tabel users di database
 class AuthController extends Controller
 {
 
-
-
     // Menampilkan halaman login
     function index()
     {
@@ -33,7 +31,7 @@ class AuthController extends Controller
         // Auth::attempt otomatis mencocokkan password yang di-hash
         if (Auth::attempt($request->only('email', 'password'))) {
             if (Auth::user()->role === 'admin') {
-                return redirect()->route('admin')->with('success', 'Halo Admin, Anda berhasil login');
+                return redirect()->route('min')->with('success', 'Halo Admin, Anda berhasil login');
             } elseif (Auth::user()->role === 'user') {
                 return redirect()->route('user')->with('success', 'Berhasil login');
             }
