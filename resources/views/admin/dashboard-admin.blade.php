@@ -11,9 +11,26 @@
     <link rel="shortcut icon" href="{{asset('admin-page/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/x-icon">
     <link rel="shortcut icon" href="{{asset('admin-page/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{asset('admin-page/assets/css/dashboard.css')}}">
+    <!-- Bootstrap Icons -->
 
+    <link rel="stylesheet" href="{{asset('admin-page/assets/css/dashboard.css')}}">
 </head>
+
+<style>
+    .card-body.text-center {
+        margin-top: -10px !important;
+    }
+
+    .card-body.text-center i {
+        font-size: 3rem;
+        /* Sesuaikan ukuran ikon */
+        line-height: 1;
+        margin-bottom: 10px;
+        /* Pastikan jarak bawah ikon konsisten */
+    }
+</style>
+
+</style>
 
 <body>
     <div id="app">
@@ -60,11 +77,18 @@
                                 <span>Dashboard</span>
                             </a>
                         </li>
+                        <li
+                            class="sidebar-item">
+                            <a href="{{route('profiladmin')}}" class='sidebar-link'>
+                                <i class="bi bi-person-badge-fill"></i>
+                                <span>Profil</span>
+                            </a>
+                        </li>
 
                         <li
                             class="sidebar-item ">
                             <a href="{{route('dataanggota')}}" class='sidebar-link'>
-                                <i class="bi bi-person-badge-fill"></i>
+                                <i class="bi bi-person-lines-fill"></i>
                                 <span>Data Anggota</span>
                             </a>
                         </li>
@@ -117,31 +141,12 @@
                                 <span>Statistik Keuangan</span>
                             </a>
                         </li>
-
-                        <li
-                            class="sidebar-item  has-sub">
-                            <a href="#" class='sidebar-link'>
-                                <i class="bi bi-gear-fill"></i>
-                                <span>Pengaturan</span>
-                            </a>
-                            <ul class="submenu ">
-                                <li class="submenu-item ">
-                                    <a href="{{route('profiladmin')}}">Profil Admin</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="{{route('backup')}}">Backup</a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li
-                            class="sidebar-item  ">
-                            <a href="{{route('logaktivitas')}}" class='sidebar-link'>
-                                <i class="bi bi-clock-history"></i>
-                                <span>Log Aktivitas</span>
+                        <li class="sidebar-item">
+                            <a href="{{ route('admin.sharemassage') }}" class="sidebar-link">
+                                <i class="bi bi-send"></i>
+                                <span>Kelola Pesan</span>
                             </a>
                         </li>
-
                         <li
                             class="sidebar-item  ">
                             <a href="{{route('notifikasiadmin')}}" class='sidebar-link'>
@@ -179,71 +184,183 @@
                 </a>
             </header>
 
+            @if (Session::has('error'))
+            <div class="alert alert-danger" style="background-color: salmon; color:aliceblue; border-radius:20px; margin-bottom:20px;">
+                {{ Session::get('error') }}
+            </div>
+            @endif
+
+            <!-- Jika berhasil -->
+            @if (Session::has('success'))
+            <div class="alert alert-success" style="background-color: lightgreen; color:aliceblue; border-radius:20px;">
+                {{ Session::get('success') }}
+            </div>
+            @endif
+
             <div class="dashboard-container">
                 <!-- Sambutan -->
-                <div class="welcome-banner">
-                    <h1>Selamat Datang, Admin!</h1>
-                    <p>Anda dapat mengelola data anggota, simpanan, pinjaman, angsuran, dan pengajuan di dashboard ini.</p>
+                <div class="welcome-banner text-center my-4">
+                    <h3>Selamat Datang, Admin!</h3>
                 </div>
 
-                <div class="dashboard-cards">
-                    <div class="row">
-                        <div class="col-md-4 mb-4">
-                            <a href="data-anggota.html" class="sidebar-link">
-                                <div class="card card-custom">
-                                    <i class="bi bi-person"></i>
-                                    <h2>10</h2>
+                <div class="row">
+                    <!-- Data Anggota -->
+                    <div class="col-md-4 mb-4">
+                        <a href="{{ route('dataanggota') }}" class="text-decoration-none">
+                            <div class="card card-custom shadow">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-people display-4 text-primary" style="margin-top: 0;"></i>
+                                    <h2>{{ $jumlahAnggota }}</h2>
                                     <p>Data Anggota</p>
                                 </div>
-                            </a>
-                        </div>
-                        <div class="col-md-4 mb-4">
-                            <a href="simpanan-wajib.html" class="sidebar-link">
-                                <div class="card card-custom">
-                                    <i class="bi bi-wallet"></i>
-                                    <h2>Rp 16,500,000</h2>
-                                    <p>Data Simpanan</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Data Simpanan Wajib -->
+                    <div class="col-md-4 mb-4">
+                        <a href="{{ route('simpananwajibadmin') }}" class="text-decoration-none">
+                            <div class="card card-custom shadow">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-wallet-fill display-4 text-success"></i>
+                                    <h2>{{ $jumlahSimpananWajib }}</h2>
+                                    <p>Data Simpanan Wajib</p>
                                 </div>
-                            </a>
-                        </div>
-                        <div class="col-md-4 mb-4">
-                            <a href="pinjaman.html" class="sidebar-link">
-                                <div class="card card-custom">
-                                    <i class="bi bi-cash-stack"></i>
-                                    <h2>Rp 25,000,000</h2>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Data Simpanan Sukarela -->
+                    <div class="col-md-4 mb-4">
+                        <a href="{{ route('simpanansukarelaadmin') }}" class="text-decoration-none">
+                            <div class="card card-custom shadow">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-piggy-bank-fill display-4 text-warning"></i>
+                                    <h2>{{ $jumlahSimpananSukarela }}</h2>
+                                    <p>Data Simpanan Sukarela</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Data Pinjaman -->
+                    <div class="col-md-4 mb-4">
+                        <a href="{{ route('pinjamanadmin') }}" class="text-decoration-none">
+                            <div class="card card-custom shadow">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-cash-stack display-4 text-danger"></i>
+                                    <h2>{{ $jumlahPinjaman }}</h2>
                                     <p>Data Pinjaman</p>
                                 </div>
-                            </a>
-                        </div>
-                        <div class="col-md-4 mb-4">
-                            <a href="angsuran.html" class="sidebar-link">
-                                <div class="card card-custom">
-                                    <i class="bi bi-coin"></i>
-                                    <h2>Rp 500.000.000</h2>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Data Angsuran -->
+                    <div class="col-md-4 mb-4">
+                        <a href="{{ route('angsuran') }}" class="text-decoration-none">
+                            <div class="card card-custom shadow">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-coin display-4 text-info"></i>
+                                    <h2>{{ $jumlahAngsuran }}</h2>
                                     <p>Data Angsuran</p>
                                 </div>
-                            </a>
-                        </div>
-                        <div class="col-md-4 mb-4">
-                            <a href="data-pengajuan.html" class="sidebar-link">
-                                <div class="card card-custom">
-                                    <i class="bi bi-file-earmark-medical"></i>
-                                    <h2>120</h2>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Data Pengajuan -->
+                    <div class="col-md-4 mb-4">
+                        <a href="{{ route('pangajuan') }}" class="text-decoration-none">
+                            <div class="card card-custom shadow">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-file-earmark-text display-4 text-secondary"></i>
+                                    <h2>{{ $jumlahPengajuan }}</h2>
                                     <p>Data Pengajuan</p>
                                 </div>
-                            </a>
-                        </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Total Simpanan Wajib -->
+                    <div class="col-md-4 mb-4">
+                        <a href="{{ route('simpananwajibadmin') }}" class="text-decoration-none">
+                            <div class="card card-custom shadow">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-bank display-4 text-success"></i>
+                                    <h2>Rp {{ number_format($totalSimpananWajib, 0, ',', '.') }}</h2>
+                                    <p>Total Simpanan Wajib</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Total Simpanan Sukarela -->
+                    <div class="col-md-4 mb-4">
+                        <a href="{{ route('simpanansukarelaadmin') }}" class="text-decoration-none">
+                            <div class="card card-custom shadow">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-safe-fill display-4 text-warning"></i>
+                                    <h2>Rp {{ number_format($totalSimpananSukarela, 0, ',', '.') }}</h2>
+                                    <p>Total Simpanan Sukarela</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Total Pinjaman -->
+                    <div class="col-md-4 mb-4">
+                        <a href="{{ route('pinjamanadmin') }}" class="text-decoration-none">
+                            <div class="card card-custom shadow">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-currency-dollar display-4 text-danger"></i>
+                                    <h2>Rp {{ number_format($totalPinjaman, 0, ',', '.') }}</h2>
+                                    <p>Total Pinjaman</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Total Angsuran -->
+                    <div class="col-md-4 mb-4">
+                        <a href="{{ route('angsuran') }}" class="text-decoration-none">
+                            <div class="card card-custom shadow">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-credit-card display-4 text-info"></i>
+                                    <h2>Rp {{ number_format($totalAngsuran, 0, ',', '.') }}</h2>
+                                    <p>Total Angsuran</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Total Pengajuan -->
+                    <div class="col-md-4 mb-4">
+                        <a href="{{route('pangajuan')}}" class="text-decoration-none">
+                            <div class="card card-custom shadow">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-file-earmark-check display-4 text-secondary"></i>
+                                    <h2>Rp {{ number_format($totalPengajuan, 0, ',', '.') }}</h2>
+                                    <p>Total Pengajuan</p>
+                                </div>
+                            </div>
+                        </a>
                     </div>
                 </div>
 
                 <footer>
-                    <div class="footer clearfix mb-0 text-muted" style="margin-top: 365px;">
+                    <div class="footer clearfix mb-0 text-muted">
                         <div class="float-start">
                             <p>2025 &copy; STARBIN</p>
                         </div>
                         <div class="float-end" style="margin-right: 30px;">
-                            <p>Dibuat dengan <span class="text-danger"><i class="bi bi-heart"></i></span> oleh <a
-                                    href="https://saugi.me">Bagas & Fahri</a></p>
+                            <p>Dibuat dengan
+                                <span class="text-danger"><i class="bi bi-heart"></i></span>
+                                oleh
+                                <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
+                                &
+                                <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
+                            </p>
                         </div>
                     </div>
                 </footer>

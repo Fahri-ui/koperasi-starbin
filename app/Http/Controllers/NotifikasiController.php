@@ -24,6 +24,11 @@ class NotifikasiController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
+        $notifikasi = Notifikasi::where('user_id', 0) // Global Message
+            ->orWhere('user_id', $userId) // Personal Message
+            ->orderBy('created_at', 'desc')
+            ->get();
+
         // Kelompokkan berdasarkan bulan dan tahun
         $notifikasiPerBulan = $notifikasi->groupBy(function ($item) {
             return Carbon::parse($item->created_at)->format('Y-m');

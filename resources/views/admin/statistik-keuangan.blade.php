@@ -60,11 +60,18 @@
                                 <span>Dashboard</span>
                             </a>
                         </li>
+                        <li
+                            class="sidebar-item">
+                            <a href="{{route('profiladmin')}}" class='sidebar-link'>
+                                <i class="bi bi-person-badge-fill"></i>
+                                <span>Profil</span>
+                            </a>
+                        </li>
 
                         <li
                             class="sidebar-item ">
                             <a href="{{route('dataanggota')}}" class='sidebar-link'>
-                                <i class="bi bi-person-badge-fill"></i>
+                                <i class="bi bi-person-lines-fill"></i>
                                 <span>Data Anggota</span>
                             </a>
                         </li>
@@ -111,34 +118,17 @@
                         </li>
 
                         <li
-                            class="sidebar-item  active">
+                            class="sidebar-item active ">
                             <a href="{{route('statistikkeuangan')}}" class='sidebar-link'>
                                 <i class="bi bi-bar-chart-line-fill"></i>
                                 <span>Statistik Keuangan</span>
                             </a>
                         </li>
 
-                        <li
-                            class="sidebar-item  has-sub">
-                            <a href="#" class='sidebar-link'>
-                                <i class="bi bi-gear-fill"></i>
-                                <span>Pengaturan</span>
-                            </a>
-                            <ul class="submenu ">
-                                <li class="submenu-item ">
-                                    <a href="{{route('profiladmin')}}">Profil Admin</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="{{route('backup')}}">Backup</a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li
-                            class="sidebar-item  ">
-                            <a href="log-aktivitas.html" class='sidebar-link'>
-                                <i class="{{route('logaktivitas')}}"></i>
-                                <span>Log Aktivitas</span>
+                        <li class="sidebar-item">
+                            <a href="{{ route('notifikasiadmin') }}" class="sidebar-link">
+                                <i class="bi bi-send"></i>
+                                <span>Kelola Pesan</span>
                             </a>
                         </li>
 
@@ -181,39 +171,31 @@
 
             <div class="container mt-4">
                 <h3>Statistik Keuangan</h3>
-                <p>Data keuangan koperasi untuk memantau simpanan, pinjaman, dan saldo kas secara ringkas dan terperinci.</p>
+                <p>Data keuangan koperasi untuk memantau simpanan, pinjaman, dan angsuran secara ringkas dan terperinci.</p>
 
                 <!-- Ringkasan Statistik -->
                 <div class="row mb-4">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="card text-center">
                             <div class="card-body">
                                 <h5 class="card-title">Total Simpanan</h5>
-                                <p class="card-text">Rp 200.000.000</p>
+                                <p class="card-text">Rp {{ number_format($totalSimpanan, 0, ',', '.') }}</p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="card text-center">
                             <div class="card-body">
                                 <h5 class="card-title">Total Pinjaman</h5>
-                                <p class="card-text">Rp 150.000.000</p>
+                                <p class="card-text">Rp {{ number_format($totalPinjaman, 0, ',', '.') }}</p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="card text-center">
                             <div class="card-body">
                                 <h5 class="card-title">Total Angsuran</h5>
-                                <p class="card-text">Rp 100.000.000</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card text-center">
-                            <div class="card-body">
-                                <h5 class="card-title">Saldo Kas</h5>
-                                <p class="card-text">Rp 50.000.000</p>
+                                <p class="card-text">Rp {{ number_format($totalAngsuran, 0, ',', '.') }}</p>
                             </div>
                         </div>
                     </div>
@@ -229,15 +211,19 @@
                     </div>
                 </div>
             </div>
-
             <footer>
                 <div class="footer clearfix mb-0 text-muted">
                     <div class="float-start">
                         <p>2025 &copy; STARBIN</p>
                     </div>
                     <div class="float-end" style="margin-right: 30px;">
-                        <p>Dibuat dengan <span class="text-danger"><i class="bi bi-heart"></i></span> oleh <a
-                                href="https://saugi.me">Bagas & Fahri</a></p>
+                        <p>Dibuat dengan 
+                            <span class="text-danger"><i class="bi bi-heart"></i></span>
+                            oleh
+                            <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
+                            &
+                            <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
+                        </p>
                     </div>
                 </div>
             </footer>
@@ -248,9 +234,67 @@
     <!-- Tambahkan library Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- Hubungkan file JavaScript -->
-    <script src="{{asset('admin-page/assets/js/statistik-keuangan.js')}}"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Data dari Laravel (Pastikan dikonversi ke angka)
+            const totalSimpanan = parseFloat("{{ $totalSimpanan }}") || 0;
+            const totalPinjaman = parseFloat("{{ $totalPinjaman }}") || 0;
+            const totalAngsuran = parseFloat("{{ $totalAngsuran }}") || 0;
+
+            // Pastikan elemen canvas tersedia
+            if (document.getElementById('barChart')) {
+                const barCtx = document.getElementById('barChart').getContext('2d');
+                new Chart(barCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Simpanan', 'Pinjaman', 'Angsuran'],
+                        datasets: [{
+                            label: 'Jumlah (Rp)',
+                            data: [totalSimpanan, totalPinjaman, totalAngsuran],
+                            backgroundColor: ['#4CAF50', '#FF9800', '#2196F3'],
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+
+            if (document.getElementById('pieChart')) {
+                const pieCtx = document.getElementById('pieChart').getContext('2d');
+                new Chart(pieCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Simpanan', 'Pinjaman', 'Angsuran'],
+                        datasets: [{
+                            data: [totalSimpanan, totalPinjaman, totalAngsuran],
+                            backgroundColor: ['#4CAF50', '#FF9800', '#2196F3'],
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Link Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

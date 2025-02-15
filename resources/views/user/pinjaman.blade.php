@@ -233,44 +233,44 @@
                     <div class="card">
                         <div class="card-body">
                             <h5>Riwayat Transaksi Pinjaman</h5>
-                            <div style="height: 400px; overflow-y: auto;">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Kode Pinjaman</th>
-                                            <th>Tanggal</th>
-                                            <th>Jumlah</th>
-                                            <th>Tipe</th>
-                                            <th>Metode</th>
-                                            <th>Bukti</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @forelse ($riwayatTransaksi as $transaksi)
-                                        <tr>
-                                            <td>{{ $transaksi['kode'] }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($transaksi->tanggal)->format('d F Y') }}</td>
-                                            <td>Rp {{ number_format($transaksi['jumlah'], 0, ',', '.') }}</td>
-                                            <td>{{ $transaksi['tipe'] }}</td>
-                                            <td>{{ $transaksi['metode'] ?? '-' }}</td>
-                                            <td>
-                                                @if(!empty($transaksi->bukti))
-                                                <a href="{{ route('bukti.pembayaran', ['bukti' => basename($transaksi->bukti)]) }}">Lihat Bukti</a>
-                                                @else
-                                                -
-                                                @endif
-                                            </td>
-                                            <td>{{ ucfirst($transaksi['status']) ?? '-' }}</td>
-                                        </tr>
-                                        @empty
-                                        <tr>
-                                            <td colspan="7" class="text-center">Tidak ada transaksi.</td>
-                                        </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
-                            </div>
+
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Kode Pinjaman</th>
+                                        <th>Tanggal</th>
+                                        <th>Jumlah</th>
+                                        <th>Tipe</th>
+                                        <th>Metode</th>
+                                        <th>Bukti</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($riwayatTransaksi as $transaksi)
+                                    <tr>
+                                        <td>{{ $transaksi['kode'] }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($transaksi->tanggal)->format('d F Y') }}</td>
+                                        <td>Rp {{ number_format($transaksi['jumlah'], 0, ',', '.') }}</td>
+                                        <td>{{ $transaksi['tipe'] }}</td>
+                                        <td>{{ $transaksi['metode'] ?? '-' }}</td>
+                                        <td>
+                                            @if(!empty($transaksi->bukti))
+                                            <a href="{{ route('bukti.pembayaran', ['bukti' => basename($transaksi->bukti)]) }}">Lihat Bukti</a>
+                                            @else
+                                            -
+                                            @endif
+                                        </td>
+                                        <td>{{ ucfirst($transaksi['status']) ?? '-' }}</td>
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan="7" class="text-center">Tidak ada transaksi.</td>
+                                    </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+
                         </div>
                     </div>
                 </section>
@@ -318,9 +318,14 @@
                     <div class="float-start">
                         <p>2025 &copy; SATRBIN</p>
                     </div>
-                    <div class="float-end">
-                        <p>Dibuat dengan <span class="text-danger"><i class="bi bi-heart"></i></span> oleh <a
-                                href="https://saugi.me">Bagas & Fahri</a></p>
+                    <div class="float-end" style="margin-right: 30px;">
+                        <p>Dibuat dengan
+                            <span class="text-danger"><i class="bi bi-heart"></i></span>
+                            oleh
+                            <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
+                            &
+                            <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
+                        </p>
                     </div>
                 </div>
             </footer>

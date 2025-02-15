@@ -193,7 +193,7 @@
                             </div>
                             <div class="ms-3">
                                 <h6 class="fw-bold text-{{ $item->type }}">
-                                    {{ ucfirst($item->type) }}
+                                    {{ $item->user_id == 0 ? 'Pesan Umum' : 'Pesan Untuk Anda' }}
                                 </h6>
                                 <p class="mb-1">
                                     {{ $item->message }}
@@ -221,9 +221,14 @@
                     <div class="float-start">
                         <p>2025 &copy; SATRBIN</p>
                     </div>
-                    <div class="float-end">
-                        <p>Dibuat dengan <span class="text-danger"><i class="bi bi-heart"></i></span> oleh <a
-                                href="https://saugi.me">Bagas & Fahri</a></p>
+                    <div class="float-end" style="margin-right: 30px;">
+                        <p>Dibuat dengan
+                            <span class="text-danger"><i class="bi bi-heart"></i></span>
+                            oleh
+                            <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
+                            &
+                            <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
+                        </p>
                     </div>
                 </div>
             </footer>

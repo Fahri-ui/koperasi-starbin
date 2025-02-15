@@ -134,13 +134,6 @@
                             </ul>
                         </li>
 
-                        <li
-                            class="sidebar-item  ">
-                            <a href="{{route('logaktivitas')}}" class='sidebar-link'>
-                                <i class="bi bi-clock-history"></i>
-                                <span>Log Aktivitas</span>
-                            </a>
-                        </li>
 
                         <li
                             class="sidebar-item  ">
@@ -251,8 +244,13 @@
                         <p>2025 &copy; STARBIN</p>
                     </div>
                     <div class="float-end" style="margin-right: 30px;">
-                        <p>Dibuat dengan <span class="text-danger"><i class="bi bi-heart"></i></span> oleh <a
-                                href="https://saugi.me">Bagas & Fahri</a></p>
+                        <p>Dibuat dengan 
+                            <span class="text-danger"><i class="bi bi-heart"></i></span>
+                            oleh
+                            <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
+                            &
+                            <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
+                        </p>
                     </div>
                 </div>
             </footer>

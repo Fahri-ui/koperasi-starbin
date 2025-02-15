@@ -35,6 +35,7 @@ class Pinjaman extends Model
         'jumlah_pinjaman',
         'status',
         'status_sebelumnya', // ✅ Tambahkan ini agar bisa diisi
+        'sisa_angsuran',
         'tanggal_pengajuan',
         'tanggal_jatuh_tempo',
     ];

@@ -18,6 +18,7 @@ use App\Http\Controllers\PinjamanController;
 use App\Http\Controllers\PinjmanAdminController;
 use App\Http\Controllers\ProfilAdminController;
 use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\ShareMassageController;
 use App\Http\Controllers\SimpananController;
 use App\Http\Controllers\SimpananPokokAdminController;
 use App\Http\Controllers\SimpananSukarelaAdminController;
@@ -62,17 +63,25 @@ Route::middleware(['auth'])->group(function () {
     // Grup Route untuk Admin (userAkses:admin)
     Route::middleware(['userAkses:admin'])->group(function () {
         Route::get('/adminDashboard', [DashboardAdminController::class, 'dashboard'])->name('min');
+        Route::get('/Profil', [ProfilAdminController::class, 'profiladmin'])->name('profiladmin');
+        Route::put('/profil/edit', [ProfilAdminController::class, 'update'])->name('profil.update');
         Route::get('/Data-Anggota', [DataAnggotaController::class, 'dataanggota'])->name('dataanggota');
+        Route::delete('/Data-Anggota/{id}', [DataAnggotaController::class, 'destroy'])->name('users.destroy');
+        Route::post('/Data-Anggota/update-role', [DataAnggotaController::class, 'updateRole'])->name('users.updateRole');
         Route::get('/Simpanan-Pokok', [SimpananPokokAdminController::class, 'simpananpokokadmin'])->name('simpananpokokadmin');
         Route::get('/Simpanan-Wajib', [SimpananWajibAdminController::class, 'simpananwajibadmin'])->name('simpananwajibadmin');
         Route::get('/Simpanan-Sukarela', [SimpananSukarelaAdminController::class, 'simpanansukarelaadmin'])->name('simpanansukarelaadmin');
         Route::get('/Pinjaman', [PinjmanAdminController::class, 'pinjamanadmin'])->name('pinjamanadmin');
         Route::get('/Angsuran', [AngsuranAdminController::class, 'angsuran'])->name('angsuran');
-        Route::get('/Data-Pengajuan', [DataPengajuanController::class, 'pengajuan'])->name('pangajuan');
+        Route::get('/admin/bukti/{bukti}', [BuktiPembayaranController::class, 'showAdmin'])->name('admin.bukti.pembayaran');
+        Route::get('/Data-Pengajuan', [DataPengajuanController::class, 'pangajuan'])->name('pangajuan');
+        Route::post('/data-pengajuan/{id}/update', [DataPengajuanController::class, 'update']);
         Route::get('/Statistik-Keuangan', [StatistikKeuanganController::class, 'statistikkeuangan'])->name('statistikkeuangan');
-        Route::get('/Profil', [ProfilAdminController::class, 'profiladmin'])->name('profiladmin');
         Route::get('/Backup', [BackupController::class, 'backup'])->name('backup');
         Route::get('/Log-Aktivitas', [LogAktivitasController::class, 'logaktivitas'])->name('logaktivitas');
+        Route::get('/kelola-pesan', [ShareMassageController::class, 'sharemassage'])->name('admin.sharemassage');
+        Route::post('/kelola-pesan', [ShareMassageController::class, 'store'])->name('admin.sharemassage.store');
+        Route::delete('/kelola-pesan/{id}', [ShareMassageController::class, 'destroy'])->name('admin.sharemassage.destroy');
         Route::get('/Notifikasi', [NotifikasiAdminController::class, 'notifikasiadmin'])->name('notifikasiadmin');
         Route::get('/Laporan', [LaporanController::class, 'laporan'])->name('laporan');
     });

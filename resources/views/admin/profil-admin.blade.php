@@ -59,11 +59,18 @@
                                 <span>Dashboard</span>
                             </a>
                         </li>
+                        <li
+                            class="sidebar-item active">
+                            <a href="{{route('profiladmin')}}" class='sidebar-link'>
+                                <i class="bi bi-person-badge-fill"></i>
+                                <span>Profil</span>
+                            </a>
+                        </li>
 
                         <li
                             class="sidebar-item ">
                             <a href="{{route('dataanggota')}}" class='sidebar-link'>
-                                <i class="bi bi-person-badge-fill"></i>
+                                <i class="bi bi-person-lines-fill"></i>
                                 <span>Data Anggota</span>
                             </a>
                         </li>
@@ -118,29 +125,6 @@
                         </li>
 
                         <li
-                            class="sidebar-item  has-sub active">
-                            <a href="#" class='sidebar-link'>
-                                <i class="bi bi-gear-fill"></i>
-                                <span>Pengaturan</span>
-                            </a>
-                            <ul class="submenu ">
-                                <li class="submenu-item ">
-                                    <a href="{{route('profiladmin')}}">Profil Admin</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="{{route('backup')}}">Backup</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li
-                            class="sidebar-item  ">
-                            <a href="{{route('logaktivitas')}}" class='sidebar-link'>
-                                <i class="bi bi-clock-history"></i>
-                                <span>Log Aktivitas</span>
-                            </a>
-                        </li>
-
-                        <li
                             class="sidebar-item  ">
                             <a href="{{route('notifikasiadmin')}}" class='sidebar-link'>
                                 <i class="bi bi-bell-fill"></i>
@@ -177,9 +161,27 @@
                 </a>
             </header>
 
+            <!-- Jika ada error -->
+            @if ($errors->any())
+            <div class="alert alert-danger" style="background-color: salmon; color:black; font-weight:bold; border-radius:20px; padding:10px; margin-bottom:20px;">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+
+            <!-- Jika berhasil -->
+            @if (Session::has('success'))
+            <div class="alert alert-success" style="background-color: lightgreen; color:black; font-weight:bold; border-radius:20px;">
+                {{ Session::get('success') }}
+            </div>
+            @endif
+
             <div class="page-heading">
                 <center>
-                    <h3>Selamat Datang Admin</h3>
+                    <h2>Selamat Datang {{Auth::user()->fullname}}</h2>
                 </center>
             </div>
 
@@ -189,12 +191,12 @@
                     <div class="card mb-4">
                         <div class="card-body text-center">
                             <div class="poto-profil">
-                                <img src="https://via.placeholder.com/200" alt="Foto Profil">
+                                <img src="{{asset('picture/account/'. Auth::user()->gambar)}}" alt="Foto Profil">
                             </div>
-                            <h3 class="mt-3">John Doe</h3>
-                            <p>john.doe@example.com</p>
-                            <p>+62 812 3456 7890</p>
-                            <p>Jl. Sudirman No. 1, Jakarta</p>
+                            <h3 class="mt-3">{{Auth::user()->fullname}}</h3>
+                            <p>{{Auth::user()->email}}</p>
+                            <p>{{Auth::user()->phone}}</p>
+                            <p>{{Auth::user()->address}}</p>
                         </div>
                     </div>
 
@@ -204,32 +206,51 @@
                             <h5>Edit Profil</h5>
                         </div>
                         <div class="card-body">
-                            <form id="edit-profile-form">
+                            <form id="edit-profile-form" enctype="multipart/form-data" method="POST" action="{{ route('profil.update') }}">
+                                @csrf
+                                <input type="hidden" name="_method" value="PUT"> <!-- Metode PUT untuk update -->
+                                <!-- Nama -->
                                 <div class="mb-3">
-                                    <label for="nama" class="form-label">Nama</label>
-                                    <input type="text" class="form-control" id="nama" placeholder="Nama Lengkap" required>
+                                    <label for="fullname" class="form-label">Nama</label>
+                                    <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Nama Lengkap" value="{{ old('fullname', Auth::user()->fullname) }}" required>
                                 </div>
+
+                                <!-- Email -->
                                 <div class="mb-3">
                                     <label for="email" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="email" placeholder="Email" required>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="{{ old('email', Auth::user()->email) }}" required>
                                 </div>
+
+                                <!-- Password -->
                                 <div class="mb-3">
                                     <label for="password" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="password" placeholder="Password" required>
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
                                 </div>
+
                                 <!-- Konfirmasi Password -->
                                 <div class="mb-3">
                                     <label for="confirm-password" class="form-label">Konfirmasi Password</label>
-                                    <input type="password" class="form-control" id="confirm-password" placeholder="Konfirmasi Password" required>
+                                    <input type="password" class="form-control" id="confirm-password" name="confirm_password" placeholder="Konfirmasi Password">
                                 </div>
+
+                                <!-- Gambar -->
                                 <div class="mb-3">
-                                    <label for="no-telp" class="form-label">Nomor Telepon</label>
-                                    <input type="tel" class="form-control" id="no-telp" placeholder="Nomor Telepon" required>
+                                    <label for="gambar" class="form-label">Foto Profil</label>
+                                    <input type="file" class="form-control" id="gambar" name="gambar" accept="image/*">
                                 </div>
+
+                                <!-- Nomor Telepon -->
                                 <div class="mb-3">
-                                    <label for="alamat" class="form-label">Alamat</label>
-                                    <textarea class="form-control" id="alamat" rows="5" placeholder="Alamat" required></textarea>
+                                    <label for="phone" class="form-label">Nomor Telepon</label>
+                                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="Nomor Telepon" value="{{ old('phone', Auth::user()->phone) }}" required>
                                 </div>
+
+                                <!-- Alamat -->
+                                <div class="mb-3">
+                                    <label for="address" class="form-label">Alamat</label>
+                                    <textarea class="form-control" id="address" name="address" rows="5" placeholder="Alamat" required>{{ old('address', Auth::user()->address) }}</textarea>
+                                </div>
+
                                 <div class="text-end">
                                     <button type="submit" class="btn btn-primary">Konfirmasi Edit Profil</button>
                                 </div>
@@ -246,8 +267,13 @@
                     <p style="margin-right: 50%;">2025 &copy; STARBIN</p>
                 </div>
                 <div class="float-end" style="margin-right: 30px;">
-                    <p>Dibuat dengan <span class="text-danger"><i class="bi bi-heart"></i></span> oleh <a
-                            href="https://saugi.me">Bagas & Fahri</a></p>
+                    <p>Dibuat dengan
+                        <span class="text-danger"><i class="bi bi-heart"></i></span>
+                        oleh
+                        <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
+                        &
+                        <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
+                    </p>
                 </div>
             </div>
         </footer>

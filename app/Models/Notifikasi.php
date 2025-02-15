@@ -20,6 +20,11 @@ class Notifikasi extends Model
         'expired_at',
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
     protected $casts = [
         'is_read' => 'boolean',
     ];

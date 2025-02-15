@@ -383,91 +383,105 @@
       </section><!-- /More Pinjaman Features Section -->
 
 
-      <!-- Contact Section -->
-      <section id="contact" class="contact section">
-
-        <!-- Section Title -->
+      <!-- FAQ Section -->
+      <section id="faq" class="faq section">
         <div class="container section-title" data-aos="fade-up">
-          <h2>Hubungi Kami</h2>
-          <p>
-            Kami siap membantu Anda dengan segala pertanyaan atau kebutuhan terkait koperasi kami. Jangan ragu untuk menghubungi kami untuk mendapatkan informasi lebih lanjut mengenai layanan kami, termasuk simpan pinjam, pembiayaan pendidikan, dan berbagai program lainnya. Kami berkomitmen untuk memberikan pelayanan terbaik kepada seluruh anggota koperasi kami dan memberikan solusi yang tepat untuk setiap kebutuhan finansial Anda.
-          </p>
-        </div><!-- End Section Title -->
-
-        <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-          <div class="row gy-4">
-
-            <div class="col-lg-6">
-              <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="200">
-                <i class="bi bi-geo-alt"></i>
-                <h3>Alamat </h3>
-                <p>Kec.Binong Kab.Subang Prov.Jawa Barat</p>
-              </div>
-            </div><!-- End Info Item -->
-
-            <div class="col-lg-3 col-md-6">
-              <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="300">
-                <i class="bi bi-telephone"></i>
-                <h3>Nomer Telepon</h3>
-                <p>62839320338692</p>
-                <p>6285175101350</p>
-              </div>
-            </div><!-- End Info Item -->
-
-            <div class="col-lg-3 col-md-6">
-              <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="400">
-                <i class="bi bi-envelope"></i>
-                <h3>Email</h3>
-                <p>fahriabdurohmansoleh@gmail.com</p>
-                <p>bagasdipras@gmail.com</p>
-              </div>
-            </div><!-- End Info Item -->
-
-          </div>
-
-          <div class="row gy-4 mt-1">
-            <div class="col-lg-6" data-aos="fade-up" data-aos-delay="300">
-              <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d48389.78314118045!2d-74.006138!3d40.710059!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a22a3bda30d%3A0xb89d1fe6bc499443!2sDowntown%20Conference%20Center!5e0!3m2!1sen!2sus!4v1676961268712!5m2!1sen!2sus" frameborder="0" style="border:0; width: 100%; height: 400px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-            </div><!-- End Google Maps -->
-
-            <div class="col-lg-6">
-              <form action="forms/contact.php" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="400">
-                <div class="row gy-4">
-
-                  <div class="col-md-6">
-                    <input type="text" name="name" class="form-control" placeholder="Nama" required="">
-                  </div>
-
-                  <div class="col-md-6 ">
-                    <input type="email" class="form-control" name="email" placeholder="Email" required="">
-                  </div>
-
-                  <div class="col-md-12">
-                    <input type="text" class="form-control" name="subject" placeholder="Subject" required="">
-                  </div>
-
-                  <div class="col-md-12">
-                    <textarea class="form-control" name="message" rows="6" placeholder="Pesan" required=""></textarea>
-                  </div>
-
-                  <div class="col-md-12 text-center">
-                    <div class="loading">Loading</div>
-                    <div class="error-message"></div>
-                    <div class="sent-message">Your message has been sent. Thank you!</div>
-
-                    <button type="submit">Send Message</button>
-                  </div>
-
-                </div>
-              </form>
-            </div><!-- End Contact Form -->
-
-          </div>
-
+          <h2>FAQ - Pertanyaan Umum</h2>
+          <p>Berikut adalah beberapa pertanyaan yang sering diajukan mengenai koperasi STARBIN.</p>
         </div>
 
-      </section><!-- /Contact Section -->
+        <!-- Informasi Kontak dalam Card -->
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+          <div class="container" data-aos="fade-up" data-aos-delay="100" style="margin-bottom: 30px;">
+
+            <div class="row gy-4">
+
+              <!-- Alamat -->
+              <div class="col-lg-4">
+                <div class="card text-center shadow p-3">
+                  <div class="card-body">
+                    <i class="bi bi-geo-alt fs-2 text-primary"></i>
+                    <h5 class="card-title mt-2">Alamat</h5>
+                    <p class="card-text">Kec. Binong, Kab. Subang, Prov. Jawa Barat</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Kontak -->
+              <div class="col-lg-4">
+                <div class="card text-center shadow p-3">
+                  <div class="card-body">
+                    <i class="bi bi-telephone fs-2 text-success"></i>
+                    <h5 class="card-title mt-2">Nomor Telepon</h5>
+                    <p class="card-text">62839320338692 <br> 6285175101350</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Email -->
+              <div class="col-lg-4">
+                <div class="card text-center shadow p-3">
+                  <div class="card-body">
+                    <i class="bi bi-envelope fs-2 text-danger"></i>
+                    <h5 class="card-title mt-2">Email</h5>
+                    <p class="card-text">fahriabdurohman@gmail.com <br> bagasdipras@gmail.com</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Accordion FAQ -->
+          <div class="container" data-aos="fade-up" data-aos-delay="100">
+            <div class="accordion mb-4" id="faqAccordion">
+
+              <!-- Pertanyaan 1 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="faqHeadingOne">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseOne" aria-expanded="true" aria-controls="faqCollapseOne">
+                    Apa itu Koperasi STARBIN?
+                  </button>
+                </h2>
+                <div id="faqCollapseOne" class="accordion-collapse collapse show" aria-labelledby="faqHeadingOne" data-bs-parent="#faqAccordion">
+                  <div class="accordion-body">
+                    Koperasi STARBIN adalah koperasi simpan pinjam yang menyediakan layanan keuangan bagi anggota untuk membantu mereka dalam kebutuhan finansial.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Pertanyaan 2 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="faqHeadingTwo">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseTwo" aria-expanded="false" aria-controls="faqCollapseTwo">
+                    Bagaimana cara menjadi anggota?
+                  </button>
+                </h2>
+                <div id="faqCollapseTwo" class="accordion-collapse collapse" aria-labelledby="faqHeadingTwo" data-bs-parent="#faqAccordion">
+                  <div class="accordion-body">
+                    Anda dapat mendaftar dengan mengisi formulir pendaftaran di kantor kami atau melalui website resmi STARBIN.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Pertanyaan 3 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="faqHeadingThree">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseThree" aria-expanded="false" aria-controls="faqCollapseThree">
+                    Apa saja keuntungan menjadi anggota?
+                  </button>
+                </h2>
+                <div id="faqCollapseThree" class="accordion-collapse collapse" aria-labelledby="faqHeadingThree" data-bs-parent="#faqAccordion">
+                  <div class="accordion-body">
+                    Sebagai anggota, Anda dapat mengakses layanan simpan pinjam, dan memulai Pinjaman tanpa bunga.
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+      </section>
 
   </main>
 

@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Data Pengajuan Koperasi STARBIN</title>
 
     <link rel="stylesheet" href="{{asset('admin-page/assets/css/main/app.css')}}">
@@ -60,11 +61,18 @@
                                 <span>Dashboard</span>
                             </a>
                         </li>
-
                         <li
                             class="sidebar-item">
-                            <a href="{{route('dataanggota')}}" class='sidebar-link'>
+                            <a href="{{route('profiladmin')}}" class='sidebar-link'>
                                 <i class="bi bi-person-badge-fill"></i>
+                                <span>Profil</span>
+                            </a>
+                        </li>
+
+                        <li
+                            class="sidebar-item ">
+                            <a href="{{route('dataanggota')}}" class='sidebar-link'>
+                                <i class="bi bi-person-lines-fill"></i>
                                 <span>Data Anggota</span>
                             </a>
                         </li>
@@ -119,29 +127,6 @@
                         </li>
 
                         <li
-                            class="sidebar-item  has-sub">
-                            <a href="#" class='sidebar-link'>
-                                <i class="bi bi-gear-fill"></i>
-                                <span>Pengaturan</span>
-                            </a>
-                            <ul class="submenu ">
-                                <li class="submenu-item ">
-                                    <a href="{{route('profiladmin')}}">Profil Admin</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="{{route('backup')}}">Backup</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li
-                            class="sidebar-item  ">
-                            <a href="{{route('logaktivitas')}}" class='sidebar-link'>
-                                <i class="bi bi-clock-history"></i>
-                                <span>Log Aktivitas</span>
-                            </a>
-                        </li>
-
-                        <li
                             class="sidebar-item  ">
                             <a href="{{route('notifikasiadmin')}}" class='sidebar-link'>
                                 <i class="bi bi-bell-fill"></i>
@@ -178,145 +163,152 @@
                 </a>
             </header>
             <div class="container mt-4">
-                    <h3>Data Pengajuan</h3>
-                    <p>
-                        Berikut adalah daftar pengajuan dari anggota koperasi.
-                    </p>
+                <h3>Data Pengajuan</h3>
+                <p>Berikut adalah daftar pengajuan dari anggota koperasi.</p>
 
-                    <!-- Statistik Ringkasan -->
-                    <div class="row mb-4">
-                        <div class="col-md-3">
-                            <div class="card text-center">
-                                <div class="card-body">
-                                    <h5 class="card-title">Total Pengajuan</h5>
-                                    <p class="card-text">120 Pengajuan</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card text-center">
-                                <div class="card-body">
-                                    <h5 class="card-title">
-                                        Pengajuan Menunggu
-                                    </h5>
-                                    <p class="card-text">40 Pengajuan</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card text-center">
-                                <div class="card-body">
-                                    <h5 class="card-title">
-                                        Pengajuan Disetujui
-                                    </h5>
-                                    <p class="card-text">70 Pengajuan</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card text-center">
-                                <div class="card-body">
-                                    <h5 class="card-title">
-                                        Pengajuan Ditolak
-                                    </h5>
-                                    <p class="card-text">10 Pengajuan</p>
-                                </div>
+                <!-- Statistik Ringkasan -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h5 class="card-title">Total Pengajuan</h5>
+                                <p class="card-text">{{ $pengajuan->count() }} Pengajuan</p>
                             </div>
                         </div>
                     </div>
-                    <!-- Tabel Data Pengajuan -->
-                    <div class="table-responsive">
-                        <table class="table table-striped table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Nama Anggota</th>
-                                    <th>Jenis Pengajuan</th>
-                                    <th>Tanggal Pengajuan</th>
-                                    <th>Jumlah Pengajuan</th>
-                                    <th>Status</th>
-                                    <th>Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Andi Setiawan</td>
-                                    <td>Pinjaman</td>
-                                    <td>2025-01-20</td>
-                                    <td>Rp 10.000.000</td>
-                                    <td>
-                                        <span class="badge bg-warning"
-                                            >Menunggu</span
-                                        >
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-sm btn-success">
-                                            Setujui
-                                        </button>
-                                        <button class="btn btn-sm btn-danger">
-                                            Tolak
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Rina Kusuma</td>
-                                    <td>Simpanan</td>
-                                    <td>2025-01-18</td>
-                                    <td>Rp 2.000.000</td>
-                                    <td>
-                                        <span class="badge bg-success"
-                                            >Disetujui</span
-                                        >
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-sm btn-primary">
-                                            Lihat Detail
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Budi Prasetyo</td>
-                                    <td>Angsuran</td>
-                                    <td>2025-01-19</td>
-                                    <td>Rp 5.000.000</td>
-                                    <td>
-                                        <span class="badge bg-danger"
-                                            >Ditolak</span
-                                        >
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-sm btn-primary">
-                                            Lihat Detail
-                                        </button>
-                                    </td>
-                                </tr>
-                                <!-- Tambahkan data lainnya -->
-                            </tbody>
-                        </table>
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h5 class="card-title">Pengajuan Menunggu</h5>
+                                <p class="card-text">{{ $pengajuan->where('status', 'Dalam Proses')->count() }} Pengajuan</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h5 class="card-title">Pengajuan Disetujui</h5>
+                                <p class="card-text">{{ $pengajuan->where('status', 'Aktif')->count() }} Pengajuan</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h5 class="card-title">Pengajuan Ditolak</h5>
+                                <p class="card-text">{{ $pengajuan->where('status', 'Ditolak')->count() }} Pengajuan</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <!-- Tabel Data Pengajuan -->
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Anggota</th>
+                                <th>ID Pinjaman</th>
+                                <th>Jenis Pengajuan</th>
+                                <th>Tanggal Pengajuan</th>
+                                <th>Jumlah Pengajuan</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($pengajuan as $index => $item)
+                            <tr>
+                                <td>{{ $index + 1 }}</td>
+                                <td>{{ $item->user->fullname }}</td>
+                                <td>{{$item->id}}</td>
+                                <td>Pengajuan Pinjaman</td>
+                                <td>{{ $item->tanggal_pengajuan }}</td>
+                                <td>Rp {{ number_format($item->jumlah_pinjaman, 0, ',', '.') }}</td>
+                                <td>
+                                    @if($item->status == 'Dalam Proses')
+                                    <span class="badge bg-warning">Menunggu</span>
+                                    @elseif($item->status == 'Aktif')
+                                    <span class="badge bg-success">Disetujui</span>
+                                    @elseif($item->status == 'Ditolak')
+                                    <span class="badge bg-danger">Ditolak</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($item->status == 'Dalam Proses')
+                                    <button class="btn btn-sm btn-success btn-ubah-status" data-id="{{ $item->id }}" data-status="Aktif">Setujui</button>
+                                    <button class="btn btn-sm btn-danger btn-ubah-status" data-id="{{ $item->id }}" data-status="Ditolak">Tolak</button>
+                                    @else
+                                    -
+                                    @endif
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
             <footer>
                 <div class="footer clearfix mb-0 text-muted">
                     <div class="float-start">
                         <p>2025 &copy; STARBIN</p>
                     </div>
                     <div class="float-end" style="margin-right: 30px;">
-                        <p>Dibuat dengan <span class="text-danger"><i class="bi bi-heart"></i></span> oleh <a
-                                href="https://saugi.me">Bagas & Fahri</a></p>
+                        <p>Dibuat dengan 
+                            <span class="text-danger"><i class="bi bi-heart"></i></span>
+                            oleh
+                            <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
+                            &
+                            <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
+                        </p>
                     </div>
                 </div>
             </footer>
         </div>
     </div>
-        <script src="{{asset('admin-page/assets/js/bootstrap.js')}}"></script>
-        <script src="{{asset('admin-page/assets/js/app.js')}}"></script>
-        <script src="{{asset('admin-page/assets/js/data-pengajuan.js')}}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <!-- Link Bootstrap JS -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{asset('admin-page/assets/js/bootstrap.js')}}"></script>
+    <script src="{{asset('admin-page/assets/js/app.js')}}"></script>
+    <!-- Script AJAX untuk update status -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll(".btn-ubah-status").forEach(button => {
+                button.addEventListener("click", function() {
+                    let id = this.getAttribute("data-id");
+                    let status = this.getAttribute("data-status");
+
+                    fetch(`/data-pengajuan/${id}/update`, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Accept": "application/json",
+                                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+                            },
+                            body: JSON.stringify({
+                                status: status
+                            }),
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert("Status berhasil diperbarui!");
+                                location.reload();
+                            } else {
+                                alert("Gagal memperbarui status: " + data.error);
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error:", error);
+                            alert("Terjadi kesalahan saat memperbarui status.");
+                        });
+                });
+            });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Link Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

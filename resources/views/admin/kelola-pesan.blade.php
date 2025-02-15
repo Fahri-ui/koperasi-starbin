@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Anggota Koperasi STARBIN</title>
+    <title>Kelola Pesan Untuk User</title>
 
     <link rel="stylesheet" href="{{asset('admin-page/assets/css/main/app.css')}}">
     <link rel="stylesheet" href="{{asset('admin-page/assets/css/main/app-dark.css')}}">
     <link rel="shortcut icon" href="{{asset('admin-page/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/x-icon">
     <link rel="shortcut icon" href="{{asset('admin-page/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/png">
-
-    <link rel="stylesheet" href="{{asset('admin-page/assets/css/data-anggota.css')}}">
+    <link rel="stylesheet" href="{{asset('admin-page/assets/css/simpanan-wajib.css')}}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 
 </head>
 
@@ -69,7 +69,7 @@
                         </li>
 
                         <li
-                            class="sidebar-item active">
+                            class="sidebar-item ">
                             <a href="{{route('dataanggota')}}" class='sidebar-link'>
                                 <i class="bi bi-person-lines-fill"></i>
                                 <span>Data Anggota</span>
@@ -77,7 +77,7 @@
                         </li>
 
                         <li
-                            class="sidebar-item  has-sub">
+                            class="sidebar-item  has-sub active">
                             <a href="#" class='sidebar-link'>
                                 <i class="bi bi-wallet-fill"></i>
                                 <span>Simpanan</span>
@@ -125,6 +125,12 @@
                             </a>
                         </li>
 
+                        <li class="sidebar-item">
+                            <a href="{{ route('admin.sharemassage') }}" class="sidebar-link">
+                                <i class="bi bi-send"></i>
+                                <span>Kelola Pesan</span>
+                            </a>
+                        </li>
                         <li
                             class="sidebar-item  ">
                             <a href="{{route('notifikasiadmin')}}" class='sidebar-link'>
@@ -154,61 +160,105 @@
                     </ul>
                 </div>
             </div>
-        </div>
-        <div id="main">
-            <header class="mb-3">
-                <a href="#" class="burger-btn d-block d-xl-none">
-                    <i class="bi bi-justify fs-3"></i>
-                </a>
-            </header>
-            <div class="container mt-5">
-                <h3>Tabel Data Anggota</h3>
-                <div style="margin-bottom: 20px;">
-                    <input type="text" id="search-anggota" class="form-control" placeholder="Cari anggota berdasarkan Nama atau ID..." onkeyup="searchAnggota()">
+
+            <div id="main">
+                <header class="mb-3">
+                    <a href="#" class="burger-btn d-block d-xl-none">
+                        <i class="bi bi-justify fs-3"></i>
+                    </a>
+                </header>
+                @if (Session::has('error'))
+                <div class="alert alert-danger" style="background-color: salmon; color:aliceblue; border-radius:20px; margin-bottom:20px;">
+                    {{ Session::get('error') }}
                 </div>
-                <div style="height: 470px; overflow: auto;">
-                    <table class="table table-striped table-bordered">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>No</th>
-                                <th>ID</th>
-                                <th>Nama Anggota</th>
-                                <th>Email</th>
-                                <th>Role</th>
-                                <th>Nomor Telepon</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="data-anggota">
-                            @foreach ($users as $index => $user)
-                            <tr>
-                                <td>{{ $index + 1 }}</td>
-                                <td>{{ $user->id }}</td>
-                                <td>{{ $user->fullname }}</td>
-                                <td>{{ $user->email }}</td>
-                                <td>
-                                    <select class="form-select role-select" data-user-id="{{ $user->id }}">
-                                        <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>User</option>
-                                        <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
+                @endif
+
+                <!-- Jika berhasil -->
+                @if (Session::has('success'))
+                <div class="alert alert-success" style="background-color: lightgreen; color:aliceblue; border-radius:20px;">
+                    {{ Session::get('success') }}
+                </div>
+                @endif
+                <div class="container">
+                    <h2>Kelola Pesan</h2>
+
+                    <!-- Form Pengiriman Pesan -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Kirim Pesan</h5>
+                        </div>
+                        <div class="card-body">
+                            <form action="{{ route('admin.sharemassage.store') }}" method="POST">
+                                @csrf
+                                <div class="mb-3">
+                                    <label for="recipient" class="form-label">Pilih Penerima</label>
+                                    <select name="user_id" id="recipient" class="form-select select2">
+                                        <option value="all" selected>Semua User (Global Message)</option>
+                                        @foreach(App\Models\User::where('role', 'user')->get() as $user)
+                                        <option value="{{ $user->id }}">{{ $user->fullname }}</option>
+                                        @endforeach
                                     </select>
-                                </td>
-                                <td>{{ $user->phone }}</td>
-                                <td>
-                                    <form action="{{ route('users.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus akun ini?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
-                                    </form>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="message" class="form-label">Pesan</label>
+                                    <textarea name="message" id="message" class="form-control" rows="4" required></textarea>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Kirim Pesan</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Daftar Pesan -->
+                    <div class="card mt-4">
+                        <div class="card-header">
+                            <h5>Daftar Pesan</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Penerima</th>
+                                        <th>Pesan</th>
+                                        <th>Tanggal</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($notifikasi as $key => $item)
+                                    <tr>
+                                        <td>{{ $key + 1 }}</td>
+                                        <td>{{ $item->user_id == 0 ? 'Semua User' : ($item->user ? $item->user->fullname : 'User Tidak Ditemukan') }}</td>
+                                        <td>{{ $item->message }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($item->created_at)->format('d F Y') }}</td>
+                                        <td>
+                                            <form action="{{ route('admin.sharemassage.destroy', $item->id) }}" method="POST" class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-danger btn-sm" onclick="return confirm('Hapus pesan ini?')">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+
+                                    @if($notifikasi->isEmpty())
+                                    <tr>
+                                        <td colspan="5" class="text-center text-muted">Tidak ada pesan.</td>
+                                    </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
+
                 <footer>
                     <div class="footer clearfix mb-0 text-muted">
                         <div class="float-start">
-                            <p style="margin-right: 50%;">2025 &copy; STARBIN</p>
+                            <p>2025 &copy; STARBIN</p>
                         </div>
                         <div class="float-end" style="margin-right: 30px;">
                             <p>Dibuat dengan
@@ -226,59 +276,30 @@
     </div>
     <script src="{{asset('admin-page/assets/js/bootstrap.js')}}"></script>
     <script src="{{asset('admin-page/assets/js/app.js')}}"></script>
+    <!-- jQuery (harus ada untuk Select2) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Select2 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script>
-        function searchAnggota() {
-            let input = document.getElementById("search-anggota").value.toLowerCase();
-            let table = document.getElementById("data-anggota");
-            let rows = table.getElementsByTagName("tr");
-
-            for (let i = 0; i < rows.length; i++) {
-                let nama = rows[i].getElementsByTagName("td")[2]; // Kolom Nama
-                let id = rows[i].getElementsByTagName("td")[1]; // Kolom ID
-
-                if (nama && id) {
-                    let namaText = nama.textContent || nama.innerText;
-                    let idText = id.textContent || id.innerText;
-
-                    if (namaText.toLowerCase().includes(input) || idText.includes(input)) {
-                        rows[i].style.display = "";
-                    } else {
-                        rows[i].style.display = "none";
+        $(document).ready(function() {
+            $('#recipient').select2({
+                placeholder: "Pilih User",
+                allowClear: true,
+                tags: true,
+                createTag: function(params) {
+                    return undefined; // Mencegah penambahan tag kustom
+                },
+                language: {
+                    noResults: function() {
+                        return "User tidak ditemukan.";
                     }
                 }
-            }
-        }
-
-        document.addEventListener("DOMContentLoaded", function() {
-            document.querySelectorAll(".role-select").forEach(select => {
-                select.addEventListener("change", function() {
-                    let userId = this.getAttribute("data-user-id");
-                    let newRole = this.value;
-
-                    fetch("{{ route('users.updateRole') }}", {
-                            method: "POST",
-                            headers: {
-                                "X-CSRF-TOKEN": "{{ csrf_token() }}",
-                                "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify({
-                                id: userId,
-                                role: newRole
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                alert("Role berhasil diperbarui!");
-                            } else {
-                                alert("Gagal memperbarui role.");
-                            }
-                        })
-                        .catch(error => console.error("Error:", error));
-                });
             });
         });
     </script>
+
+
 </body>
 
 </html>

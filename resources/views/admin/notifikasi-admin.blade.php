@@ -11,8 +11,6 @@
     <link rel="shortcut icon" href="{{asset('admin-page/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/x-icon">
     <link rel="shortcut icon" href="{{asset('admin-page/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/png">
     <link rel="stylesheet" href="{{asset('admin-page/assets/css/notifikasi.css')}}">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
 </head>
 
 <body>
@@ -180,59 +178,16 @@
             </header>
 
             <div class="container mt-4">
-                <h4>Notifikasi</h4>
-
-                <!-- Ringkasan Notifikasi -->
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5>Ringkasan</h5>
-                        <p>Total Notifikasi: <span id="total-notifications">0</span></p>
-                        <p>Belum Dibaca: <span id="unread-notifications">0</span></p>
-                    </div>
-                </div>
-
-                <!-- Filter Notifikasi -->
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5>Filter Notifikasi</h5>
-                        <form class="row" id="filter-notifications">
-                            <div class="col-md-6">
-                                <label for="filter-type" class="form-label">Tipe Notifikasi</label>
-                                <select id="filter-type" class="form-select">
-                                    <option value="">Semua</option>
-                                    <option value="system">Pemberitahuan Sistem</option>
-                                    <option value="pengajuan">Pengajuan</option>
-                                    <option value="warning">Peringatan</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="filter-time" class="form-label">Waktu</label>
-                                <select id="filter-time" class="form-select">
-                                    <option value="">Semua</option>
-                                    <option value="today">Hari Ini</option>
-                                    <option value="week">Minggu Ini</option>
-                                    <option value="month">Bulan Ini</option>
-                                </select>
-                            </div>
-                            <div class="col-md-12 mt-3">
-                                <button type="button" class="btn btn-primary" id="filter-btn">Terapkan Filter</button>
-                                <button type="button" class="btn btn-secondary" id="mark-all-read">Tandai Semua Dibaca</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- Daftar Notifikasi -->
-                <div class="card">
-                    <div class="card-body">
-                        <h5>Daftar Notifikasi</h5>
-                        <ul class="list-group" id="notification-list">
-                            <!-- Notifikasi akan di-render melalui JS -->
-                        </ul>
-                    </div>
-                </div>
+                <h1 class="text-center">📢 Halaman Notifikasi Admin</h1>
+                <h5 class="text-center text-primary">February 2025</h5>
             </div>
 
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-calendar-x"></i> 
+                <strong>Perhatian!</strong> 
+                Anda memiliki notifikasi baru: pesan
+            </div>
+            
 
             <footer>
                 <div class="footer clearfix mb-0 text-muted">
@@ -246,6 +201,8 @@
                 </div>
             </footer>
         </div>
+
+
     </div>
     <script src="{{asset('admin-page/assets/js/bootstrap.js')}}"></script>
     <script src="{{asset('admin-page/assets/js/app.js')}}"></script>

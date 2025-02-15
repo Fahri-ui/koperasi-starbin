@@ -59,11 +59,18 @@
                                 <span>Dashboard</span>
                             </a>
                         </li>
+                        <li
+                            class="sidebar-item">
+                            <a href="{{route('profiladmin')}}" class='sidebar-link'>
+                                <i class="bi bi-person-badge-fill"></i>
+                                <span>Profil</span>
+                            </a>
+                        </li>
 
                         <li
                             class="sidebar-item ">
                             <a href="{{route('dataanggota')}}" class='sidebar-link'>
-                                <i class="bi bi-person-badge-fill"></i>
+                                <i class="bi bi-person-lines-fill"></i>
                                 <span>Data Anggota</span>
                             </a>
                         </li>
@@ -118,30 +125,6 @@
                         </li>
 
                         <li
-                            class="sidebar-item  has-sub">
-                            <a href="#" class='sidebar-link'>
-                                <i class="bi bi-gear-fill"></i>
-                                <span>Pengaturan</span>
-                            </a>
-                            <ul class="submenu ">
-                                <li class="submenu-item ">
-                                    <a href="{{route('profiladmin')}}">Profil Admin</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="{{route('backup')}}">Backup</a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li
-                            class="sidebar-item  ">
-                            <a href="{{route('logaktivitas')}}" class='sidebar-link'>
-                                <i class="bi bi-clock-history"></i>
-                                <span>Log Aktivitas</span>
-                            </a>
-                        </li>
-
-                        <li
                             class="sidebar-item  ">
                             <a href="{{route('notifikasiadmin')}}" class='sidebar-link'>
                                 <i class="bi bi-bell-fill"></i>
@@ -178,48 +161,57 @@
                 </a>
             </header>
 
-            <div class="simpanan-sukarela-container">
-                <!-- Judul -->
-                <h3>Data Simpanan Sukarela</h3>
+            <h3>Data Simpanan sukarela</h3>
 
-                <!-- Filter Pencarian -->
-                <div class="filter-simpanan-sukarela">
-                    <input type="text" id="search-simpanan-sukarela" class="form-control" placeholder="Cari anggota berdasarkan nama atau ID...">
-                </div>
+            <!-- Filter Pencarian -->
+            <div class="filter-simpanan">
+                <input type="text" id="search-simpanan-sukarela" class="form-control" placeholder="Cari anggota berdasarkan nama atau ID...">
+            </div>
 
-                <!-- Tabel Data Simpanan Sukarela -->
+            <div style="height: 470px; overflow: auto;">
+                <!-- Tabel Data Simpanan -->
                 <table class="table table-striped mt-3">
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Nama Anggota</th>
                             <th>Jumlah Simpanan</th>
-                            <th>Tanggal Setoran</th>
-                            <th>Keterangan</th>
+                            <th>Tanggal Simpanan</th>
+                            <th>Jenis Transaksi</th> <!-- Mengganti Status ke Jenis Transaksi -->
                         </tr>
                     </thead>
                     <tbody id="tabel-simpanan-sukarela">
-                        <!-- Data anggota akan ditampilkan di sini -->
+                        @foreach($simpananSukarela as $simpanan)
+                        <tr>
+                            <td>{{ $simpanan->id }}</td>
+                            <td>{{ $simpanan->user->fullname ?? 'Tidak Diketahui' }}</td>
+                            <td>Rp {{ number_format($simpanan->jumlah, 0, ',', '.') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($simpanan->tanggal_transaksi)->format('Y-m-d') }}</td>
+                            <td>{{ ucfirst($simpanan->jenis_transaksi) }}</td> <!-- Jenis Transaksi -->
+                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
-
-                <!-- Statistik -->
-                <div class="simpanan-sukarela-statistik mt-3">
-                    <h5>Total Simpanan Sukarela: <span id="total-simpanan-sukarela">Rp 0</span></h5>
-                    <h5>Jumlah Anggota: <span id="jumlah-anggota">0</span></h5>
-                    <h5>Total Transaksi: <span id="total-transaksi">0</span></h5>
-                </div>
             </div>
 
+            <!-- Statistik -->
+            <div class="simpanan-statistik mt-3">
+                <h4>Total Simpanan: <span id="total-simpanan-sukarela">Rp {{ number_format($totalSimpananSukarela, 0, ',', '.') }}</span></h4>
+            </div>
 
             <footer>
                 <div class="footer clearfix mb-0 text-muted">
                     <div class="float-start">
                         <p>2025 &copy; STARBIN</p>
                     </div>
-                    <div class="float-end">
-                        <p>Dibuat dengan <span class="text-danger"><i class="bi bi-heart"></i></span> oleh <a
-                                href="https://saugi.me">Bagas & Fahri</a></p>
+                    <div class="float-end" style="margin-right: 30px;">
+                        <p>Dibuat dengan 
+                            <span class="text-danger"><i class="bi bi-heart"></i></span>
+                            oleh
+                            <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
+                            &
+                            <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
+                        </p>
                     </div>
                 </div>
             </footer>
@@ -227,7 +219,29 @@
     </div>
     <script src="{{asset('admin-page/assets/js/bootstrap.js')}}"></script>
     <script src="{{asset('admin-page/assets/js/app.js')}}"></script>
-    <script src="{{asset('admin-page/assets/js/simpanan-sukarela.js')}}"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const searchInput = document.getElementById("search-simpanan-sukarela");
+            const tableRows = document.querySelectorAll("#tabel-simpanan-sukarela tr");
+
+            searchInput.addEventListener("keyup", function() {
+                const searchText = searchInput.value.toLowerCase();
+
+                tableRows.forEach(row => {
+                    const id = row.cells[0].textContent.toLowerCase();
+                    const nama = row.cells[1].textContent.toLowerCase();
+                    const jenisTransaksi = row.cells[4].textContent.toLowerCase(); // Tambahkan jenis transaksi
+
+                    if (id.includes(searchText) || nama.includes(searchText) || jenisTransaksi.includes(searchText)) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
+                });
+            });
+        });
+    </script>
+
 
 </body>
 

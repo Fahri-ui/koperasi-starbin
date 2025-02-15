@@ -130,10 +130,6 @@ class PinjamanController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        $pinjaman = Pinjaman::find(55);
-        $pinjaman->status = 'Aktif';
-        $pinjaman->save();
-
         return view('user.pinjaman', compact('riwayatTransaksi', 'totalPinjaman', 'pinjamanAktif', 'notifikasi'));
     }
 

@@ -59,11 +59,18 @@
                                 <span>Dashboard</span>
                             </a>
                         </li>
+                        <li
+                            class="sidebar-item">
+                            <a href="{{route('profiladmin')}}" class='sidebar-link'>
+                                <i class="bi bi-person-badge-fill"></i>
+                                <span>Profil</span>
+                            </a>
+                        </li>
 
                         <li
                             class="sidebar-item ">
                             <a href="{{route('dataanggota')}}" class='sidebar-link'>
-                                <i class="bi bi-person-badge-fill"></i>
+                                <i class="bi bi-person-lines-fill"></i>
                                 <span>Data Anggota</span>
                             </a>
                         </li>
@@ -86,7 +93,7 @@
                         </li>
 
                         <li
-                            class="sidebar-item  active">
+                            class="sidebar-item active">
                             <a href="{{route('pinjamanadmin')}}" class='sidebar-link'>
                                 <i class="bi bi-cash-stack"></i>
                                 <span>Pinjaman</span>
@@ -114,30 +121,6 @@
                             <a href="{{route('statistikkeuangan')}}" class='sidebar-link'>
                                 <i class="bi bi-bar-chart-line-fill"></i>
                                 <span>Statistik Keuangan</span>
-                            </a>
-                        </li>
-
-                        <li
-                            class="sidebar-item  has-sub">
-                            <a href="#" class='sidebar-link'>
-                                <i class="bi bi-gear-fill"></i>
-                                <span>Pengaturan</span>
-                            </a>
-                            <ul class="submenu ">
-                                <li class="submenu-item ">
-                                    <a href="{{route('profiladmin')}}">Profil Admin</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="{{route('backup')}}">Backup</a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li
-                            class="sidebar-item  ">
-                            <a href="{{route('logaktivitas')}}" class='sidebar-link'>
-                                <i class="bi bi-clock-history"></i>
-                                <span>Log Aktivitas</span>
                             </a>
                         </li>
 
@@ -179,7 +162,6 @@
             </header>
 
             <div class="pinjaman-container">
-                <!-- Judul -->
                 <h3>Data Pinjaman Anggota</h3>
 
                 <!-- Filter Pencarian -->
@@ -188,46 +170,62 @@
                 </div>
 
                 <!-- Tabel Data Pinjaman -->
-                <table class="table table-striped mt-3">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nama Anggota</th>
-                            <th>Jumlah Pinjaman</th>
-                            <th>Tanggal Pencairan</th>
-                            <th>Tenor (Bulan)</th>
-                            <th>Status Pembayaran</th>
-                            <th>Sisa Pinjaman</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabel-pinjaman">
-                        <!-- Data anggota akan ditampilkan di sini -->
-                    </tbody>
-                </table>
+                <div class="table-container" style="max-height: 800px; overflow-y: auto;">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID Pinjaman</th>
+                                <th>Nama</th>
+                                <th>Jumlah Pinjaman</th>
+                                <th>Sisa Angsuran</th>
+                                <th>Tanggal Pembayaran</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($pinjaman as $item)
+                            <tr>
+                                <td>{{ $item->id ?? 'N/A' }}</td>
+                                <td>{{ $item->user->fullname ?? 'Tidak Diketahui' }}</td>
+                                <td>Rp {{ number_format($item->jumlah_pinjaman, 0, ',', '.') }}</td>
+                                <td>Rp {{ number_format($item->sisa_angsuran ?? $item->jumlah_pinjaman, 0, ',', '.') }}</td>
+                                <td>{{ \Carbon\Carbon::parse($item->tanggal_pembayaran)->format('d F Y') }}</td>
+                                <td>{{ ucfirst($item->status ?? '-') }}</td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="6" class="text-center">Tidak ada riwayat pembayaran.</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
 
                 <!-- Statistik -->
                 <div class="pinjaman-statistik mt-3">
-                    <h5>Total Pinjaman Dicairkan: <span id="total-pinjaman">Rp 0</span></h5>
-                    <h5>Total Sisa Pinjaman: <span id="total-sisa-pinjaman">Rp 0</span></h5>
+                    <h5>Total Pinjaman Dicairkan: <span id="total-pinjaman">Rp {{ number_format($totalPinjaman, 0, ',', '.') }}</span></h5>
                     <h6>Status:
                         <ul>
-                            <li>Lunas: <span id="jumlah-lunas">0</span></li>
-                            <li>Proses: <span id="jumlah-proses">0</span></li>
-                            <li>Menunggak: <span id="jumlah-menunggak">0</span></li>
+                            <li>Aktif: <span id="jumlah-menunggak">{{ $jumlahMenunggak }}</span></li>
+                            <li>Lunas: <span id="jumlah-lunas">{{ $jumlahLunas }}</span></li>
+                            <li>Ditolak: <span id="jumlah-proses">{{ $jumlahProses }}</span></li>
                         </ul>
                     </h6>
                 </div>
             </div>
-
-
             <footer>
                 <div class="footer clearfix mb-0 text-muted">
                     <div class="float-start">
                         <p>2025 &copy; SATRBIN</p>
                     </div>
-                    <div class="float-end">
-                        <p>Dibuat dengan <span class="text-danger"><i class="bi bi-heart"></i></span> oleh <a
-                                href="https://saugi.me">Bagas & Fahri</a></p>
+                    <div class="float-end" style="margin-right: 30px;">
+                        <p>Dibuat dengan 
+                            <span class="text-danger"><i class="bi bi-heart"></i></span>
+                            oleh
+                            <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
+                            &
+                            <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
+                        </p>
                     </div>
                 </div>
             </footer>
@@ -235,8 +233,27 @@
     </div>
     <script src="{{asset('admin-page/assets/js/bootstrap.js')}}"></script>
     <script src="{{asset('admin-page/assets/js/app.js')}}"></script>
-    <script src="{{asset('admin-page/assets/js/pinjaman.js')}}"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const searchInput = document.getElementById("search-pinjaman");
+            const tableRows = document.querySelectorAll(".table-container tbody tr");
 
+            searchInput.addEventListener("keyup", function() {
+                const searchValue = searchInput.value.toLowerCase();
+
+                tableRows.forEach(row => {
+                    const idPinjaman = row.children[0].textContent.toLowerCase(); // ID Pinjaman
+                    const nama = row.children[1].textContent.toLowerCase(); // Nama Anggota
+
+                    if (idPinjaman.includes(searchValue) || nama.includes(searchValue)) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

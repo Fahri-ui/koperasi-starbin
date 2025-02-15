@@ -60,11 +60,18 @@
                                 <span>Dashboard</span>
                             </a>
                         </li>
-
                         <li
                             class="sidebar-item">
-                            <a href="{{route('dataanggota')}}" class='sidebar-link'>
+                            <a href="{{route('profiladmin')}}" class='sidebar-link'>
                                 <i class="bi bi-person-badge-fill"></i>
+                                <span>Profil</span>
+                            </a>
+                        </li>
+
+                        <li
+                            class="sidebar-item ">
+                            <a href="{{route('dataanggota')}}" class='sidebar-link'>
+                                <i class="bi bi-person-lines-fill"></i>
                                 <span>Data Anggota</span>
                             </a>
                         </li>
@@ -95,7 +102,7 @@
                         </li>
 
                         <li
-                            class="sidebar-item  active">
+                            class="sidebar-item active ">
                             <a href="{{route('angsuran')}}" class='sidebar-link'>
                                 <i class="bi bi-coin"></i>
                                 <span>Angsuran</span>
@@ -115,30 +122,6 @@
                             <a href="{{route('statistikkeuangan')}}" class='sidebar-link'>
                                 <i class="bi bi-bar-chart-line-fill"></i>
                                 <span>Statistik Keuangan</span>
-                            </a>
-                        </li>
-
-                        <li
-                            class="sidebar-item  has-sub">
-                            <a href="#" class='sidebar-link'>
-                                <i class="bi bi-gear-fill"></i>
-                                <span>Pengaturan</span>
-                            </a>
-                            <ul class="submenu ">
-                                <li class="submenu-item ">
-                                    <a href="{{route('profiladmin')}}">Profil Admin</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="{{route('backup')}}">Backup</a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li
-                            class="sidebar-item  ">
-                            <a href="{{route('logaktivitas')}}" class='sidebar-link'>
-                                <i class="bi bi-clock-history"></i>
-                                <span>Log Aktivitas</span>
                             </a>
                         </li>
 
@@ -181,7 +164,11 @@
 
             <div class="container mt-4">
                 <h3>Data Angsuran</h3>
-                <p>Berikut adalah data angsuran yang telah dilakukan oleh anggota koperasi.</p>
+                <p>
+                    Berikut adalah data angsuran yang telah dilakukan oleh anggota koperasi.
+                    <br>
+                    data ini hanya menampilkan pinjaman yang belum lunas
+                </p>
 
                 <!-- Statistik Ringkasan -->
                 <div class="row mb-4">
@@ -189,7 +176,7 @@
                         <div class="card text-center">
                             <div class="card-body">
                                 <h5 class="card-title">Total Angsuran Dibayar</h5>
-                                <p class="card-text">Rp 500.000.000</p>
+                                <p class="card-text">Rp {{ number_format($totalDibayar, 0, ',', '.') }}</p>
                             </div>
                         </div>
                     </div>
@@ -197,7 +184,7 @@
                         <div class="card text-center">
                             <div class="card-body">
                                 <h5 class="card-title">Jumlah Angsuran Tersisa</h5>
-                                <p class="card-text">Rp 200.000.000</p>
+                                <p class="card-text">Rp {{ number_format($totalTersisa, 0, ',', '.') }}</p>
                             </div>
                         </div>
                     </div>
@@ -205,57 +192,60 @@
                         <div class="card text-center">
                             <div class="card-body">
                                 <h5 class="card-title">Jumlah Transaksi Angsuran</h5>
-                                <p class="card-text">150 Transaksi</p>
+                                <p class="card-text">{{ number_format($jumlahTransaksi, 0, ',', '.') }} Transaksi</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Tabel Data Angsuran -->
-                <div class="table-responsive">
+                <div class="table-responsive" style="font-size: 14px; max-height:500px; overflow:auto;">
                     <table class="table table-striped table-bordered">
                         <thead>
                             <tr>
-                                <th>No</th>
-                                <th>Nama Anggota</th>
-                                <th>Tanggal Bayar</th>
+                                <th>ID</th>
+                                <th>Nama </th>
+                                <th>jumlah pinjaman</th>
                                 <th>Nominal Bayar</th>
-                                <th>Sisa Pinjaman</th>
+                                <th>Tanggal Bayar</th>
+                                <th>Sisa Angsuran</th>
+                                <th>Jatuh Tempo</th>
+                                <th>metode</th>
                                 <th>Status</th>
-                                <th>Aksi</th>
+                                <th>Bukti</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach ($angsuran as $data)
                             <tr>
-                                <td>1</td>
-                                <td>Andi Setiawan</td>
-                                <td>2025-01-20</td>
-                                <td>Rp 2.000.000</td>
-                                <td>Rp 8.000.000</td>
-                                <td><span class="badge bg-warning">Belum Lunas</span></td>
+                                <td>{{ $data->id_pinjaman }}</td>
+                                <td>{{ $data->nama_anggota }}</td>
+                                <td>Rp {{ number_format($data->jumlah_pinjaman, 0, ',', '.') }}</td> <!-- Tambahan jumlah pinjaman -->
+                                <td>Rp {{ number_format($data->nominal_bayar, 0, ',', '.') }}</td>
+                                <td>{{ $data->tanggal_bayar }}</td> <!-- Hanya tanggal tanpa jam -->
                                 <td>
-                                    <button class="btn btn-sm btn-primary">Lihat Detail</button>
-                                    <button class="btn btn-sm btn-success">Cetak Bukti</button>
+                                    @if ($data->sisa_angsuran == 0)
+                                    Rp {{ number_format($data->jumlah_pinjaman, 0, ',', '.') }}
+                                    @else
+                                    Rp {{ number_format($data->sisa_angsuran, 0, ',', '.') }}
+                                    @endif
+                                </td>
+                                <td>{{ \Carbon\Carbon::parse($data->tanggal_jatuh_tempo)->format('d-m-Y') }}</td>
+                                <td>{{ $data->metode_pembayaran }}</td>
+                                <td>{{ $data->status }}</td>
+                                <td>
+                                    @if($data->nominal_bayar == 0)
+                                    <span class="text-warning">Belum Memulai Angsuran</span>
+                                    @elseif(!empty($data->bukti_pembayaran))
+                                    <a href="{{ route('admin.bukti.pembayaran', ['bukti' => basename($data->bukti_pembayaran)]) }}">Lihat Bukti</a>
+                                    @endif
                                 </td>
                             </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Rina Kusuma</td>
-                                <td>2025-01-18</td>
-                                <td>Rp 5.000.000</td>
-                                <td>Rp 0</td>
-                                <td><span class="badge bg-success">Lunas</span></td>
-                                <td>
-                                    <button class="btn btn-sm btn-primary">Lihat Detail</button>
-                                    <button class="btn btn-sm btn-success">Cetak Bukti</button>
-                                </td>
-                            </tr>
-                            <!-- Tambahkan data lainnya di sini -->
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
             </div>
-
 
             <footer>
                 <div class="footer clearfix mb-0 text-muted">
@@ -263,8 +253,13 @@
                         <p>2025 &copy; STARBIN</p>
                     </div>
                     <div class="float-end" style="margin-right: 30px;">
-                        <p>Dibuat dengan <span class="text-danger"><i class="bi bi-heart"></i></span> oleh <a
-                                href="https://saugi.me">Bagas & Fahri</a></p>
+                        <p>Dibuat dengan 
+                            <span class="text-danger"><i class="bi bi-heart"></i></span>
+                            oleh
+                            <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
+                            &
+                            <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
+                        </p>
                     </div>
                 </div>
             </footer>
