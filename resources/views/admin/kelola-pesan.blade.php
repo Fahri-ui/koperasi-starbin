@@ -77,7 +77,7 @@
                         </li>
 
                         <li
-                            class="sidebar-item  has-sub active">
+                            class="sidebar-item  has-sub">
                             <a href="#" class='sidebar-link'>
                                 <i class="bi bi-wallet-fill"></i>
                                 <span>Simpanan</span>
@@ -109,13 +109,19 @@
                             </a>
                         </li>
 
-                        <li
-                            class="sidebar-item  ">
-                            <a href="{{route('pangajuan')}}" class='sidebar-link'>
+                        <li class="sidebar-item">
+                            <a href="{{ route('pangajuan') }}" class="sidebar-link">
                                 <i class="bi bi-file-earmark-medical-fill"></i>
                                 <span>Data Pengajuan</span>
+                                @if ($jumlahPengajuanDalamProses > 0)
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{ $jumlahPengajuanDalamProses }}
+                                    <span class="visually-hidden">pengajuan dalam proses</span>
+                                </span>
+                                @endif
                             </a>
                         </li>
+
 
                         <li
                             class="sidebar-item  ">
@@ -124,18 +130,22 @@
                                 <span>Statistik Keuangan</span>
                             </a>
                         </li>
-
-                        <li class="sidebar-item">
+                        <li class="sidebar-item active">
                             <a href="{{ route('admin.sharemassage') }}" class="sidebar-link">
                                 <i class="bi bi-send"></i>
                                 <span>Kelola Pesan</span>
                             </a>
                         </li>
-                        <li
-                            class="sidebar-item  ">
-                            <a href="{{route('notifikasiadmin')}}" class='sidebar-link'>
+                        <li class="nav-item sidebar-item position-relative">
+                            <a href="{{ route('notifikasiadmin') }}" class="nav-link sidebar-link">
                                 <i class="bi bi-bell-fill"></i>
                                 <span>Notifikasi</span>
+                                @if ($jumlahNotifikasiBaru > 0)
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{ $jumlahNotifikasiBaru }}
+                                    <span class="visually-hidden">notifikasi baru</span>
+                                </span>
+                                @endif
                             </a>
                         </li>
 

@@ -196,11 +196,11 @@
                                 @csrf
                                 <div class="form-group mb-3">
                                     <label for="loan-amount">Jumlah Pinjaman</label>
-                                    <input type="number" class="form-control" id="loan-amount" name="loan-amount" placeholder="Masukkan jumlah pinjaman" min="10000" step="10000" required>
+                                    <input type="number" class="form-control" id="loan-amount" name="jumlah_pinjaman" placeholder="Masukkan jumlah pinjaman" min="10000" step="10000" required>
                                 </div>
                                 <div class="form-group mb-3">
-                                    <label for="loan-purpose">Tujuan Pinjaman</label>
-                                    <textarea class="form-control" id="loan-purpose" name="loan-purpose" placeholder="Jelaskan tujuan pinjaman Anda" rows="3" required></textarea>
+                                    <label for="alasan">Tujuan Pinjaman</label>
+                                    <textarea class="form-control" id="alasan" name="alasan" placeholder="Jelaskan tujuan pinjaman Anda" rows="3" required></textarea>
                                 </div>
                                 <div class="form-group text-center">
                                     <button type="submit" class="btn btn-primary">Ajukan Pinjaman</button>
@@ -241,6 +241,7 @@
                                         <th>Tanggal</th>
                                         <th>Jumlah</th>
                                         <th>Tipe</th>
+                                        <th>Tujuan</th> <!-- Tambahkan kolom baru -->
                                         <th>Metode</th>
                                         <th>Bukti</th>
                                         <th>Status</th>
@@ -253,6 +254,7 @@
                                         <td>{{ \Carbon\Carbon::parse($transaksi->tanggal)->format('d F Y') }}</td>
                                         <td>Rp {{ number_format($transaksi['jumlah'], 0, ',', '.') }}</td>
                                         <td>{{ $transaksi['tipe'] }}</td>
+                                        <td>{{ $transaksi['tujuan'] ?? '-' }}</td> <!-- Menampilkan alasan -->
                                         <td>{{ $transaksi['metode'] ?? '-' }}</td>
                                         <td>
                                             @if(!empty($transaksi->bukti))
@@ -265,7 +267,7 @@
                                     </tr>
                                     @empty
                                     <tr>
-                                        <td colspan="7" class="text-center">Tidak ada transaksi.</td>
+                                        <td colspan="8" class="text-center">Tidak ada transaksi.</td>
                                     </tr>
                                     @endforelse
                                 </tbody>
@@ -274,7 +276,6 @@
                         </div>
                     </div>
                 </section>
-
 
                 <!-- Formulir Pembayaran Pinjaman -->
                 @if ($pinjamanAktif)

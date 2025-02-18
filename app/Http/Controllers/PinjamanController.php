@@ -27,7 +27,9 @@ class PinjamanController extends Controller
                 DB::raw("'Pengajuan Pinjaman' as tipe"),
                 DB::raw("NULL as metode"),
                 DB::raw("NULL as bukti"),
-                'status'
+                'status',
+                'alasan as tujuan' // Tambahkan kolom ini
+
             )
             ->union(
                 RiwayatPembayaran::join('pinjaman', 'riwayat_pembayaran.pinjaman_id', '=', 'pinjaman.id')
@@ -39,7 +41,8 @@ class PinjamanController extends Controller
                         DB::raw("'Pembayaran Pinjaman' as tipe"),
                         'riwayat_pembayaran.metode_pembayaran as metode',
                         'riwayat_pembayaran.bukti_pembayaran as bukti',
-                        DB::raw("'Berhasil' as status")
+                        DB::raw("'Berhasil' as status"),
+                        DB::raw("NULL as tujuan") // Supaya union tetap seimbang
                     )
             )
             ->orderByDesc('tanggal')
@@ -135,27 +138,25 @@ class PinjamanController extends Controller
 
     public function ajukanPinjaman(Request $request)
     {
+
         $request->validate([
-            'loan-amount' => 'required|numeric|min:10000',
-            'loan-purpose' => 'required|string|max:255',
+            'jumlah_pinjaman' => 'required|numeric|min:10000',
+            'alasan' => 'required|string|max:255',
         ]);
-
-        $userId = Auth::id();
-
-        // Simpan pengajuan pinjaman dengan tanggal tanpa jam
-        Pinjaman::create([
-            'user_id' => $userId,
-            'jumlah_pinjaman' => $request->input('loan-amount'),
-            'sisa_angsuran' => $request->input('loan-amount'),
-            'tujuan' => $request->input('loan-purpose'),
+        
+        $pinjaman = Pinjaman::create([
+            'user_id' => Auth::id(),
+            'jumlah_pinjaman' => $request->input('jumlah_pinjaman'),
+            'sisa_angsuran' => $request->input('jumlah_pinjaman'),
+            'alasan' => $request->input('alasan'),
             'status' => 'Dalam Proses',
-            // Format tanggal untuk menghilangkan jam
-            'tanggal_pengajuan' => Carbon::now()->format('Y-m-d'), // Hanya tanggal
-            'tanggal_jatuh_tempo' => Carbon::now()->addMonths(3)->format('Y-m-d'), // Hanya tanggal
+            'tanggal_pengajuan' => Carbon::now()->format('Y-m-d'),
+            'tanggal_jatuh_tempo' => Carbon::now()->addMonths(3)->format('Y-m-d'),
         ]);
 
         return redirect()->back()->with('success', 'Pengajuan pinjaman berhasil dikirim.');
     }
+
 
     public function bayarPinjaman(Request $request)
     {

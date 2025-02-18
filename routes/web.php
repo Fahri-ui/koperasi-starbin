@@ -83,6 +83,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/kelola-pesan', [ShareMassageController::class, 'store'])->name('admin.sharemassage.store');
         Route::delete('/kelola-pesan/{id}', [ShareMassageController::class, 'destroy'])->name('admin.sharemassage.destroy');
         Route::get('/Notifikasi', [NotifikasiAdminController::class, 'notifikasiadmin'])->name('notifikasiadmin');
+        Route::patch('/admin/notifikasi/{id}/dibalas', [NotifikasiAdminController::class, 'tandaiSudahDibalas'])->name('notifikasi.tandaiSudahDibalas');
         Route::get('/Laporan', [LaporanController::class, 'laporan'])->name('laporan');
     });
 
@@ -100,6 +101,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/bukti/{bukti}', [BuktiPembayaranController::class, 'show'])->name('bukti.pembayaran');
         Route::get('/notifikasi', [NotifikasiController::class, 'notifikasi'])->name('notifikasi');
         Route::get('/bantuan', [BantuanController::class, 'bantuan'])->name('bantuan');
+        Route::post('/user/kirim-pesan', [BantuanController::class, 'kirimPesan'])->name('user.kirim-pesan');
     });
 
     // Route logout tetap di luar grup agar bisa digunakan oleh siapa saja yang sudah login

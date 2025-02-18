@@ -131,7 +131,7 @@
                             </a>
                         </li>
 
-                        <li class="nav-item sidebar-item position-relative">
+                        <li class="nav-item sidebar-item position-relative active">
                             <a href="{{ route('notifikasi') }}" class="nav-link sidebar-link">
                                 <i class="bi bi-bell"></i>
                                 <span>Notifikasi</span>
@@ -185,8 +185,8 @@
                     </h4>
 
                     @foreach ($notifikasi as $item)
-                    <div class="card shadow-sm p-4 mb-6 rounded border-1 
-                    {{ $item->is_read ? '' : 'border-primary' }}">
+                    @if ($item->type !== 'info') {{-- Sembunyikan notifikasi dengan type 'info' --}}
+                    <div class="card shadow-sm p-4 mb-6 rounded border-1 {{ $item->is_read ? '' : 'border-primary' }}">
                         <div class="d-flex align-items-start">
                             <div class="icon-container">
                                 <i class="bi {{ $item->icon }} text-{{ $item->type }}"></i>
@@ -205,9 +205,9 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                     @endforeach
                     @endforeach
-
                     @if ($notifikasiPerBulan->isEmpty())
                     <div class="alert alert-info text-center mt-4">
                         <i class="bi bi-info-circle-fill"></i> Tidak ada notifikasi terbaru.

@@ -12,20 +12,22 @@ class NotifikasiController extends Controller
     public function notifikasi()
     {
         $userId = auth()->id();
-
+        
         // Tandai semua notifikasi sebagai telah dibaca saat user membuka halaman
-        Notifikasi::where('user_id', $userId)
+        Notifikasi::where(function ($query) use ($userId) {
+            $query->where('user_id', $userId)
+                ->orWhere('user_id', 0); // 🔥 Global Message juga ditandai "dibaca"
+        })
             ->where('is_read', false)
             ->update(['is_read' => true]);
 
-        // Ambil notifikasi dalam 1 tahun terakhir
-        $notifikasi = Notifikasi::where('user_id', $userId)
-            ->where('created_at', '>=', now()->subYear())
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        $notifikasi = Notifikasi::where('user_id', 0) // Global Message
-            ->orWhere('user_id', $userId) // Personal Message
+        // Ambil notifikasi dalam 1 tahun terakhir, kecuali "info"
+        $notifikasi = Notifikasi::where(function ($query) use ($userId) {
+            $query->where('user_id', 0) // Global Message
+                ->orWhere('user_id', $userId); // Personal Message
+        })
+            ->where('created_at', '>=', now()->subYear()) // Hanya 1 tahun terakhir
+            ->where('type', '!=', 'info') // Tidak tampilkan "info"
             ->orderBy('created_at', 'desc')
             ->get();
 

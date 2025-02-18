@@ -16,8 +16,11 @@ class Notifikasi extends Model
         'message',
         'type',
         'icon',
-        'is_read',
+        'is_read', 
+        'is_from_user', 
+        'status_balasan',
         'expired_at',
+        'nama_pengirim',
     ];
 
     public function user()

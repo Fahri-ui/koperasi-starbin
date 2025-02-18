@@ -20,9 +20,9 @@ class DataPengajuanController extends Controller
                       });
             })
             ->get();
-
+    
         return view('admin.data-pengajuan', compact('pengajuan'));
-    }
+    }    
 
     public function update(Request $request, $id)
     {

@@ -137,6 +137,24 @@
                     <i class="bi bi-justify fs-3"></i>
                 </a>
             </header>
+
+             <!-- Jika ada error -->
+             @if ($errors->any())
+            <div class="alert alert-danger" style="background-color: salmon; color:black; font-weight:bold; border-radius:20px; padding:10px; margin-bottom:20px;">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+
+            <!-- Jika berhasil -->
+            @if (Session::has('success'))
+            <div class="alert alert-success" style="background-color: lightgreen; color:black; font-weight:bold; border-radius:20px;">
+                {{ Session::get('success') }}
+            </div>
+            @endif
             <div class="container mt-4">
                 <!-- Judul Halaman -->
                 <div class="text-center mb-4">
@@ -170,7 +188,7 @@
                             </h2>
                             <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#helpAccordion">
                                 <div class="accordion-body">
-                                    Tidak ada, Tidak ada denda kami adalah koperasi PALIINGGGG BAIKKK SEDUNIA 
+                                    Tidak ada, Tidak ada denda kami adalah koperasi PALIINGGGG BAIKKK SEDUNIA
                                 </div>
                             </div>
                         </div>
@@ -196,35 +214,13 @@
                     <div class="card">
                         <div class="card-body">
                             <h5>Hubungi Kami</h5>
-                            <form id="contact-form">
-                                <!-- Nama -->
-                                <div class="form-group mb-3">
-                                    <label for="contact-name">Nama</label>
-                                    <input type="text" class="form-control" id="contact-name" name="contact-name" placeholder="Masukkan nama Anda" required>
+                            <form action="{{ route('user.kirim-pesan') }}" method="POST">
+                                @csrf
+                                <div class="mb-3">
+                                    <label for="message" class="form-label">Pesan Anda</label>
+                                    <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
                                 </div>
-
-                                <!-- Email -->
-                                <div class="form-group mb-3">
-                                    <label for="contact-email">Email</label>
-                                    <input type="email" class="form-control" id="contact-email" name="contact-email" placeholder="Masukkan email Anda" required>
-                                </div>
-
-                                <!-- Subjek -->
-                                <div class="form-group mb-3">
-                                    <label for="contact-subject">Subjek</label>
-                                    <input type="text" class="form-control" id="contact-subject" name="contact-subject" placeholder="Masukkan subjek pesan" required>
-                                </div>
-
-                                <!-- Isi Pesan -->
-                                <div class="form-group mb-3">
-                                    <label for="contact-message">Pesan</label>
-                                    <textarea class="form-control" id="contact-message" name="contact-message" rows="5" placeholder="Tuliskan pesan Anda di sini" required></textarea>
-                                </div>
-
-                                <!-- Tombol Kirim -->
-                                <div class="form-group text-center">
-                                    <button type="submit" class="btn btn-primary">Kirim Pesan</button>
-                                </div>
+                                <button type="submit" class="btn btn-primary">Kirim Pesan</button>
                             </form>
                         </div>
                     </div>
@@ -249,7 +245,7 @@
                         <p>2025 &copy; STARBIN</p>
                     </div>
                     <div class="float-end" style="margin-right: 30px;">
-                        <p>Dibuat dengan 
+                        <p>Dibuat dengan
                             <span class="text-danger"><i class="bi bi-heart"></i></span>
                             oleh
                             <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>

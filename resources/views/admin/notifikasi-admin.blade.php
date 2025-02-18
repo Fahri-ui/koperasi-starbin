@@ -4,14 +4,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notifikasi</title>
+    <title>Pengingat dan Informasi</title>
 
-    <link rel="stylesheet" href="{{asset('admin-page/assets/css/main/app.css')}}">
-    <link rel="stylesheet" href="{{asset('admin-page/assets/css/main/app-dark.css')}}">
-    <link rel="shortcut icon" href="{{asset('admin-page/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/x-icon">
-    <link rel="shortcut icon" href="{{asset('admin-page/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/png">
-    <link rel="stylesheet" href="{{asset('admin-page/assets/css/notifikasi.css')}}">
+    <link rel="stylesheet" href="{{asset('dist/assets/css/main/app.css/')}}">
+    <link rel="stylesheet" href="{{asset('dist/assets/css/main/app-dark.css/')}}">
+    <link rel="shortcut icon" href="{{asset('dist/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{asset('dist/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/png">
+    <link rel="stylesheet" href="{{asset('dist/assets/css/notifikasi.css')}}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
 </head>
+
+<style>
+    .card {
+        width: 98%;
+        max-width: 1000px;
+        border-radius: 10px;
+        padding: 15px;
+        display: flex;
+        align-items: left;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .icon-container i {
+        font-size: 24px;
+        padding: 10px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .text-success {
+        color: #28a745 !important;
+    }
+
+    .text-warning {
+        color: #ff9800 !important;
+    }
+
+    .text-danger {
+        color: #dc3545 !important;
+    }
+
+    .text-primary {
+        color: #007bff !important;
+    }
+</style>
 
 <body>
     <div id="app">
@@ -20,7 +59,7 @@
                 <div class="sidebar-header position-relative">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="logo" style="width: 50px; height: 50px; margin-left: 15%;">
-                            <img src="{{asset('admin-page/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" alt="Logo" srcset="" style="width: 100%; height: 100%; object-fit: cover;">
+                            <img src="{{asset('dist/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" alt="Logo" srcset="" style="width: 100%; height: 100%; object-fit: cover;">
                             <h6 style="margin-top: 5px; margin-left: -15%;">Koperasi</h6>
                             <h5 style="margin-left: -35%; margin-top: -20%; ">STARBIN</h5>
                         </div>
@@ -58,11 +97,18 @@
                                 <span>Dashboard</span>
                             </a>
                         </li>
+                        <li
+                            class="sidebar-item">
+                            <a href="{{route('profiladmin')}}" class='sidebar-link'>
+                                <i class="bi bi-person-badge-fill"></i>
+                                <span>Profil</span>
+                            </a>
+                        </li>
 
                         <li
                             class="sidebar-item ">
                             <a href="{{route('dataanggota')}}" class='sidebar-link'>
-                                <i class="bi bi-person-badge-fill"></i>
+                                <i class="bi bi-person-lines-fill"></i>
                                 <span>Data Anggota</span>
                             </a>
                         </li>
@@ -100,11 +146,16 @@
                             </a>
                         </li>
 
-                        <li
-                            class="sidebar-item  ">
-                            <a href="{{route('pangajuan')}}" class='sidebar-link'>
+                        <li class="sidebar-item">
+                            <a href="{{ route('pangajuan') }}" class="sidebar-link">
                                 <i class="bi bi-file-earmark-medical-fill"></i>
                                 <span>Data Pengajuan</span>
+                                @if ($jumlahPengajuanDalamProses > 0)
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{ $jumlahPengajuanDalamProses }}
+                                    <span class="visually-hidden">pengajuan dalam proses</span>
+                                </span>
+                                @endif
                             </a>
                         </li>
 
@@ -115,39 +166,24 @@
                                 <span>Statistik Keuangan</span>
                             </a>
                         </li>
-
-                        <li
-                            class="sidebar-item  has-sub">
-                            <a href="#" class='sidebar-link'>
-                                <i class="bi bi-gear-fill"></i>
-                                <span>Pengaturan</span>
-                            </a>
-                            <ul class="submenu ">
-                                <li class="submenu-item ">
-                                    <a href="{{route('profiladmin')}}">Profil Admin</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="{{route('backup')}}">Backup</a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li
-                            class="sidebar-item  ">
-                            <a href="{{route('logaktivitas')}}" class='sidebar-link'>
-                                <i class="bi bi-clock-history"></i>
-                                <span>Log Aktivitas</span>
+                        <li class="sidebar-item">
+                            <a href="{{ route('admin.sharemassage') }}" class="sidebar-link">
+                                <i class="bi bi-send"></i>
+                                <span>Kelola Pesan</span>
                             </a>
                         </li>
-
-                        <li
-                            class="sidebar-item active ">
-                            <a href="{{route('notifikasiadmin')}}" class='sidebar-link'>
+                        <li class="nav-item sidebar-item position-relative active">
+                            <a href="{{ route('notifikasiadmin') }}" class="nav-link sidebar-link">
                                 <i class="bi bi-bell-fill"></i>
                                 <span>Notifikasi</span>
+                                @if ($jumlahNotifikasiBaru > 0)
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{ $jumlahNotifikasiBaru }}
+                                    <span class="visually-hidden">notifikasi baru</span>
+                                </span>
+                                @endif
                             </a>
                         </li>
-
 
                         <li
                             class="sidebar-item  ">
@@ -177,38 +213,77 @@
                 </a>
             </header>
 
-            <div class="container mt-4">
-                <h1 class="text-center">📢 Halaman Notifikasi Admin</h1>
-                <h5 class="text-center text-primary">February 2025</h5>
-            </div>
+            <div class="container">
+                <h2 class="text-center fw-bold my-4">📢 Halaman Notifikasi Admin</h2>
 
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="bi bi-calendar-x"></i> 
-                <strong>Perhatian!</strong> 
-                Anda memiliki notifikasi baru: pesan
+                <div class="d-flex flex-column align-items-center">
+                    @foreach ($notifikasiPerBulan as $bulan => $notifikasi)
+                    <h4 class="text-primary fw-bold mt-3">
+                        {{ \Carbon\Carbon::parse($bulan . '-01')->translatedFormat('F Y') }}
+                    </h4>
+
+                    @foreach ($notifikasi as $item)
+                    <div class="card shadow-sm p-4 mb-3 rounded border-2 {{ $item->status_balasan == 'pending' ? 'border-danger' : 'border-success' }}">
+                        <div class="d-flex align-items-start justify-content-between">
+                            <div class="me-3">
+                                <i class="bi {{ $item->icon }} text-{{ $item->type }} fs-4"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h6 class="fw-bold text-{{ $item->type }}">
+                                    {{ $item->is_from_user ? 'Pesan dari User' : 'Pesan Umum' }}
+                                </h6>
+                                <p class="mb-1">{{ $item->message }}</p>
+                                <small class="text-muted">Diterima: {{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d F Y') }}</small>
+                                <p class="mb-1 text-muted">
+                                    pengirim : {{$item->nama_pengirim}}
+                                </p>
+                            </div>
+
+                            <div class="d-flex flex-column align-items-end">
+                                @if ($item->status_balasan == 'pending')
+                                <form action="{{ route('notifikasi.tandaiSudahDibalas', $item->id) }}" method="POST" class="mb-2">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="btn btn-sm btn-primary">Tandai Telah Dibalas</button>
+                                </form>
+                                <span class="badge bg-danger">Belum Dibalas</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                    @endforeach
+
+                    @if ($notifikasiPerBulan->isEmpty())
+                    <div class="alert alert-info text-center mt-4">
+                        <i class="bi bi-info-circle-fill"></i> Tidak ada notifikasi terbaru.
+                    </div>
+                    @endif
+                </div>
             </div>
-            
 
             <footer>
                 <div class="footer clearfix mb-0 text-muted">
                     <div class="float-start">
-                        <p>2025 &copy; STARBIN</p>
+                        <p>2025 &copy; SATRBIN</p>
                     </div>
-                    <div class="float-end">
-                        <p>Dibuat dengan <span class="text-danger"><i class="bi bi-heart"></i></span> oleh <a
-                                href="https://saugi.me">Bagas & Fahri</a></p>
+                    <div class="float-end" style="margin-right: 30px;">
+                        <p>Dibuat dengan
+                            <span class="text-danger"><i class="bi bi-heart"></i></span>
+                            oleh
+                            <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
+                            &
+                            <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
+                        </p>
                     </div>
                 </div>
             </footer>
         </div>
-
-
-    </div>
-    <script src="{{asset('admin-page/assets/js/bootstrap.js')}}"></script>
-    <script src="{{asset('admin-page/assets/js/app.js')}}"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="{{asset('dist/assets/js/bootstrap.js')}}"></script>
+        <script src="{{asset('dist/assets/js/app.js')}}"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </body>
 

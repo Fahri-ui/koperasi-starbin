@@ -102,18 +102,23 @@
                         </li>
 
                         <li
-                            class="sidebar-item active ">
+                            class="sidebar-item  active">
                             <a href="{{route('angsuran')}}" class='sidebar-link'>
                                 <i class="bi bi-coin"></i>
                                 <span>Angsuran</span>
                             </a>
                         </li>
 
-                        <li
-                            class="sidebar-item  ">
-                            <a href="{{route('pangajuan')}}" class='sidebar-link'>
+                        <li class="sidebar-item">
+                            <a href="{{ route('pangajuan') }}" class="sidebar-link">
                                 <i class="bi bi-file-earmark-medical-fill"></i>
                                 <span>Data Pengajuan</span>
+                                @if ($jumlahPengajuanDalamProses > 0)
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{ $jumlahPengajuanDalamProses }}
+                                    <span class="visually-hidden">pengajuan dalam proses</span>
+                                </span>
+                                @endif
                             </a>
                         </li>
 
@@ -124,15 +129,24 @@
                                 <span>Statistik Keuangan</span>
                             </a>
                         </li>
-
-                        <li
-                            class="sidebar-item  ">
-                            <a href="{{route('notifikasiadmin')}}" class='sidebar-link'>
-                                <i class="bi bi-bell-fill"></i>
-                                <span>Notifikasi</span>
+                        <li class="sidebar-item">
+                            <a href="{{ route('admin.sharemassage') }}" class="sidebar-link">
+                                <i class="bi bi-send"></i>
+                                <span>Kelola Pesan</span>
                             </a>
                         </li>
-
+                        <li class="nav-item sidebar-item position-relative">
+                            <a href="{{ route('notifikasiadmin') }}" class="nav-link sidebar-link">
+                                <i class="bi bi-bell-fill"></i>
+                                <span>Notifikasi</span>
+                                @if ($jumlahNotifikasiBaru > 0)
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{ $jumlahNotifikasiBaru }}
+                                    <span class="visually-hidden">notifikasi baru</span>
+                                </span>
+                                @endif
+                            </a>
+                        </li>
 
                         <li
                             class="sidebar-item  ">
@@ -253,7 +267,7 @@
                         <p>2025 &copy; STARBIN</p>
                     </div>
                     <div class="float-end" style="margin-right: 30px;">
-                        <p>Dibuat dengan 
+                        <p>Dibuat dengan
                             <span class="text-danger"><i class="bi bi-heart"></i></span>
                             oleh
                             <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>

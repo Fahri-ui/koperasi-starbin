@@ -110,13 +110,19 @@
                             </a>
                         </li>
 
-                        <li
-                            class="sidebar-item active ">
-                            <a href="{{route('pangajuan')}}" class='sidebar-link'>
+                        <li class="sidebar-item active">
+                            <a href="{{ route('pangajuan') }}" class="sidebar-link">
                                 <i class="bi bi-file-earmark-medical-fill"></i>
                                 <span>Data Pengajuan</span>
+                                @if ($jumlahPengajuanDalamProses > 0)
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{ $jumlahPengajuanDalamProses }}
+                                    <span class="visually-hidden">pengajuan dalam proses</span>
+                                </span>
+                                @endif
                             </a>
                         </li>
+
 
                         <li
                             class="sidebar-item  ">
@@ -125,12 +131,22 @@
                                 <span>Statistik Keuangan</span>
                             </a>
                         </li>
-
-                        <li
-                            class="sidebar-item  ">
-                            <a href="{{route('notifikasiadmin')}}" class='sidebar-link'>
+                        <li class="sidebar-item">
+                            <a href="{{ route('admin.sharemassage') }}" class="sidebar-link">
+                                <i class="bi bi-send"></i>
+                                <span>Kelola Pesan</span>
+                            </a>
+                        </li>
+                        <li class="nav-item sidebar-item position-relative">
+                            <a href="{{ route('notifikasiadmin') }}" class="nav-link sidebar-link">
                                 <i class="bi bi-bell-fill"></i>
                                 <span>Notifikasi</span>
+                                @if ($jumlahNotifikasiBaru > 0)
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{ $jumlahNotifikasiBaru }}
+                                    <span class="visually-hidden">notifikasi baru</span>
+                                </span>
+                                @endif
                             </a>
                         </li>
 
@@ -209,10 +225,9 @@
                             <tr>
                                 <th>No</th>
                                 <th>Nama Anggota</th>
-                                <th>ID Pinjaman</th>
-                                <th>Jenis Pengajuan</th>
                                 <th>Tanggal Pengajuan</th>
                                 <th>Jumlah Pengajuan</th>
+                                <th>Alasan</th> <!-- Kolom baru -->
                                 <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
@@ -222,10 +237,9 @@
                             <tr>
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $item->user->fullname }}</td>
-                                <td>{{$item->id}}</td>
-                                <td>Pengajuan Pinjaman</td>
                                 <td>{{ $item->tanggal_pengajuan }}</td>
                                 <td>Rp {{ number_format($item->jumlah_pinjaman, 0, ',', '.') }}</td>
+                                <td>{{ $item->alasan ?? '-' }}</td> <!-- Menampilkan alasan sebagai Tujuan -->
                                 <td>
                                     @if($item->status == 'Dalam Proses')
                                     <span class="badge bg-warning">Menunggu</span>
@@ -248,67 +262,66 @@
                         </tbody>
                     </table>
                 </div>
+
+                <footer>
+                    <div class="footer clearfix mb-0 text-muted">
+                        <div class="float-start">
+                            <p>2025 &copy; STARBIN</p>
+                        </div>
+                        <div class="float-end" style="margin-right: 30px;">
+                            <p>Dibuat dengan
+                                <span class="text-danger"><i class="bi bi-heart"></i></span>
+                                oleh
+                                <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
+                                &
+                                <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
+                            </p>
+                        </div>
+                    </div>
+                </footer>
             </div>
-
-            <footer>
-                <div class="footer clearfix mb-0 text-muted">
-                    <div class="float-start">
-                        <p>2025 &copy; STARBIN</p>
-                    </div>
-                    <div class="float-end" style="margin-right: 30px;">
-                        <p>Dibuat dengan 
-                            <span class="text-danger"><i class="bi bi-heart"></i></span>
-                            oleh
-                            <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
-                            &
-                            <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
-                        </p>
-                    </div>
-                </div>
-            </footer>
         </div>
-    </div>
-    <script src="{{asset('admin-page/assets/js/bootstrap.js')}}"></script>
-    <script src="{{asset('admin-page/assets/js/app.js')}}"></script>
-    <!-- Script AJAX untuk update status -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            document.querySelectorAll(".btn-ubah-status").forEach(button => {
-                button.addEventListener("click", function() {
-                    let id = this.getAttribute("data-id");
-                    let status = this.getAttribute("data-status");
+        <script src="{{asset('admin-page/assets/js/bootstrap.js')}}"></script>
+        <script src="{{asset('admin-page/assets/js/app.js')}}"></script>
+        <!-- Script AJAX untuk update status -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                document.querySelectorAll(".btn-ubah-status").forEach(button => {
+                    button.addEventListener("click", function() {
+                        let id = this.getAttribute("data-id");
+                        let status = this.getAttribute("data-status");
 
-                    fetch(`/data-pengajuan/${id}/update`, {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                                "Accept": "application/json",
-                                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
-                            },
-                            body: JSON.stringify({
-                                status: status
-                            }),
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                alert("Status berhasil diperbarui!");
-                                location.reload();
-                            } else {
-                                alert("Gagal memperbarui status: " + data.error);
-                            }
-                        })
-                        .catch(error => {
-                            console.error("Error:", error);
-                            alert("Terjadi kesalahan saat memperbarui status.");
-                        });
+                        fetch(`/data-pengajuan/${id}/update`, {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "Accept": "application/json",
+                                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+                                },
+                                body: JSON.stringify({
+                                    status: status
+                                }),
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    alert("Status berhasil diperbarui!");
+                                    location.reload();
+                                } else {
+                                    alert("Gagal memperbarui status: " + data.error);
+                                }
+                            })
+                            .catch(error => {
+                                console.error("Error:", error);
+                                alert("Terjadi kesalahan saat memperbarui status.");
+                            });
+                    });
                 });
             });
-        });
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Link Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <!-- Link Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
