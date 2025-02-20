@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Simpanan;
 use App\Models\Pinjaman;
 use App\Models\RiwayatPembayaran;
+use Illuminate\Support\Facades\DB;
 
 class DashboardAdminController extends Controller
 {
@@ -50,6 +51,24 @@ class DashboardAdminController extends Controller
             ->distinct('user_id')
             ->count('user_id');
 
+            $pinjamanBulanan = DB::table('pinjaman')
+            ->select(DB::raw('DATE_FORMAT(tanggal_pengajuan, "%b") as bulan'), DB::raw('SUM(jumlah_pinjaman) as total'))
+            ->whereYear('tanggal_pengajuan', date('Y')) // Ambil tahun ini saja
+            ->groupBy('bulan')
+            ->orderBy(DB::raw('STR_TO_DATE(bulan, "%b")')) // Urutkan sesuai urutan bulan
+            ->pluck('total', 'bulan')
+            ->toArray();
+    
+        // Ambil data angsuran per bulan
+        $angsuranBulanan = DB::table('riwayat_pembayaran')
+            ->select(DB::raw('DATE_FORMAT(tanggal_pembayaran, "%b") as bulan'), DB::raw('SUM(jumlah_pembayaran) as total'))
+            ->whereYear('tanggal_pembayaran', date('Y'))
+            ->groupBy('bulan')
+            ->orderBy(DB::raw('STR_TO_DATE(bulan, "%b")'))
+            ->pluck('total', 'bulan')
+            ->toArray();
+    
+
         return view('admin.dashboard-admin', compact(
             'jumlahAnggota',
             'jumlahSimpananWajib',
@@ -63,7 +82,9 @@ class DashboardAdminController extends Controller
             'totalAngsuran',
             'totalPengajuan',
             'totalDenda',
-            'jumlahAnggotaDenda'
+            'jumlahAnggotaDenda',
+            'pinjamanBulanan',
+            'angsuranBulanan'
         ));
     }
 }

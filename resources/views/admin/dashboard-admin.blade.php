@@ -300,13 +300,21 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            // Pastikan data dari backend tersedia
+            let pinjamanData = {!! json_encode($pinjamanBulanan) !!};
+            let angsuranData = {!! json_encode($angsuranBulanan) !!};
             let totalSimpananWajib = {{ $totalSimpananWajib }};
             let totalSimpananSukarela = {{ $totalSimpananSukarela }};
             let totalPinjaman = {{ $totalPinjaman }};
             let totalAngsuran = {{ $totalAngsuran }};
             let totalDenda = {{ $totalDenda }};
 
-            // Pie Chart Simpanan (Ditinggikan agar tidak keluar dari kotak)
+            // Ambil label bulan dan data hanya yang memiliki nilai
+            let labelsBulan = Object.keys(pinjamanData); // ["Jan", "Feb", "Mar", ...]
+            let pinjamanValues = Object.values(pinjamanData);
+            let angsuranValues = Object.values(angsuranData);
+
+            // **PIE CHART** Simpanan
             new Chart(document.getElementById("pieChart"), {
                 type: "pie",
                 data: {
@@ -322,12 +330,12 @@
                     layout: {
                         padding: {
                             top: 20,
-                            bottom: 20 // Tambah padding agar tidak mepet
+                            bottom: 20
                         }
                     },
                     plugins: {
                         legend: {
-                            position: 'top', // Memindahkan legend ke atas agar lebih rapi
+                            position: 'top',
                             labels: {
                                 padding: 20
                             }
@@ -336,14 +344,14 @@
                 }
             });
 
-            // Line Chart Pinjaman & Angsuran
+            // **LINE CHART** Pinjaman & Angsuran
             new Chart(document.getElementById("lineChart"), {
                 type: "line",
                 data: {
-                    labels: ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun"],
+                    labels: labelsBulan, // Hanya bulan dengan data
                     datasets: [{
                             label: "Pinjaman",
-                            data: [320, 400, 380, 450, 420, 460],
+                            data: pinjamanValues,
                             backgroundColor: "rgba(54, 162, 235, 0.2)",
                             borderColor: "rgba(54, 162, 235, 1)",
                             borderWidth: 2,
@@ -354,7 +362,7 @@
                         },
                         {
                             label: "Angsuran",
-                            data: [290, 310, 340, 370, 350, 390],
+                            data: angsuranValues,
                             backgroundColor: "rgba(255, 159, 64, 0.2)",
                             borderColor: "rgba(255, 159, 64, 1)",
                             borderWidth: 2,
@@ -370,7 +378,7 @@
                     maintainAspectRatio: false,
                     layout: {
                         padding: {
-                            bottom: 30 // Tambah padding agar label bulan tidak keluar
+                            bottom: 30
                         }
                     },
                     plugins: {
@@ -381,9 +389,7 @@
                             align: "top",
                             color: "#fff",
                             backgroundColor: function(context) {
-                                let datasetIndex = context.datasetIndex;
-                                let colors = ["#007bff", "#6c757d"];
-                                return colors[datasetIndex];
+                                return context.datasetIndex === 0 ? "#007bff" : "#6c757d";
                             },
                             borderRadius: 4,
                             font: {
@@ -411,7 +417,7 @@
                 plugins: [ChartDataLabels]
             });
 
-            // Bar Chart Statistik Keuangan (Tambahan padding agar label tidak keluar)
+            // **BAR CHART** Statistik Keuangan
             new Chart(document.getElementById("barChart"), {
                 type: "bar",
                 data: {
@@ -427,7 +433,7 @@
                     maintainAspectRatio: false,
                     layout: {
                         padding: {
-                            bottom: 30 // Tambah padding agar label tidak keluar dari chart
+                            bottom: 30
                         }
                     },
                     plugins: {
@@ -441,7 +447,7 @@
                     scales: {
                         x: {
                             ticks: {
-                                padding: 10, // Jarak antara label dan sumbu agar lebih rapi
+                                padding: 10,
                                 font: {
                                     size: 12
                                 }
@@ -455,7 +461,6 @@
             });
         });
     </script>
-
 
 </body>
 
