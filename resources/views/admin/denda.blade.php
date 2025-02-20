@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Statistik Keuangan</title>
+    <title>Dashboard Koperasi STARBIN</title>
 
-    <link rel="stylesheet" href="{{asset('admin-page/assets/css/main/app.css')}}">
-    <link rel="stylesheet" href="{{asset('admin-page/assets/css/main/app-dark.css')}}">
-    <link rel="shortcut icon" href="{{asset('admin-page/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/x-icon">
-    <link rel="shortcut icon" href="{{asset('admin-page/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/png">
+    <link rel="stylesheet" href="{{ asset('admin-page/assets/css/main/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('admin-page/assets/css/main/app-dark.css') }}">
+    <link rel="shortcut icon" href="{{ asset('admin-page/assets/images/logo/Logo Koperasi STARBIN REAL (1).png') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('admin-page/assets/images/logo/Logo Koperasi STARBIN REAL (1).png') }}" type="image/png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{asset('admin-page/assets/css/#.css')}}">
+    <link rel="stylesheet" href="{{ asset('admin-page/assets/css/denda.css') }}">
 
 </head>
 
@@ -22,7 +22,7 @@
                 <div class="sidebar-header position-relative">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="logo" style="width: 50px; height: 50px; margin-left: 15%;">
-                            <img src="{{asset('admin-page/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" alt="Logo" srcset="" style="width: 100%; height: 100%; object-fit: cover;">
+                            <img src="{{ asset('admin-page/assets/images/logo/Logo Koperasi STARBIN REAL (1).png') }}" alt="Logo" srcset="" style="width: 100%; height: 100%; object-fit: cover;">
                             <h6 style="margin-top: 5px; margin-left: -15%;">Koperasi</h6>
                             <h5 style="margin-left: -35%; margin-top: -20%; ">STARBIN</h5>
                         </div>
@@ -102,7 +102,7 @@
                         </li>
 
                         <li
-                            class="sidebar-item  ">
+                            class="sidebar-item ">
                             <a href="{{route('angsuran')}}" class='sidebar-link'>
                                 <i class="bi bi-coin"></i>
                                 <span>Angsuran</span>
@@ -110,7 +110,7 @@
                         </li>
 
                         <li
-                            class="sidebar-item">
+                            class="sidebar-item active">
                             <a href="{{route('denda')}}" class='sidebar-link'>
                                 <i class="bi bi-exclamation-circle"></i>
                                 <span>Denda</span>
@@ -130,8 +130,9 @@
                             </a>
                         </li>
 
+
                         <li
-                            class="sidebar-item active">
+                            class="sidebar-item  ">
                             <a href="{{route('statistikkeuangan')}}" class='sidebar-link'>
                                 <i class="bi bi-bar-chart-line-fill"></i>
                                 <span>Statistik Keuangan</span>
@@ -155,7 +156,6 @@
                                 @endif
                             </a>
                         </li>
-
 
                         <li
                             class="sidebar-item  ">
@@ -184,136 +184,129 @@
                     <i class="bi bi-justify fs-3"></i>
                 </a>
             </header>
+            <div class="container mt-4" style="font-size: .9rem;">
+                <h4>Laporan Denda Pinjaman</h4>
+                <p>Halaman ini menampilkan daftar anggota yang memiliki denda akibat keterlambatan pembayaran pinjaman.</p>
 
-            <div class="container mt-4">
-                <h3>Statistik Keuangan</h3>
-                <p>Data keuangan koperasi untuk memantau simpanan, pinjaman, dan angsuran secara ringkas dan terperinci.</p>
-
-                <!-- Ringkasan Statistik -->
-                <div class="row mb-4">
-                    <div class="col-md-4">
-                        <div class="card text-center">
-                            <div class="card-body">
-                                <h5 class="card-title">Total Simpanan</h5>
-                                <p class="card-text">Rp {{ number_format($totalSimpanan, 0, ',', '.') }}</p>
+                <div class="container mt-4">
+                    <h4>Ringkasan Denda</h4>
+                    <div class="row text-center">
+                        <!-- Total Denda Keseluruhan -->
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h6>Total Denda Keseluruhan</h6>
+                                    <p><strong>Rp {{ number_format($totalDenda, 0, ',', '.') }}</strong></p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card text-center">
-                            <div class="card-body">
-                                <h5 class="card-title">Total Pinjaman</h5>
-                                <p class="card-text">Rp {{ number_format($totalPinjaman, 0, ',', '.') }}</p>
+
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h6>Total Pinjaman Bermasalah</h6>
+                                    <p><strong>{{ $jumlahPinjamanBermasalah }} Pinjaman</strong></p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card text-center">
-                            <div class="card-body">
-                                <h5 class="card-title">Total Angsuran</h5>
-                                <p class="card-text">Rp {{ number_format($totalAngsuran, 0, ',', '.') }}</p>
+
+                        <!-- Total Anggota Kena Denda -->
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h6>Total Anggota Kena Denda</h6>
+                                    <p><strong>{{ $jumlahAnggotaDenda }} Anggota</strong></p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Grafik Keuangan -->
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <canvas id="barChart"></canvas>
-                    </div>
-                    <div class="col-md-6">
-                        <canvas id="pieChart"></canvas>
+
+                <!-- Filter Pencarian -->
+                <div class="filter-denda mb-4">
+                    <input type="text" id="search-denda" class="form-control" placeholder="Cari berdasarkan Nama, ID Pinjaman, atau Status">
+                </div>
+
+                <!-- Detail Laporan Denda -->
+                <div class="card">
+                    <div class="card-body">
+                        <h5>Detail Laporan Denda</h5>
+                        <div style="max-height: 450px; overflow:auto;">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama Anggota</th>
+                                        <th>ID Pinjaman</th>
+                                        <th>Tanggal Jatuh Tempo</th>
+                                        <th>Jumlah Pinjaman</th>
+                                        <th>Denda</th>
+                                        <th>Total Bayar</th>
+                                        <th>Sisa Angsuran</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="denda-table-body">
+                                    @foreach($laporanDenda as $index => $data)
+                                    <tr>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ $data->nama }}</td>
+                                        <td>{{ $data->id_pinjaman }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($data->tanggal_jatuh_tempo)->format('d M Y') }}</td>
+                                        <td>Rp {{ number_format($data->jumlah_pinjaman, 0, ',', '.') }}</td>
+                                        <td>Rp {{ number_format($data->denda, 0, ',', '.') }}</td>
+                                        <td>Rp {{ number_format($data->total_bayar, 0, ',', '.') }}</td>
+                                        <td>Rp {{ number_format($data->sisa_angsuran, 0, ',', '.') }}</td>
+                                        <td>{{ ucfirst($data->status) }}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
+
             <footer>
-                <div class="footer clearfix mb-0 text-muted">
+                <div class="footer clearfix mb-0 text-muted" style="margin-top: 365px;">
                     <div class="float-start">
                         <p>2025 &copy; STARBIN</p>
                     </div>
                     <div class="float-end" style="margin-right: 30px;">
-                        <p>Dibuat dengan
-                            <span class="text-danger"><i class="bi bi-heart"></i></span>
-                            oleh
-                            <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
-                            &
-                            <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
-                        </p>
+                        <p>Dibuat dengan <span class="text-danger"><i class="bi bi-heart"></i></span> oleh <a
+                                href="https://saugi.me">Bagas & Fahri</a></p>
                     </div>
                 </div>
             </footer>
         </div>
     </div>
-    <script src="{{asset('admin-page/assets/js/bootstrap.js')}}"></script>
-    <script src="{{asset('admin-page/assets/js/app.js')}}"></script>
-    <!-- Tambahkan library Chart.js -->
+    <script src="{{ asset('admin-page/assets/js/bootstrap.js') }}"></script>
+    <script src="{{ asset('admin-page/assets/js/app.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // Data dari Laravel (Pastikan dikonversi ke angka)
-            const totalSimpanan = parseFloat("{{ $totalSimpanan }}") || 0;
-            const totalPinjaman = parseFloat("{{ $totalPinjaman }}") || 0;
-            const totalAngsuran = parseFloat("{{ $totalAngsuran }}") || 0;
+            const searchInput = document.getElementById("search-denda");
+            const tableRows = document.querySelectorAll("#denda-table-body tr");
 
-            // Pastikan elemen canvas tersedia
-            if (document.getElementById('barChart')) {
-                const barCtx = document.getElementById('barChart').getContext('2d');
-                new Chart(barCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['Simpanan', 'Pinjaman', 'Angsuran'],
-                        datasets: [{
-                            label: 'Jumlah (Rp)',
-                            data: [totalSimpanan, totalPinjaman, totalAngsuran],
-                            backgroundColor: ['#4CAF50', '#FF9800', '#2196F3'],
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                display: false
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
+            searchInput.addEventListener("keyup", function() {
+                let filter = searchInput.value.toLowerCase();
+
+                tableRows.forEach(row => {
+                    let nama = row.cells[1].textContent.toLowerCase();
+                    let idPinjaman = row.cells[2].textContent.toLowerCase();
+                    let status = row.cells[7].textContent.toLowerCase();
+
+                    if (nama.includes(filter) || idPinjaman.includes(filter) || status.includes(filter)) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
                     }
                 });
-            }
-
-            if (document.getElementById('pieChart')) {
-                const pieCtx = document.getElementById('pieChart').getContext('2d');
-                new Chart(pieCtx, {
-                    type: 'pie',
-                    data: {
-                        labels: ['Simpanan', 'Pinjaman', 'Angsuran'],
-                        datasets: [{
-                            data: [totalSimpanan, totalPinjaman, totalAngsuran],
-                            backgroundColor: ['#4CAF50', '#FF9800', '#2196F3'],
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                position: 'bottom'
-                            }
-                        }
-                    }
-                });
-            }
+            });
         });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Link Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

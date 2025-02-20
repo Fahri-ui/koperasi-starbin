@@ -151,7 +151,7 @@
 
             <h2>Pinjaman</h2>
 
-            <div class="container mt-5">
+            <div class="container mt-5" style="font-size:.9rem;">
                 <!-- Definisi Pinjaman -->
                 <section class="mb-4">
                     <div class="card">
@@ -179,7 +179,7 @@
                             <br><br>
                             <h1>❗❗Tidak bisa memulai Pinjaman❗❗</h1>
                             <br><br><br>
-                            <h5>Anda masih memiliki Angsuran, Selesaikan Angsuran Anda untuk memulai Pinjaman</h4>
+                            <h5>Anda masih memiliki Angsuran, Selesaikan Angsuran Anda untuk memulai Pinjaman</h5>
                                 <br><br>
                         </div>
                     </div>
@@ -237,7 +237,8 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Kode Pinjaman</th>
+                                        <th>No</th> <!-- Tambahkan kolom nomor -->
+                                        <th> Pinjaman</th>
                                         <th>Tanggal</th>
                                         <th>Jumlah</th>
                                         <th>Tipe</th>
@@ -250,6 +251,7 @@
                                 <tbody>
                                     @forelse ($riwayatTransaksi as $transaksi)
                                     <tr>
+                                        <td>{{ $loop->iteration }}</td> <!-- Nomor urut -->
                                         <td>{{ $transaksi['kode'] }}</td>
                                         <td>{{ \Carbon\Carbon::parse($transaksi->tanggal)->format('d F Y') }}</td>
                                         <td>Rp {{ number_format($transaksi['jumlah'], 0, ',', '.') }}</td>
@@ -283,6 +285,15 @@
                     <div class="card">
                         <div class="card-body">
                             <h5>Formulir Pembayaran Pinjaman</h5>
+
+                            <!-- Tambahan Info Denda -->
+                            @if($pinjamanAktif->total_denda > 0)
+                            <div class="alert alert-warning">
+                                <strong>Info Denda:</strong> Anda memiliki denda sebesar
+                                <b>Rp {{ number_format($pinjamanAktif->total_denda, 0, ',', '.') }}</b>.
+                            </div>
+                            @endif
+
                             <form action="{{ route('pinjaman.bayar') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group mb-3">

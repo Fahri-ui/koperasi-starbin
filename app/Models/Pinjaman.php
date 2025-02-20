@@ -15,20 +15,37 @@ class Pinjaman extends Model
     protected static function boot()
     {
         parent::boot();
-    
+
         static::updating(function ($pinjaman) {
-            if ($pinjaman->isDirty('status')) { 
+            if ($pinjaman->isDirty('status')) {
                 $statusLama = $pinjaman->getOriginal('status');
-                
+
                 // Paksa update ke database tanpa memicu event
                 Pinjaman::where('id', $pinjaman->id)->update([
                     'status_sebelumnya' => $statusLama
                 ]);
             }
         });
-        
-        
-    }     
+    }
+
+    public function hitungDenda()
+    {
+        if ($this->status !== 'Aktif') {
+            return 0; // Denda hanya berlaku untuk pinjaman aktif
+        }
+
+        $tanggalJatuhTempo = Carbon::parse($this->tanggal_jatuh_tempo);
+        $hariTerlambat = now()->diffInDays($tanggalJatuhTempo, false);
+
+        if ($hariTerlambat <= 0) {
+            return 0; // Belum jatuh tempo
+        }
+
+        $mingguTerlambat = ceil($hariTerlambat / 7);
+        $denda = ($this->jumlah_pinjaman * 0.02) * $mingguTerlambat;
+
+        return $denda;
+    }
 
     protected $fillable = [
         'user_id',
@@ -39,6 +56,8 @@ class Pinjaman extends Model
         'alasan', // Pastikan ini ada
         'tanggal_pengajuan',
         'tanggal_jatuh_tempo',
+        'total_denda',
+        'status_denda',
     ];
 
     public function user()

@@ -47,19 +47,19 @@ class DashboardController extends Controller
                 ];
             });
 
-        // Ambil data pinjaman
         $pinjamans = Pinjaman::where('user_id', $user->id)
-            ->select('id', 'tanggal_pinjaman', 'jumlah_pinjaman', 'status')
+            ->select('id', 'tanggal_pinjaman', 'tanggal_pengajuan', 'jumlah_pinjaman', 'status')
             ->get()
             ->map(function ($pinjaman) {
                 return [
                     'deskripsi' => 'Pinjaman ' . ucfirst($pinjaman->status),
-                    'tanggal' => $pinjaman->tanggal_pinjaman ? Carbon::parse($pinjaman->tanggal_pinjaman)->translatedFormat('d F Y') : '-',
+                    'tanggal' => $pinjaman->tanggal_pinjaman
+                        ? Carbon::parse($pinjaman->tanggal_pinjaman)->translatedFormat('d F Y')
+                        : Carbon::parse($pinjaman->tanggal_pengajuan)->translatedFormat('d F Y'), // Ambil tanggal_pengajuan jika tanggal_pinjaman null
                     'jumlah' => number_format($pinjaman->jumlah_pinjaman, 0, ',', '.'),
                 ];
-            });
+            }); 
 
-        // Ambil data pembayaran pinjaman
         $pembayarans = RiwayatPembayaran::where('user_id', $user->id)
             ->select('pinjaman_id', 'tanggal_pembayaran', 'jumlah_pembayaran', 'metode_pembayaran')
             ->get()
@@ -67,16 +67,17 @@ class DashboardController extends Controller
                 return [
                     'deskripsi' => 'Pembayaran Pinjaman via ' . ucfirst($pembayaran->metode_pembayaran),
                     'tanggal' => $pembayaran->tanggal_pembayaran ? Carbon::parse($pembayaran->tanggal_pembayaran)->translatedFormat('d F Y') : '-',
-                    'jumlah' => '-' . number_format($pembayaran->jumlah_pembayaran, 0, ',', '.'), // Ditampilkan sebagai pengurangan
+                    'jumlah' => '-' . number_format($pembayaran->jumlah_pembayaran, 0, ',', '.'),
                 ];
             });
 
-        // Gabungkan semua transaksi, urutkan berdasarkan tanggal DESC, dan reset indeks
-        $riwayatTransaksi = $simpanans
+        // ⬇️ Tambahkan collect() untuk memastikan semuanya adalah Collection
+        $riwayatTransaksi = collect($simpanans)
             ->merge($pinjamans)
             ->merge($pembayarans)
             ->sortByDesc('tanggal')
-            ->values(); // Reset indeks agar urutan angka sesuai dengan tabel
+            ->values();
+
 
         // Kirim ke view
         return view('user.dashboard', compact('totalSukarela', 'totalPinjaman', 'riwayatTransaksi', 'jumlahNotifikasiBaru'));

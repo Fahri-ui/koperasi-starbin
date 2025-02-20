@@ -10,6 +10,7 @@ use App\Http\Controllers\DashboardAdminController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataAnggotaController;
 use App\Http\Controllers\DataPengajuanController;
+use App\Http\Controllers\DendaController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\LogAktivitasController;
 use App\Http\Controllers\NotifikasiAdminController;
@@ -73,6 +74,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/Simpanan-Sukarela', [SimpananSukarelaAdminController::class, 'simpanansukarelaadmin'])->name('simpanansukarelaadmin');
         Route::get('/Pinjaman', [PinjmanAdminController::class, 'pinjamanadmin'])->name('pinjamanadmin');
         Route::get('/Angsuran', [AngsuranAdminController::class, 'angsuran'])->name('angsuran');
+        Route::get('/Denda', [DendaController::class, 'denda'])->name('denda');
         Route::get('/admin/bukti/{bukti}', [BuktiPembayaranController::class, 'showAdmin'])->name('admin.bukti.pembayaran');
         Route::get('/Data-Pengajuan', [DataPengajuanController::class, 'pangajuan'])->name('pangajuan');
         Route::post('/data-pengajuan/{id}/update', [DataPengajuanController::class, 'update']);

@@ -109,6 +109,14 @@
                             </a>
                         </li>
 
+                        <li
+                            class="sidebar-item  ">
+                            <a href="{{route('denda')}}" class='sidebar-link'>
+                                <i class="bi bi-exclamation-circle"></i>
+                                <span>Denda</span>
+                            </a>
+                        </li>
+
                         <li class="sidebar-item">
                             <a href="{{ route('pangajuan') }}" class="sidebar-link">
                                 <i class="bi bi-file-earmark-medical-fill"></i>
@@ -148,7 +156,6 @@
                                 @endif
                             </a>
                         </li>
-
 
                         <li
                             class="sidebar-item  ">

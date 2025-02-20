@@ -77,6 +77,49 @@ class PinjamanController extends Controller
             }
         }
 
+        // 🔹 Ambil semua pinjaman aktif yang memiliki denda
+        $pinjamanDenganDenda = Pinjaman::where('status', 'Aktif')
+            ->whereNotNull('total_denda')
+            ->get();
+
+        foreach ($pinjamanDenganDenda as $pinjaman) {
+            $dendaSebelumnya = $pinjaman->getOriginal('total_denda');
+            $dendaSekarang = $pinjaman->total_denda;
+
+            // 🔹 Notifikasi Kenaikan Denda (Jika Denda Bertambah)
+            if ($dendaSebelumnya > 0 && $dendaSekarang > $dendaSebelumnya) {
+                Notifikasi::updateOrCreate(
+                    [
+                        'user_id' => $pinjaman->user_id,
+                        'message' => "Denda untuk pinjaman ID {$pinjaman->id} meningkat sebesar 2%. Total denda sekarang: Rp " .
+                            number_format($dendaSekarang, 2, ',', '.'),
+                    ],
+                    [
+                        'type' => 'warning',
+                        'icon' => 'bi-exclamation-triangle',
+                        'expired_at' => now()->addDays(2),
+                    ]
+                );
+            }
+
+            // 🔹 Notifikasi Denda Tertunggak (Jika Masih Ada Denda)
+            if ($pinjaman->total_denda > 0) {
+                Notifikasi::updateOrCreate(
+                    [
+                        'user_id' => $pinjaman->user_id,
+                        'message' => "Anda memiliki denda sebesar Rp " .
+                            number_format($pinjaman->total_denda, 0, ',', '.') .
+                            " untuk pinjaman ID {$pinjaman->id}. Segera bayar untuk menghindari denda tambahan.",
+                    ],
+                    [
+                        'type' => 'warning',
+                        'icon' => 'bi-exclamation-triangle',
+                        'expired_at' => now()->addDay(),
+                    ]
+                );
+            }
+        }
+
         // 🔹 Notifikasi Pinjaman Aktif (Disetujui)
         if ($pinjamanAktif) {
             $statusSebelumnya = Pinjaman::where('id', $pinjamanAktif->id)->value('status_sebelumnya');
@@ -143,7 +186,7 @@ class PinjamanController extends Controller
             'jumlah_pinjaman' => 'required|numeric|min:10000',
             'alasan' => 'required|string|max:255',
         ]);
-        
+
         $pinjaman = Pinjaman::create([
             'user_id' => Auth::id(),
             'jumlah_pinjaman' => $request->input('jumlah_pinjaman'),
@@ -152,6 +195,8 @@ class PinjamanController extends Controller
             'status' => 'Dalam Proses',
             'tanggal_pengajuan' => Carbon::now()->format('Y-m-d'),
             'tanggal_jatuh_tempo' => Carbon::now()->addMonths(3)->format('Y-m-d'),
+            'total_denda' => null,  // ✅ Pastikan NULL
+            'status_denda' => null, // ✅ Pastikan NULL
         ]);
 
         return redirect()->back()->with('success', 'Pengajuan pinjaman berhasil dikirim.');
@@ -178,47 +223,49 @@ class PinjamanController extends Controller
         }
 
         $jumlahPembayaran = $request->input('payment-amount');
-
-        // **Ambil total pembayaran sebelumnya**
-        $totalPembayaranSebelumnya = RiwayatPembayaran::where('pinjaman_id', $pinjaman->id)->sum('jumlah_pembayaran');
-
-        // **Hitung total pembayaran baru**
-        $totalPembayaranBaru = $totalPembayaranSebelumnya + $jumlahPembayaran;
-
-        // **Cek apakah total pembayaran melebihi jumlah pinjaman**
-        if ($totalPembayaranBaru > $pinjaman->jumlah_pinjaman) {
-            return redirect()->back()->with('error', 'Jumlah pembayaran melebihi pinjaman.');
-        }
-
-        // **Simpan bukti pembayaran ke public/picture/bukti_pembayaran/**
         $buktiFile = $request->file('payment-proof');
         $namaBukti = time() . '-' . $userId . '.' . $buktiFile->getClientOriginalExtension();
-
-        // Path tujuan di public/
-        $tujuanPath = public_path('picture/bukti_pembayaran');
-
-        // Pindahkan file ke public/picture/bukti_pembayaran/
-        $buktiFile->move($tujuanPath, $namaBukti);
-
-        // Simpan path relatif di database
+        $buktiFile->move(public_path('picture/bukti_pembayaran'), $namaBukti);
         $buktiPath = 'picture/bukti_pembayaran/' . $namaBukti;
 
-        // Simpan riwayat pembayaran
-        RiwayatPembayaran::create([
-            'pinjaman_id' => $pinjaman->id,
-            'user_id' => $userId,
-            'jumlah_pembayaran' => $jumlahPembayaran,
-            'metode_pembayaran' => $request->input('payment-method'),
-            'bukti_pembayaran' => $buktiPath, // Simpan path relatif
-            // Format tanggal untuk menghilangkan jam
-            'tanggal_pembayaran' => Carbon::now()->format('Y-m-d'), // Hanya tanggal
-        ]);
+        $sisaPembayaran = $jumlahPembayaran;
 
-        // **Hitung sisa angsuran berdasarkan total pembayaran**
-        $pinjaman->sisa_angsuran = $pinjaman->jumlah_pinjaman - $totalPembayaranBaru;
+        // **Bayar Denda Terlebih Dahulu**
+        if ($pinjaman->total_denda > 0) {
+            $dendaDibayar = min($sisaPembayaran, $pinjaman->total_denda);
+            $sisaPembayaran -= $dendaDibayar;
+            $pinjaman->total_denda -= $dendaDibayar;
 
-        // Jika lunas, ubah statusnya
-        if ($pinjaman->sisa_angsuran == 0) {
+            RiwayatPembayaran::create([
+                'pinjaman_id' => $pinjaman->id,
+                'user_id' => $userId,
+                'jumlah_pembayaran' => $dendaDibayar,
+                'jenis_pembayaran' => 'Denda',
+                'metode_pembayaran' => $request->input('payment-method'),
+                'bukti_pembayaran' => $buktiPath,
+                'tanggal_pembayaran' => now()->format('Y-m-d'),
+                'jumlah_denda_dibayar' => $dendaDibayar,
+            ]);
+        }
+
+        // **Bayar Angsuran (Jika Ada Sisa)**
+        if ($sisaPembayaran > 0) {
+            $pinjaman->sisa_angsuran -= $sisaPembayaran;
+
+            RiwayatPembayaran::create([
+                'pinjaman_id' => $pinjaman->id,
+                'user_id' => $userId,
+                'jumlah_pembayaran' => $sisaPembayaran,
+                'jenis_pembayaran' => 'Angsuran',
+                'metode_pembayaran' => $request->input('payment-method'),
+                'bukti_pembayaran' => $buktiPath,
+                'tanggal_pembayaran' => now()->format('Y-m-d'),
+                'jumlah_denda_dibayar' => 0,
+            ]);
+        }
+
+        // **Perbarui status pinjaman jika lunas**
+        if ($pinjaman->sisa_angsuran <= 0 && $pinjaman->total_denda <= 0) {
             $pinjaman->status = 'Lunas';
         }
 

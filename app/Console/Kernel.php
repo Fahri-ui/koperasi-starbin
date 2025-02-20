@@ -17,8 +17,10 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             Notifikasi::where('expired_at', '<', now())->delete();
         })->daily();
-    }
 
+        // Hitung denda otomatis setiap hari
+        $schedule->command('hitung:denda')->daily();
+    }
 
     /**
      * Register the commands for the application.

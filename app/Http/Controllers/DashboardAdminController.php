@@ -41,6 +41,15 @@ class DashboardAdminController extends Controller
         // Menghitung total nominal pinjaman yang masih dalam status 'Dalam Proses'
         $totalPengajuan = Pinjaman::where('status', 'Dalam Proses')->sum('jumlah_pinjaman');
 
+        // Menghitung total denda keseluruhan
+        $totalDenda = Pinjaman::whereNotNull('total_denda')->sum('total_denda');
+
+        // Menghitung jumlah anggota yang memiliki denda
+        $jumlahAnggotaDenda = Pinjaman::whereNotNull('total_denda')
+            ->where('total_denda', '>', 0)
+            ->distinct('user_id')
+            ->count('user_id');
+
         return view('admin.dashboard-admin', compact(
             'jumlahAnggota',
             'jumlahSimpananWajib',
@@ -52,7 +61,9 @@ class DashboardAdminController extends Controller
             'totalSimpananSukarela',
             'totalPinjaman',
             'totalAngsuran',
-            'totalPengajuan'
+            'totalPengajuan',
+            'totalDenda',
+            'jumlahAnggotaDenda'
         ));
     }
 }

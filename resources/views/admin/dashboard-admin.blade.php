@@ -16,22 +16,6 @@
     <link rel="stylesheet" href="{{asset('admin-page/assets/css/dashboard.css')}}">
 </head>
 
-<style>
-    .card-body.text-center {
-        margin-top: -10px !important;
-    }
-
-    .card-body.text-center i {
-        font-size: 3rem;
-        /* Sesuaikan ukuran ikon */
-        line-height: 1;
-        margin-bottom: 10px;
-        /* Pastikan jarak bawah ikon konsisten */
-    }
-</style>
-
-</style>
-
 <body>
     <div id="app">
         <div id="sidebar" class="active">
@@ -126,6 +110,14 @@
                             </a>
                         </li>
 
+                        <li
+                            class="sidebar-item  ">
+                            <a href="{{route('denda')}}" class='sidebar-link'>
+                                <i class="bi bi-exclamation-circle"></i>
+                                <span>Denda</span>
+                            </a>
+                        </li>
+
                         <li class="sidebar-item">
                             <a href="{{ route('pangajuan') }}" class="sidebar-link">
                                 <i class="bi bi-file-earmark-medical-fill"></i>
@@ -207,181 +199,264 @@
             </div>
             @endif
 
-            <div class="dashboard-container">
-                <!-- Sambutan -->
-                <div class="welcome-banner text-center my-4">
-                    <h3>Selamat Datang, Admin!</h3>
-                </div>
+            <h3 class="text-center">Selamat Datang, Admin</h3>
 
+            <div class="container mt-4" style="font-size: .7rem;">
                 <div class="row">
-                    <!-- Data Anggota -->
-                    <div class="col-md-4 mb-4">
-                        <a href="{{ route('dataanggota') }}" class="text-decoration-none">
-                            <div class="card card-custom shadow">
-                                <div class="card-body text-center">
-                                    <i class="bi bi-people display-4 text-primary" style="margin-top: 0;"></i>
-                                    <h2>{{ $jumlahAnggota }}</h2>
-                                    <p>Data Anggota</p>
-                                </div>
-                            </div>
-                        </a>
+                    <!-- Statistik Keuangan (Bar Chart - 60%) -->
+                    <div class="col-md-8">
+                        <div class="card shadow p-4" style="height: 450px;">
+                            <h5 class="text-center">Statistik Keuangan</h5>
+                            <canvas id="barChart" style="max-height: 400px;"></canvas>
+                        </div>
                     </div>
 
-                    <!-- Data Simpanan Wajib -->
-                    <div class="col-md-4 mb-4">
-                        <a href="{{ route('simpananwajibadmin') }}" class="text-decoration-none">
-                            <div class="card card-custom shadow">
-                                <div class="card-body text-center">
-                                    <i class="bi bi-wallet-fill display-4 text-success"></i>
-                                    <h2>{{ $jumlahSimpananWajib }}</h2>
-                                    <p>Data Simpanan Wajib</p>
-                                </div>
-                            </div>
-                        </a>
+                    <!-- Statistik Keuangan (List - 40%) -->
+                    <div class="col-md-4">
+                        <div class="card shadow p-4" style="height: 450px;">
+                            <h5 class="text-center mb-3">Statistik Keuangan</h5>
+                            <ul class="list-group">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Data Anggota
+                                    <span class="badge bg-primary">{{ $jumlahAnggota }}</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Total Simpanan Wajib
+                                    <span class="badge bg-success">Rp {{ number_format($totalSimpananWajib) }}</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Total Simpanan Sukarela
+                                    <span class="badge bg-warning">Rp {{ number_format($totalSimpananSukarela) }}</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Total Pinjaman
+                                    <span class="badge bg-danger">Rp {{ number_format($totalPinjaman) }}</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Total Angsuran
+                                    <span class="badge bg-info">Rp {{ number_format($totalAngsuran) }}</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Total Denda
+                                    <span class="badge bg-secondary">Rp {{ number_format($totalDenda) }}</span>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
-                    <!-- Data Simpanan Sukarela -->
-                    <div class="col-md-4 mb-4">
-                        <a href="{{ route('simpanansukarelaadmin') }}" class="text-decoration-none">
-                            <div class="card card-custom shadow">
-                                <div class="card-body text-center">
-                                    <i class="bi bi-piggy-bank-fill display-4 text-warning"></i>
-                                    <h2>{{ $jumlahSimpananSukarela }}</h2>
-                                    <p>Data Simpanan Sukarela</p>
-                                </div>
-                            </div>
-                        </a>
+                    <!-- Grafik Simpanan (40%) -->
+                    <div class="col-md-6 mt-3">
+                        <div class="card shadow p-3" style="height: 350px;">
+                            <h5 class="text-center">Grafik Simpanan</h5>
+                            <canvas id="pieChart" style="max-height: 300px;"></canvas>
+                        </div>
                     </div>
 
-                    <!-- Data Pinjaman -->
-                    <div class="col-md-4 mb-4">
-                        <a href="{{ route('pinjamanadmin') }}" class="text-decoration-none">
-                            <div class="card card-custom shadow">
-                                <div class="card-body text-center">
-                                    <i class="bi bi-cash-stack display-4 text-danger"></i>
-                                    <h2>{{ $jumlahPinjaman }}</h2>
-                                    <p>Data Pinjaman</p>
-                                </div>
-                            </div>
-                        </a>
+                    <!-- Notifikasi Keuangan (60%) -->
+                    <div class="col-md-6 mt-3">
+                        <div class="card shadow p-3" style="height: 350px;">
+                            <h5 class="text-center">Notifikasi Keuangan</h5>
+                            <ul class="list-group">
+                                <li class="list-group-item">Pengajuan pinjaman dalam proses: <strong>{{ $jumlahPengajuan }}</strong></li>
+                                <li class="list-group-item">Anggota dengan denda: <strong>{{ $jumlahAnggotaDenda }}</strong></li>
+                                <li class="list-group-item">Total pengajuan yang belum disetujui: <strong>Rp {{ number_format($totalPengajuan) }}</strong></li>
+                            </ul>
+                        </div>
                     </div>
 
-                    <!-- Data Angsuran -->
-                    <div class="col-md-4 mb-4">
-                        <a href="{{ route('angsuran') }}" class="text-decoration-none">
-                            <div class="card card-custom shadow">
-                                <div class="card-body text-center">
-                                    <i class="bi bi-coin display-4 text-info"></i>
-                                    <h2>{{ $jumlahAngsuran }}</h2>
-                                    <p>Data Angsuran</p>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <!-- Data Pengajuan -->
-                    <div class="col-md-4 mb-4">
-                        <a href="{{ route('pangajuan') }}" class="text-decoration-none">
-                            <div class="card card-custom shadow">
-                                <div class="card-body text-center">
-                                    <i class="bi bi-file-earmark-text display-4 text-secondary"></i>
-                                    <h2>{{ $jumlahPengajuan }}</h2>
-                                    <p>Data Pengajuan</p>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <!-- Total Simpanan Wajib -->
-                    <div class="col-md-4 mb-4">
-                        <a href="{{ route('simpananwajibadmin') }}" class="text-decoration-none">
-                            <div class="card card-custom shadow">
-                                <div class="card-body text-center">
-                                    <i class="bi bi-bank display-4 text-success"></i>
-                                    <h2>Rp {{ number_format($totalSimpananWajib, 0, ',', '.') }}</h2>
-                                    <p>Total Simpanan Wajib</p>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <!-- Total Simpanan Sukarela -->
-                    <div class="col-md-4 mb-4">
-                        <a href="{{ route('simpanansukarelaadmin') }}" class="text-decoration-none">
-                            <div class="card card-custom shadow">
-                                <div class="card-body text-center">
-                                    <i class="bi bi-safe-fill display-4 text-warning"></i>
-                                    <h2>Rp {{ number_format($totalSimpananSukarela, 0, ',', '.') }}</h2>
-                                    <p>Total Simpanan Sukarela</p>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <!-- Total Pinjaman -->
-                    <div class="col-md-4 mb-4">
-                        <a href="{{ route('pinjamanadmin') }}" class="text-decoration-none">
-                            <div class="card card-custom shadow">
-                                <div class="card-body text-center">
-                                    <i class="bi bi-currency-dollar display-4 text-danger"></i>
-                                    <h2>Rp {{ number_format($totalPinjaman, 0, ',', '.') }}</h2>
-                                    <p>Total Pinjaman</p>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <!-- Total Angsuran -->
-                    <div class="col-md-4 mb-4">
-                        <a href="{{ route('angsuran') }}" class="text-decoration-none">
-                            <div class="card card-custom shadow">
-                                <div class="card-body text-center">
-                                    <i class="bi bi-credit-card display-4 text-info"></i>
-                                    <h2>Rp {{ number_format($totalAngsuran, 0, ',', '.') }}</h2>
-                                    <p>Total Angsuran</p>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <!-- Total Pengajuan -->
-                    <div class="col-md-4 mb-4">
-                        <a href="{{route('pangajuan')}}" class="text-decoration-none">
-                            <div class="card card-custom shadow">
-                                <div class="card-body text-center">
-                                    <i class="bi bi-file-earmark-check display-4 text-secondary"></i>
-                                    <h2>Rp {{ number_format($totalPengajuan, 0, ',', '.') }}</h2>
-                                    <p>Total Pengajuan</p>
-                                </div>
-                            </div>
-                        </a>
+                    <!-- Grafik Pinjaman & Angsuran (100% Width, Lebih Tinggi) -->
+                    <div class="col-md-12 mt-3">
+                        <div class="card shadow p-4" style="height: 500px;">
+                            <h5 class="text-center">Grafik Pinjaman & Angsuran</h5>
+                            <canvas id="lineChart" style="max-height: 450px;"></canvas>
+                        </div>
                     </div>
                 </div>
-
-                <footer>
-                    <div class="footer clearfix mb-0 text-muted">
-                        <div class="float-start">
-                            <p>2025 &copy; STARBIN</p>
-                        </div>
-                        <div class="float-end" style="margin-right: 30px;">
-                            <p>Dibuat dengan
-                                <span class="text-danger"><i class="bi bi-heart"></i></span>
-                                oleh
-                                <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
-                                &
-                                <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
-                            </p>
-                        </div>
-                    </div>
-                </footer>
             </div>
+
+            <footer>
+                <div class="footer clearfix mb-0 text-muted">
+                    <div class="float-start">
+                        <p>2025 &copy; STARBIN</p>
+                    </div>
+                    <div class="float-end" style="margin-right: 30px;">
+                        <p>Dibuat dengan
+                            <span class="text-danger"><i class="bi bi-heart"></i></span>
+                            oleh
+                            <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
+                            &
+                            <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
+                        </p>
+                    </div>
+                </div>
+            </footer>
         </div>
-        <script src="{{asset('admin-page/assets/js/bootstrap.js')}}"></script>
-        <script src="{{asset('admin-page/assets/js/app.js')}}"></script>
-        <script src="{{asset('admin-page/assets/js/dashboard.js')}}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <!-- Link Bootstrap JS -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    </div>
+    <script src="{{asset('admin-page/assets/js/bootstrap.js')}}"></script>
+    <script src="{{asset('admin-page/assets/js/app.js')}}"></script>
+    <!-- Link Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let totalSimpananWajib = {{ $totalSimpananWajib }};
+            let totalSimpananSukarela = {{ $totalSimpananSukarela }};
+            let totalPinjaman = {{ $totalPinjaman }};
+            let totalAngsuran = {{ $totalAngsuran }};
+            let totalDenda = {{ $totalDenda }};
+
+            // Pie Chart Simpanan (Ditinggikan agar tidak keluar dari kotak)
+            new Chart(document.getElementById("pieChart"), {
+                type: "pie",
+                data: {
+                    labels: ["Simpanan Wajib", "Simpanan Sukarela"],
+                    datasets: [{
+                        data: [totalSimpananWajib, totalSimpananSukarela],
+                        backgroundColor: ["#4CAF50", "#FF9800"],
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            top: 20,
+                            bottom: 20 // Tambah padding agar tidak mepet
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top', // Memindahkan legend ke atas agar lebih rapi
+                            labels: {
+                                padding: 20
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Line Chart Pinjaman & Angsuran
+            new Chart(document.getElementById("lineChart"), {
+                type: "line",
+                data: {
+                    labels: ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun"],
+                    datasets: [{
+                            label: "Pinjaman",
+                            data: [320, 400, 380, 450, 420, 460],
+                            backgroundColor: "rgba(54, 162, 235, 0.2)",
+                            borderColor: "rgba(54, 162, 235, 1)",
+                            borderWidth: 2,
+                            tension: 0.4,
+                            pointBackgroundColor: "black",
+                            pointBorderColor: "black",
+                            pointRadius: 5
+                        },
+                        {
+                            label: "Angsuran",
+                            data: [290, 310, 340, 370, 350, 390],
+                            backgroundColor: "rgba(255, 159, 64, 0.2)",
+                            borderColor: "rgba(255, 159, 64, 1)",
+                            borderWidth: 2,
+                            tension: 0.4,
+                            pointBackgroundColor: "black",
+                            pointBorderColor: "black",
+                            pointRadius: 5
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            bottom: 30 // Tambah padding agar label bulan tidak keluar
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            enabled: false
+                        },
+                        datalabels: {
+                            align: "top",
+                            color: "#fff",
+                            backgroundColor: function(context) {
+                                let datasetIndex = context.datasetIndex;
+                                let colors = ["#007bff", "#6c757d"];
+                                return colors[datasetIndex];
+                            },
+                            borderRadius: 4,
+                            font: {
+                                weight: "bold"
+                            },
+                            formatter: function(value) {
+                                return value;
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                padding: 10,
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+
+            // Bar Chart Statistik Keuangan (Tambahan padding agar label tidak keluar)
+            new Chart(document.getElementById("barChart"), {
+                type: "bar",
+                data: {
+                    labels: ["Total Pinjaman", "Total Angsuran", "Total Denda"],
+                    datasets: [{
+                        label: "Nominal (Rp)",
+                        data: [totalPinjaman, totalAngsuran, totalDenda],
+                        backgroundColor: ["#FF5733", "#33FF57", "#FFC300"],
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            bottom: 30 // Tambah padding agar label tidak keluar dari chart
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                padding: 15
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                padding: 10, // Jarak antara label dan sumbu agar lebih rapi
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+
 </body>
 
 </html>

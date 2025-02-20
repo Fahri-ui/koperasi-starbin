@@ -18,6 +18,8 @@ class RiwayatPembayaran extends Model
         'metode_pembayaran',
         'bukti_pembayaran',
         'tanggal_pembayaran',
+        'jenis_pembayaran',
+        'jumlah_denda_dibayar',
     ];
 
     protected $casts = [
