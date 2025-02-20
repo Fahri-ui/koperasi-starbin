@@ -54,7 +54,7 @@
           <li><a href="#about">Tentang Kami</a></li>
           <li><a href="#features">Simpanan</a></li>
           <li><a href="#services">Pinjaman</a></li>
-          <li><a href="#contact">Hubungi Kami</a></li>
+          <li><a href="#contact">FAQ</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
@@ -500,10 +500,9 @@
             <p><strong>Email:</strong> <span>fahriabdurohman@gmail.com</span></p>
           </div>
           <div class="social-links d-flex mt-4">
-            <a href="https://twitter.com/"><i class="bi bi-twitter-x"></i></a>
-            <a href="https://facebook.com/"><i class="bi bi-facebook"></i></a>
-            <a href="https://instagram.com/"><i class="bi bi-instagram"></i></a>
-            <a href="https://linkedin.com/"><i class="bi bi-linkedin"></i></a>
+            <a href="https://www.tiktok.com/@latdastar.smkn1binong?_t=ZS-8u0mkITzjH7&_r=1" target="_blank"><i class="bi bi-tiktok"></i></a>
+            <a href="https://www.instagram.com/smkn1binong_official?igsh=emFnZW5zN2gzMG0w" target="_blank"><i class="bi bi-instagram"></i></a>
+            <a href="https://youtube.com/@smkn1binongofficial920?si=AMIk_y_YAJ4VkL5Y" target="_blank"><i class="bi bi-youtube"></i></a>
           </div>
         </div>
 
@@ -514,7 +513,7 @@
             <li><a href="#about">Tentang Kami</a></li>
             <li><a href="#features">Simpanan</a></li>
             <li><a href="#services">Pinjaman</a></li>
-            <li><a href="#contact">Hubungi Kami</a></li>
+            <li><a href="#contact">FAQ</a></li>
           </ul>
         </div>
 
@@ -531,10 +530,9 @@
           <h4>Informasi Pinjaman & Simpanan</h4>
           <p>Dapatkan informasi terbaru tentang produk pinjaman, simpanan, dan layanan koperasi kami dengan mengikuti kami melalui media sosial atau mengunjungi situs kami secara berkala.</p>
           <div class="social-links d-flex mt-4">
-            <a href="https://www.facebook.com/KoperasiKami" target="_blank"><i class="bi bi-facebook"></i></a>
-            <a href="https://www.instagram.com/KoperasiKami" target="_blank"><i class="bi bi-instagram"></i></a>
-            <a href="https://twitter.com/KoperasiKami" target="_blank"><i class="bi bi-twitter"></i></a>
-            <a href="https://www.linkedin.com/company/KoperasiKami" target="_blank"><i class="bi bi-linkedin"></i></a>
+            <a href="https://www.tiktok.com/@latdastar.smkn1binong?_t=ZS-8u0mkITzjH7&_r=1" target="_blank"><i class="bi bi-tiktok"></i></a>
+            <a href="https://www.instagram.com/smkn1binong_official?igsh=emFnZW5zN2gzMG0w" target="_blank"><i class="bi bi-instagram"></i></a>
+            <a href="https://youtube.com/@smkn1binongofficial920?si=AMIk_y_YAJ4VkL5Y" target="_blank"><i class="bi bi-youtube"></i></a>
           </div>
         </div>
 

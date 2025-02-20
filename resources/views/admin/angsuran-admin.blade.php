@@ -102,10 +102,18 @@
                         </li>
 
                         <li
-                            class="sidebar-item  active">
+                            class="sidebar-item active">
                             <a href="{{route('angsuran')}}" class='sidebar-link'>
                                 <i class="bi bi-coin"></i>
                                 <span>Angsuran</span>
+                            </a>
+                        </li>
+
+                        <li
+                            class="sidebar-item  ">
+                            <a href="{{route('denda')}}" class='sidebar-link'>
+                                <i class="bi bi-exclamation-circle"></i>
+                                <span>Denda</span>
                             </a>
                         </li>
 
@@ -121,6 +129,7 @@
                                 @endif
                             </a>
                         </li>
+
 
                         <li
                             class="sidebar-item  ">

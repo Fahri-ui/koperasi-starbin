@@ -1,0 +1,12 @@
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: transparent;
+    }
+    th, td {
+        border-width: ;   
+        padding: 8px;
+        text-align: left;
+        background: transparent;
+    }

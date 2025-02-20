@@ -1,0 +1,13 @@
+/* Penyesuaian warna teks dan border untuk mode terang */
+.alert-danger {
+    color: #721c24; /* Warna teks */
+    border-color: #f5c6cb; /* Warna border */
+}
+
+/* Penyesuaian untuk mode gelap */
+@media (prefers-color-scheme: dark) {
+    .alert-danger {
+        color: #f8d7da; /* Warna teks di mode gelap agar tetap kontras */
+        border-color: #f5c6cb; /* Warna border di mode gelap */
+    }
+}
