@@ -213,7 +213,7 @@
 
                     <!-- Statistik Keuangan (List - 40%) -->
                     <div class="col-md-4">
-                        <div class="card shadow p-4" style="height: 450px;">
+                        <div class="card shadow p-4">
                             <h5 class="text-center mb-3">Statistik Keuangan</h5>
                             <ul class="list-group">
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -253,8 +253,8 @@
                     </div>
 
                     <!-- Notifikasi Keuangan (60%) -->
-                    <div class="col-md-6 mt-3">
-                        <div class="card shadow p-3" style="height: 350px;">
+                    <div class="col-md-6 mt-3" style="font-size: 1rem;">
+                        <div class="card shadow p-3">
                             <h5 class="text-center">Notifikasi Keuangan</h5>
                             <ul class="list-group">
                                 <li class="list-group-item">Pengajuan pinjaman dalam proses: <strong>{{ $jumlahPengajuan }}</strong></li>
