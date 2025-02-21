@@ -183,12 +183,12 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingTwo">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                    Apakah ada denda keterlambatan pembayaran simpanan wajib?
+                                    Apakah ada denda keterlambatan pembayaran angsuran?
                                 </button>
                             </h2>
                             <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#helpAccordion">
                                 <div class="accordion-body">
-                                    Tidak ada, Tidak ada denda kami adalah koperasi PALIINGGGG BAIKKK SEDUNIA
+                                    Ya, Denda dihitung dari muali lewat tanggga jatuh tempo sebesar 2%. Nilai ini akan terus naik perminggunya jika tidal segera di lunaskan
                                 </div>
                             </div>
                         </div>
