@@ -4,13 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>Data Anggota Koperasi STARBIN</title>
 
     <link rel="stylesheet" href="{{asset('admin-page/assets/css/main/app.css')}}">
     <link rel="stylesheet" href="{{asset('admin-page/assets/css/main/app-dark.css')}}">
     <link rel="shortcut icon" href="{{asset('admin-page/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/x-icon">
     <link rel="shortcut icon" href="{{asset('admin-page/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/png">
-
     <link rel="stylesheet" href="{{asset('admin-page/assets/css/data-anggota.css')}}">
 
 </head>
@@ -184,124 +185,177 @@
                     <i class="bi bi-justify fs-3"></i>
                 </a>
             </header>
+
+            @if (session('error'))
+            <div class="alert alert-danger" style="background-color: salmon; color:aliceblue; border-radius:20px; margin-bottom:20px;">
+                <ul>
+                    {{ session('error') }}
+                </ul>
+            </div>
+            @endif
+
+            @if (Session::has('success'))
+            <div class="alert alert-success" style="background-color: lightgreen; color:aliceblue; border-radius:20px;">
+                {{ Session::get('success') }}
+            </div>
+            @endif
+
             <div class="container mt-5">
-                <h3>Tabel Data Anggota</h3>
-                <div style="margin-bottom: 20px;">
-                    <input type="text" id="search-anggota" class="form-control" placeholder="Cari anggota berdasarkan Nama atau ID..." onkeyup="searchAnggota()">
-                </div>
-                <div style="height: 470px; overflow: auto;">
-                    <table class="table table-striped table-bordered">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>No</th>
-                                <th>ID</th>
-                                <th>Nama Anggota</th>
-                                <th>Email</th>
-                                <th>Role</th>
-                                <th>Nomor Telepon</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="data-anggota">
-                            @foreach ($users as $index => $user)
-                            <tr>
-                                <td>{{ $index + 1 }}</td>
-                                <td>{{ $user->id }}</td>
-                                <td>{{ $user->fullname }}</td>
-                                <td>{{ $user->email }}</td>
-                                <td>
-                                    <select class="form-select role-select" data-user-id="{{ $user->id }}">
-                                        <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>User</option>
-                                        <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
-                                    </select>
-                                </td>
-                                <td>{{ $user->phone }}</td>
-                                <td>
-                                    <form action="{{ route('users.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus akun ini?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
-                                    </form>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-                <footer>
-                    <div class="footer clearfix mb-0 text-muted">
-                        <div class="float-start">
-                            <p style="margin-right: 50%;">2025 &copy; STARBIN</p>
-                        </div>
-                        <div class="float-end" style="margin-right: 30px;">
-                            <p>Dibuat dengan
-                                <span class="text-danger"><i class="bi bi-heart"></i></span>
-                                oleh
-                                <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
-                                &
-                                <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
-                            </p>
+                <h3 class="text-center bold">Kelola Data Anggota</h3>
+
+                <!-- Tabel Data Anggota -->
+                <div class="card" style="margin-top: 30px;">
+                    <div class="card-body">
+                        <h5 class="text-center">Data Anggota</h5>
+                        <div style="max-height: 500px; overflow:auto; font-size:.9rem;">
+                            <table class="table table-striped">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>No</th>
+                                        <th>ID</th>
+                                        <th>Nama Anggota</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Nomor Telepon</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="data-anggota">
+                                    @foreach ($users as $index => $user)
+                                    <tr>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ $user->id }}</td>
+                                        <td>
+                                            @if ($user->role === 'admin')
+                                            <span class="text-muted">{{ $user->fullname }}</span>
+                                            @else
+                                            <a href="#" class="text-primary" data-bs-toggle="modal" data-bs-target="#modalDetail" onclick="getDetail({{$user->id}})">
+                                                {{ $user->fullname }}
+                                            </a>
+                                            @endif
+                                        </td>
+                                        <td>{{ $user->email }}</td>
+                                        <td>
+                                            <select class="form-select role-select" data-user-id="{{ $user->id }}" data-original-role="{{ $user->role }}">
+                                                <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>User</option>
+                                                <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
+                                            </select>
+                                        </td>
+                                        <td>{{ $user->phone }}</td>
+                                        <td>
+                                            <form id="deleteForm-{{ $user->id }}" action="{{ route('users.destroy', $user->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $user->id }})">
+                                                    <i class="bi bi-trash"></i> Hapus
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                </footer>
+                </div>
+
+                <!-- Form Tambah Anggota -->
+                <div class="card mb-4" style="margin-top: 20px;">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="text-white">
+                            <i class="bi bi-person-plus text-white"></i> Tambah Anggota Baru
+                        </h5>
+                    </div>
+                    <div class="card-body" style="margin-top: 20px;">
+                        <form action="{{ route('users.store') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="fullname" class="form-label">Nama Lengkap</label>
+                                    <input type="text" class="form-control" id="fullname" name="fullname" required minlength="5">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="phone" class="form-label">Nomor Telepon</label>
+                                    <input type="text" class="form-control" id="phone" name="phone" required pattern="62[0-9]{9,13}" minlength="10" maxlength="15">
+                                    <small class="text-muted">Masukkan nomor dengan kode negara (62), panjang 10-15 angka</small>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="password" name="password" required minlength="8">
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <label for="address" class="form-label">Alamat</label>
+                                    <textarea class="form-control" id="address" name="address" required minlength="15"></textarea>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="gambar" class="form-label">Foto Profil</label>
+                                    <input type="file" class="form-control" id="gambar" name="gambar" required accept="image/jpeg, image/jpg, image/png, image/gif">
+                                    <small class="text-muted">Unggah gambar dengan format jpeg, jpg, png, atau gif (maks 2MB)</small>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="role" class="form-label">Peran</label>
+                                    <select class="form-select" id="role" name="role">
+                                        <option value="user" selected>User</option>
+                                        <option value="admin">Admin</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="bi bi-save"></i> Simpan
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
             </div>
+
+            <!-- Modal Detail Anggota -->
+            <div class="modal fade" id="modalDetail" tabindex="-1" aria-labelledby="modalDetailLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-info text-white">
+                            <h5 class="modal-title" id="modalDetailLabel"><i class="bi bi-person-circle"></i> Detail Anggota</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <ul class="list-group">
+                                <li class="list-group-item"><strong>Total Simpanan Wajib:</strong> <span id="simpanan-wajib">Rp 0</span></li>
+                                <li class="list-group-item"><strong>Total Simpanan Sukarela:</strong> <span id="simpanan-sukarela">Rp 0</span></li>
+                                <li class="list-group-item"><strong>Total Pinjaman:</strong> <span id="total-pinjaman">Rp 0</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer>
+                <div class="footer clearfix mb-0 text-muted">
+                    <div class="float-start">
+                        <p style="margin-right: 50%;">2025 &copy; STARBIN</p>
+                    </div>
+                    <div class="float-end" style="margin-right: 30px;">
+                        <p>Dibuat dengan
+                            <span class="text-danger"><i class="bi bi-heart"></i></span>
+                            oleh
+                            <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
+                            &
+                            <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
+                        </p>
+                    </div>
+                </div>
+            </footer>
         </div>
     </div>
     <script src="{{asset('admin-page/assets/js/bootstrap.js')}}"></script>
     <script src="{{asset('admin-page/assets/js/app.js')}}"></script>
-    <script>
-        function searchAnggota() {
-            let input = document.getElementById("search-anggota").value.toLowerCase();
-            let table = document.getElementById("data-anggota");
-            let rows = table.getElementsByTagName("tr");
-
-            for (let i = 0; i < rows.length; i++) {
-                let nama = rows[i].getElementsByTagName("td")[2]; // Kolom Nama
-                let id = rows[i].getElementsByTagName("td")[1]; // Kolom ID
-
-                if (nama && id) {
-                    let namaText = nama.textContent || nama.innerText;
-                    let idText = id.textContent || id.innerText;
-
-                    if (namaText.toLowerCase().includes(input) || idText.includes(input)) {
-                        rows[i].style.display = "";
-                    } else {
-                        rows[i].style.display = "none";
-                    }
-                }
-            }
-        }
-
-        document.addEventListener("DOMContentLoaded", function() {
-            document.querySelectorAll(".role-select").forEach(select => {
-                select.addEventListener("change", function() {
-                    let userId = this.getAttribute("data-user-id");
-                    let newRole = this.value;
-
-                    fetch("{{ route('users.updateRole') }}", {
-                            method: "POST",
-                            headers: {
-                                "X-CSRF-TOKEN": "{{ csrf_token() }}",
-                                "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify({
-                                id: userId,
-                                role: newRole
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                alert("Role berhasil diperbarui!");
-                            } else {
-                                alert("Gagal memperbarui role.");
-                            }
-                        })
-                        .catch(error => console.error("Error:", error));
-                });
-            });
-        });
-    </script>
+    <script src="{{asset('admin-page/assets/js/data-anggota.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>

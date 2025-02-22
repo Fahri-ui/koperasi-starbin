@@ -185,45 +185,50 @@
             </header>
 
             <div class="pinjaman-container">
-                <h3>Data Pinjaman Anggota</h3>
+                <h3>Pinjaman Anggota</h3>
 
                 <!-- Filter Pencarian -->
                 <div class="filter-pinjaman">
                     <input type="text" id="search-pinjaman" class="form-control" placeholder="Cari anggota berdasarkan nama atau ID...">
                 </div>
 
-                <!-- Tabel Data Pinjaman -->
-                <div class="table-container" style="max-height: 800px; overflow-y: auto; font-size:.9rem;">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>no</th>
-                                <th>ID Pinjaman</th>
-                                <th>Nama</th>
-                                <th>Jumlah Pinjaman</th>
-                                <th>Sisa Angsuran</th>
-                                <th>Tanggal Pengajuan</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        @forelse ($pinjaman as $index => $item)
-                            <tr>
-                                <td>{{ $index + 1 }}</td>
-                                <td>{{ $item->id ?? 'N/A' }}</td>
-                                <td>{{ $item->user->fullname ?? 'Tidak Diketahui' }}</td>
-                                <td>Rp {{ number_format($item->jumlah_pinjaman, 0, ',', '.') }}</td>
-                                <td>Rp {{ number_format($item->sisa_angsuran ?? $item->jumlah_pinjaman, 0, ',', '.') }}</td>
-                                <td>{{ \Carbon\Carbon::parse($item->tanggal_pengajuan)->format('d F Y') }}</td>
-                                <td>{{ ucfirst($item->status ?? '-') }}</td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="6" class="text-center">Tidak ada riwayat pembayaran.</td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5>Data PInajaman</h5>
+                        <div style="max-height: 450px;  overflow:auto; font-size:.9rem;">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>no</th>
+                                        <th>ID Pinjaman</th>
+                                        <th>Nama</th>
+                                        <th>Jumlah Pinjaman</th>
+                                        <th>Sisa Angsuran</th>
+                                        <th>Tanggal Pengajuan</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($pinjaman as $index => $item)
+                                    <tr>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ $item->id ?? 'N/A' }}</td>
+                                        <td>{{ $item->user->fullname ?? 'Tidak Diketahui' }}</td>
+                                        <td>Rp {{ number_format($item->jumlah_pinjaman, 0, ',', '.') }}</td>
+                                        <td>Rp {{ number_format($item->sisa_angsuran ?? $item->jumlah_pinjaman, 0, ',', '.') }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($item->tanggal_pengajuan)->format('d F Y') }}</td>
+                                        <td>{{ ucfirst($item->status ?? '-') }}</td>
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan="6" class="text-center">Tidak ada riwayat pembayaran.</td>
+                                    </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Statistik -->

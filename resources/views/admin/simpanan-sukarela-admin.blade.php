@@ -184,37 +184,44 @@
                 </a>
             </header>
 
-            <h3>Data Simpanan sukarela</h3>
+            <h3>Simpanan sukarela</h3>
 
             <!-- Filter Pencarian -->
-            <div class="filter-simpanan">
+            <div class="filter-simpanan" style="margin-bottom: 20px;">
                 <input type="text" id="search-simpanan-sukarela" class="form-control" placeholder="Cari anggota berdasarkan nama atau ID...">
             </div>
 
-            <div style="height: 470px; overflow: auto;">
-                <!-- Tabel Data Simpanan -->
-                <table class="table table-striped mt-3">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nama Anggota</th>
-                            <th>Jumlah Simpanan</th>
-                            <th>Tanggal Simpanan</th>
-                            <th>Jenis Transaksi</th> <!-- Mengganti Status ke Jenis Transaksi -->
-                        </tr>
-                    </thead>
-                    <tbody id="tabel-simpanan-sukarela">
-                        @foreach($simpananSukarela as $simpanan)
-                        <tr>
-                            <td>{{ $simpanan->id }}</td>
-                            <td>{{ $simpanan->user->fullname ?? 'Tidak Diketahui' }}</td>
-                            <td>Rp {{ number_format($simpanan->jumlah, 0, ',', '.') }}</td>
-                            <td>{{ \Carbon\Carbon::parse($simpanan->tanggal_transaksi)->format('Y-m-d') }}</td>
-                            <td>{{ ucfirst($simpanan->jenis_transaksi) }}</td> <!-- Jenis Transaksi -->
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5>Data Simpanan Sukarela</h5>
+                    <div style="max-height: 450px;  overflow:auto; font-size:.9rem;">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>ID Simpanan</th>
+                                    <th>Nama Anggota</th>
+                                    <th>Jumlah Simpanan</th>
+                                    <th>Tanggal Simpanan</th>
+                                    <th>Jenis Transaksi</th> <!-- Mengganti Status ke Jenis Transaksi -->
+                                </tr>
+                            </thead>
+                            <tbody id="tabel-simpanan-sukarela">
+                                @foreach($simpananSukarela as $index => $simpanan)
+                                <tr>
+                                    <td>{{$index + 1}}</td>
+                                    <td>{{ $simpanan->id }}</td>
+                                    <td>{{ $simpanan->user->fullname ?? 'Tidak Diketahui' }}</td>
+                                    <td>Rp {{ number_format($simpanan->jumlah, 0, ',', '.') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($simpanan->tanggal_transaksi)->format('Y-m-d') }}</td>
+                                    <td>{{ ucfirst($simpanan->jenis_transaksi) }}</td> <!-- Jenis Transaksi -->
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
 
             <!-- Statistik -->

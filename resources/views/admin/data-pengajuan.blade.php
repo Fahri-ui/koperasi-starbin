@@ -225,49 +225,58 @@
                     </div>
                 </div>
 
-                <!-- Tabel Data Pengajuan -->
-                <div class="table-responsive">
-                    <table class="table table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Nama Anggota</th>
-                                <th>Tanggal Pengajuan</th>
-                                <th>Jumlah Pengajuan</th>
-                                <th>Alasan</th> <!-- Kolom baru -->
-                                <th>Status</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($pengajuan as $index => $item)
-                            <tr>
-                                <td>{{ $index + 1 }}</td>
-                                <td>{{ $item->user->fullname }}</td>
-                                <td>{{ $item->tanggal_pengajuan }}</td>
-                                <td>Rp {{ number_format($item->jumlah_pinjaman, 0, ',', '.') }}</td>
-                                <td>{{ $item->alasan ?? '-' }}</td> <!-- Menampilkan alasan sebagai Tujuan -->
-                                <td>
-                                    @if($item->status == 'Dalam Proses')
-                                    <span class="badge bg-warning">Menunggu</span>
-                                    @elseif($item->status == 'Aktif')
-                                    <span class="badge bg-success">Disetujui</span>
-                                    @elseif($item->status == 'Ditolak')
-                                    <span class="badge bg-danger">Ditolak</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    @if($item->status == 'Dalam Proses')
-                                    <button class="btn btn-sm btn-success btn-ubah-status" data-id="{{ $item->id }}" data-status="Aktif">Setujui</button>
-                                    <button class="btn btn-sm btn-danger btn-ubah-status" data-id="{{ $item->id }}" data-status="Ditolak">Tolak</button>
-                                    @else
-                                    -
-                                    @endif
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                <div class="card">
+                    <div class="card-body">
+                        <h5>Data Pegajuan</h5>
+                        <div style="max-height: 450px;  overflow:auto; font-size:.9rem;">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama Anggota</th>
+                                        <th>Tanggal Pengajuan</th>
+                                        <th>Jumlah Pengajuan</th>
+                                        <th>Alasan</th> <!-- Kolom baru -->
+                                        <th>Status</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($pengajuan as $index => $item)
+                                    <tr>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ $item->user->fullname }}</td>
+                                        <td>{{ $item->tanggal_pengajuan }}</td>
+                                        <td>Rp {{ number_format($item->jumlah_pinjaman, 0, ',', '.') }}</td>
+                                        <td>{{ $item->alasan ?? '-' }}</td> <!-- Menampilkan alasan sebagai Tujuan -->
+                                        <td>
+                                            @if($item->status == 'Dalam Proses')
+                                            <span class="badge bg-warning">Menunggu</span>
+                                            @elseif($item->status == 'Aktif')
+                                            <span class="badge bg-success">Disetujui</span>
+                                            @elseif($item->status == 'Ditolak')
+                                            <span class="badge bg-danger">Ditolak</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($item->status == 'Dalam Proses')
+                                            <button class="btn btn-sm btn-success btn-ubah-status" data-id="{{ $item->id }}" data-status="Aktif">Setujui</button>
+                                            <button class="btn btn-sm btn-danger btn-ubah-status" data-id="{{ $item->id }}" data-status="Ditolak">Tolak</button>
+                                            @else
+                                            -
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan="7">Belum ada data transaksi.</td>
+                                    </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
                 </div>
 
                 <footer>

@@ -186,37 +186,44 @@
 
                 <div class="data-simpanan-container">
                     <!-- Judul -->
-                    <h3>Data Simpanan Wajib</h3>
+                    <h3>Simpanan Wajib</h3>
 
                     <!-- Filter Pencarian -->
                     <div class="filter-simpanan">
                         <input type="text" id="search-simpanan" class="form-control" placeholder="Cari anggota berdasarkan nama atau ID...">
                     </div>
 
-                    <div style="height: 470px; overflow: auto;">
-                        <!-- Tabel Data Simpanan -->
-                        <table class="table table-striped mt-3">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nama Anggota</th>
-                                    <th>Jumlah Simpanan</th>
-                                    <th>Tanggal Simpanan</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tabel-simpanan">
-                                @foreach($simpananWajib as $simpanan)
-                                <tr>
-                                    <td>{{ $simpanan->id }}</td>
-                                    <td>{{ $simpanan->user->fullname ?? 'Tidak Diketahui' }}</td>
-                                    <td>Rp {{ number_format($simpanan->jumlah, 0, ',', '.') }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($simpanan->tanggal_transaksi)->format('Y-m-d') }}</td>
-                                    <td>{{ ucfirst($simpanan->status) }}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                    <div class="card">
+                        <div class="card-body">
+                            <h5>Data Simpanan Wajib</h5>
+                            <div style="max-height: 450px;  overflow:auto; font-size:.9rem;">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>ID Simpanan</th>
+                                            <th>Nama Anggota</th>
+                                            <th>Jumlah Simpanan</th>
+                                            <th>Tanggal Simpanan</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tabel-simpanan">
+                                        @foreach($simpananWajib as $index => $simpanan)
+                                        <tr>
+                                            <td>{{$index + 1}}</td>
+                                            <td>{{ $simpanan->id }}</td>
+                                            <td>{{ $simpanan->user->fullname ?? 'Tidak Diketahui' }}</td>
+                                            <td>Rp {{ number_format($simpanan->jumlah, 0, ',', '.') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($simpanan->tanggal_transaksi)->format('Y-m-d') }}</td>
+                                            <td>{{ ucfirst($simpanan->status) }}</td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                                </table>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Statistik -->

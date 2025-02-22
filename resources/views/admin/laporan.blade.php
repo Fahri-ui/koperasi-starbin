@@ -224,7 +224,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h5>Detail Laporan</h5>
-                        <div style="max-height: 450px;  overflow:auto;">
+                        <div style="max-height: 450px;  overflow:auto; font-size:.9rem;">
                             <table class="table table-striped">
                                 <thead>
                                     <tr>

@@ -69,6 +69,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/Data-Anggota', [DataAnggotaController::class, 'dataanggota'])->name('dataanggota');
         Route::delete('/Data-Anggota/{id}', [DataAnggotaController::class, 'destroy'])->name('users.destroy');
         Route::post('/Data-Anggota/update-role', [DataAnggotaController::class, 'updateRole'])->name('users.updateRole');
+        Route::get('/admin/user-summary/{id}', [DataAnggotaController::class, 'getUserSummary']);
+        Route::post('/Data-Anggota/store', [DataAnggotaController::class, 'store'])->name('users.store');
         Route::get('/Simpanan-Pokok', [SimpananPokokAdminController::class, 'simpananpokokadmin'])->name('simpananpokokadmin');
         Route::get('/Simpanan-Wajib', [SimpananWajibAdminController::class, 'simpananwajibadmin'])->name('simpananwajibadmin');
         Route::get('/Simpanan-Sukarela', [SimpananSukarelaAdminController::class, 'simpanansukarelaadmin'])->name('simpanansukarelaadmin');
