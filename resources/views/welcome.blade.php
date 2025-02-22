@@ -50,11 +50,11 @@
 
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="#hero" class="active">Beranda</a></li>
-          <li><a href="#about">Tentang Kami</a></li>
-          <li><a href="#features">Simpanan</a></li>
-          <li><a href="#services">Pinjaman</a></li>
-          <li><a href="#contact">Hubungi Kami</a></li>
+          <li><a href="#beranda" class="active">Beranda</a></li>
+          <li><a href="#tentang_kami">Tentang Kami</a></li>
+          <li><a href="#simpanan">Simpanan</a></li>
+          <li><a href="#pinjaman">Pinjaman</a></li>
+          <li><a href="#faq">FAQ</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
@@ -67,7 +67,7 @@
   <main class="main">
 
     <!-- beranda Section -->
-    <section id="hero" class="hero section">
+    <section id="beranda" class="hero section">
       <div class="hero-bg">
         <img src="{{asset('landing-template/assets/img/hero-bg-light.webp')}}" alt="">
       </div>
@@ -87,7 +87,7 @@
     </section><!-- /end beranda Section -->
 
     <!-- tentangkami Section -->
-    <section id="about" class="about section">
+    <section id="tentang_kami" class="about section">
 
       <div class="container">
 
@@ -256,7 +256,7 @@
 
     <!-- Features Section -->
     <!-- Simpanan Utama Section -->
-    <section id="features" class="features section">
+    <section id="simpanan" class="features section">
 
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
@@ -320,7 +320,7 @@
       <!-- Pinjaman Section -->
 
       <!-- More Pinjaman Features Section -->
-      <section id="services" class="more-features section">
+      <section id="pinjaman" class="more-features section">
 
         <div class="container section-title" data-aos="fade-up">
           <h2>Pinjaman</h2>
@@ -500,21 +500,20 @@
             <p><strong>Email:</strong> <span>fahriabdurohman@gmail.com</span></p>
           </div>
           <div class="social-links d-flex mt-4">
-            <a href="https://twitter.com/"><i class="bi bi-twitter-x"></i></a>
-            <a href="https://facebook.com/"><i class="bi bi-facebook"></i></a>
-            <a href="https://instagram.com/"><i class="bi bi-instagram"></i></a>
-            <a href="https://linkedin.com/"><i class="bi bi-linkedin"></i></a>
+            <a href="https://www.tiktok.com/@latdastar.smkn1binong" target="_blank"><i class="bi bi-tiktok"></i></a>
+            <a href="https://www.instagram.com/smkn1binong_official" target="_blank"><i class="bi bi-instagram"></i></a>
+            <a href="https://youtube.com/@smkn1binongofficial" target="_blank"><i class="bi bi-youtube"></i></a>
           </div>
         </div>
 
         <div class="col-lg-2 col-md-3 footer-links">
           <h4>Link Terkait</h4>
           <ul>
-            <li><a href="#hero">Beranda</a></li>
-            <li><a href="#about">Tentang Kami</a></li>
-            <li><a href="#features">Simpanan</a></li>
-            <li><a href="#services">Pinjaman</a></li>
-            <li><a href="#contact">Hubungi Kami</a></li>
+            <li><a href="#beranda">Beranda</a></li>
+            <li><a href="#tentang_kami">Tentang Kami</a></li>
+            <li><a href="#simpanan">Simpanan</a></li>
+            <li><a href="#pinjaman">Pinjaman</a></li>
+            <li><a href="#faq">FAQ</a></li>
           </ul>
         </div>
 
@@ -531,10 +530,9 @@
           <h4>Informasi Pinjaman & Simpanan</h4>
           <p>Dapatkan informasi terbaru tentang produk pinjaman, simpanan, dan layanan koperasi kami dengan mengikuti kami melalui media sosial atau mengunjungi situs kami secara berkala.</p>
           <div class="social-links d-flex mt-4">
-            <a href="https://www.facebook.com/KoperasiKami" target="_blank"><i class="bi bi-facebook"></i></a>
-            <a href="https://www.instagram.com/KoperasiKami" target="_blank"><i class="bi bi-instagram"></i></a>
-            <a href="https://twitter.com/KoperasiKami" target="_blank"><i class="bi bi-twitter"></i></a>
-            <a href="https://www.linkedin.com/company/KoperasiKami" target="_blank"><i class="bi bi-linkedin"></i></a>
+            <a href="https://www.tiktok.com/@latdastar.smkn1binong" target="_blank"><i class="bi bi-tiktok"></i></a>
+            <a href="https://www.instagram.com/smkn1binong_official" target="_blank"><i class="bi bi-instagram"></i></a>
+            <a href="https://youtube.com/@smkn1binongofficial" target="_blank"><i class="bi bi-youtube"></i></a>
           </div>
         </div>
 
