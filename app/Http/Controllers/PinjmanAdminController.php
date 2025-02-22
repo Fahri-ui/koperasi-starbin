@@ -12,7 +12,7 @@ class PinjmanAdminController extends Controller
     public function pinjamanadmin()
     {
         // Ambil semua data pinjaman dengan relasi ke user
-        $pinjaman = Pinjaman::with('user')->get();
+        $pinjaman = Pinjaman::with(['user', 'riwayatPembayaran'])->get();
 
         // Hitung total pinjaman dan sisa pinjaman
         $totalPinjaman = $pinjaman->sum('jumlah_pinjaman');

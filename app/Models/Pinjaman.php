@@ -28,6 +28,11 @@ class Pinjaman extends Model
         });
     }
 
+    public function riwayatPembayaran()
+    {
+        return $this->hasMany(RiwayatPembayaran::class, 'pinjaman_id');
+    }
+
     public function hitungDenda()
     {
         if ($this->status !== 'Aktif') {

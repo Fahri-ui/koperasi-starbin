@@ -193,26 +193,28 @@
                 </div>
 
                 <!-- Tabel Data Pinjaman -->
-                <div class="table-container" style="max-height: 800px; overflow-y: auto;">
+                <div class="table-container" style="max-height: 800px; overflow-y: auto; font-size:.9rem;">
                     <table class="table table-striped">
                         <thead>
                             <tr>
+                                <th>no</th>
                                 <th>ID Pinjaman</th>
                                 <th>Nama</th>
                                 <th>Jumlah Pinjaman</th>
                                 <th>Sisa Angsuran</th>
-                                <th>Tanggal Pembayaran</th>
+                                <th>Tanggal Pengajuan</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($pinjaman as $item)
+                        @forelse ($pinjaman as $index => $item)
                             <tr>
+                                <td>{{ $index + 1 }}</td>
                                 <td>{{ $item->id ?? 'N/A' }}</td>
                                 <td>{{ $item->user->fullname ?? 'Tidak Diketahui' }}</td>
                                 <td>Rp {{ number_format($item->jumlah_pinjaman, 0, ',', '.') }}</td>
                                 <td>Rp {{ number_format($item->sisa_angsuran ?? $item->jumlah_pinjaman, 0, ',', '.') }}</td>
-                                <td>{{ \Carbon\Carbon::parse($item->tanggal_pembayaran)->format('d F Y') }}</td>
+                                <td>{{ \Carbon\Carbon::parse($item->tanggal_pengajuan)->format('d F Y') }}</td>
                                 <td>{{ ucfirst($item->status ?? '-') }}</td>
                             </tr>
                             @empty
