@@ -4277,10 +4277,10 @@ body.theme-dark .accordion {
 }
 body.theme-dark .accordion-button {
     align-items: center;
-    background-color: var(--bs-accordion-btn-bg);
+    background-color: #3e3e3e;
     border: 0;
     border-radius: 0;
-    color: var(--bs-accordion-btn-color);
+    color: #c2c2d9;
     display: flex;
     font-size: 1rem;
     overflow-anchor: none;
@@ -4296,10 +4296,10 @@ body.theme-dark .accordion-button {
     }
 }
 body.theme-dark .accordion-button:not(.collapsed) {
-    background-color: var(--bs-accordion-active-bg);
+    background-color:#3e3e3e;
     box-shadow: inset 0 calc(var(--bs-accordion-border-width) * -1) 0
         var(--bs-accordion-border-color);
-    color: var(--bs-accordion-active-color);
+    color: #c2c2d9;
 }
 body.theme-dark .accordion-button:not(.collapsed):after {
     background-image: var(--bs-accordion-btn-active-icon);

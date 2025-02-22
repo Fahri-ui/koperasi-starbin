@@ -225,7 +225,7 @@
 
                 <!-- Filter Pencarian -->
                 <div class="filter-denda mb-4">
-                    <input type="text" id="search-denda" class="form-control" placeholder="Cari berdasarkan Nama, ID Pinjaman, atau Status">
+                    <input type="text" id="search-denda" class="form-control" placeholder="Cari berdasarkan Nama, atau ID Pinjaman">
                 </div>
 
                 <!-- Detail Laporan Denda -->

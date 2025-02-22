@@ -318,9 +318,9 @@
             new Chart(document.getElementById("pieChart"), {
                 type: "pie",
                 data: {
-                    labels: ["Simpanan Wajib", "Simpanan Sukarela"],
+                    labels: ["Pinjaman", "Simpanan Sukarela"],
                     datasets: [{
-                        data: [totalSimpananWajib, totalSimpananSukarela],
+                        data: [totalPinjaman, totalSimpananSukarela],
                         backgroundColor: ["#4CAF50", "#FF9800"],
                     }]
                 },

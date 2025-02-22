@@ -138,8 +138,8 @@
                 </a>
             </header>
 
-             <!-- Jika ada error -->
-             @if ($errors->any())
+            <!-- Jika ada error -->
+            @if ($errors->any())
             <div class="alert alert-danger" style="background-color: salmon; color:black; font-weight:bold; border-radius:20px; padding:10px; margin-bottom:20px;">
                 <ul>
                     @foreach ($errors->all() as $error)
@@ -168,11 +168,11 @@
                         <!-- Pertanyaan 1 -->
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingOne">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseOne" aria-expanded="true" aria-controls="faqCollapseOne">
                                     Bagaimana cara melakukan pembayaran simpanan pokok?
                                 </button>
                             </h2>
-                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#helpAccordion">
+                            <div id="faqCollapseOne" class="accordion-collapse collapse show" aria-labelledby="faqHeadingOne" data-bs-parent="#faqAccordion">
                                 <div class="accordion-body">
                                     Anda dapat melakukan pembayaran melalui transfer bank, e-wallet, atau secara tunai di kantor koperasi kami.
                                 </div>
@@ -226,40 +226,70 @@
                     </div>
                 </section>
 
-                <!-- Informasi Kontak -->
-                <section>
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <h5>Informasi Kontak</h5>
-                            <p>Email: support@koperasi.com</p>
-                            <p>Telepon: 021-12345678</p>
-                            <p>Alamat: Jl. Raya Koperasi No. 123, Jakarta</p>
+                <!-- Informasi Kontak dalam Card -->
+                <div class="container" data-aos="fade-up" data-aos-delay="100">
+                    <div class="container" data-aos="fade-up" data-aos-delay="100" style="margin-bottom: 30px;">
+
+                        <div class="row gy-4">
+
+                            <!-- Alamat -->
+                            <div class="col-lg-4">
+                                <div class="card text-center shadow p-3">
+                                    <div class="card-body">
+                                        <i class="bi bi-geo-alt fs-2 text-primary"></i>
+                                        <h5 class="card-title mt-2">Alamat</h5>
+                                        <p class="card-text">Kec. Binong, Kab. Subang, Prov. Jawa Barat</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Kontak -->
+                            <div class="col-lg-4">
+                                <div class="card text-center shadow p-3">
+                                    <div class="card-body">
+                                        <i class="bi bi-telephone fs-2 text-success"></i>
+                                        <h5 class="card-title mt-2">Nomor Telepon</h5>
+                                        <p class="card-text">62839320338692 <br> 6285175101350</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="col-lg-4">
+                                <div class="card text-center shadow p-3">
+                                    <div class="card-body">
+                                        <i class="bi bi-envelope fs-2 text-danger"></i>
+                                        <h5 class="card-title mt-2">Email</h5>
+                                        <p class="card-text">fahriabdurohman@gmail.com <br> bagasdipras@gmail.com</p>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
-                </section>
-            </div>
-
-            <footer>
-                <div class="footer clearfix mb-0 text-muted">
-                    <div class="float-start">
-                        <p>2025 &copy; STARBIN</p>
-                    </div>
-                    <div class="float-end" style="margin-right: 30px;">
-                        <p>Dibuat dengan
-                            <span class="text-danger"><i class="bi bi-heart"></i></span>
-                            oleh
-                            <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
-                            &
-                            <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
-                        </p>
-                    </div>
                 </div>
-            </footer>
+
+                <footer>
+                    <div class="footer clearfix mb-0 text-muted">
+                        <div class="float-start">
+                            <p>2025 &copy; STARBIN</p>
+                        </div>
+                        <div class="float-end" style="margin-right: 30px;">
+                            <p>Dibuat dengan
+                                <span class="text-danger"><i class="bi bi-heart"></i></span>
+                                oleh
+                                <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
+                                &
+                                <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
+                            </p>
+                        </div>
+                    </div>
+                </footer>
+            </div>
         </div>
-    </div>
-    <script src="{{asset('dist/assets/js/bootstrap.js')}}"></script>
-    <script src="{{asset('dist/assets/js/app.js')}}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="{{asset('dist/assets/js/bootstrap.js')}}"></script>
+        <script src="{{asset('dist/assets/js/app.js')}}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 
 </body>
