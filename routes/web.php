@@ -109,3 +109,8 @@ Route::middleware(['auth'])->group(function () {
     // Route logout tetap di luar grup agar bisa digunakan oleh siapa saja yang sudah login
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
+
+// Route fallback untuk menangani 404
+Route::fallback(function () {
+    return response()->view('errors.404', [], 404);
+});
