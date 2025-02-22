@@ -225,7 +225,7 @@
 
                 <!-- Filter Pencarian -->
                 <div class="filter-denda mb-4">
-                    <input type="text" id="search-denda" class="form-control" placeholder="Cari berdasarkan Nama, atau ID Pinjaman">
+                    <input type="text" id="search-denda" class="form-control" placeholder="Cari berdasarkan Nama, atay ID Pinjaman">
                 </div>
 
                 <!-- Detail Laporan Denda -->
@@ -268,14 +268,19 @@
                 </div>
             </div>
 
-            <footer>
-                <div class="footer clearfix mb-0 text-muted" style="margin-top: 365px;">
+           <footer>
+                <div class="footer clearfix mb-0 text-muted">
                     <div class="float-start">
                         <p>2025 &copy; STARBIN</p>
                     </div>
                     <div class="float-end" style="margin-right: 30px;">
-                        <p>Dibuat dengan <span class="text-danger"><i class="bi bi-heart"></i></span> oleh <a
-                                href="https://saugi.me">Bagas & Fahri</a></p>
+                        <p>Dibuat dengan
+                            <span class="text-danger"><i class="bi bi-heart"></i></span>
+                            oleh
+                            <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
+                            &
+                            <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
+                        </p>
                     </div>
                 </div>
             </footer>

@@ -282,7 +282,7 @@
                             &
                             <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
                         </p>
-                    </div>a
+                    </div>
                 </div>
             </footer>
         </div>

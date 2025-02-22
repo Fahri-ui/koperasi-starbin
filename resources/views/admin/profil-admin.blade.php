@@ -282,25 +282,25 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        <footer>
-            <div class="footer clearfix mb-0 text-muted">
-                <div class="float-start">
-                    <p style="margin-right: 50%;">2025 &copy; STARBIN</p>
+
+            <footer>
+                <div class="footer clearfix mb-0 text-muted">
+                    <div class="float-start">
+                        <p>2025 &copy; STARBIN</p>
+                    </div>
+                    <div class="float-end" style="margin-right: 30px;">
+                        <p>Dibuat dengan
+                            <span class="text-danger"><i class="bi bi-heart"></i></span>
+                            oleh
+                            <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
+                            &
+                            <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
+                        </p>
+                    </div>
                 </div>
-                <div class="float-end" style="margin-right: 30px;">
-                    <p>Dibuat dengan
-                        <span class="text-danger"><i class="bi bi-heart"></i></span>
-                        oleh
-                        <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
-                        &
-                        <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
-                    </p>
-                </div>
-            </div>
-        </footer>
-    </div>
+            </footer>
+        </div>
     </div>
     <script src="{{asset('admin-page/assets/js/bootstrap.')}}js"></script>
     <script src="{{asset('admin-page/assets/js/app.')}}js"></script>
