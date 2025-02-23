@@ -10,7 +10,7 @@ use App\Models\Pinjaman;
 
 class DataAnggotaController extends Controller
 {
-    // Menampilkan semua pengguna (admin & user)
+    // Get Tampilan Utama
     public function dataanggota(Request $request)
     {
         $search = $request->input('search');
@@ -23,27 +23,33 @@ class DataAnggotaController extends Controller
         return view('admin.data-anggota', compact('users', 'search'));
     }
 
-    // Fungsi untuk menghapus pengguna
+    // Delate Aksi Hapus Anggota
     public function destroy($id)
     {
-        $user = User::findOrFail($id); // Cari user berdasarkan ID
-        $user->delete(); // Hapus user dari database
+        $user = User::findOrFail($id);
+        $user->delete();
 
-        return redirect()->route('dataanggota')->with('success', 'Pengguna berhasil dihapus.');
+        return response()->json(['success' => true, 'message' => 'Pengguna berhasil dihapus.']);
     }
 
+    // Post Aksi Mengubah Role Anggota
     public function updateRole(Request $request)
     {
-        dd($request->all()); // Cek data yang diterima
-    
+        logger('Request masuk ke controller: ' . json_encode($request->all()));
+
+        $request->validate([
+            'id' => 'required|exists:users,id',
+            'role' => 'required|in:user,admin'
+        ]);
+
         $user = User::findOrFail($request->id);
         $user->role = $request->role;
         $user->save();
-    
+
         return response()->json(['success' => true, 'message' => 'Role berhasil diperbarui.']);
     }
-    
 
+    // Get Tampilan Pou-up
     public function getUserSummary($id)
     {
         $totalSimpananWajib = Simpanan::where('user_id', $id)
@@ -65,52 +71,36 @@ class DataAnggotaController extends Controller
         ]);
     }
 
+    // Get Aksi Tambah Anggota
     public function store(Request $request)
     {
-        // Validasi input sama seperti registrasi
-        $request->validate([
-            'fullname' => 'required|min:5',
-            'email' => 'required|unique:users|email',
-            'password' => 'required|min:8',
-            'phone' => 'required|regex:/^62[0-9]{9,13}$/|min:10|max:15',
-            'address' => 'required|min:15',
-            'gambar' => 'required|image|mimes:jpeg,jpg,png,gif|max:2048',
-        ], [
-            'fullname.required' => 'Full Name wajib diisi',
-            'fullname.min' => 'Full Name minimal 5 karakter',
-            'email.required' => 'Email wajib diisi',
-            'email.unique' => 'Email telah terdaftar',
-            'password.required' => 'Password wajib diisi',
-            'password.min' => 'Password minimal 8 karakter',
-            'phone.required' => 'Nomor telepon harus diisi',
-            'phone.regex' => 'Nomor telepon harus dimulai dengan kode negara (62)',
-            'phone.min' => 'Minimal 10 nomor',
-            'phone.max' => 'Maksimal 15 nomor',
-            'address.required' => 'Alamat wajib diisi',
-            'address.min' => 'Alamat minimal 15 karakter',
-            'gambar.required' => 'Gambar harus diunggah',
-            'gambar.image' => 'Gambar yang diunggah harus berupa file gambar',
-            'gambar.mimes' => 'Format gambar harus jpeg, jpg, png, atau gif',
-            'gambar.max' => 'Ukuran gambar maksimal 2MB',
-        ]);
+        try {
+            $request->validate([
+                'fullname' => 'required|min:5',
+                'email' => 'required|unique:users|email',
+                'password' => 'required|min:8',
+                'phone' => 'required|regex:/^62[0-9]{9,13}$/|min:10|max:15',
+                'address' => 'required|min:15',
+                'gambar' => 'required|image|mimes:jpeg,jpg,png,gif|max:2048',
+            ]);
 
-        // Proses upload gambar
-        $gambar_file = $request->file('gambar');
-        $nama_gambar = date('ymdhis') . '.' . $gambar_file->getClientOriginalExtension();
-        $gambar_file->move(public_path('picture/account'), $nama_gambar);
+            $gambar_file = $request->file('gambar');
+            $nama_gambar = date('ymdhis') . '.' . $gambar_file->getClientOriginalExtension();
+            $gambar_file->move(public_path('picture/account'), $nama_gambar);
 
-        // Simpan data pengguna ke database
-        User::create([
-            'fullname' => $request->fullname,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'phone' => $request->phone,
-            'address' => $request->address,
-            'gambar' => $nama_gambar,
-            'role' => $request->role ?? 'user', // Bisa atur role, default user
-        ]);
+            User::create([
+                'fullname' => $request->fullname,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+                'phone' => $request->phone,
+                'address' => $request->address,
+                'gambar' => $nama_gambar,
+                'role' => $request->role ?? 'user',
+            ]);
 
-        // Redirect ke halaman data anggota dengan pesan sukses
-        return redirect()->route('dataanggota')->with('success', 'Anggota baru berhasil ditambahkan.');
+            return response()->json(['success' => true, 'message' => 'Anggota baru berhasil ditambahkan!']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()]);
+        }
     }
 }

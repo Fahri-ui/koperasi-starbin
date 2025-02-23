@@ -40,7 +40,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// menambahkan pengahalang menggunakan midleware guest agar page dashboard admin/user tidak bisa di akses tanpa login/register
+// Midlleware Guest Untuk Pengunjung
 Route::middleware(['guest'])->group(function () {
     Route::view('/', 'welcome');
 
@@ -63,31 +63,41 @@ Route::middleware(['auth'])->group(function () {
 
     // Grup Route untuk Admin (userAkses:admin)
     Route::middleware(['userAkses:admin'])->group(function () {
+        // Dashboard
         Route::get('/adminDashboard', [DashboardAdminController::class, 'dashboard'])->name('min');
+        // Profil
         Route::get('/Profil', [ProfilAdminController::class, 'profiladmin'])->name('profiladmin');
         Route::put('/profil/edit', [ProfilAdminController::class, 'update'])->name('profil.update');
+        // Data Anggota
         Route::get('/Data-Anggota', [DataAnggotaController::class, 'dataanggota'])->name('dataanggota');
         Route::delete('/Data-Anggota/{id}', [DataAnggotaController::class, 'destroy'])->name('users.destroy');
         Route::post('/Data-Anggota/update-role', [DataAnggotaController::class, 'updateRole'])->name('users.updateRole');
         Route::get('/admin/user-summary/{id}', [DataAnggotaController::class, 'getUserSummary']);
         Route::post('/Data-Anggota/store', [DataAnggotaController::class, 'store'])->name('users.store');
-        Route::get('/Simpanan-Pokok', [SimpananPokokAdminController::class, 'simpananpokokadmin'])->name('simpananpokokadmin');
+        // Simpanan Wajib
         Route::get('/Simpanan-Wajib', [SimpananWajibAdminController::class, 'simpananwajibadmin'])->name('simpananwajibadmin');
+        // Simpanan Sukarela
         Route::get('/Simpanan-Sukarela', [SimpananSukarelaAdminController::class, 'simpanansukarelaadmin'])->name('simpanansukarelaadmin');
+        // pinjaman
         Route::get('/Pinjaman', [PinjmanAdminController::class, 'pinjamanadmin'])->name('pinjamanadmin');
-        Route::get('/Angsuran', [AngsuranAdminController::class, 'angsuran'])->name('angsuran');
-        Route::get('/Denda', [DendaController::class, 'denda'])->name('denda');
+        // Angsuran
         Route::get('/admin/bukti/{bukti}', [BuktiPembayaranController::class, 'showAdmin'])->name('admin.bukti.pembayaran');
+        Route::get('/Angsuran', [AngsuranAdminController::class, 'angsuran'])->name('angsuran');
+        // Denda
+        Route::get('/Denda', [DendaController::class, 'denda'])->name('denda');
+        // Data Pengajuan
         Route::get('/Data-Pengajuan', [DataPengajuanController::class, 'pangajuan'])->name('pangajuan');
         Route::post('/data-pengajuan/{id}/update', [DataPengajuanController::class, 'update']);
+        // Statistik Keuangan
         Route::get('/Statistik-Keuangan', [StatistikKeuanganController::class, 'statistikkeuangan'])->name('statistikkeuangan');
-        Route::get('/Backup', [BackupController::class, 'backup'])->name('backup');
-        Route::get('/Log-Aktivitas', [LogAktivitasController::class, 'logaktivitas'])->name('logaktivitas');
+        // Kelola Pesan 
         Route::get('/kelola-pesan', [ShareMassageController::class, 'sharemassage'])->name('admin.sharemassage');
         Route::post('/kelola-pesan', [ShareMassageController::class, 'store'])->name('admin.sharemassage.store');
         Route::delete('/kelola-pesan/{id}', [ShareMassageController::class, 'destroy'])->name('admin.sharemassage.destroy');
+        // Notifikasi
         Route::get('/Notifikasi', [NotifikasiAdminController::class, 'notifikasiadmin'])->name('notifikasiadmin');
         Route::patch('/admin/notifikasi/{id}/dibalas', [NotifikasiAdminController::class, 'tandaiSudahDibalas'])->name('notifikasi.tandaiSudahDibalas');
+        // Laporan
         Route::get('/Laporan', [LaporanController::class, 'laporan'])->name('laporan');
     });
 
@@ -108,7 +118,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/user/kirim-pesan', [BantuanController::class, 'kirimPesan'])->name('user.kirim-pesan');
     });
 
-    // Route logout tetap di luar grup agar bisa digunakan oleh siapa saja yang sudah login
+    // Route logout luar grup agar bisa digunakan oleh siapa saja yang sudah login
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 

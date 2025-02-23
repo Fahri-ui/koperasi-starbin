@@ -52,7 +52,7 @@
             <span>!</span>
         </div>
         <h1>ERROR 404</h1>
-        <p>Halaman yang Anda cari mungkin telah dihapus, namanya diubah, atau untuk sementara tidak tersedia.</p>
+        <p>Halaman yang Anda cari mungkin telah dihapus, namanya diubah, atau tidak pernah dibuat.</p>
     </div>
 </body>
 </html>
