@@ -67,7 +67,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/adminDashboard', [DashboardAdminController::class, 'dashboard'])->name('min');
         // Profil
         Route::get('/Profil', [ProfilAdminController::class, 'profiladmin'])->name('profiladmin');
-        Route::put('/profil/edit', [ProfilAdminController::class, 'update'])->name('profil.update');
+        Route::put('/profil/update', [ProfilController::class, 'update'])->name('profil.update');
         // Data Anggota
         Route::get('/Data-Anggota', [DataAnggotaController::class, 'dataanggota'])->name('dataanggota');
         Route::delete('/Data-Anggota/{id}', [DataAnggotaController::class, 'destroy'])->name('users.destroy');

@@ -25,69 +25,37 @@ class ProfilAdminController extends Controller
             'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'phone' => 'required|regex:/^62[0-9]{9,13}$/|min:10|max:15',
             'address' => 'required|min:15',
-        ], [
-            'fullname.required' => 'Nama wajib diisi.',
-            'fullname.min' => 'Nama minimal 5 karakter.',
-            'email.required' => 'Email wajib diisi.',
-            'email.email' => 'Format email tidak valid.',
-            'email.unique' => 'Email telah terdaftar.',
-            'password.min' => 'Password minimal 8 karakter.',
-            'confirm_password.same' => 'Konfirmasi password tidak sesuai.',
-            'gambar.image' => 'Gambar harus berupa file gambar.',
-            'gambar.mimes' => 'Format gambar harus jpg, jpeg, atau png.',
-            'gambar.max' => 'Ukuran gambar maksimal 2MB.',
-            'phone.required' => 'Nomor telepon wajib diisi.',
-            'phone.regex' => 'Nomor telepon harus diawali dengan kode negara (62).',
-            'phone.min' => 'Nomor telepon minimal 10 digit.',
-            'phone.max' => 'Nomor telepon maksimal 15 digit.',
-            'address.required' => 'Alamat wajib diisi.',
-            'address.min' => 'Alamat minimal 15 karakter.',
         ]);
 
-        // Ambil data pengguna
-        $user = Auth::user();
-
-        // Debug apakah $user adalah instance User
-        if (!$user) {
-            return redirect()->back()->withErrors(['error' => 'Pengguna tidak ditemukan atau belum login.']);
-        }
-
-        if (!($user instanceof \App\Models\User)) {
-            return redirect()->back()->withErrors(['error' => 'Objek bukan instance dari User model.']);
-        }
-
-        if (!$user) {
-            return redirect()->back()->withErrors(['error' => 'Pengguna tidak ditemukan.']);
-        }
-
-        // Jika ada gambar yang diunggah
-        if ($request->hasFile('gambar') && $request->file('gambar')->isValid()) {
-            $gambar_file = $request->file('gambar');
-            $nama_gambar = date('ymdhis') . '.' . $gambar_file->getClientOriginalExtension();
-            $gambar_file->move(public_path('picture/account'), $nama_gambar);
-
-            // Hapus gambar lama jika ada
-            if ($user->gambar && file_exists(public_path('picture/account/' . $user->gambar))) {
-                unlink(public_path('picture/account/' . $user->gambar));
+        try {
+            $user = Auth::user();
+            if (!$user) {
+                return response()->json(['success' => false, 'message' => 'Pengguna tidak ditemukan.']);
             }
 
-            // Perbarui nama gambar pengguna
-            $user->gambar = $nama_gambar;
-        }
+            if ($request->hasFile('gambar') && $request->file('gambar')->isValid()) {
+                $gambar_file = $request->file('gambar');
+                $nama_gambar = date('ymdhis') . '.' . $gambar_file->getClientOriginalExtension();
+                $gambar_file->move(public_path('picture/account'), $nama_gambar);
 
-        // Perbarui data pengguna
-        $user->fullname = $request->fullname;
-        $user->email = $request->email;
-        $user->password = $request->password ? bcrypt($request->password) : $user->password;
-        $user->phone = $request->phone;
-        $user->address = $request->address;
+                if ($user->gambar && file_exists(public_path('picture/account/' . $user->gambar))) {
+                    unlink(public_path('picture/account/' . $user->gambar));
+                }
 
-        // Simpan perubahan
-        try {
+                $user->gambar = $nama_gambar;
+            }
+
+            $user->fullname = $request->fullname;
+            $user->email = $request->email;
+            $user->password = $request->password ? bcrypt($request->password) : $user->password;
+            $user->phone = $request->phone;
+            $user->address = $request->address;
+
             $user->save();
-            return redirect()->route('profiladmin')->with('success', 'Profil berhasil diperbarui.');
+
+            return response()->json(['success' => true, 'message' => 'Profil berhasil diperbarui.']);
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage()]);
         }
     }
 }
