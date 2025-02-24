@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Data Pribadi Anda</title>
 
     <link rel="stylesheet" href="{{asset('admin-page/assets/css/main/app.css')}}">
@@ -205,85 +204,85 @@
 
             <div class="page-heading">
                 <center>
-                    <h1>🎉 Selamat Datang, <strong>{{ Auth::user()->fullname }}</strong>!</h1>
-                    <p>Senang melihat Anda kembali. Yuk, kelola profil Anda dengan mudah!</p>
+                    <h1>Selamat Datang {{Auth::user()->fullname}}</h1>
                 </center>
             </div>
 
             <div class="page-content">
                 <div class="container">
-                    <!-- Profil User -->
+                    <!-- Kotak Pertama: Profil User -->
                     <div class="card mb-4">
                         <div class="card-body text-center">
                             <div class="poto-profil">
                                 <img src="{{asset('picture/account/'. Auth::user()->gambar)}}" alt="Foto Profil">
                             </div>
-                            <h3 class="mt-3">{{ Auth::user()->fullname }}</h3>
-                            <p><i class="fas fa-envelope"></i> {{ Auth::user()->email }}</p>
-                            <p><i class="fas fa-phone"></i> {{ Auth::user()->phone }}</p>
-                            <p><i class="fas fa-map-marker-alt"></i> {{ Auth::user()->address }}</p>
+                            <h3 class="mt-3">{{Auth::user()->fullname}}</h3>
+                            <p>{{Auth::user()->email}}</p>
+                            <p>{{Auth::user()->phone}}</p>
+                            <p>{{Auth::user()->address}}</p>
                         </div>
                     </div>
 
-                    <!-- Formulir Edit Profil -->
+                    <!-- Kotak Ketiga: Formulir Edit Profil -->
                     <div class="card mb-4">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5><i class="fas fa-user-edit"></i> Edit Profil Anda</h5>
+                        <div class="card-header">
+                            <h5>Edit Profil</h5>
                         </div>
                         <div class="card-body">
-                            <form id="edit-profile-form" enctype="multipart/form-data">
+                            <form id="edit-profile-form" enctype="multipart/form-data" method="POST" action="{{ route('profil.update') }}">
                                 @csrf
-                                <input type="hidden" name="_method" value="PUT">
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="fullname" class="form-label"><i class="fas fa-user"></i> Nama Lengkap</label>
-                                            <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Nama Lengkap" value="{{ old('fullname', Auth::user()->fullname) }}" required>
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label for="email" class="form-label"><i class="fas fa-envelope"></i> Email</label>
-                                            <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="{{ old('email', Auth::user()->email) }}" required>
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label for="phone" class="form-label"><i class="fas fa-phone"></i> Nomor Telepon</label>
-                                            <input type="tel" class="form-control" id="phone" name="phone" placeholder="Nomor Telepon" value="{{ old('phone', Auth::user()->phone) }}" required>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="password" class="form-label"><i class="fas fa-lock"></i> Password Baru</label>
-                                            <input type="password" class="form-control" id="password" name="password" placeholder="Password (Kosongkan jika tidak ingin mengubah)">
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label for="confirm-password" class="form-label"><i class="fas fa-lock"></i> Konfirmasi Password</label>
-                                            <input type="password" class="form-control" id="confirm-password" name="confirm_password" placeholder="Konfirmasi Password">
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label for="gambar" class="form-label"><i class="fas fa-image"></i> Foto Profil</label>
-                                            <input type="file" class="form-control" id="gambar" name="gambar" accept="image/*">
-                                        </div>
-                                    </div>
+                                <input type="hidden" name="_method" value="PUT"> <!-- Metode PUT untuk update -->
+                                <!-- Nama -->
+                                <div class="mb-3">
+                                    <label for="fullname" class="form-label">Nama</label>
+                                    <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Nama Lengkap" value="{{ old('fullname', Auth::user()->fullname) }}" required>
                                 </div>
 
+                                <!-- Email -->
                                 <div class="mb-3">
-                                    <label for="address" class="form-label"><i class="fas fa-map-marker-alt"></i> Alamat</label>
-                                    <textarea class="form-control" id="address" name="address" rows="3" placeholder="Alamat Lengkap" required>{{ old('address', Auth::user()->address) }}</textarea>
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="{{ old('email', Auth::user()->email) }}" required>
+                                </div>
+
+                                <!-- Password -->
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                                </div>
+
+                                <!-- Konfirmasi Password -->
+                                <div class="mb-3">
+                                    <label for="confirm-password" class="form-label">Konfirmasi Password</label>
+                                    <input type="password" class="form-control" id="confirm-password" name="confirm_password" placeholder="Konfirmasi Password">
+                                </div>
+
+                                <!-- Gambar -->
+                                <div class="mb-3">
+                                    <label for="gambar" class="form-label">Foto Profil</label>
+                                    <input type="file" class="form-control" id="gambar" name="gambar" accept="image/*">
+                                </div>
+
+                                <!-- Nomor Telepon -->
+                                <div class="mb-3">
+                                    <label for="phone" class="form-label">Nomor Telepon</label>
+                                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="Nomor Telepon" value="{{ old('phone', Auth::user()->phone) }}" required>
+                                </div>
+
+                                <!-- Alamat -->
+                                <div class="mb-3">
+                                    <label for="address" class="form-label">Alamat</label>
+                                    <textarea class="form-control" id="address" name="address" rows="5" placeholder="Alamat" required>{{ old('address', Auth::user()->address) }}</textarea>
                                 </div>
 
                                 <div class="text-end">
-                                    <button type="button" id="btn-save-profile" class="btn btn-success"><i class="fas fa-save"></i> Simpan Perubahan</button>
+                                    <button type="submit" class="btn btn-primary">Konfirmasi Edit Profil</button>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
+
 
             <footer>
                 <div class="footer clearfix mb-0 text-muted">
@@ -305,8 +304,7 @@
     </div>
     <script src="{{asset('admin-page/assets/js/bootstrap.')}}js"></script>
     <script src="{{asset('admin-page/assets/js/app.')}}js"></script>
-    <script src="{{asset('admin-page/assets/js/profil.js')}}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{asset('admin-page/assets/js/profil.')}}js"></script>
 
 </body>
 
