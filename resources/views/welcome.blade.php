@@ -11,6 +11,7 @@
   <!-- Favicons -->
   <link href="{{asset('landing-template/assets/img/Logo Koperasi STARBIN REAL (1).png')}}" rel="icon">
   <link href="{{asset('landing-template/assets/img/apple-touch-icon.png')}}" rel="apple-touch-icon">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect">
@@ -500,9 +501,11 @@
             <p><strong>Email:</strong> <span>fahriabdurohman@gmail.com</span></p>
           </div>
           <div class="social-links d-flex mt-4">
-            <a href="https://www.tiktok.com/@latdastar.smkn1binong" target="_blank"><i class="bi bi-tiktok"></i></a>
-            <a href="https://www.instagram.com/smkn1binong_official" target="_blank"><i class="bi bi-instagram"></i></a>
-            <a href="https://youtube.com/@smkn1binongofficial" target="_blank"><i class="bi bi-youtube"></i></a>
+            @foreach ($socialLinks as $link)
+            <a href="{{ $link->url }}" target="_blank">
+              <i class="{{ $link->icon }}"></i>
+            </a>
+            @endforeach
           </div>
         </div>
 
@@ -530,12 +533,13 @@
           <h4>Informasi Pinjaman & Simpanan</h4>
           <p>Dapatkan informasi terbaru tentang produk pinjaman, simpanan, dan layanan koperasi kami dengan mengikuti kami melalui media sosial atau mengunjungi situs kami secara berkala.</p>
           <div class="social-links d-flex mt-4">
-            <a href="https://www.tiktok.com/@latdastar.smkn1binong" target="_blank"><i class="bi bi-tiktok"></i></a>
-            <a href="https://www.instagram.com/smkn1binong_official" target="_blank"><i class="bi bi-instagram"></i></a>
-            <a href="https://youtube.com/@smkn1binongofficial" target="_blank"><i class="bi bi-youtube"></i></a>
+            @foreach ($socialLinks as $link)
+            <a href="{{ $link->url }}" target="_blank">
+              <i class="{{ $link->icon }}"></i>
+            </a>
+            @endforeach
           </div>
         </div>
-
       </div>
     </div>
 

@@ -61,6 +61,7 @@
                                 <span>Dashboard</span>
                             </a>
                         </li>
+
                         <li
                             class="sidebar-item">
                             <a href="{{route('profiladmin')}}" class='sidebar-link'>
@@ -163,6 +164,13 @@
                             <a href="{{route('laporan')}}" class='sidebar-link'>
                                 <i class="bi bi-file-earmark-bar-graph-fill"></i>
                                 <span>Laporan</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a href="{{route('sosmed')}}" class="sidebar-link">
+                                <i class="bi bi-link-45deg"></i>
+                                <span>Kelola Sosial Media</span>
                             </a>
                         </li>
 
