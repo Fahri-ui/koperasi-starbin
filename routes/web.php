@@ -11,6 +11,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataAnggotaController;
 use App\Http\Controllers\DataPengajuanController;
 use App\Http\Controllers\DendaController;
+use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\LogAktivitasController;
 use App\Http\Controllers\NotifikasiAdminController;
@@ -24,6 +25,7 @@ use App\Http\Controllers\SimpananController;
 use App\Http\Controllers\SimpananPokokAdminController;
 use App\Http\Controllers\SimpananSukarelaAdminController;
 use App\Http\Controllers\SimpananWajibAdminController;
+use App\Http\Controllers\SocialMediaController;
 use App\Http\Controllers\StatistikKeuanganController;
 use App\Http\Controllers\UserControlController;
 use App\Http\Controllers\UserController;
@@ -42,7 +44,7 @@ use Illuminate\Support\Facades\Route;
 
 // Midlleware Guest Untuk Pengunjung
 Route::middleware(['guest'])->group(function () {
-    Route::view('/', 'welcome');
+    Route::get('/', [LandingPageController::class, 'index'])->name('landing');
 
     Route::get('/Login', [AuthController::class, 'index'])->name('login');
     Route::post('/Login', [AuthController::class, 'login']);
@@ -99,6 +101,11 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('/admin/notifikasi/{id}/dibalas', [NotifikasiAdminController::class, 'tandaiSudahDibalas'])->name('notifikasi.tandaiSudahDibalas');
         // Laporan
         Route::get('/Laporan', [LaporanController::class, 'laporan'])->name('laporan');
+        // Social Media
+        Route::get('/Sosial Media', [SocialMediaController::class, 'index'])->name('sosmed');
+        Route::post('/admin/social-links/store', [SocialMediaController::class, 'store'])->name('admin.social-links.store');
+        Route::put('/admin/social-links/update/{id}', [SocialMediaController::class, 'update'])->name('admin.social-links.update');
+        Route::delete('/admin/social-links/delete/{id}', [SocialMediaController::class, 'destroy'])->name('admin.social-links.delete');
     });
 
     // Grup Route untuk User (userAkses:user)

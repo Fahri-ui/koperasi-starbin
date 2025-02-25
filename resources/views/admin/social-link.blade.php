@@ -60,7 +60,7 @@
                             </a>
                         </li>
                         <li
-                            class="sidebar-item active">
+                            class="sidebar-item ">
                             <a href="{{route('profiladmin')}}" class='sidebar-link'>
                                 <i class="bi bi-person-badge-fill"></i>
                                 <span>Profil</span>
@@ -164,7 +164,7 @@
                             </a>
                         </li>
 
-                        <li class="sidebar-item">
+                        <li class="sidebar-item active">
                             <a href="{{route('sosmed')}}" class="sidebar-link">
                                 <i class="bi bi-link-45deg"></i>
                                 <span>Kelola Sosial Media</span>
@@ -190,106 +190,84 @@
                     <i class="bi bi-justify fs-3"></i>
                 </a>
             </header>
-
-            <!-- Jika ada error -->
-            @if ($errors->any())
-            <div class="alert alert-danger" style="background-color: salmon; color:black; font-weight:bold; border-radius:20px; padding:10px; margin-bottom:20px;">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+            @if (Session::has('error'))
+            <div class="alert alert-danger" style="background-color: salmon; color:aliceblue; border-radius:20px; margin-bottom:20px;">
+                {{ Session::get('error') }}
             </div>
             @endif
 
             <!-- Jika berhasil -->
             @if (Session::has('success'))
-            <div class="alert alert-success" style="background-color: lightgreen; color:black; font-weight:bold; border-radius:20px;">
+            <div class="alert alert-success" style="background-color: lightgreen; color:aliceblue; border-radius:20px;">
                 {{ Session::get('success') }}
             </div>
             @endif
 
-            <div class="page-heading">
-                <center>
-                    <h1>Selamat Datang {{Auth::user()->fullname}}</h1>
-                </center>
-            </div>
+            <div class="container">
+                <h2 class="my-4">Kelola Link Sosial Media</h2>
 
-            <div class="page-content">
-                <div class="container">
-                    <!-- Kotak Pertama: Profil User -->
-                    <div class="card mb-4">
-                        <div class="card-body text-center">
-                            <div class="poto-profil">
-                                <img src="{{asset('picture/account/'. Auth::user()->gambar)}}" alt="Foto Profil">
+                <!-- Form Tambah/Edit Link -->
+                <div class="card">
+                    <div class="card-header">Tambah/Edit Link Sosial Media</div>
+                    <div class="card-body">
+                        <form id="formSocialLink" method="POST" action="{{ route('admin.social-links.store') }}">
+                            @csrf
+                            <input type="hidden" id="socialLinkId" name="id">
+
+                            <div class="mb-3">
+                                <label for="platform" class="form-label">Platform</label>
+                                <select id="platform" name="platform" class="form-select" required>
+                                    <option value="tiktok" data-icon="bi bi-tiktok">TikTok</option>
+                                    <option value="instagram" data-icon="bi bi-instagram">Instagram</option>
+                                    <option value="youtube" data-icon="bi bi-youtube">YouTube</option>
+                                    <option value="linkedin" data-icon="bi bi-linkedin">LinkedIn</option>
+                                </select>
                             </div>
-                            <h3 class="mt-3">{{Auth::user()->fullname}}</h3>
-                            <p>{{Auth::user()->email}}</p>
-                            <p>{{Auth::user()->phone}}</p>
-                            <p>{{Auth::user()->address}}</p>
-                        </div>
+
+                            <div id="icon-preview" name="id" class="my-3"></div>
+
+                            <div class="mb-3">
+                                <label for="url" class="form-label">URL</label>
+                                <input type="url" id="url" name="url" class="form-control" placeholder="https://example.com" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </form>
                     </div>
-
-                    <!-- Kotak Ketiga: Formulir Edit Profil -->
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <h5>Edit Profil</h5>
-                        </div>
-                        <div class="card-body">
-                            <form id="edit-profile-form" enctype="multipart/form-data" method="POST" action="{{ route('profil.update') }}">
-                                @csrf
-                                <input type="hidden" name="_method" value="PUT"> <!-- Metode PUT untuk update -->
-                                <!-- Nama -->
-                                <div class="mb-3">
-                                    <label for="fullname" class="form-label">Nama</label>
-                                    <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Nama Lengkap" value="{{ old('fullname', Auth::user()->fullname) }}" required>
-                                </div>
-
-                                <!-- Email -->
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="{{ old('email', Auth::user()->email) }}" required>
-                                </div>
-
-                                <!-- Password -->
-                                <div class="mb-3">
-                                    <label for="password" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-                                </div>
-
-                                <!-- Konfirmasi Password -->
-                                <div class="mb-3">
-                                    <label for="confirm-password" class="form-label">Konfirmasi Password</label>
-                                    <input type="password" class="form-control" id="confirm-password" name="confirm_password" placeholder="Konfirmasi Password">
-                                </div>
-
-                                <!-- Gambar -->
-                                <div class="mb-3">
-                                    <label for="gambar" class="form-label">Foto Profil</label>
-                                    <input type="file" class="form-control" id="gambar" name="gambar" accept="image/*">
-                                </div>
-
-                                <!-- Nomor Telepon -->
-                                <div class="mb-3">
-                                    <label for="phone" class="form-label">Nomor Telepon</label>
-                                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="Nomor Telepon" value="{{ old('phone', Auth::user()->phone) }}" required>
-                                </div>
-
-                                <!-- Alamat -->
-                                <div class="mb-3">
-                                    <label for="address" class="form-label">Alamat</label>
-                                    <textarea class="form-control" id="address" name="address" rows="5" placeholder="Alamat" required>{{ old('address', Auth::user()->address) }}</textarea>
-                                </div>
-
-                                <div class="text-end">
-                                    <button type="submit" class="btn btn-primary">Konfirmasi Edit Profil</button>
-                                </div>
-                            </form>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h5>Daftar Link Sosial Media</h5>
+                        <div style="max-height: 450px;  overflow:auto; font-size:.9rem;">
+                            <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Ikon</th>
+                                    <th>Platform</th>
+                                    <th>URL</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($links as $link)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td><i class="{{ $link->icon }}"></i></td>
+                                    <td>{{ ucfirst($link->platform) }}</td>
+                                    <td><a href="{{ $link->url }}" target="_blank">{{ $link->url }}</a></td>
+                                    <td>
+                                        <button class="btn btn-warning btn-sm" onclick="editLink({{ $link }})">Edit</button>
+                                        <button class="btn btn-danger btn-sm" onclick="deleteLink({{ $link->id }})">Hapus</button>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
-
 
             <footer>
                 <div class="footer clearfix mb-0 text-muted">
@@ -311,7 +289,153 @@
     </div>
     <script src="{{asset('admin-page/assets/js/bootstrap.')}}js"></script>
     <script src="{{asset('admin-page/assets/js/app.')}}js"></script>
-    <script src="{{asset('admin-page/assets/js/profil.')}}js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        const updateRoleUrl = "{{ route('users.updateRole') }}";
+        const csrfToken = "{{ csrf_token() }}";
+    </script>
+    <script >
+      // Fungsi Preview Ikon saat Pilih Platform
+        document.getElementById('platform').addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const iconClass = selectedOption.getAttribute('data-icon');
+            const iconPreview = document.getElementById('icon-preview');
+
+            iconPreview.innerHTML = `<i class="${iconClass}"></i>`;
+        });
+
+        // Fungsi Edit Link
+        function editLink(link) {
+            document.getElementById('socialLinkId').value = link.id;
+            document.getElementById('platform').value = link.platform;
+            document.getElementById('url').value = link.url;
+
+            const selectedOption = document.querySelector(`#platform option[value="${link.platform}"]`);
+            if (selectedOption) {
+                const iconClass = selectedOption.getAttribute('data-icon');
+                document.getElementById('icon-preview').innerHTML = `<i class="${iconClass}"></i>`;
+            }
+        }
+
+        // Fungsi Hapus Link
+        function deleteLink(id) {
+            Swal.fire({
+                title: "Yakin ingin menghapus?",
+                text: "Data ini akan hilang selamanya!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Ya, hapus!",
+                cancelButtonText: "Batal"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/admin/social-links/delete/${id}`, {
+                        method: "DELETE",
+                        headers: { "X-CSRF-TOKEN": "{{ csrf_token() }}" }
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire("Berhasil!", "Link sosial media telah dihapus.", "success");
+                            removeRow(id); // Hapus baris dari tabel tanpa reload
+                        }
+                    });
+                }
+            });
+        }
+
+        // Menghapus baris dari tabel tanpa reload
+        function removeRow(id) {
+            const row = document.querySelector(`tr[data-id="${id}"]`);
+            if (row) {
+                row.remove();
+            }
+        }
+
+        // Form Submit (Tambah/Update)
+        document.getElementById("formSocialLink").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const id = document.getElementById("socialLinkId").value;
+            const platform = document.getElementById("platform").value;
+            const url = document.getElementById("url").value;
+            const selectedOption = document.querySelector(`#platform option[value="${platform}"]`);
+            const icon = selectedOption ? selectedOption.getAttribute('data-icon') : '';
+
+            const method = id ? "PUT" : "POST";
+            const action = id ? `/admin/social-links/update/${id}` : "/admin/social-links/store";
+
+            fetch(action, {
+                method: method,
+                headers: {
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ platform, url, icon })
+            })
+            .then(res => res.json())
+            .then(data => {
+                Swal.fire("Berhasil!", `Link ${platform} berhasil disimpan.`, "success");
+                if (id) {
+                    updateRow(id, data.link); // Update baris jika edit
+                } else {
+                    addRow(data.link); // Tambah baris jika baru
+                }
+                resetForm();
+            });
+        });
+
+        // Fungsi reset form
+        function resetForm() {
+            document.getElementById('socialLinkId').value = '';
+            document.getElementById('platform').value = '';
+            document.getElementById('url').value = '';
+            document.getElementById('icon-preview').innerHTML = '';
+        }
+
+        // Fungsi untuk menambah baris ke tabel
+        function addRow(link) {
+            const tableBody = document.querySelector("tbody");
+            const newRow = document.createElement("tr");
+            newRow.setAttribute("data-id", link.id);
+            newRow.innerHTML = `
+                <td></td>
+                <td><i class="${link.icon}"></i></td>
+                <td>${link.platform.charAt(0).toUpperCase() + link.platform.slice(1)}</td>
+                <td><a href="${link.url}" target="_blank">${link.url}</a></td>
+                <td>
+                    <button class="btn btn-warning btn-sm" onclick='editLink(${JSON.stringify(link)})'>Edit</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteLink(${link.id})">Hapus</button>
+                </td>
+            `;
+            tableBody.appendChild(newRow);
+            renumberRows();
+        }
+
+        // Fungsi untuk update baris setelah edit
+        function updateRow(id, link) {
+            const row = document.querySelector(`tr[data-id="${id}"]`);
+            if (row) {
+                row.innerHTML = `
+                    <td></td>
+                    <td><i class="${link.icon}"></i></td>
+                    <td>${link.platform.charAt(0).toUpperCase() + link.platform.slice(1)}</td>
+                    <td><a href="${link.url}" target="_blank">${link.url}</a></td>
+                    <td>
+                        <button class="btn btn-warning btn-sm" onclick='editLink(${JSON.stringify(link)})'>Edit</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteLink(${link.id})">Hapus</button>
+                    </td>
+                `;
+                renumberRows();
+            }
+        }
+
+        // Fungsi untuk merapikan nomor urut tabel
+        function renumberRows() {
+            const rows = document.querySelectorAll("tbody tr");
+            rows.forEach((row, index) => {
+                row.cells[0].innerText = index + 1;
+            });
+        }
+    </script>
 
 </body>
 
