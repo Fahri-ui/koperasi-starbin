@@ -414,7 +414,7 @@
                   <div class="card-body">
                     <i class="bi bi-telephone fs-2 text-success"></i>
                     <h5 class="card-title mt-2">Nomor Telepon</h5>
-                    <p class="card-text">62839320338692 <br> 6285175101350</p>
+                    <span>Hubungi Kami:</span><a href="tel:+6282295206040" class="link-custom"> +62 822-9520-6040</a>
                   </div>
                 </div>
               </div>
@@ -425,7 +425,7 @@
                   <div class="card-body">
                     <i class="bi bi-envelope fs-2 text-danger"></i>
                     <h5 class="card-title mt-2">Email</h5>
-                    <p class="card-text">fahriabdurohman@gmail.com <br> bagasdipras@gmail.com</p>
+                    <a href="mailto:fahriabdurohman@gmail.com" class="link-custom">fahriabdurohman@gmail.com</a>
                   </div>
                 </div>
               </div>
