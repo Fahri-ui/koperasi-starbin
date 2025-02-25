@@ -128,7 +128,7 @@ class SimpananController extends Controller
             'jumlah' => $validatedData['jumlah'],
             'kode_transaksi' => 'TRX-' . date('YmdHis') . '-' . $user->id,
             'tanggal_transaksi' => Carbon::now()->toDateTimeString(), // Pastikan format benar
-            'status' => 'completed', // Status default "completed"
+            'status' => 'Dalam  Proses', // Status default "completed"
             'metode_pembayaran' => $validatedData['metode_pembayaran'],
         ];
 
