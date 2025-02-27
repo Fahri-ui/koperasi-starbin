@@ -89,7 +89,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/Denda', [DendaController::class, 'denda'])->name('denda');
         // Data Pengajuan
         Route::get('/Data-Pengajuan', [DataPengajuanController::class, 'pangajuan'])->name('pangajuan');
-        Route::post('/data-pengajuan/{id}/update', [DataPengajuanController::class, 'update']); 
+        Route::post('/data-pengajuan/{id}/update', [DataPengajuanController::class, 'update']);
         // Statistik Keuangan
         Route::get('/Statistik-Keuangan', [StatistikKeuanganController::class, 'statistikkeuangan'])->name('statistikkeuangan');
         // Kelola Pesan 
