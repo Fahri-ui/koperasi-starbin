@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Simpanan; // Mengimpor model Simpanan
 use Carbon\Carbon; // Tambahkan di bagian atas file
 use Illuminate\Http\Request;
+use App\Models\User;
 use App\Models\Notifikasi;
 
 class SimpananController extends Controller
@@ -145,5 +146,40 @@ class SimpananController extends Controller
     public function boot()
     {
         Carbon::setLocale('id'); // Mengatur bahasa ke Indonesia
+    }
+
+    public function storePayment(Request $request)
+    {
+        $request->validate([
+            'nominal' => 'required|numeric|min:1000',
+            'metode' => 'required|string|in:cash,bank,ewallet',
+            'payment-proof' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        $user = auth()->user(); // Mengambil data user yang login
+
+        // Proses upload bukti pembayaran
+        $buktiFile = $request->file('payment-proof');
+        $namaBukti = time() . '-' . $user->id . '.' . $buktiFile->getClientOriginalExtension();
+        $buktiFile->move(public_path('picture/bukti_pembayaran'), $namaBukti);
+        $buktiPath = 'picture/bukti_pembayaran/' . $namaBukti;
+
+        // Simpan data transaksi simpanan
+        Simpanan::create([
+            'user_id' => $user->id,
+            'jenis' => 'anggota',
+            'jumlah' => $request->nominal,
+            'jenis_transaksi' => 'penyetoran',
+            'metode_pembayaran' => $request->metode,
+            'kode_transaksi' => strtoupper(uniqid('TRX-')),
+            'status' => 'Dalam Proses',
+            'tanggal_transaksi' => now(),
+            'bukti' => $buktiPath,
+        ]);
+
+        // 🔥 Update status user jadi Pending
+        $user->update(['status' => 'Pending']);
+
+        return redirect()->back()->with('success', 'Pembayaran berhasil dikirim, status akun menjadi Pending. Menunggu persetujuan admin.');
     }
 }

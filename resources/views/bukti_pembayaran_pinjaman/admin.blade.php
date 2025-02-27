@@ -48,7 +48,6 @@
 </head>
 <body>
     <div class="container">
-        <a href="{{ route('angsuran') }}" class="btn-back">← Kembali</a>
         <h2>Bukti Pembayaran Anda</h2>
         <img src="{{ $buktiFile }}" alt="Bukti Pembayaran">
     </div>

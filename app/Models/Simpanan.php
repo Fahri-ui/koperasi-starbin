@@ -18,6 +18,7 @@ class Simpanan extends Model
         'kode_transaksi',
         'status', 
         'tanggal_transaksi',
+        'bukti',
     ];
 
     protected $dates = ['tanggal_transaksi']; // Tambahkan ini juga

@@ -20,7 +20,7 @@ function editLink(link) {
     }
 }
 
-// Fungsi Hapus Link
+// Fungsi Hapus Link dengan Refresh Halaman
 function deleteLink(id) {
     Swal.fire({
         title: "Yakin ingin menghapus?",
@@ -37,38 +37,20 @@ function deleteLink(id) {
             })
             .then(res => res.json())
             .then(data => {
-                Swal.fire("Berhasil!", "Link sosial media telah dihapus.", "success").then(() => {
-                    window.location.reload();
-                });
+                if (data.success) {
+                    Swal.fire("Berhasil!", "Link sosial media telah dihapus.", "success")
+                    .then(() => location.reload()); // Reload halaman setelah hapus
+                }
             });
         }
     });
 }
 
-// Form Submit (Tambah/Update)
-document.getElementById("formSocialLink").addEventListener("submit", function(event) {
-    event.preventDefault();
-    const id = document.getElementById("socialLinkId").value;
-    const platform = document.getElementById("platform").value;
-    const url = document.getElementById("url").value;
-    const selectedOption = document.querySelector(`#platform option[value="${platform}"]`);
-    const icon = selectedOption ? selectedOption.getAttribute('data-icon') : '';
-
-    const method = id ? "PUT" : "POST";
-    const action = id ? `/admin/social-links/update/${id}` : "/admin/social-links/store";
-
-    fetch(action, {
-        method: method,
-        headers: {
-            "X-CSRF-TOKEN": "{{ csrf_token() }}",
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ platform, url, icon })
-    })
-    .then(res => res.json())
-    .then(data => {
-        Swal.fire("Berhasil!", `Link ${platform} berhasil disimpan.`, "success").then(() => {
-            window.location.reload();
-        });
-    });
+// Form Submit (Tambah/Update) dengan Reload Halaman
+document.getElementById("formSocialLink").addEventListener("submit", function() {
+    Swal.fire({
+        title: "Berhasil!",
+        text: "Data berhasil disimpan.",
+        icon: "success"
+    }).then(() => location.reload()); // Reload halaman setelah submit
 });

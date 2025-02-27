@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Pinjaman;
 use App\Models\User;
+use App\Models\Simpanan;
 use Carbon\Carbon;
 
 class DataPengajuanController extends Controller
@@ -21,14 +22,19 @@ class DataPengajuanController extends Controller
             })
             ->get();
 
-        return view('admin.data-pengajuan', compact('pengajuan'));
+        $pengajuanSimpanan = Simpanan::with('user')
+            ->where('status', 'Dalam Proses')
+            ->get();
+
+        return view('admin.data-pengajuan', compact('pengajuan', 'pengajuanSimpanan'));
     }
+
 
     public function update(Request $request, $id)
     {
         $pinjaman = Pinjaman::findOrFail($id);
         $statusBaru = $request->status;
-
+        
         if ($statusBaru === 'Aktif') {
             $pinjaman->update([
                 'status' => 'Aktif',

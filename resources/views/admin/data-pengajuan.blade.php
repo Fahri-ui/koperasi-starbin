@@ -193,95 +193,146 @@
                 </a>
             </header>
             <div class="container mt-4">
-                <h3>Data Pengajuan</h3>
-                <p>Berikut adalah daftar pengajuan dari anggota koperasi.</p>
+                <h3 class="mb-3">
+                    <i class="bi bi-file-earmark-text"></i> Data Pengajuan
+                </h3>
+                <p>Berikut adalah daftar pengajuan dari anggota koperasi yang tercatat.</p>
 
                 <!-- Statistik Ringkasan -->
                 <div class="row mb-4">
                     <div class="col-md-3">
-                        <div class="card text-center">
-                            <div class="card-body">
-                                <h5 class="card-title">Total Pengajuan</h5>
+                        <div class="card shadow">
+                            <div class="card-body text-center">
+                                <i class="bi bi-clipboard-check fs-2 text-primary"></i>
+                                <h5 class="card-title mt-2">Total Pengajuan</h5>
                                 <p class="card-text">{{ $pengajuan->count() }} Pengajuan</p>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="card text-center">
-                            <div class="card-body">
-                                <h5 class="card-title">Pengajuan Menunggu</h5>
+                        <div class="card shadow">
+                            <div class="card-body text-center">
+                                <i class="bi bi-hourglass-split fs-2 text-warning"></i>
+                                <h5 class="card-title mt-2">Pengajuan Menunggu</h5>
                                 <p class="card-text">{{ $pengajuan->where('status', 'Dalam Proses')->count() }} Pengajuan</p>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="card text-center">
-                            <div class="card-body">
-                                <h5 class="card-title">Pengajuan Disetujui</h5>
+                        <div class="card shadow">
+                            <div class="card-body text-center">
+                                <i class="bi bi-check-circle fs-2 text-success"></i>
+                                <h5 class="card-title mt-2">Pengajuan Disetujui</h5>
                                 <p class="card-text">{{ $pengajuan->where('status', 'Aktif')->count() }} Pengajuan</p>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="card text-center">
-                            <div class="card-body">
-                                <h5 class="card-title">Pengajuan Ditolak</h5>
+                        <div class="card shadow">
+                            <div class="card-body text-center">
+                                <i class="bi bi-x-circle fs-2 text-danger"></i>
+                                <h5 class="card-title mt-2">Pengajuan Ditolak</h5>
                                 <p class="card-text">{{ $pengajuan->where('status', 'Ditolak')->count() }} Pengajuan</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="card">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="bi bi-table"></i> Data Pengajuan</h5>
+                    </div>
                     <div class="card-body">
-                        <h5>Data Pegajuan</h5>
-                        <div style="max-height: 450px;  overflow:auto; font-size:.9rem;">
-                            <table class="table table-striped">
-                                <thead>
+                        <div style="max-height: 450px; overflow:auto; font-size:.9rem;">
+                            <table class="table table-hover">
+                                <thead class="table-primary">
                                     <tr>
                                         <th>No</th>
                                         <th>Nama Anggota</th>
                                         <th>Tanggal Pengajuan</th>
-                                        <th>Jumlah Pengajuan</th>
-                                        <th>Alasan</th> <!-- Kolom baru -->
+                                        <th>Jumlah</th>
+                                        <th>Tipe Pengajuan</th>
+                                        <th>Alasan / Keterangan</th>
                                         <th>Status</th>
+                                        <th>Bukti</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse($pengajuan as $index => $item)
+                                    @php $no = 1; @endphp
+
+
+                                    <!-- Data Pinjaman -->
+                                    @foreach($pengajuan as $item)
                                     <tr>
-                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ $no++ }}</td>
                                         <td>{{ $item->user->fullname }}</td>
                                         <td>{{ $item->tanggal_pengajuan }}</td>
                                         <td>Rp {{ number_format($item->jumlah_pinjaman, 0, ',', '.') }}</td>
-                                        <td>{{ $item->alasan ?? '-' }}</td> <!-- Menampilkan alasan sebagai Tujuan -->
+                                        <td><span class="badge bg-info"><i class="bi bi-cash"></i> Pinjaman</span></td>
+                                        <td>{{ $item->alasan ?? '-' }}</td>
                                         <td>
                                             @if($item->status == 'Dalam Proses')
-                                            <span class="badge bg-warning">Menunggu</span>
+                                            <span class="badge bg-warning"><i class="bi bi-hourglass-split"></i> Menunggu</span>
                                             @elseif($item->status == 'Aktif')
-                                            <span class="badge bg-success">Disetujui</span>
+                                            <span class="badge bg-success"><i class="bi bi-check-circle"></i> Disetujui</span>
                                             @elseif($item->status == 'Ditolak')
-                                            <span class="badge bg-danger">Ditolak</span>
+                                            <span class="badge bg-danger"><i class="bi bi-x-circle"></i> Ditolak</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if(!empty($item->bukti))
+                                            <a href="{{ route('admin.bukti.pembayaran', ['bukti' => basename($item->bukti)]) }}" target="_blank">Lihat Bukti</a>
+                                            @else
+                                            <span class="text-muted">Tidak Ada Bukti</span>
                                             @endif
                                         </td>
                                         <td>
                                             @if($item->status == 'Dalam Proses')
-                                            <button class="btn btn-sm btn-success btn-ubah-status" data-id="{{ $item->id }}" data-status="Aktif">Setujui</button>
-                                            <button class="btn btn-sm btn-danger btn-ubah-status" data-id="{{ $item->id }}" data-status="Ditolak">Tolak</button>
+                                            <button class="btn btn-sm btn-success btn-ubah-status" data-id="{{ $item->id }}" data-status="Aktif">
+                                                <i class="bi bi-check-lg"></i> Setujui
+                                            </button>
+                                            <button class="btn btn-sm btn-danger btn-ubah-status" data-id="{{ $item->id }}" data-status="Ditolak">
+                                                <i class="bi bi-x-lg"></i> Tolak
+                                            </button>
                                             @else
-                                            -
+                                            <span class="text-muted">-</span>
                                             @endif
                                         </td>
                                     </tr>
-                                    @empty
+                                    @endforeach
+
+                                    <!-- Data Simpanan -->
+                                    @foreach($pengajuanSimpanan as $item)
                                     <tr>
-                                        <td colspan="7">Belum ada data transaksi.</td>
+                                        <td>{{ $no++ }}</td>
+                                        <td>{{ $item->user->fullname }}</td>
+                                        <td>{{ $item->tanggal_pengajuan }}</td>
+                                        <td>Rp {{ number_format($item->jumlah, 0, ',', '.') }}</td>
+                                        <td><span class="badge bg-secondary"><i class="bi bi-wallet2"></i> Simpanan ({{ ucfirst($item->jenis) }})</span></td>
+                                        <td>-</td>
+                                        <td>
+                                            <span class="badge bg-warning"><i class="bi bi-hourglass-split"></i> Dalam Proses</span>
+                                        </td>
+                                        <td>
+                                            @if(!empty($item->bukti))
+                                            <a href="{{ route('admin.bukti.pembayaran', ['bukti' => basename($item->bukti)]) }}" target="_blank">Lihat Bukti</a>
+                                            @else
+                                            <span class="text-muted">Tidak Ada Bukti</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-sm btn-success btn-ubah-status" data-id="{{ $item->id }}" data-status="Aktif">
+                                                <i class="bi bi-check-lg"></i> Setujui
+                                            </button>
+                                            <button class="btn btn-sm btn-danger btn-ubah-status" data-id="{{ $item->id }}" data-status="Ditolak">
+                                                <i class="bi bi-x-lg"></i> Tolak
+                                            </button>
+                                        </td>
                                     </tr>
-                                    @endforelse
+                                    @endforeach
                                 </tbody>
                             </table>
-
                         </div>
                     </div>
                 </div>
@@ -306,7 +357,7 @@
         </div>
         <script src="{{asset('admin-page/assets/js/bootstrap.js')}}"></script>
         <script src="{{asset('admin-page/assets/js/app.js')}}"></script>
-        <!-- Script AJAX untuk update status -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 document.querySelectorAll(".btn-ubah-status").forEach(button => {
@@ -314,7 +365,7 @@
                         let id = this.getAttribute("data-id");
                         let status = this.getAttribute("data-status");
 
-                        fetch(`/data-pengajuan/${id}/update`, {
+                        fetch(/data-pengajuan/${id}/update, {
                                 method: "POST",
                                 headers: {
                                     "Content-Type": "application/json",
@@ -342,9 +393,10 @@
                 });
             });
         </script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
         <!-- Link Bootstrap JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+       
 </body>
 
 </html>
