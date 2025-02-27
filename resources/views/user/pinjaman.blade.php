@@ -135,6 +135,63 @@
                     <i class="bi bi-justify fs-3"></i>
                 </a>
             </header>
+            @if (auth()->user()->status === 'Belum_Aktif')
+            <div class="container mt-4">
+                <!-- Card Peringatan -->
+                <div class="card shadow-sm mb-3" style="border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); margin-bottom: 20px; padding: 20px;">
+                    <div class="card-body bg-warning text-dark">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-exclamation-triangle-fill me-2 fs-4"></i>
+                            <div>
+                                <strong>Akun Anda belum aktif!</strong> Untuk mengaktifkannya, silakan lakukan pembayaran simpanan anggota sesuai dengan ketentuan koperasi.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card Form Pembayaran -->
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0" style="color: white;"><i class="bi bi-credit-card"></i> Pembayaran Simpanan Anggota</h5>
+                    </div>
+                    <div class="card-body" style="margin-top: 30px;">
+                        <form action="{{ route('simpanan.bayar') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="nominal" class="form-label"><i class="bi bi-cash-stack"></i> Nominal Pembayaran</label>
+                                <input type="number" id="nominal" name="nominal" class="form-control" placeholder="Masukkan jumlah simpanan" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="metode" class="form-label"><i class="bi bi-wallet2"></i> Metode Pembayaran</label>
+                                <select id="metode" name="metode" class="form-select" required>
+                                    <option value="" disabled selected>Pilih metode pembayaran</option>
+                                    <option value="cash">Tunai (Bayar Langsung)</option>
+                                    <option value="bank">Transfer Bank</option>
+                                    <option value="ewallet">E-Wallet (Dana, OVO, Gopay)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="payment-proof">Unggah Bukti Pembayaran</label>
+                                <input type="file" class="form-control" id="payment-proof" name="payment-proof" accept="image/*" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100"><i class="bi bi-send"></i> Bayar Sekarang</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            @elseif (auth()->user()->status === 'Belum_Bayar_Simpanan')
+            {{-- Tampilkan formulir pembayaran simpanan terakhir --}}
+            @include('components.form_pembayaran_simpanan')
+
+            @elseif (auth()->user()->status === 'Nonaktif')
+            {{-- Tampilkan pesan akun nonaktif --}}
+            <h3 class="text-red-500 text-center">Akun Anda Nonaktif. Silakan hubungi admin untuk informasi lebih lanjut.</h3>
+
+            @else
             @if (session('error'))
             <div class="alert alert-danger" style="background-color: salmon; color:aliceblue; border-radius:20px; margin-bottom:20px;">
                 <ul>
@@ -180,7 +237,7 @@
                             <h1>❗❗Tidak bisa memulai Pinjaman❗❗</h1>
                             <br><br><br>
                             <h5>Anda masih memiliki Angsuran, Selesaikan Angsuran Anda untuk memulai Pinjaman</h5>
-                                <br><br>
+                            <br><br>
                         </div>
                     </div>
                 </section>
@@ -325,6 +382,8 @@
                 </section>
                 @endif
             </div>
+            @endif
+
             <footer>
                 <div class="footer clearfix mb-0 text-muted">
                     <div class="float-start">

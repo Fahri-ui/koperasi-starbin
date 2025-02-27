@@ -110,17 +110,26 @@ Route::middleware(['auth'])->group(function () {
 
     // Grup Route untuk User (userAkses:user)
     Route::middleware(['userAkses:user'])->group(function () {
+        // Dashboard
         Route::get('/user', [DashboardController::class, 'dashboard'])->name('user');
+        // Profil
         Route::get('/userprofil', [ProfilController::class, 'profil'])->name('profil');
         Route::put('/userprofil', [ProfilController::class, 'update']);
-        Route::get('/usersimpananwajib', [SimpananController::class, 'simpananwajib'])->name('simpananwajib');
-        Route::get('/usersimpanansukarela', [SimpananController::class, 'simpanansukarela'])->name('simpanansukarela');
+        // Simpanans
+        Route::post('/simpanan/bayar', [SimpananController::class, 'storePayment'])->name('simpanan.bayar');
         Route::post('/simpanans', [SimpananController::class, 'store'])->name('simpanan.store');
+        // wajib
+        Route::get('/usersimpananwajib', [SimpananController::class, 'simpananwajib'])->name('simpananwajib');
+        // Sukarela
+        Route::get('/usersimpanansukarela', [SimpananController::class, 'simpanansukarela'])->name('simpanansukarela');
+        // Pinjaman
         Route::get('/pinjaman', [PinjamanController::class, 'pinjaman'])->name('pinjaman');
         Route::post('/pinjaman/ajukan', [PinjamanController::class, 'ajukanPinjaman'])->name('pinjaman.ajukan');
         Route::post('/pinjaman/bayar', [PinjamanController::class, 'bayarPinjaman'])->name('pinjaman.bayar');
         Route::get('/bukti/{bukti}', [BuktiPembayaranController::class, 'show'])->name('bukti.pembayaran');
+        // Notifikasi
         Route::get('/notifikasi', [NotifikasiController::class, 'notifikasi'])->name('notifikasi');
+        // Bantuan
         Route::get('/bantuan', [BantuanController::class, 'bantuan'])->name('bantuan');
         Route::post('/user/kirim-pesan', [BantuanController::class, 'kirimPesan'])->name('user.kirim-pesan');
     });

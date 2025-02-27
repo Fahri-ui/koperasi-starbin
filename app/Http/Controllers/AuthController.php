@@ -92,6 +92,7 @@ class AuthController extends Controller
             'address' => $request->address,
             'gambar' => $nama_gambar,
             'role' => 'user', // Default role untuk user baru adalah 'user'
+            'status' => 'Belum_Aktif', // Status default untuk pengguna baru
         ];
 
         // Menyimpan data ke tabel users

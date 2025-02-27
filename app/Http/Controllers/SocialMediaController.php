@@ -21,9 +21,9 @@ class SocialMediaController extends Controller
             'icon' => 'required|string|max:255',
         ]);
 
-        $link = SocialLink::create($request->all());
+        SocialLink::create($request->all());
 
-        return response()->json($link);
+        return redirect()->route('sosmed')->with('success', 'Link sosial media berhasil ditambahkan!');
     }
 
     public function update(Request $request, $id)
@@ -37,7 +37,7 @@ class SocialMediaController extends Controller
         $link = SocialLink::findOrFail($id);
         $link->update($request->all());
 
-        return response()->json($link);
+        return redirect()->route('sosmed')->with('success', 'Link sosial media berhasil diperbarui!');
     }
 
     public function destroy($id)

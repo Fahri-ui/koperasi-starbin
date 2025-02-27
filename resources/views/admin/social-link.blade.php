@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Data Pribadi Anda</title>
 
     <link rel="stylesheet" href="{{asset('admin-page/assets/css/main/app.css')}}">
@@ -291,7 +292,6 @@
     <script src="{{asset('admin-page/assets/js/app.')}}js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        const updateRoleUrl = "{{ route('users.updateRole') }}";
         const csrfToken = "{{ csrf_token() }}";
     </script>
     <script >

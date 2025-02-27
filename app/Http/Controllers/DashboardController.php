@@ -17,6 +17,8 @@ class DashboardController extends Controller
         // Ambil user yang sedang login
         $user = Auth::user();
 
+        $simpanan = Simpanan::where('user_id', auth()->id())->latest()->first();
+
         // Hitung total saldo simpanan sukarela
         $totalSukarela = Simpanan::where('user_id', $user->id)
             ->where('jenis', 'sukarela')
@@ -80,6 +82,6 @@ class DashboardController extends Controller
 
 
         // Kirim ke view
-        return view('user.dashboard', compact('totalSukarela', 'totalPinjaman', 'riwayatTransaksi', 'jumlahNotifikasiBaru'));
+        return view('user.dashboard', compact('totalSukarela', 'totalPinjaman', 'riwayatTransaksi', 'jumlahNotifikasiBaru', 'simpanan'));
     }
 }
