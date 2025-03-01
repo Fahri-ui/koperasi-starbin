@@ -5,14 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>Data Anggota Koperasi STARBIN</title>
+    <title>Data Pengajuan Koperasi STARBIN</title>
 
     <link rel="stylesheet" href="{{asset('admin-page/assets/css/main/app.css')}}">
     <link rel="stylesheet" href="{{asset('admin-page/assets/css/main/app-dark.css')}}">
     <link rel="shortcut icon" href="{{asset('admin-page/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/x-icon">
     <link rel="shortcut icon" href="{{asset('admin-page/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/png">
-    <link rel="stylesheet" href="{{asset('admin-page/assets/css/data-anggota.css')}}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('admin-page/assets/css/data-pengajuan.css')}}">
 
 </head>
 
@@ -70,7 +70,7 @@
                         </li>
 
                         <li
-                            class="sidebar-item active">
+                            class="sidebar-item ">
                             <a href="{{route('dataanggota')}}" class='sidebar-link'>
                                 <i class="bi bi-person-lines-fill"></i>
                                 <span>Data Anggota</span>
@@ -111,7 +111,7 @@
                         </li>
 
                         <li
-                            class="sidebar-item  ">
+                            class="sidebar-item">
                             <a href="{{route('denda')}}" class='sidebar-link'>
                                 <i class="bi bi-exclamation-circle"></i>
                                 <span>Denda</span>
@@ -131,7 +131,7 @@
                             </a>
                         </li>
 
-                        <li class="sidebar-item">
+                        <li class="sidebar-item active">
                             <a href="{{ route('simpanans') }}" class="sidebar-link">
                                 <i class="bi bi-wallet-fill"></i>
                                 <span>Data Pengajuan Simpanan</span>
@@ -204,131 +204,130 @@
                 </a>
             </header>
 
-            <!-- Content -->
-            <div class="container mt-5">
-                <!-- text judul -->
-                <h3 class="text-center bold">Kelola Data Anggota</h3>
-                <!-- end text judul -->
+            @if (Session::has('error'))
+            <div class="alert alert-danger" style="background-color: salmon; color:aliceblue; border-radius:20px; margin-bottom:20px;">
+                {{ Session::get('error') }}
+            </div>
+            @endif
 
-                <!-- Form Tambah Anggota -->
-                <div class="card mb-4" style="margin-top: 20px;">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="text-white">
-                            <i class="bi bi-person-plus text-white"></i> Tambah Anggota Baru
-                        </h5>
-                    </div>
-                    <div class="card-body" style="margin-top: 20px;">
-                        <form action="{{ route('users.store') }}" method="POST" enctype="multipart/form-data" id="formTambahAnggota">
-                            @csrf
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="fullname" class="form-label">Nama Lengkap</label>
-                                    <input type="text" class="form-control" id="fullname" name="fullname" required minlength="5">
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="email" name="email" required>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="phone" class="form-label">Nomor Telepon</label>
-                                    <input type="text" class="form-control" id="phone" name="phone" required pattern="62[0-9]{9,13}" minlength="10" maxlength="15">
-                                    <small class="text-muted">Masukkan nomor dengan kode negara (62), panjang 10-15 angka</small>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="password" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="password" name="password" required minlength="8">
-                                </div>
-                                <div class="col-md-12 mb-3">
-                                    <label for="address" class="form-label">Alamat</label>
-                                    <textarea class="form-control" id="address" name="address" required minlength="15"></textarea>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="gambar" class="form-label">Foto Profil</label>
-                                    <input type="file" class="form-control" id="gambar" name="gambar" required accept="image/jpeg, image/jpg, image/png, image/gif">
-                                    <small class="text-muted">Unggah gambar dengan format jpeg, jpg, png, atau gif (maks 2MB)</small>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="role" class="form-label">Peran</label>
-                                    <select class="form-select" id="role" name="role">
-                                        <option value="user" selected>User</option>
-                                        <option value="admin">Admin</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-12">
-                                    <button type="submit" class="btn btn-success">
-                                        <i class="bi bi-save"></i> Simpan
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <!-- end Form Tambah Anggota -->
-
-                <!-- Tabel Data Anggota -->
-                <div class="card" style="margin-top: 30px;">
-                    <div class="card-body">
-                        <h5 class="text-center">Data Anggota</h5>
-                        <div style="margin-bottom: 20px; position: relative;">
-                            <div class="input-group">
-                                <input
-                                    type="text"
-                                    id="search-anggota"
-                                    class="form-control"
-                                    placeholder="Cari anggota berdasarkan Nama atau ID..."
-                                    onkeyup="searchAnggota()"
-                                    style="box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);">
-                                <button
-                                    class="btn btn-danger"
-                                    onclick="resetSearch()"
-                                    style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
-                                    <i class="bi bi-x-circle"></i> Bersihkan
-                                </button>
+            <!-- Jika berhasil -->
+            @if (Session::has('success'))
+            <div class="alert alert-success" style="background-color: lightgreen; color:aliceblue; border-radius:20px;">
+                {{ Session::get('success') }}
+            </div>
+            @endif
+            <div class="container mt-4">
+                <h3 style="margin-bottom: 40px;">Data Pengajuan Simpanans </h3>
+                <!-- Statistik Ringkasan -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card text-center shadow">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="bi bi-list-ul"></i> Total Pengajuan</h5>
+                                <p class="card-text">{{ $totalPengajuan }} Pengajuan</p>
                             </div>
                         </div>
-                        <div style="max-height: 500px; overflow:auto; font-size:.9rem;">
-                            <table class="table table-striped">
-                                <thead class="table-dark">
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center shadow">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="bi bi-hourglass-split"></i> Menunggu</h5>
+                                <p class="card-text">{{ $menunggu }} Pengajuan</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center shadow">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="bi bi-check-circle"></i> Disetujui</h5>
+                                <p class="card-text">{{ $disetujui }} Pengajuan</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center shadow">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="bi bi-x-circle"></i> Ditolak</h5>
+                                <p class="card-text">{{ $ditolak }} Pengajuan</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Pengajuan -->
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0 text-white"><i class="bi bi-table"></i> Data Pengajuan</h5>
+                    </div>
+                    <div class="card-body">
+                        <div style="max-height: 750px; overflow:auto; font-size:.9rem;">
+                            <table class="table table-hover">
+                                <thead class="table-primary">
                                     <tr>
                                         <th>No</th>
-                                        <th>ID</th>
                                         <th>Nama Anggota</th>
-                                        <th>Email</th>
-                                        <th>Role</th>
-                                        <th>Nomor Telepon</th>
+                                        <th>Tanggal Pengajuan</th>
+                                        <th>Jumlah</th>
+                                        <th>Tipe Pengajuan</th>
+                                        <th>Alasan / Keterangan</th>
+                                        <th>Status</th>
+                                        <th>Bukti</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
-                                <tbody id="data-anggota">
-                                    @foreach ($users as $index => $user)
+                                <tbody>
+                                    @foreach ($pengajuanSimpanans as $key => $data)
                                     <tr>
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>{{ $user->id }}</td>
+                                        <td>{{ $key + 1 }}</td>
+                                        <td>{{ $data->user->fullname }}</td>
+                                        <td>{{ $data->tanggal_pengajuan }}</td>
+                                        <td>Rp {{ number_format($data->jumlah, 0, ',', '.') }}</td>
                                         <td>
-                                            @if ($user->role === 'admin')
-                                            <span class="text-muted">{{ $user->fullname }}</span>
-                                            @else
-                                            <a href="#" class="text-primary" data-bs-toggle="modal" data-bs-target="#modalDetail" onclick="getDetail({{$user->id}})">
-                                                {{ $user->fullname }}
+                                            <span class="badge bg-secondary">
+                                                <i class="bi bi-wallet2"></i> Simpanan ({{ ucfirst($data->jenis) }})
+                                            </span>
+                                        </td>
+                                        <td>{{ $data->keterangan ?? '-' }}</td>
+                                        <td>
+                                            <span class="badge bg-{{ $data->status == 'Dalam Proses' ? 'warning' : ($data->status == 'Berhasil' ? 'success' : 'danger') }}">
+                                                <i class="bi {{ $data->status == 'Dalam Proses' ? 'bi-hourglass-split' : ($data->status == 'Disetujui' ? 'bi-check-circle' : 'bi-x-circle') }}"></i> {{ $data->status }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @if ($data->bukti)
+                                            <a href="{{ route('admin.bukti.pembayaran', ['bukti' => basename($data->bukti)]) }}"
+                                                target="_blank"
+                                                class="btn btn-outline-primary btn-sm">
+                                                <i class="bi bi-eye"></i> Lihat Bukti
                                             </a>
+                                            @else
+                                            <span class="badge bg-danger">
+                                                <i class="bi bi-x-circle"></i> <br> Bukti <br> belum <br> diunggah
+                                            </span>
                                             @endif
                                         </td>
-                                        <td>{{ $user->email }}</td>
                                         <td>
-                                            <select class="form-select role-select" data-user-id="{{ $user->id }}" data-original-role="{{ $user->role }}">
-                                                <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>User</option>
-                                                <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
-                                            </select>
-                                        </td>
-                                        <td>{{ $user->phone }}</td>
-                                        <td>
-                                            <form id="deleteForm-{{ $user->id }}" method="POST">
+                                            @if ($data->status == 'Dalam Proses')
+                                            <form action="{{ route('updateStatusSimpanan', $data->id) }}" method="POST" style="display:inline;">
                                                 @csrf
-                                                @method('DELETE')
-                                                <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $user->id }})">
-                                                    <i class="bi bi-trash"></i> Hapus
+                                                <input type="hidden" name="action" value="approve">
+                                                <button type="submit" class="btn btn-sm btn-success">
+                                                    <i class="bi bi-check-lg"></i> Setujui
                                                 </button>
                                             </form>
+
+                                            <form action="{{ route('updateStatusSimpanan', $data->id) }}" method="POST" style="display:inline;">
+                                                @csrf
+                                                <input type="hidden" name="action" value="reject">
+                                                <button type="submit" class="btn btn-sm btn-danger">
+                                                    <i class="bi bi-x-lg"></i> Tolak
+                                                </button>
+                                            </form>
+                                            @else
+                                            <button class="btn btn-sm btn-secondary" disabled>
+                                                <i class="bi bi-lock"></i> Tidak Ada Aksi
+                                            </button>
+                                            @endif
                                         </td>
                                     </tr>
                                     @endforeach
@@ -337,34 +336,36 @@
                         </div>
                     </div>
                 </div>
-                <!-- end Tabel Data Anggota -->
-            </div>
-            <!-- end Content-->
 
-            <!-- Pop-up Detail User -->
-            <div class="modal fade" id="modalDetail" tabindex="-1" aria-labelledby="modalDetailLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header bg-info text-white">
-                            <h5 class="modal-title" id="modalDetailLabel"><i class="bi bi-person-circle"></i> Detail Anggota</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <ul class="list-group">
-                                <li class="list-group-item"><strong>Total Simpanan Wajib:</strong> <span id="simpanan-wajib">Rp 0</span></li>
-                                <li class="list-group-item"><strong>Total Simpanan Sukarela:</strong> <span id="simpanan-sukarela">Rp 0</span></li>
-                                <li class="list-group-item"><strong>Total Pinjaman:</strong> <span id="total-pinjaman">Rp 0</span></li>
-                            </ul>
+                <!-- Tips Section -->
+                <div class="row mt-5">
+                    <div class="col-12">
+                        <div class="card shadow">
+                            <div class="card-header bg-secondary text-white">
+                                <h5 class="text-white"><i class="bi bi-lightbulb"></i> Tips Pengelolaan Pengajuan</h5>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <i class="bi bi-check2-circle text-success"></i> Pastikan data pengajuan lengkap sebelum disetujui.
+                                    </li>
+                                    <li class="list-group-item">
+                                        <i class="bi bi-hourglass-split text-warning"></i> Pantau pengajuan yang masih dalam proses secara berkala.
+                                    </li>
+                                    <li class="list-group-item">
+                                        <i class="bi bi-x-circle text-danger"></i> Tolak pengajuan jika ada ketidaksesuaian data atau syarat yang belum terpenuhi.
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- end Pop-up Detail User  -->
 
             <footer>
                 <div class="footer clearfix mb-0 text-muted">
                     <div class="float-start">
-                        <p style="margin-right: 50%;">2025 &copy; STARBIN</p>
+                        <p>2025 &copy; STARBIN</p>
                     </div>
                     <div class="float-end" style="margin-right: 30px;">
                         <p>Dibuat dengan
@@ -381,13 +382,9 @@
     </div>
     <script src="{{asset('admin-page/assets/js/bootstrap.js')}}"></script>
     <script src="{{asset('admin-page/assets/js/app.js')}}"></script>
-    <script src="{{asset('admin-page/assets/js/data-anggota.js')}}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        const updateRoleUrl = "{{ route('users.updateRole') }}";
-        const csrfToken = "{{ csrf_token() }}";
-    </script>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Link Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

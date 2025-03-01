@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Notifikasi;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Models\Simpanan;
 
 class BantuanController extends Controller
 {
     function bantuan()
     {
-        return view('user/bantuan');
+        $simpanan = Simpanan::where('user_id', auth()->id())->latest()->first();
+        return view('user/bantuan', compact('simpanan'));
     }
 
     public function kirimPesan(Request $request)

@@ -7,7 +7,7 @@ use App\Models\Pinjaman;
 use App\Models\RiwayatPembayaran;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-
+use App\Models\Simpanan;
 use Carbon\Carbon;
 use App\Models\Notifikasi; // Tambahkan ini di atas
 
@@ -18,6 +18,7 @@ class PinjamanController extends Controller
         $userId = Auth::id();
         $tanggalHariIni = Carbon::today();
 
+        $simpanan = Simpanan::where('user_id', auth()->id())->latest()->first();
         // Ambil semua riwayat transaksi
         $riwayatTransaksi = Pinjaman::where('user_id', $userId)
             ->select(
@@ -176,7 +177,7 @@ class PinjamanController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('user.pinjaman', compact('riwayatTransaksi', 'totalPinjaman', 'pinjamanAktif', 'notifikasi'));
+        return view('user.pinjaman', compact('riwayatTransaksi', 'simpanan', 'totalPinjaman', 'pinjamanAktif', 'notifikasi'));
     }
 
     public function ajukanPinjaman(Request $request)
