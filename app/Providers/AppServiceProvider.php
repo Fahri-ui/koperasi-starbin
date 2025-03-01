@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use App\Models\Notifikasi;
 use App\Models\Pinjaman;
+use App\Models\Simpanan;
 use Illuminate\Support\Facades\Auth;
 
 class AppServiceProvider extends ServiceProvider
@@ -25,38 +26,41 @@ class AppServiceProvider extends ServiceProvider
     {
         View::composer('*', function ($view) {
             $jumlahNotifikasiBaru = 0;
-
+            $jumlahPengajuanDalamProses = 0; // Inisialisasi default
+            $jumlahSimpananDalamProses = 0;  // Inisialisasi default
+    
             if (Auth::check()) {
                 $user = Auth::user();
-
+    
                 if ($user->role === 'admin') {
                     // ✅ Admin hanya menerima pesan dengan user_id NULL
                     $jumlahNotifikasiBaru = Notifikasi::where('is_read', false)
-                        ->whereNull('user_id') // 🔥 FIX: Pastikan ini bekerja
+                        ->whereNull('user_id') 
                         ->count();
+    
+                    // Hitung pengajuan pinjaman dalam proses
+                    $jumlahPengajuanDalamProses = Pinjaman::where('status', 'Dalam Proses')->count();
+                    
+                    // Hitung simpanan dalam proses
+                    $jumlahSimpananDalamProses = Simpanan::where('status', 'Dalam Proses')->count();
                 } else {
                     // ✅ User hanya melihat pesan dengan user_id tertentu (bukan NULL)
                     $jumlahNotifikasiBaru = Notifikasi::where(function ($query) use ($user) {
-                        $query->where('user_id', $user->id) // 🔥 Notifikasi user
-                            ->orWhere('user_id', 0); // 🔥 Global Message
+                        $query->where('user_id', $user->id)
+                            ->orWhere('user_id', 0); 
                     })
                         ->where('is_read', false)
-                        ->whereNotNull('user_id') // 🔥 FIX: Pastikan user tidak melihat pesan untuk admin
+                        ->whereNotNull('user_id')
                         ->count();
                 }
             }
-
-            // Menghitung jumlah pengajuan dengan status 'Dalam Proses'
-            $jumlahPengajuanDalamProses = 0;
-            if (Auth::check() && Auth::user()->role === 'admin') {
-                $jumlahPengajuanDalamProses = Pinjaman::where('status', 'Dalam Proses')->count();
-            }
-
+    
             // Membagikan jumlah notifikasi dan jumlah pengajuan ke semua view
             $view->with([
                 'jumlahNotifikasiBaru' => $jumlahNotifikasiBaru,
-                'jumlahPengajuanDalamProses' => $jumlahPengajuanDalamProses
+                'jumlahPengajuanDalamProses' => $jumlahPengajuanDalamProses,
+                'jumlahSimpananDalamProses' => $jumlahSimpananDalamProses
             ]);
         });
-    }
+    }      
 }

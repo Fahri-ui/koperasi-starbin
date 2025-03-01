@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Notifikasi;
+use App\Models\Simpanan;
 use Illuminate\Support\Facades\Auth;
 
 class NotifikasiController extends Controller
@@ -36,6 +37,8 @@ class NotifikasiController extends Controller
             return Carbon::parse($item->created_at)->format('Y-m');
         });
 
-        return view('user.notifikasi', compact('notifikasiPerBulan'));
+        $simpanan = Simpanan::where('user_id', auth()->id())->latest()->first();
+
+        return view('user.notifikasi', compact('notifikasiPerBulan', 'simpanan'));
     }
 }

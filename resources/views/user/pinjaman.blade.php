@@ -136,9 +136,21 @@
                 </a>
             </header>
             @if (auth()->user()->status === 'Belum_Aktif')
+            @if (Session::has('error'))
+            <div class="alert alert-danger" style="background-color: salmon; color:aliceblue; border-radius:20px; margin-bottom:20px;">
+                {{ Session::get('error') }}
+            </div>
+            @endif
+
+            <!-- Jika berhasil -->
+            @if (Session::has('success'))
+            <div class="alert alert-success" style="background-color: lightgreen; color:aliceblue; border-radius:20px;">
+                {{ Session::get('success') }}
+            </div>
+            @endif
             <div class="container mt-4">
                 <!-- Card Peringatan -->
-                <div class="card shadow-sm mb-3" style="border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); margin-bottom: 20px; padding: 20px;">
+                <div class="card shadow-sm mb-3">
                     <div class="card-body bg-warning text-dark">
                         <div class="d-flex align-items-center">
                             <i class="bi bi-exclamation-triangle-fill me-2 fs-4"></i>
@@ -159,13 +171,12 @@
                             @csrf
                             <div class="mb-3">
                                 <label for="nominal" class="form-label"><i class="bi bi-cash-stack"></i> Nominal Pembayaran</label>
-                                <input type="number" id="nominal" name="nominal" class="form-control" placeholder="Masukkan jumlah simpanan" required>
+                                <input type="number" id="nominal" name="nominal" class="form-control" placeholder="Masukkan jumlah simpanan" min="500000" max="500000" required>
                             </div>
 
                             <div class="mb-3">
                                 <label for="metode" class="form-label"><i class="bi bi-wallet2"></i> Metode Pembayaran</label>
                                 <select id="metode" name="metode" class="form-select" required>
-                                    <option value="" disabled selected>Pilih metode pembayaran</option>
                                     <option value="cash">Tunai (Bayar Langsung)</option>
                                     <option value="bank">Transfer Bank</option>
                                     <option value="ewallet">E-Wallet (Dana, OVO, Gopay)</option>
@@ -181,6 +192,100 @@
                         </form>
                     </div>
                 </div>
+            </div>
+
+            @elseif (auth()->user()->status === 'Ditolak')
+            <div class="container mt-4">
+                <!-- Card Peringatan Pengajuan Ditolak -->
+                <div class="card shadow-sm mb-3">
+                    <div class="card-body bg-danger text-white">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-x-circle-fill me-4 fs-2" style="margin-top: -30px;"></i>
+                            <div>
+                                <strong style="font-size: 2rem;">Pengajuan Anda Ditolak!</strong><br> Mohon maaf, pengajuan simpanan anggota Anda tidak dapat diproses. Silakan periksa kembali data yang Anda kirimkan atau lakukan pembayaran ulang sesuai ketentuan koperasi.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card Form Pembayaran -->
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0" style="color: white;"><i class="bi bi-credit-card"></i> Pembayaran Simpanan Anggota</h5>
+                    </div>
+                    <div class="card-body" style="margin-top: 30px;">
+                        <form action="{{ route('simpanan.bayar') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="nominal" class="form-label"><i class="bi bi-cash-stack"></i> Nominal Pembayaran</label>
+                                <input type="number" id="nominal" name="nominal" class="form-control" placeholder="Masukkan jumlah simpanan" min="500000" max="500000" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="metode" class="form-label"><i class="bi bi-wallet2"></i> Metode Pembayaran</label>
+                                <select id="metode" name="metode" class="form-select" required>
+                                    <option value="cash">Tunai (Bayar Langsung)</option>
+                                    <option value="bank">Transfer Bank</option>
+                                    <option value="ewallet">E-Wallet (Dana, OVO, Gopay)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="payment-proof">Unggah Bukti Pembayaran</label>
+                                <input type="file" class="form-control" id="payment-proof" name="payment-proof" accept="image/*" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100"><i class="bi bi-send"></i> Bayar Sekarang</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            @elseif (auth()->user()->status === 'Pending')
+            @if (Session::has('error'))
+            <div class="alert alert-danger" style="background-color: salmon; color:aliceblue; border-radius:20px; margin-bottom:20px;">
+                {{ Session::get('error') }}
+            </div>
+            @endif
+
+            <!-- Jika berhasil -->
+            @if (Session::has('success'))
+            <div class="alert alert-success" style="background-color: lightgreen; color:aliceblue; border-radius:20px;">
+                {{ Session::get('success') }}
+            </div>
+            @endif
+            <div class="alert p-4 shadow" style="background-color: #435ebe; color: #fff; border-radius: 10px;">
+                <div class="d-flex align-items-start">
+                    <i class="bi bi-hourglass-split fs-1 me-3" style="color: #ffdd57; margin-top:-15px; padding-right:30px;"></i>
+                    <div>
+                        <h4 class="text-white">Status Pengajuan: <span class="badge" style="background-color: #ffdd57; color: #435ebe;">Pending</span></h4>
+                        <p>Terima kasih telah mengajukan simpanan anggota. Formulir Anda sedang dalam proses verifikasi oleh admin.</p>
+                        <p><i class="bi bi-clock"></i> Estimasi waktu persetujuan: <strong>3 hari kerja</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-3 shadow text-center" style="border: 2px solid #435ebe; border-radius: 10px;">
+                <div class="card-header" style="background-color: #435ebe; color: #fff;">
+                    <h5 class="text-white">
+                        <i class="bi bi-file-text text-white"></i> Detail Pengajuan
+                    </h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Jenis Simpanan:</strong> {{ $simpanan->jenis ?? '-' }}</li>
+                    <li class="list-group-item"><strong>Jumlah:</strong> Rp {{ number_format($simpanan->jumlah, 0, ',', '.') ?? '-' }}</li>
+                    <li class="list-group-item"><strong>Kode Transaksi:</strong> {{ $simpanan->kode_transaksi ?? '-' }}</li>
+                    <li class="list-group-item"><strong>Tanggal Transaksi:</strong>{{ \Carbon\Carbon::parse($simpanan->tanggal_pengajuan)->format('Y-m-d') }}</li>
+                    <li class="list-group-item"><strong>Bukti Pembayaran:</strong>
+                        @if($simpanan->bukti)
+                        <a href="{{ route('bukti.pembayaran', ['bukti' => basename($simpanan->bukti)]) }}" target="_blank" class="btn btn-outline-primary btn-sm" style="border-color: #435ebe; color: #435ebe;">
+                            <i class="bi bi-eye"></i> Lihat Bukti
+                        </a>
+                        @else
+                        Tidak ada
+                        @endif
+                    </li>
+                </ul>
             </div>
 
             @elseif (auth()->user()->status === 'Belum_Bayar_Simpanan')

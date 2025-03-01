@@ -154,14 +154,26 @@
                             </a>
                         </li>
 
-                        <li class="sidebar-item">
+                        <li class="sidebar-item ">
                             <a href="{{ route('pangajuan') }}" class="sidebar-link">
                                 <i class="bi bi-file-earmark-medical-fill"></i>
-                                <span>Data Pengajuan</span>
+                                <span>Data Pengajuan Pinjaman</span>
                                 @if ($jumlahPengajuanDalamProses > 0)
                                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                     {{ $jumlahPengajuanDalamProses }}
                                     <span class="visually-hidden">pengajuan dalam proses</span>
+                                </span>
+                                @endif
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a href="{{ route('simpanans') }}" class="sidebar-link">
+                                <i class="bi bi-wallet-fill"></i>
+                                <span>Data Pengajuan Simpanan</span>
+                                @if ($jumlahSimpananDalamProses > 0)
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning">
+                                    {{ $jumlahSimpananDalamProses }}
                                 </span>
                                 @endif
                             </a>

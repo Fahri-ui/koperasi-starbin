@@ -19,6 +19,8 @@ class SimpananController extends Controller
             ->where('user_id', $userId)
             ->get();
 
+        $simpanan = Simpanan::where('user_id', auth()->id())->latest()->first();
+
         $totalWajib = $wajib->sum('jumlah');
 
         // Cek apakah sudah membayar bulan ini
@@ -56,7 +58,7 @@ class SimpananController extends Controller
         // Pengingat
         $pengingat = "Anda akan menerima pengingat otomatis setiap awal bulan jika belum melakukan pembayaran.";
 
-        return view('user.simpanan-wajib', compact('wajib', 'totalWajib', 'statusPembayaran', 'statusPesan', 'pengingat', 'sudahBayarBulanIni'));
+        return view('user.simpanan-wajib', compact('wajib', 'simpanan', 'totalWajib', 'statusPembayaran', 'statusPesan', 'pengingat', 'sudahBayarBulanIni'));
     }
 
     public function simpanansukarela()
@@ -71,9 +73,10 @@ class SimpananController extends Controller
             ->where('user_id', auth()->id())
             ->sum('jumlah');
 
+        $simpanan = Simpanan::where('user_id', auth()->id())->latest()->first();
 
         // Kirim data ke view
-        return view('user.simpanan-sukarela', compact('sukarela', 'totalSukarela'));
+        return view('user.simpanan-sukarela', compact('sukarela', 'totalSukarela', 'simpanan'));
     }
 
 
