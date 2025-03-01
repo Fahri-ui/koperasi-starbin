@@ -16,6 +16,8 @@ class ProfilController extends Controller
         // Ambil user yang sedang login
         $user = Auth::user();
 
+        $simpanan = Simpanan::where('user_id', auth()->id())->latest()->first();
+
         // Hitung total saldo simpanan sukarela milik user yang sedang login
         $totalSukarela = Simpanan::where('user_id', $user->id)
             ->where('jenis', 'sukarela') // Hanya ambil simpanan jenis sukarela
@@ -27,7 +29,7 @@ class ProfilController extends Controller
             ->sum('jumlah_pinjaman');
 
         // Kirim variabel ke view
-        return view('user.profil', compact('totalSukarela', 'totalPinjaman'));
+        return view('user.profil', compact('totalSukarela', 'totalPinjaman', 'simpanan'));
     }
 
     public function update(Request $request)

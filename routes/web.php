@@ -16,6 +16,7 @@ use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\LogAktivitasController;
 use App\Http\Controllers\NotifikasiAdminController;
 use App\Http\Controllers\NotifikasiController;
+use App\Http\Controllers\PengajuanSimmpanansController;
 use App\Http\Controllers\PinjamanController;
 use App\Http\Controllers\PinjmanAdminController;
 use App\Http\Controllers\ProfilAdminController;
@@ -83,13 +84,15 @@ Route::middleware(['auth'])->group(function () {
         // pinjaman
         Route::get('/Pinjaman', [PinjmanAdminController::class, 'pinjamanadmin'])->name('pinjamanadmin');
         // Angsuran
-        Route::get('/admin/bukti/{bukti}', [BuktiPembayaranController::class, 'showAdmin'])->name('admin.bukti.pembayaran');
         Route::get('/Angsuran', [AngsuranAdminController::class, 'angsuran'])->name('angsuran');
         // Denda
         Route::get('/Denda', [DendaController::class, 'denda'])->name('denda');
-        // Data Pengajuan
-        Route::get('/Data-Pengajuan', [DataPengajuanController::class, 'pangajuan'])->name('pangajuan');
+        // Data Pengajuan Pinjaman
+        Route::get('/Data-Pengajuan-Pinjaman', [DataPengajuanController::class, 'pangajuan'])->name('pangajuan');
         Route::post('/data-pengajuan/{id}/update', [DataPengajuanController::class, 'update']);
+        // Data Pengajuan Simpanans
+        Route::get('/Data-Pengajuan-Simpanans', [PengajuanSimmpanansController::class, 'simpanans'])->name('simpanans');
+        Route::post('/update-status-simpanan/{id}', [PengajuanSimmpanansController::class, 'updateStatus'])->name('updateStatusSimpanan');
         // Statistik Keuangan
         Route::get('/Statistik-Keuangan', [StatistikKeuanganController::class, 'statistikkeuangan'])->name('statistikkeuangan');
         // Kelola Pesan 
@@ -106,6 +109,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/admin/social-links/store', [SocialMediaController::class, 'store'])->name('admin.social-links.store');
         Route::put('/admin/social-links/update/{id}', [SocialMediaController::class, 'update'])->name('admin.social-links.update');
         Route::delete('/admin/social-links/delete/{id}', [SocialMediaController::class, 'destroy'])->name('admin.social-links.delete');
+        // Bukti Pembayaram
+        Route::get('/admin/bukti/{bukti}', [BuktiPembayaranController::class, 'showAdmin'])->name('admin.bukti.pembayaran');
     });
 
     // Grup Route untuk User (userAkses:user)
