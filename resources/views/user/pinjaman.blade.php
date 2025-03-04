@@ -135,19 +135,28 @@
                     <i class="bi bi-justify fs-3"></i>
                 </a>
             </header>
-            @if (auth()->user()->status === 'Belum_Aktif')
+
             @if (Session::has('error'))
-            <div class="alert alert-danger" style="background-color: salmon; color:aliceblue; border-radius:20px; margin-bottom:20px;">
-                {{ Session::get('error') }}
+            <div class="alert alert-danger d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #ff7f7f, #ff4d4d); color: #fff; border-radius: 20px; border: 2px solid #ff4d4d;">
+                <i class="bi bi-exclamation-triangle-fill me-3 fs-4" style="margin-top: -20px;"></i>
+                <div>
+                    <h5 class="mb-1">🚨 Oops! Terjadi Kesalahan</h5>
+                    <p class="mb-0">⚠️ {{ Session::get('error') }}</p>
+                </div>
             </div>
             @endif
 
-            <!-- Jika berhasil -->
             @if (Session::has('success'))
-            <div class="alert alert-success" style="background-color: lightgreen; color:aliceblue; border-radius:20px;">
-                {{ Session::get('success') }}
+            <div class="alert alert-success d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #66cc66, #33b233); color: #fff; border-radius: 20px; border: 2px solid #33b233;">
+                <i class="bi bi-check-circle-fill me-3 fs-4" style="margin-top: -20px;"></i>
+                <div>
+                    <h5 class="mb-1">🌟 Yeay! Berhasil</h5>
+                    <p class="mb-0">✅ {{ Session::get('success') }}</p>
+                </div>
             </div>
             @endif
+
+            @if (auth()->user()->status === 'Belum_Aktif')
             <div class="container mt-4">
                 <!-- Card Peringatan -->
                 <div class="card shadow-sm mb-3">
@@ -242,18 +251,6 @@
             </div>
 
             @elseif (auth()->user()->status === 'Pending')
-            @if (Session::has('error'))
-            <div class="alert alert-danger" style="background-color: salmon; color:aliceblue; border-radius:20px; margin-bottom:20px;">
-                {{ Session::get('error') }}
-            </div>
-            @endif
-
-            <!-- Jika berhasil -->
-            @if (Session::has('success'))
-            <div class="alert alert-success" style="background-color: lightgreen; color:aliceblue; border-radius:20px;">
-                {{ Session::get('success') }}
-            </div>
-            @endif
             <div class="alert p-4 shadow" style="background-color: #435ebe; color: #fff; border-radius: 10px;">
                 <div class="d-flex align-items-start">
                     <i class="bi bi-hourglass-split fs-1 me-3" style="color: #ffdd57; margin-top:-15px; padding-right:30px;"></i>
@@ -297,20 +294,6 @@
             <h3 class="text-red-500 text-center">Akun Anda Nonaktif. Silakan hubungi admin untuk informasi lebih lanjut.</h3>
 
             @else
-            @if (session('error'))
-            <div class="alert alert-danger" style="background-color: salmon; color:aliceblue; border-radius:20px; margin-bottom:20px;">
-                <ul>
-                    <li style="text-decoration: none;">{{ session('error') }}</li>
-                </ul>
-            </div>
-            @endif
-
-            @if (Session::has('success'))
-            <div class="alert alert-success" style="background-color: lightgreen; color:aliceblue; border-radius:20px;">
-                {{ Session::get('success') }}
-            </div>
-            @endif
-
             <h2>Pinjaman</h2>
 
             <div class="container mt-5" style="font-size:.9rem;">
@@ -348,8 +331,31 @@
                 </section>
                 @endif
 
+                @if ($pinjamandalamproses)
+                <section class="d-flex align-items-center justify-content-center p-4" style="background-color: #ffffff; margin-bottom: 40px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);">
+                    <div class="w-100" style="border: 1px solid rgb(255, 213, 44); border-radius: 15px; overflow: hidden;  box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.2);">
+                        <div class="text-center p-4 d-flex flex-column align-items-center justify-content-center" style="background: linear-gradient(135deg, rgb(255, 213, 44), rgb(255, 218, 52)); border-radius: 15px 15px 0 0; position: relative;">
+                            <i class="bi bi-hourglass-split fs-1 mb-3 text-warning" style="text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);"></i>
+                            <h2 style="text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1); margin-top:-25px;">⏳ Pengajuan Pinjaman Sedang Diproses</h2>
+                        </div>
+                        <div class="p-3 text-center" style="background-color: #ffffff; border-radius: 0 0 15px 15px;">
+                            <p class="mb-3" style="font-size: 1.2rem; color: #555;">
+                                Mohon bersabar, pengajuan Anda sedang menunggu persetujuan admin.
+                                <span class="fw-bold" style="color: rgb(255, 213, 44);">Notifikasi akan muncul secara otomatis</span> jika ada pembaruan terbaru dari kami terkait status pengajuan Anda.
+                            </p>
+                            <a href="{{ route('notifikasi') }}">
+                                <div class="d-flex justify-content-center">
+                                    <i class="bi bi-bell-fill text-warning me-2 fs-5" style="margin-top: -3px;"></i>
+                                    <span style="color: #777; font-size: 1rem;">Lihat halaman Notifikasi</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+                @endif
+
                 <!-- Formulir Pengajuan Pinjaman -->
-                @if (!$pinjamanAktif)
+                @if (!$pinjamanAktif && !$pinjamandalamproses)
                 <section class="mb-4">
                     <div class="card">
                         <div class="card-body">
