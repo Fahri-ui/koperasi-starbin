@@ -282,18 +282,6 @@
             </div>
 
             @elseif (auth()->user()->status === 'Pending')
-            @if (Session::has('error'))
-            <div class="alert alert-danger" style="background-color: salmon; color:aliceblue; border-radius:20px; margin-bottom:20px;">
-                {{ Session::get('error') }}
-            </div>
-            @endif
-
-            <!-- Jika berhasil -->
-            @if (Session::has('success'))
-            <div class="alert alert-success" style="background-color: lightgreen; color:aliceblue; border-radius:20px;">
-                {{ Session::get('success') }}
-            </div>
-            @endif
             <div class="alert p-4 shadow" style="background-color: #435ebe; color: #fff; border-radius: 10px;">
                 <div class="d-flex align-items-start">
                     <i class="bi bi-hourglass-split fs-1 me-3" style="color: #ffdd57; margin-top:-15px; padding-right:30px;"></i>

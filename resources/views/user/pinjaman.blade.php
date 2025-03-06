@@ -319,21 +319,29 @@
 
                 @if ($pinjamanAktif)
                 <section class="mb-4">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <br><br>
-                            <h1>❗❗Tidak bisa memulai Pinjaman❗❗</h1>
-                            <br><br><br>
-                            <h5>Anda masih memiliki Angsuran, Selesaikan Angsuran Anda untuk memulai Pinjaman</h5>
-                            <br><br>
+                    <div class="card" style="border: 2px solid #ff6b6b; border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                        <div class="card-body text-center p-5" style="background: #ffffff; color: #ff6b6b; border-radius: 15px;">
+                            <div class="d-flex flex-column align-items-center">
+                                <i class="bi bi-exclamation-triangle-fill fs-1 mb-3" style="color: #ff6b6b; padding-bottom:50px;"></i>
+                                <h1 style="font-weight: bold; text-shadow: 1px 1px 6px rgba(255, 107, 107, 0.2);"> Tidak Bisa Memulai Pinjaman </h1>
+                            </div>
+                            <hr style="border: 1px solid #ff6b6b; margin: 20px auto; width: 60%;">
+                            <div class="p-3" style="border-radius: 10px; border: 1px solid #ffb3b3;">
+                                <h5 style="font-weight: 500; color: #d9534f;">
+                                    Anda masih memiliki angsuran yang belum diselesaikan.<br>
+                                    Segera lunasi angsuran Anda untuk mengajukan pinjaman baru.
+                                </h5>
+                            </div>
+                            <br>
                         </div>
                     </div>
                 </section>
+
                 @endif
 
                 @if ($pinjamandalamproses)
                 <section class="d-flex align-items-center justify-content-center p-4" style="background-color: #ffffff; margin-bottom: 40px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);">
-                    <div class="w-100" style="border: 1px solid rgb(255, 213, 44); border-radius: 15px; overflow: hidden;  box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.2);">
+                    <div class="w-100" style="border: 1px solid rgb(255, 213, 44); border-radius: 15px; overflow: hidden;  box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.06);">
                         <div class="text-center p-4 d-flex flex-column align-items-center justify-content-center" style="background: linear-gradient(135deg, rgb(255, 213, 44), rgb(255, 218, 52)); border-radius: 15px 15px 0 0; position: relative;">
                             <i class="bi bi-hourglass-split fs-1 mb-3 text-warning" style="text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);"></i>
                             <h2 style="text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1); margin-top:-25px;">⏳ Pengajuan Pinjaman Sedang Diproses</h2>
@@ -401,12 +409,11 @@
                     <div class="card">
                         <div class="card-body">
                             <h5>Riwayat Transaksi Pinjaman</h5>
-
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th>No</th> <!-- Tambahkan kolom nomor -->
-                                        <th> Pinjaman</th>
+                                        <th>ID Pinjaman</th>
                                         <th>Tanggal</th>
                                         <th>Jumlah</th>
                                         <th>Tipe</th>
@@ -422,7 +429,7 @@
                                         <td>{{ $loop->iteration }}</td> <!-- Nomor urut -->
                                         <td>{{ $transaksi['kode'] }}</td>
                                         <td>{{ \Carbon\Carbon::parse($transaksi->tanggal)->format('d F Y') }}</td>
-                                        <td>Rp {{ number_format($transaksi['jumlah'], 0, ',', '.') }}</td>
+                                        <td>Rp {{ number_format($transaksi['jumlah'] ?? $transaksi['jumlah_pembayaran'], 0, ',', '.') }}</td>
                                         <td>{{ $transaksi['tipe'] }}</td>
                                         <td>{{ $transaksi['tujuan'] ?? '-' }}</td> <!-- Menampilkan alasan -->
                                         <td>{{ $transaksi['metode'] ?? '-' }}</td>
@@ -433,16 +440,15 @@
                                             -
                                             @endif
                                         </td>
-                                        <td>{{ ucfirst($transaksi['status']) ?? '-' }}</td>
+                                        <td>{{ ($transaksi['status']) }}</td>
                                     </tr>
                                     @empty
                                     <tr>
-                                        <td colspan="8" class="text-center">Tidak ada transaksi.</td>
+                                        <td colspan="9" class="text-center">Tidak ada transaksi.</td>
                                     </tr>
                                     @endforelse
                                 </tbody>
                             </table>
-
                         </div>
                     </div>
                 </section>

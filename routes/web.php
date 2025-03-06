@@ -30,6 +30,7 @@ use App\Http\Controllers\SocialMediaController;
 use App\Http\Controllers\StatistikKeuanganController;
 use App\Http\Controllers\UserControlController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VerifikasiPembayaranPinjamanController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -84,7 +85,9 @@ Route::middleware(['auth'])->group(function () {
         // pinjaman
         Route::get('/Pinjaman', [PinjmanAdminController::class, 'pinjamanadmin'])->name('pinjamanadmin');
         // Angsuran
-        Route::get('/Angsuran', [AngsuranAdminController::class, 'angsuran'])->name('angsuran');
+        Route::get('/Angsuran', [AngsuranAdminController::class, 'index'])->name('angsuran');
+        Route::post('/approve/{id}', [AngsuranAdminController::class, 'approve'])->name('admin.setujui.angsuran');
+        Route::post('/reject/{id}', [AngsuranAdminController::class, 'reject'])->name('admin.tolak.angsuran');        
         // Denda
         Route::get('/Denda', [DendaController::class, 'denda'])->name('denda');
         // Data Pengajuan Pinjaman

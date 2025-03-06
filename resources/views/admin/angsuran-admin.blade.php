@@ -101,13 +101,19 @@
                             </a>
                         </li>
 
-                        <li
-                            class="sidebar-item active">
-                            <a href="{{route('angsuran')}}" class='sidebar-link'>
+                        <li class="sidebar-item active">
+                            <a href="{{ route('angsuran') }}" class='sidebar-link'>
                                 <i class="bi bi-coin"></i>
                                 <span>Angsuran</span>
+                                @if ($jumlahAngsuranDalamProses > 0)
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning">
+                                    {{ $jumlahAngsuranDalamProses }}
+                                    <span class="visually-hidden">angsuran dalam proses</span>
+                                </span>
+                                @endif
                             </a>
                         </li>
+
 
                         <li
                             class="sidebar-item  ">
@@ -129,7 +135,7 @@
                                 @endif
                             </a>
                         </li>
-                       
+
                         <li class="sidebar-item">
                             <a href="{{ route('simpanans') }}" class="sidebar-link">
                                 <i class="bi bi-wallet-fill"></i>
@@ -204,11 +210,11 @@
             </header>
 
             <div class="container mt-4">
-                <h3>Angsuran</h3>
+                <h3>Kelola Persetujuan Angsuran</h3>
                 <p>
-                    Berikut adalah data angsuran yang telah dilakukan oleh anggota koperasi.
+                    Berikut adalah data angsuran anggota yang memerlukan persetujuan admin.
                     <br>
-                    data ini hanya menampilkan pinjaman yang belum lunas
+                    Data ini hanya menampilkan pinjaman yang belum lunas. Admin dapat menyetujui atau menolak pembayaran.
                 </p>
 
                 <!-- Statistik Ringkasan -->
@@ -216,16 +222,16 @@
                     <div class="col-md-4">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h5 class="card-title">Total Angsuran Dibayar</h5>
-                                <p class="card-text">Rp {{ number_format($totalDibayar, 0, ',', '.') }}</p>
+                                <h5 class="card-title">Total Angsuran Disetujui</h5>
+                                <p class="card-text">Rp {{ number_format($totalDisetujui, 0, ',', '.') }}</p>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h5 class="card-title">Jumlah Angsuran Tersisa</h5>
-                                <p class="card-text">Rp {{ number_format($totalTersisa, 0, ',', '.') }}</p>
+                                <h5 class="card-title">Total Angsuran Tertunda</h5>
+                                <p class="card-text">Rp {{ number_format($totalTertunda, 0, ',', '.') }}</p>
                             </div>
                         </div>
                     </div>
@@ -241,48 +247,63 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <h5> Data Angsuran</h5>
-                        <div style="max-height: 450px;  overflow:auto; font-size:.9rem;">
-                            <table class="table table-striped">
+                        <h5>Data Angsuran untuk Persetujuan</h5>
+                        <div style="max-height: 450px; overflow:auto;">
+                            <table class="table table-striped" style="font-size: .8rem;">
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>ID</th>
-                                        <th>Nama </th>
-                                        <th>jumlah pinjaman</th>
+                                        <th>ID Pinjaman</th>
+                                        <th>Nama</th>
                                         <th>Nominal Bayar</th>
                                         <th>Tanggal Bayar</th>
                                         <th>Sisa Angsuran</th>
+                                        <th>Denda</th>
                                         <th>Jatuh Tempo</th>
-                                        <th>metode</th>
+                                        <th>Metode</th>
                                         <th>Status</th>
                                         <th>Bukti</th>
+                                        <th>Aksi Admin</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($angsuran as $index => $data)
                                     <tr>
-                                        <td>{{$index + 1}}</td>
-                                        <td>{{ $data->id_pinjaman }}</td>
-                                        <td>{{ $data->nama_anggota }}</td>
-                                        <td>Rp {{ number_format($data->jumlah_pinjaman, 0, ',', '.') }}</td> <!-- Tambahan jumlah pinjaman -->
-                                        <td>Rp {{ number_format($data->nominal_bayar, 0, ',', '.') }}</td>
-                                        <td>{{ $data->tanggal_bayar }}</td> <!-- Hanya tanggal tanpa jam -->
-                                        <td>
-                                            @if ($data->sisa_angsuran == 0)
-                                            Rp {{ number_format($data->jumlah_pinjaman, 0, ',', '.') }}
-                                            @else
-                                            Rp {{ number_format($data->sisa_angsuran, 0, ',', '.') }}
-                                            @endif
-                                        </td>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ $data->pinjaman_id }}</td>
+                                        <td>{{ $data->user->fullname }}</td>
+                                        <td>Rp {{ number_format($data->jumlah_pembayaran, 0, ',', '.') }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($data->tanggal_bayar)->format('d-m-Y') }}</td>
+                                        <td>Rp {{ number_format($data->pinjaman->sisa_angsuran, 0, ',', '.') }}</td>
+                                        <td>Rp {{ number_format($data->pinjaman->total_denda, 0, ',', '.') }}</td>
                                         <td>{{ \Carbon\Carbon::parse($data->tanggal_jatuh_tempo)->format('d-m-Y') }}</td>
                                         <td>{{ $data->metode_pembayaran }}</td>
-                                        <td>{{ $data->status }}</td>
                                         <td>
-                                            @if($data->nominal_bayar == 0)
-                                            <span class="text-warning">Belum Memulai Angsuran</span>
-                                            @elseif(!empty($data->bukti_pembayaran))
-                                            <a href="{{ route('admin.bukti.pembayaran', ['bukti' => basename($data->bukti_pembayaran)]) }}">Lihat Bukti</a>
+                                            <span class="badge {{ $data->status === 'Dalam Proses' ? 'bg-warning' : ($data->status === 'Berhasil' ? 'bg-success' : 'bg-danger') }}">
+                                                {{ $data->status }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @if(!empty($data->bukti_pembayaran))
+                                            <a href="{{ route('admin.bukti.pembayaran', ['bukti' => basename($data->bukti_pembayaran)]) }}" target="_blank">
+                                                <i class="bi bi-file-earmark-text" title="Lihat Bukti"></i>
+                                            </a>
+                                            @else
+                                            <span class="text-danger"><i class="bi bi-x-circle" title="Tidak Ada Bukti"></i></span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($data->status === 'Dalam Proses')
+                                            <form action="{{ route('admin.setujui.angsuran', $data->id) }}" method="POST" style="display: inline;">
+                                                @csrf
+                                                <button type="submit" class="btn btn-success btn-sm">Setujui</button>
+                                            </form>
+                                            <form action="{{ route('admin.tolak.angsuran', $data->id) }}" method="POST" style="display: inline;">
+                                                @csrf
+                                                <button type="submit" class="btn btn-danger btn-sm">Tolak</button>
+                                            </form>
+                                            @else
+                                            <span class="text-muted">Tidak Ada Aksi</span>
                                             @endif
                                         </td>
                                     </tr>
@@ -292,31 +313,31 @@
                         </div>
                     </div>
                 </div>
-
-                <footer>
-                    <div class="footer clearfix mb-0 text-muted">
-                        <div class="float-start">
-                            <p>2025 &copy; STARBIN</p>
-                        </div>
-                        <div class="float-end" style="margin-right: 30px;">
-                            <p>Dibuat dengan
-                                <span class="text-danger"><i class="bi bi-heart"></i></span>
-                                oleh
-                                <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
-                                &
-                                <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
-                            </p>
-                        </div>
-                    </div>
-                </footer>
             </div>
+
+            <footer>
+                <div class="footer clearfix mb-0 text-muted">
+                    <div class="float-start">
+                        <p>2025 &copy; STARBIN</p>
+                    </div>
+                    <div class="float-end" style="margin-right: 30px;">
+                        <p>Dibuat dengan
+                            <span class="text-danger"><i class="bi bi-heart"></i></span>
+                            oleh
+                            <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
+                            &
+                            <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
+                        </p>
+                    </div>
+                </div>
+            </footer>
         </div>
-        <script src="{{asset('admin-page/assets/js/bootstrap.js')}}"></script>
-        <script src="{{asset('admin-page/assets/js/app.js')}}"></script>
-        <script src="{{asset('admin-page/assets/js/angsuran.js')}}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <!-- Link Bootstrap JS -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    </div>
+    <script src="{{asset('admin-page/assets/js/bootstrap.js')}}"></script>
+    <script src="{{asset('admin-page/assets/js/app.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Link Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

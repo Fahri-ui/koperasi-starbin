@@ -136,19 +136,27 @@
                 </a>
             </header>
 
-            @if (auth()->user()->status === 'Belum_Aktif')
             @if (Session::has('error'))
-            <div class="alert alert-danger" style="background-color: salmon; color:aliceblue; border-radius:20px; margin-bottom:20px;">
-                {{ Session::get('error') }}
+            <div class="alert alert-danger d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #ff7f7f, #ff4d4d); color: #fff; border-radius: 20px; border: 2px solid #ff4d4d;">
+                <i class="bi bi-exclamation-triangle-fill me-3 fs-4" style="margin-top: -20px;"></i>
+                <div>
+                    <h5 class="mb-1">🚨 Oops! Terjadi Kesalahan</h5>
+                    <p class="mb-0">⚠️ {{ Session::get('error') }}</p>
+                </div>
             </div>
             @endif
 
-            <!-- Jika berhasil -->
             @if (Session::has('success'))
-            <div class="alert alert-success" style="background-color: lightgreen; color:aliceblue; border-radius:20px;">
-                {{ Session::get('success') }}
+            <div class="alert alert-success d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #66cc66, #33b233); color: #fff; border-radius: 20px; border: 2px solid #33b233;">
+                <i class="bi bi-check-circle-fill me-3 fs-4" style="margin-top: -20px;"></i>
+                <div>
+                    <h5 class="mb-1">🌟 Yeay! Berhasil</h5>
+                    <p class="mb-0">✅ {{ Session::get('success') }}</p>
+                </div>
             </div>
             @endif
+            
+            @if (auth()->user()->status === 'Belum_Aktif')
             <div class="container mt-4">
                 <!-- Card Peringatan -->
                 <div class="card shadow-sm mb-3">
@@ -243,18 +251,6 @@
             </div>
 
             @elseif (auth()->user()->status === 'Pending')
-            @if (Session::has('error'))
-            <div class="alert alert-danger" style="background-color: salmon; color:aliceblue; border-radius:20px; margin-bottom:20px;">
-                {{ Session::get('error') }}
-            </div>
-            @endif
-
-            <!-- Jika berhasil -->
-            @if (Session::has('success'))
-            <div class="alert alert-success" style="background-color: lightgreen; color:aliceblue; border-radius:20px;">
-                {{ Session::get('success') }}
-            </div>
-            @endif
             <div class="alert p-4 shadow" style="background-color: #435ebe; color: #fff; border-radius: 10px;">
                 <div class="d-flex align-items-start">
                     <i class="bi bi-hourglass-split fs-1 me-3" style="color: #ffdd57; margin-top:-15px; padding-right:30px;"></i>
@@ -297,23 +293,7 @@
             {{-- Tampilkan pesan akun nonaktif --}}
             <h3 class="text-red-500 text-center">Akun Anda Nonaktif. Silakan hubungi admin untuk informasi lebih lanjut.</h3>
 
-            @else
-            @if (session('error'))
-            <div class="alert alert-danger" style="background-color: salmon; color:aliceblue; border-radius:20px; margin-bottom:20px;">
-                <ul>
-                    <li>{{ session('error') }}</li>
-                </ul>
-            </div>
-            @endif
-
-            <!-- Jika berhasil -->
-            @if (Session::has('success'))
-            <div class="alert alert-success" style="background-color: lightgreen; color:aliceblue; border-radius:20px;">
-                {{ Session::get('success') }}
-            </div>
-            @endif
-
-
+            @else 
             <h2 style="margin-bottom: 50px;">Simpanan Wajib</h2>
 
             <!-- Definisi Simpanan Pokok -->

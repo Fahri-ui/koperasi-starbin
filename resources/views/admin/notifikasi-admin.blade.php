@@ -138,11 +138,16 @@
                             </a>
                         </li>
 
-                        <li
-                            class="sidebar-item  ">
-                            <a href="{{route('angsuran')}}" class='sidebar-link'>
+                        <li class="sidebar-item">
+                            <a href="{{ route('angsuran') }}" class='sidebar-link'>
                                 <i class="bi bi-coin"></i>
                                 <span>Angsuran</span>
+                                @if ($jumlahAngsuranDalamProses > 0)
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning">
+                                    {{ $jumlahAngsuranDalamProses }}
+                                    <span class="visually-hidden">angsuran dalam proses</span>
+                                </span>
+                                @endif
                             </a>
                         </li>
 
