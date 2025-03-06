@@ -49,11 +49,12 @@ class PinjamanController extends Controller
                 'tanggal_pengajuan as tanggal',
                 'jumlah_pinjaman as jumlah',
                 DB::raw("'Pengajuan Pinjaman' as tipe"),
+                'jenis_jaminan', // Tambahkan jenis jaminan
+                'file_jaminan', // Tambahkan bukti jaminan
                 DB::raw("NULL as metode"),
                 DB::raw("NULL as bukti"),
                 'status',
-                'alasan as tujuan' // Tambahkan kolom ini
-
+                'alasan as tujuan'
             )
             ->union(
                 RiwayatPembayaran::join('pinjaman', 'riwayat_pembayaran.pinjaman_id', '=', 'pinjaman.id')
@@ -63,10 +64,12 @@ class PinjamanController extends Controller
                         'riwayat_pembayaran.tanggal_pembayaran as tanggal',
                         'riwayat_pembayaran.jumlah_pembayaran as jumlah',
                         DB::raw("'Pembayaran Pinjaman' as tipe"),
+                        'pinjaman.jenis_jaminan', // Ikut ambil jenis jaminan dari pinjaman
+                        'pinjaman.file_jaminan', // Ikut ambil bukti jaminan dari pinjaman
                         'riwayat_pembayaran.metode_pembayaran as metode',
                         'riwayat_pembayaran.bukti_pembayaran as bukti',
                         DB::raw("'Berhasil' as status"),
-                        DB::raw("NULL as tujuan") // Supaya union tetap seimbang
+                        DB::raw("NULL as tujuan")
                     )
             )
             ->orderByDesc('tanggal')
@@ -192,27 +195,37 @@ class PinjamanController extends Controller
 
     public function ajukanPinjaman(Request $request)
     {
-
+        $userId = Auth::id();
         $request->validate([
             'jumlah_pinjaman' => 'required|numeric|min:10000',
-            'alasan' => 'required|string|max:255',
+            'alasan' => 'string|max:255',
+            'jenis_jaminan' => 'required|string|in:BPKB Kendaraan,Sertifikat Tanah,Kartu Keluarga',
+            'jaminan-proof' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
+        // Proses upload file
+        $buktiJaminanFile = $request->file('jaminan-proof');
+        $namaBuktiJaminan = time() . '-' . $userId . '.' . $buktiJaminanFile->getClientOriginalExtension();
+        $buktiJaminanFile->move(public_path('picture/jaminan_pembayaran'), $namaBuktiJaminan);
+        $buktiJaminanPath = 'picture/jaminan_pembayaran/' . $namaBuktiJaminan;
+        
+        // Simpan data pinjaman
         $pinjaman = Pinjaman::create([
             'user_id' => Auth::id(),
             'jumlah_pinjaman' => $request->input('jumlah_pinjaman'),
             'sisa_angsuran' => $request->input('jumlah_pinjaman'),
-            'alasan' => $request->input('alasan'),
+            'alasan' => 'Default',
+            'jenis_jaminan' => $request->input('jenis_jaminan'),
+            'file_jaminan' => $buktiJaminanPath,
             'status' => 'Dalam Proses',
             'tanggal_pengajuan' => Carbon::now()->format('Y-m-d'),
             'tanggal_jatuh_tempo' => Carbon::now()->addMonths(3)->format('Y-m-d'),
-            'total_denda' => null,  // ✅ Pastikan NULL
-            'status_denda' => null, // ✅ Pastikan NULL
+            'total_denda' => null,
+            'status_denda' => null,
         ]);
 
         return redirect()->back()->with('success', 'Pengajuan pinjaman berhasil dikirim. Silakan tunggu persetujuan admin.');
     }
-
 
     public function bayarPinjaman(Request $request)
     {

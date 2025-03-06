@@ -63,6 +63,8 @@ class Pinjaman extends Model
         'tanggal_jatuh_tempo',
         'total_denda',
         'status_denda',
+        'jenis_jaminan',      // Kolom baru untuk jenis jaminan
+        'file_jaminan',
     ];
 
     public function user()
@@ -73,4 +75,11 @@ class Pinjaman extends Model
     protected $casts = [
         'tanggal_pinjaman' => 'datetime', // Konversi ke Carbon
     ];
+
+    public function adaPinjamanAktif()
+    {
+        return $this->where('user_id', $this->user_id)
+            ->where('status', 'Aktif')
+            ->exists();
+    }
 }

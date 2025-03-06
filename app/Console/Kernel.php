@@ -20,6 +20,9 @@ class Kernel extends ConsoleKernel
 
         // Hitung denda otomatis setiap hari
         $schedule->command('hitung:denda')->daily();
+
+        // Cek status simpanan wajib setiap awal bulan
+        $schedule->command('cek:status-simpanan')->monthlyOn(1, '00:00');
     }
 
     /**

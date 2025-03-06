@@ -208,6 +208,25 @@
                     <i class="bi bi-justify fs-3"></i>
                 </a>
             </header>
+            @if (Session::has('error'))
+            <div class="alert alert-danger d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #ff7f7f, #ff4d4d); color: #fff; border-radius: 20px; border: 2px solid #ff4d4d;">
+                <i class="bi bi-exclamation-triangle-fill me-3 fs-4" style="margin-top: -20px;"></i>
+                <div>
+                    <h5 class="mb-1">🚨 Oops! Terjadi Kesalahan</h5>
+                    <p class="mb-0">⚠️ {{ Session::get('error') }}</p>
+                </div>
+            </div>
+            @endif
+
+            @if (Session::has('success'))
+            <div class="alert alert-success d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #66cc66, #33b233); color: #fff; border-radius: 20px; border: 2px solid #33b233;">
+                <i class="bi bi-check-circle-fill me-3 fs-4" style="margin-top: -20px;"></i>
+                <div>
+                    <h5 class="mb-1">🌟 Yeay! Berhasil</h5>
+                    <p class="mb-0">✅ {{ Session::get('success') }}</p>
+                </div>
+            </div>
+            @endif
             <div class="container mt-4">
                 <h3>Data Pengajuan</h3>
                 <p>Berikut adalah daftar pengajuan dari anggota koperasi.</p>
@@ -259,7 +278,8 @@
                                         <th>Nama Anggota</th>
                                         <th>Tanggal Pengajuan</th>
                                         <th>Jumlah Pengajuan</th>
-                                        <th>Alasan</th> <!-- Kolom baru -->
+                                        <th>Jenis Jaminan</th>
+                                        <th>Bukti Jaminan</th>
                                         <th>Status</th>
                                         <th>Aksi</th>
                                     </tr>
@@ -271,7 +291,14 @@
                                         <td>{{ $item->user->fullname }}</td>
                                         <td>{{ $item->tanggal_pengajuan }}</td>
                                         <td>Rp {{ number_format($item->jumlah_pinjaman, 0, ',', '.') }}</td>
-                                        <td>{{ $item->alasan ?? '-' }}</td> <!-- Menampilkan alasan sebagai Tujuan -->
+                                        <td>{{ $item->jenis_jaminan}}</td>
+                                        <td>
+                                            @if($item->file_jaminan)
+                                            <a href="{{ route('bukti.jaminan.admin', ['bukti' => basename($item->file_jaminan)]) }}" target="_blank">Lihat Jaminan</a>
+                                            @else
+                                            -
+                                            @endif
+                                        </td>
                                         <td>
                                             @if($item->status == 'Dalam Proses')
                                             <span class="badge bg-warning">Menunggu</span>

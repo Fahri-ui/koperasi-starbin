@@ -16,7 +16,7 @@ class Simpanan extends Model
         'jumlah',
         'jenis_transaksi',
         'kode_transaksi',
-        'status', 
+        'status',
         'tanggal_transaksi',
         'bukti',
     ];
@@ -43,5 +43,12 @@ class Simpanan extends Model
     public function scopeSukarela($query)
     {
         return $query->where('jenis', 'sukarela');
+    }
+
+    public function totalPembayaranDalamRentang($bulan)
+    {
+        return $this->wajib()
+            ->where('tanggal_transaksi', '>=', now()->subMonths($bulan))
+            ->sum('jumlah');
     }
 }

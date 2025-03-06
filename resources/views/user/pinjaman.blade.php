@@ -368,16 +368,28 @@
                     <div class="card">
                         <div class="card-body">
                             <h5>Formulir Pengajuan Pinjaman</h5>
-                            <form action="{{ route('pinjaman.ajukan') }}" method="POST">
+                            <form action="{{ route('pinjaman.ajukan') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group mb-3">
                                     <label for="loan-amount">Jumlah Pinjaman</label>
                                     <input type="number" class="form-control" id="loan-amount" name="jumlah_pinjaman" placeholder="Masukkan jumlah pinjaman" min="10000" step="10000" required>
                                 </div>
+
                                 <div class="form-group mb-3">
-                                    <label for="alasan">Tujuan Pinjaman</label>
-                                    <textarea class="form-control" id="alasan" name="alasan" placeholder="Jelaskan tujuan pinjaman Anda" rows="3" required></textarea>
+                                    <label for="jenis-jaminan">Jenis Jaminan</label>
+                                    <select class="form-control" id="jenis-jaminan" name="jenis_jaminan" required>
+                                        <option value="" disabled selected>Pilih jenis jaminan</option>
+                                        <option value="BPKB Kendaraan">BPKB Kendaraan</option>
+                                        <option value="Sertifikat Tanah">Sertifikat Tanah</option>
+                                        <option value="Kartu Keluarga">Kartu Keluarga</option>
+                                    </select>
                                 </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="file-jaminan">Upload Jaminan (JPG, PNG, JPEG, maks 2MB)</label>
+                                    <input type="file" class="form-control" id="jaminan-proof" name="jaminan-proof" accept="image/*" required>
+                                </div>
+
                                 <div class="form-group text-center">
                                     <button type="submit" class="btn btn-primary">Ajukan Pinjaman</button>
                                 </div>
@@ -412,35 +424,41 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>No</th> <!-- Tambahkan kolom nomor -->
+                                        <th>No</th>
                                         <th>ID Pinjaman</th>
                                         <th>Tanggal</th>
                                         <th>Jumlah</th>
                                         <th>Tipe</th>
-                                        <th>Tujuan</th> <!-- Tambahkan kolom baru -->
-                                        <th>Metode</th>
-                                        <th>Bukti</th>
+                                        <th>Jenis Jaminan</th>
+                                        <th>Bukti Jaminan</th>
+                                        <th>Bukti Pembayaran</th>
                                         <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @forelse ($riwayatTransaksi as $transaksi)
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td> <!-- Nomor urut -->
+                                        <td>{{ $loop->iteration }}</td>
                                         <td>{{ $transaksi['kode'] }}</td>
                                         <td>{{ \Carbon\Carbon::parse($transaksi->tanggal)->format('d F Y') }}</td>
-                                        <td>Rp {{ number_format($transaksi['jumlah'] ?? $transaksi['jumlah_pembayaran'], 0, ',', '.') }}</td>
+                                        <td>Rp {{ number_format($transaksi['jumlah'], 0, ',', '.') }}</td>
                                         <td>{{ $transaksi['tipe'] }}</td>
-                                        <td>{{ $transaksi['tujuan'] ?? '-' }}</td> <!-- Menampilkan alasan -->
-                                        <td>{{ $transaksi['metode'] ?? '-' }}</td>
+                                        <td>{{ $transaksi['jenis_jaminan'] ?? '-' }}</td>
                                         <td>
-                                            @if(!empty($transaksi->bukti))
-                                            <a href="{{ route('bukti.pembayaran', ['bukti' => basename($transaksi->bukti)]) }}">Lihat Bukti</a>
+                                            @if($transaksi->file_jaminan)
+                                            <a href="{{ route('bukti.jaminan', ['bukti' => basename($transaksi->file_jaminan)]) }}" target="_blank">Lihat Jaminan</a>
                                             @else
                                             -
                                             @endif
                                         </td>
-                                        <td>{{ ($transaksi['status']) }}</td>
+                                        <td>
+                                            @if(!empty($transaksi->bukti))
+                                            <a href="{{ route('bukti.pembayaran', ['bukti' => basename($transaksi->bukti)]) }}" target="_blank">Lihat Bukti</a>
+                                            @else
+                                            -
+                                            @endif
+                                        </td>
+                                        <td>{{ $transaksi['status'] }}</td>
                                     </tr>
                                     @empty
                                     <tr>

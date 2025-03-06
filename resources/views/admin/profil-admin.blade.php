@@ -209,20 +209,23 @@
             </header>
 
             <!-- Jika ada error -->
-            @if ($errors->any())
-            <div class="alert alert-danger" style="background-color: salmon; color:black; font-weight:bold; border-radius:20px; padding:10px; margin-bottom:20px;">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+            @if (Session::has('error'))
+            <div class="alert alert-danger d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #ff7f7f, #ff4d4d); color: #fff; border-radius: 20px; border: 2px solid #ff4d4d;">
+                <i class="bi bi-exclamation-triangle-fill me-3 fs-4" style="margin-top: -20px;"></i>
+                <div>
+                    <h5 class="mb-1">🚨 Oops! Terjadi Kesalahan</h5>
+                    <p class="mb-0">⚠️ {{ Session::get('error') }}</p>
+                </div>
             </div>
             @endif
 
-            <!-- Jika berhasil -->
             @if (Session::has('success'))
-            <div class="alert alert-success" style="background-color: lightgreen; color:black; font-weight:bold; border-radius:20px;">
-                {{ Session::get('success') }}
+            <div class="alert alert-success d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #66cc66, #33b233); color: #fff; border-radius: 20px; border: 2px solid #33b233;">
+                <i class="bi bi-check-circle-fill me-3 fs-4" style="margin-top: -20px;"></i>
+                <div>
+                    <h5 class="mb-1">🌟 Yeay! Berhasil</h5>
+                    <p class="mb-0">✅ {{ Session::get('success') }}</p>
+                </div>
             </div>
             @endif
 

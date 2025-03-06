@@ -249,6 +249,25 @@
                 <h2 class="text-center fw-bold my-4">📢 Halaman Notifikasi Admin</h2>
 
                 <div class="d-flex flex-column align-items-center">
+                    @if (Session::has('error'))
+                    <div class="alert alert-danger d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #ff7f7f, #ff4d4d); color: #fff; border-radius: 20px; border: 2px solid #ff4d4d;">
+                        <i class="bi bi-exclamation-triangle-fill me-3 fs-4" style="margin-top: -20px;"></i>
+                        <div>
+                            <h5 class="mb-1">🚨 Oops! Terjadi Kesalahan</h5>
+                            <p class="mb-0">⚠️ {{ Session::get('error') }}</p>
+                        </div>
+                    </div>
+                    @endif
+
+                    @if (Session::has('success'))
+                    <div class="alert alert-success d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #66cc66, #33b233); color: #fff; border-radius: 20px; border: 2px solid #33b233;">
+                        <i class="bi bi-check-circle-fill me-3 fs-4" style="margin-top: -20px;"></i>
+                        <div>
+                            <h5 class="mb-1">🌟 Yeay! Berhasil</h5>
+                            <p class="mb-0">✅ {{ Session::get('success') }}</p>
+                        </div>
+                    </div>
+                    @endif
                     @foreach ($notifikasiPerBulan as $bulan => $notifikasi)
                     <h4 class="text-primary fw-bold mt-3">
                         {{ \Carbon\Carbon::parse($bulan . '-01')->translatedFormat('F Y') }}

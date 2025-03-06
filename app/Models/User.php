@@ -26,7 +26,7 @@ class User extends Authenticatable
         'gambar',
         'role',
         'status',
-    ];    
+    ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -47,12 +47,35 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    /**
-     * Relasi dengan model Simpanan.
-     * Satu user memiliki banyak simpanan.
-     */
     public function simpanans()
     {
         return $this->hasMany(Simpanan::class, 'user_id', 'id');
+    }
+    
+    public function pinjaman()
+    {
+        return $this->hasMany(Pinjaman::class, 'user_id', 'id');
+    }
+
+    public function cekStatusSimpananWajib()
+    {
+        $terakhirBayar = $this->simpanans()
+            ->wajib()
+            ->orderBy('tanggal_transaksi', 'desc')
+            ->first();
+
+        if (!$terakhirBayar) {
+            return 'Belum Bayar Sama Sekali';
+        }
+
+        $selisihBulan = now()->diffInMonths($terakhirBayar->tanggal_transaksi);
+
+        if ($selisihBulan >= 3) {
+            return 'Nonaktif';
+        } elseif ($selisihBulan >= 2) {
+            return 'Belum_Bayar_Simpanan_Wajib';
+        }
+
+        return 'Aktif';
     }
 }

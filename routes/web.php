@@ -114,6 +114,7 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/admin/social-links/delete/{id}', [SocialMediaController::class, 'destroy'])->name('admin.social-links.delete');
         // Bukti Pembayaram
         Route::get('/admin/bukti/{bukti}', [BuktiPembayaranController::class, 'showAdmin'])->name('admin.bukti.pembayaran');
+        Route::get('admin//jaminan/{bukti}', [BuktiPembayaranController::class, 'showjaminanadmin'])->name('bukti.jaminan.admin');
     });
 
     // Grup Route untuk User (userAkses:user)
@@ -135,6 +136,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/pinjaman/ajukan', [PinjamanController::class, 'ajukanPinjaman'])->name('pinjaman.ajukan');
         Route::post('/pinjaman/bayar', [PinjamanController::class, 'bayarPinjaman'])->name('pinjaman.bayar');
         Route::get('/bukti/{bukti}', [BuktiPembayaranController::class, 'show'])->name('bukti.pembayaran');
+        Route::get('/jaminan/{bukti}', [BuktiPembayaranController::class, 'showJaminan'])->name('bukti.jaminan');
         // Notifikasi
         Route::get('/notifikasi', [NotifikasiController::class, 'notifikasi'])->name('notifikasi');
         // Bantuan
