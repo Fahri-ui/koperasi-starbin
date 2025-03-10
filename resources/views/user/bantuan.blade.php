@@ -287,9 +287,41 @@
                 </ul>
             </div>
 
-            @elseif (auth()->user()->status === 'Belum_Bayar_Simpanan')
-            {{-- Tampilkan formulir pembayaran simpanan terakhir --}}
-            @include('components.form_pembayaran_simpanan')
+            @elseif (auth()->user()->status === 'Belum_Bayar_Simpanan_Wajib')
+            <!-- -- Tampilkan formulir pembayaran simpanan terakhir - -->
+            <form action="{{ route('simpanan.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" name="jenis" value="wajib">
+                <input type="hidden" name="validasi" value="100000">
+
+                <div class="form-group">
+                    <label for="jenis_transaksi">Jenis Transaksi</label>
+                    <select name="jenis_transaksi" id="jenis_transaksi" class="form-control" required>
+                        <option value="penyetoran">Penyetoran</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="jumlah">Jumlah</label>
+                    <input type="number" name="jumlah" id="jumlah" class="form-control" required min="100000" max="100000">
+                </div>
+
+                <div class="form-group">
+                    <label for="metode_pembayaran">Metode Pembayaran</label>
+                    <select name="metode_pembayaran" id="metode_pembayaran" class="form-control" required>
+                        <option value="cash">Cash</option>
+                        <option value="transfer-bank">Transfer Bank</option>
+                        <option value="ewallet">E-Wallet</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="bukti_pembayaran">Upload Bukti Pembayaran (jpg, jpeg, png)</label>
+                    <input type="file" name="bukti_pembayaran" id="bukti_pembayaran" class="form-control" required accept="image/jpeg, image/png, image/jpg">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Konfirmasi Transaksi</button>
+            </form>
 
             @elseif (auth()->user()->status === 'Nonaktif')
             {{-- Tampilkan pesan akun nonaktif --}}

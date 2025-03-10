@@ -87,7 +87,7 @@ Route::middleware(['auth'])->group(function () {
         // Angsuran
         Route::get('/Angsuran', [AngsuranAdminController::class, 'index'])->name('angsuran');
         Route::post('/approve/{id}', [AngsuranAdminController::class, 'approve'])->name('admin.setujui.angsuran');
-        Route::post('/reject/{id}', [AngsuranAdminController::class, 'reject'])->name('admin.tolak.angsuran');        
+        Route::post('/reject/{id}', [AngsuranAdminController::class, 'reject'])->name('admin.tolak.angsuran');
         // Denda
         Route::get('/Denda', [DendaController::class, 'denda'])->name('denda');
         // Data Pengajuan Pinjaman
@@ -108,7 +108,7 @@ Route::middleware(['auth'])->group(function () {
         // Laporan
         Route::get('/Laporan', [LaporanController::class, 'laporan'])->name('laporan');
         // Social Media
-        Route::get('/Sosial Media', [SocialMediaController::class, 'index'])->name('sosmed');
+        Route::get('/sosial-media', [SocialMediaController::class, 'index'])->name('sosmed');
         Route::post('/admin/social-links/store', [SocialMediaController::class, 'store'])->name('admin.social-links.store');
         Route::put('/admin/social-links/update/{id}', [SocialMediaController::class, 'update'])->name('admin.social-links.update');
         Route::delete('/admin/social-links/delete/{id}', [SocialMediaController::class, 'destroy'])->name('admin.social-links.delete');
@@ -123,7 +123,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/user', [DashboardController::class, 'dashboard'])->name('user');
         // Profil
         Route::get('/userprofil', [ProfilController::class, 'profil'])->name('profil');
-        Route::put('/userprofil', [ProfilController::class, 'update']);
+        Route::put('/userprofil', [ProfilController::class, 'update'])->name('edit.profil');
         // Simpanans
         Route::post('/simpanan/bayar', [SimpananController::class, 'storePayment'])->name('simpanan.bayar');
         Route::post('/simpanans', [SimpananController::class, 'store'])->name('simpanan.store');

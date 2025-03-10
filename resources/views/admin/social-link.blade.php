@@ -237,7 +237,12 @@
                     <div class="card-body">
                         <form id="formSocialLink" method="POST" action="{{ route('admin.social-links.store') }}">
                             @csrf
+
+                            <!-- Input hidden untuk handle edit -->
                             <input type="hidden" id="socialLinkId" name="id">
+
+                            <!-- Input hidden untuk ikon -->
+                            <input type="hidden" id="icon" name="icon">
 
                             <div class="mb-3">
                                 <label for="platform" class="form-label">Platform</label>
@@ -265,29 +270,29 @@
                         <h5>Daftar Link Sosial Media</h5>
                         <div style="max-height: 450px;  overflow:auto; font-size:.9rem;">
                             <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Ikon</th>
-                                    <th>Platform</th>
-                                    <th>URL</th>
-                                    <th>Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($links as $link)
-                                <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td><i class="{{ $link->icon }}"></i></td>
-                                    <td>{{ ucfirst($link->platform) }}</td>
-                                    <td><a href="{{ $link->url }}" target="_blank">{{ $link->url }}</a></td>
-                                    <td>
-                                        <button class="btn btn-warning btn-sm" onclick="editLink({{ $link }})">Edit</button>
-                                        <button class="btn btn-danger btn-sm" onclick="deleteLink({{ $link->id }})">Hapus</button>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Ikon</th>
+                                        <th>Platform</th>
+                                        <th>URL</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($links as $link)
+                                    <tr data-id="{{ $link->id}}">
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td><i class="{{ $link->icon }}"></i></td>
+                                        <td>{{ ucfirst($link->platform) }}</td>
+                                        <td><a href="{{ $link->url }}" target="_blank">{{ $link->url }}</a></td>
+                                        <td>
+                                            <button class="btn btn-warning btn-sm" onclick="editLink({{ $link }})">Edit</button>
+                                            <button class="btn btn-danger btn-sm" onclick="deleteLink({{ $link->id }})">Hapus</button>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -318,8 +323,8 @@
     <script>
         const csrfToken = "{{ csrf_token() }}";
     </script>
-    <script >
-      // Fungsi Preview Ikon saat Pilih Platform
+    <script>
+        // Fungsi Preview Ikon saat Pilih Platform
         document.getElementById('platform').addEventListener('change', function() {
             const selectedOption = this.options[this.selectedIndex];
             const iconClass = selectedOption.getAttribute('data-icon');
@@ -334,12 +339,37 @@
             document.getElementById('platform').value = link.platform;
             document.getElementById('url').value = link.url;
 
+            // Ubah action form ke UPDATE
+            const form = document.getElementById('formSocialLink');
+            form.action = `/admin/social-links/update/${link.id}`;
+
+            // Tambahkan input hidden untuk PUT
+            if (!form.querySelector('input[name="_method"]')) {
+                const methodInput = document.createElement('input');
+                methodInput.type = 'hidden';
+                methodInput.name = '_method';
+                methodInput.value = 'PUT';
+                form.appendChild(methodInput);
+            }
+
+            // Tampilkan ikon & set input hidden icon
             const selectedOption = document.querySelector(`#platform option[value="${link.platform}"]`);
             if (selectedOption) {
                 const iconClass = selectedOption.getAttribute('data-icon');
                 document.getElementById('icon-preview').innerHTML = `<i class="${iconClass}"></i>`;
+                document.getElementById('icon').value = iconClass; // Set ikon ke input hidden
             }
         }
+
+        // Set ikon saat pilih platform
+        document.getElementById('platform').addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const iconClass = selectedOption.getAttribute('data-icon');
+
+            // Update ikon preview & input hidden
+            document.getElementById('icon-preview').innerHTML = `<i class="${iconClass}"></i>`;
+            document.getElementById('icon').value = iconClass;
+        });
 
         // Fungsi Hapus Link
         function deleteLink(id) {
@@ -353,16 +383,18 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     fetch(`/admin/social-links/delete/${id}`, {
-                        method: "DELETE",
-                        headers: { "X-CSRF-TOKEN": "{{ csrf_token() }}" }
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.success) {
-                            Swal.fire("Berhasil!", "Link sosial media telah dihapus.", "success");
-                            removeRow(id); // Hapus baris dari tabel tanpa reload
-                        }
-                    });
+                            method: "DELETE",
+                            headers: {
+                                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                            }
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire("Berhasil!", "Link sosial media telah dihapus.", "success");
+                                removeRow(id); // Hapus baris dari tabel tanpa reload
+                            }
+                        });
                 }
             });
         }
@@ -374,38 +406,6 @@
                 row.remove();
             }
         }
-
-        // Form Submit (Tambah/Update)
-        document.getElementById("formSocialLink").addEventListener("submit", function(event) {
-            event.preventDefault();
-            const id = document.getElementById("socialLinkId").value;
-            const platform = document.getElementById("platform").value;
-            const url = document.getElementById("url").value;
-            const selectedOption = document.querySelector(`#platform option[value="${platform}"]`);
-            const icon = selectedOption ? selectedOption.getAttribute('data-icon') : '';
-
-            const method = id ? "PUT" : "POST";
-            const action = id ? `/admin/social-links/update/${id}` : "/admin/social-links/store";
-
-            fetch(action, {
-                method: method,
-                headers: {
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}",
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ platform, url, icon })
-            })
-            .then(res => res.json())
-            .then(data => {
-                Swal.fire("Berhasil!", `Link ${platform} berhasil disimpan.`, "success");
-                if (id) {
-                    updateRow(id, data.link); // Update baris jika edit
-                } else {
-                    addRow(data.link); // Tambah baris jika baru
-                }
-                resetForm();
-            });
-        });
 
         // Fungsi reset form
         function resetForm() {

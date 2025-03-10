@@ -250,7 +250,7 @@
             </div>
 
             @elseif (auth()->user()->status === 'Pending')
-        
+
             <div class="alert p-4 shadow" style="background-color: #435ebe; color: #fff; border-radius: 10px;">
                 <div class="d-flex align-items-start">
                     <i class="bi bi-hourglass-split fs-1 me-3" style="color: #ffdd57; margin-top:-15px; padding-right:30px;"></i>
@@ -285,9 +285,41 @@
                 </ul>
             </div>
 
-            @elseif (auth()->user()->status === 'Belum_Bayar_Simpanan')
-            {{-- Tampilkan formulir pembayaran simpanan terakhir --}}
-            @include('components.form_pembayaran_simpanan')
+            @elseif (auth()->user()->status === 'Belum_Bayar_Simpanan_Wajib')
+            <!-- -- Tampilkan formulir pembayaran simpanan terakhir - -->
+            <form action="{{ route('simpanan.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" name="jenis" value="wajib">
+                <input type="hidden" name="validasi" value="100000">
+
+                <div class="form-group">
+                    <label for="jenis_transaksi">Jenis Transaksi</label>
+                    <select name="jenis_transaksi" id="jenis_transaksi" class="form-control" required>
+                        <option value="penyetoran">Penyetoran</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="jumlah">Jumlah</label>
+                    <input type="number" name="jumlah" id="jumlah" class="form-control" required min="100000" max="100000">
+                </div>
+
+                <div clasbantas="form-group">
+                    <label for="metode_pembayaran">Metode Pembayaran</label>
+                    <select name="metode_pembayaran" id="metode_pembayaran" class="form-control" required>
+                        <option value="cash">Cash</option>
+                        <option value="transfer-bank">Transfer Bank</option>
+                        <option value="ewallet">E-Wallet</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="bukti_pembayaran">Upload Bukti Pembayaran (jpg, jpeg, png)</label>
+                    <input type="file" name="bukti_pembayaran" id="bukti_pembayaran" class="form-control" required accept="image/jpeg, image/png, image/jpg">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Konfirmasi Transaksi</button>
+            </form>
 
             @elseif (auth()->user()->status === 'Nonaktif')
             {{-- Tampilkan pesan akun nonaktif --}}
@@ -357,10 +389,21 @@
             <section class="mb-4">
                 <div class="card">
                     <div class="card-body">
+                        @if ($statusSukarela && $statusSukarela->status === 'Dalam Proses')
+                        <!-- Jika ada transaksi dalam proses -->
+                        <div class="alert alert-warning d-flex align-items-center" role="alert">
+                            <i class="bi bi-hourglass-split me-2" style="font-size: 2rem; margin-top: -40px;"></i>
+                            <div>
+                                <h5 class="alert-heading" style="margin-left: 20px;">Transaksi Sedang Diproses</h5>
+                                <p style="margin-left: 20px;">Anda memiliki transaksi penyetoran/penarikan yang masih dalam proses. Silakan tunggu hingga transaksi selesai sebelum mengajukan yang baru.</p>
+                            </div>
+                        </div>
+                        @else
+                        <!-- Jika tidak ada transaksi dalam proses, tampilkan form -->
                         <h5>Formulir Penyetoran / Penarikan</h5>
-                        <form action="{{ route('simpanan.store') }}" method="POST">
+                        <form action="{{ route('simpanan.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <input type="hidden" name="jenis" value="sukarela"> <!-- Jenis simpanan -->
+                            <input type="hidden" name="jenis" value="sukarela">
 
                             <div class="form-group">
                                 <label for="jenis_transaksi">Jenis Transaksi</label>
@@ -384,8 +427,15 @@
                                 </select>
                             </div>
 
+                            <!-- Input Bukti Pembayaran (Hanya muncul untuk transfer atau e-wallet) -->
+                            <div class="form-group" id="bukti_pembayaran_group" style="display: none;">
+                                <label for="bukti">Upload Bukti Pembayaran</label>
+                                <input type="file" name="bukti" id="bukti" class="form-control" accept="image/*">
+                            </div>
+
                             <button type="submit" class="btn btn-primary">Konfirmasi Transaksi</button>
                         </form>
+                        @endif
                     </div>
                 </div>
             </section>
@@ -411,6 +461,25 @@
     </div>
     <script src="{{asset('dist/assets/js/bootstrap.js')}}"></script>
     <script src="{{asset('dist/assets/js/app.js')}}"></script>
+    <!-- JavaScript untuk mengatur visibilitas input bukti -->
+    <script>
+        const metodePembayaran = document.getElementById('metode_pembayaran');
+        const buktiPembayaranGroup = document.getElementById('bukti_pembayaran_group');
+        const jenisTransaksi = document.getElementById('jenis_transaksi');
+
+        // Fungsi untuk atur tampilan input bukti pembayaran
+        function toggleBuktiPembayaran() {
+            if (metodePembayaran.value === 'transfer-bank' || metodePembayaran.value === 'ewallet') {
+                buktiPembayaranGroup.style.display = 'block';
+            } else {
+                buktiPembayaranGroup.style.display = 'none';
+            }
+        }
+
+        // Panggil fungsi saat metode pembayaran berubah
+        metodePembayaran.addEventListener('change', toggleBuktiPembayaran);
+    </script>
+
 
 </body>
 

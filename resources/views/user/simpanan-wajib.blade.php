@@ -155,7 +155,7 @@
                 </div>
             </div>
             @endif
-            
+
             @if (auth()->user()->status === 'Belum_Aktif')
             <div class="container mt-4">
                 <!-- Card Peringatan -->
@@ -285,15 +285,47 @@
                 </ul>
             </div>
 
-            @elseif (auth()->user()->status === 'Belum_Bayar_Simpanan')
-            {{-- Tampilkan formulir pembayaran simpanan terakhir --}}
-            @include('components.form_pembayaran_simpanan')
+            @elseif (auth()->user()->status === 'Belum_Bayar_Simpanan_Wajib')
+            <!-- -- Tampilkan formulir pembayaran simpanan terakhir - -->
+            <form action="{{ route('simpanan.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" name="jenis" value="wajib">
+                <input type="hidden" name="validasi" value="100000">
+
+                <div class="form-group">
+                    <label for="jenis_transaksi">Jenis Transaksi</label>
+                    <select name="jenis_transaksi" id="jenis_transaksi" class="form-control" required>
+                        <option value="penyetoran">Penyetoran</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="jumlah">Jumlah</label>
+                    <input type="number" name="jumlah" id="jumlah" class="form-control" required min="100000" max="100000">
+                </div>
+
+                <div class="form-group">
+                    <label for="metode_pembayaran">Metode Pembayaran</label>
+                    <select name="metode_pembayaran" id="metode_pembayaran" class="form-control" required>
+                        <option value="cash">Cash</option>
+                        <option value="transfer-bank">Transfer Bank</option>
+                        <option value="ewallet">E-Wallet</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="bukti_pembayaran">Upload Bukti Pembayaran (jpg, jpeg, png)</label>
+                    <input type="file" name="bukti_pembayaran" id="bukti_pembayaran" class="form-control" required accept="image/jpeg, image/png, image/jpg">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Konfirmasi Transaksi</button>
+            </form>
 
             @elseif (auth()->user()->status === 'Nonaktif')
             {{-- Tampilkan pesan akun nonaktif --}}
             <h3 class="text-red-500 text-center">Akun Anda Nonaktif. Silakan hubungi admin untuk informasi lebih lanjut.</h3>
 
-            @else 
+            @else
             <h2 style="margin-bottom: 50px;">Simpanan Wajib</h2>
 
             <!-- Definisi Simpanan Pokok -->
@@ -371,26 +403,35 @@
             </section>
 
             <!-- Formulir Penyetoran dan Penarikan -->
-            <!-- Formulir Penyetoran dan Penarikan -->
             <section class="mb-4" id="bayar">
                 <div class="card">
                     <div class="card-body">
-                        @if ($sudahBayarBulanIni)
-                        <!-- Jika sudah membayar bulan ini, tampilkan pesan terima kasih -->
+                        @if ($statusWajib && $statusWajib->status === 'Dalam Proses')
+                        <!-- Jika pembayaran masih dalam proses -->
+                        <div class="alert alert-warning d-flex align-items-center" role="alert">
+                            <i class="bi bi-hourglass-split me-2" style="font-size: 2rem; margin-top:-30px;"></i>
+                            <div>
+                                <h5 class="alert-heading" style="margin-left:20px;">Menunggu Persetujuan Admin</h5>
+                                <p style="margin-left:20px;">Pengajuan penyetoran Anda sedang diproses oleh admin. Silakan cek kembali nanti.</p>
+                            </div>
+                        </div>
+
+                        @elseif ($statusWajib && $statusWajib->status === 'Berhasil')
+                        <!-- Jika sudah membayar bulan ini -->
                         <div class="alert alert-success d-flex align-items-center" role="alert">
-                            <!-- Ikon terima kasih -->
                             <i class="bi bi-check-circle-fill me-2" style="font-size: 1.5rem; margin-top:10px;"></i>
                             <div>
                                 <h5 class="alert-heading">Terima Kasih!</h5>
                                 <p style="margin-left:20px;"><strong>{{ $statusPesan }}</strong></p>
                             </div>
                         </div>
+
                         @else
-                        <!-- Jika belum membayar bulan ini, tampilkan formulir pembayaran -->
+                        <!-- Jika belum membayar bulan ini, tampilkan formulir -->
                         <h5>Formulir Penyetoran</h5>
-                        <form action="{{ route('simpanan.store') }}" method="POST">
+                        <form action="{{ route('simpanan.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <input type="hidden" name="jenis" value="wajib"> <!-- Jenis simpanan -->
+                            <input type="hidden" name="jenis" value="wajib">
 
                             <div class="form-group">
                                 <label for="jenis_transaksi">Jenis Transaksi</label>
@@ -411,6 +452,11 @@
                                     <option value="transfer-bank">Transfer Bank</option>
                                     <option value="ewallet">E-Wallet</option>
                                 </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="bukti">Upload Bukti Pembayaran (jpg, jpeg, png)</label>
+                                <input type="file" name="bukti" id="bukti" class="form-control" required accept="image/jpeg, image/png, image/jpg">
                             </div>
 
                             <button type="submit" class="btn btn-primary">Konfirmasi Transaksi</button>

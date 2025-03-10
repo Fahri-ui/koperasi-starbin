@@ -285,9 +285,41 @@
                 </ul>
             </div>
 
-            @elseif (auth()->user()->status === 'Belum_Bayar_Simpanan')
-            {{-- Tampilkan formulir pembayaran simpanan terakhir --}}
-            @include('components.form_pembayaran_simpanan')
+            @elseif (auth()->user()->status === 'Belum_Bayar_Simpanan_Wajib')
+            <!-- -- Tampilkan formulir pembayaran simpanan terakhir - -->
+            <form action="{{ route('simpanan.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" name="jenis" value="wajib">
+                <input type="hidden" name="validasi" value="100000">
+
+                <div class="form-group">
+                    <label for="jenis_transaksi">Jenis Transaksi</label>
+                    <select name="jenis_transaksi" id="jenis_transaksi" class="form-control" required>
+                        <option value="penyetoran">Penyetoran</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="jumlah">Jumlah</label>
+                    <input type="number" name="jumlah" id="jumlah" class="form-control" required min="100000" max="100000">
+                </div>
+
+                <div class="form-group">
+                    <label for="metode_pembayaran">Metode Pembayaran</label>
+                    <select name="metode_pembayaran" id="metode_pembayaran" class="form-control" required>
+                        <option value="cash">Cash</option>
+                        <option value="transfer-bank">Transfer Bank</option>
+                        <option value="ewallet">E-Wallet</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="bukti_pembayaran">Upload Bukti Pembayaran (jpg, jpeg, png)</label>
+                    <input type="file" name="bukti_pembayaran" id="bukti_pembayaran" class="form-control" required accept="image/jpeg, image/png, image/jpg">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Konfirmasi Transaksi</button>
+            </form>
 
             @elseif (auth()->user()->status === 'Nonaktif')
             {{-- Tampilkan pesan akun nonaktif --}}
@@ -334,29 +366,54 @@
                             <h5>Edit Profil</h5>
                         </div>
                         <div class="card-body">
-                            <form action="{{ route('simpanan.bayar') }}" method="POST" enctype="multipart/form-data">
+                            <form id="edit-profile-form" enctype="multipart/form-data" method="POST" action="{{ route('edit.profil') }}">
                                 @csrf
+                                <input type="hidden" name="_method" value="PUT"> <!-- Metode PUT untuk update -->
+                                <!-- Nama -->
                                 <div class="mb-3">
-                                    <label for="nominal" class="form-label"><i class="bi bi-cash-stack"></i> Nominal Pembayaran</label>
-                                    <input type="number" id="nominal" name="nominal" class="form-control" placeholder="Masukkan jumlah simpanan" required>
+                                    <label for="fullname" class="form-label">Nama</label>
+                                    <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Nama Lengkap" value="{{ old('fullname', Auth::user()->fullname) }}" required>
                                 </div>
 
+                                <!-- Email -->
                                 <div class="mb-3">
-                                    <label for="metode" class="form-label"><i class="bi bi-wallet2"></i> Metode Pembayaran</label>
-                                    <select id="metode" name="metode" class="form-select" required>
-                                        <option value="" disabled selected>Pilih metode pembayaran</option>
-                                        <option value="cash">Tunai (Bayar Langsung)</option>
-                                        <option value="bank">Transfer Bank</option>
-                                        <option value="ewallet">E-Wallet (Dana, OVO, Gopay)</option>
-                                    </select>
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="{{ old('email', Auth::user()->email) }}" required>
                                 </div>
 
-                                <div class="form-group mb-3">
-                                    <label for="payment-proof">Unggah Bukti Pembayaran</label>
-                                    <input type="file" class="form-control" id="payment-proof" name="payment-proof" accept="image/*" required>
+                                <!-- Password -->
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
                                 </div>
 
-                                <button type="submit" class="btn btn-primary w-100"><i class="bi bi-send"></i> Bayar Sekarang</button>
+                                <!-- Konfirmasi Password -->
+                                <div class="mb-3">
+                                    <label for="confirm-password" class="form-label">Konfirmasi Password</label>
+                                    <input type="password" class="form-control" id="confirm-password" name="confirm_password" placeholder="Konfirmasi Password">
+                                </div>
+
+                                <!-- Gambar -->
+                                <div class="mb-3">
+                                    <label for="gambar" class="form-label">Foto Profil</label>
+                                    <input type="file" class="form-control" id="gambar" name="gambar" accept="image/*">
+                                </div>
+
+                                <!-- Nomor Telepon -->
+                                <div class="mb-3">
+                                    <label for="phone" class="form-label">Nomor Telepon</label>
+                                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="Nomor Telepon" value="{{ old('phone', Auth::user()->phone) }}" required>
+                                </div>
+
+                                <!-- Alamat -->
+                                <div class="mb-3">
+                                    <label for="address" class="form-label">Alamat</label>
+                                    <textarea class="form-control" id="address" name="address" rows="5" placeholder="Alamat" required>{{ old('address', Auth::user()->address) }}</textarea>
+                                </div>
+
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-primary">Konfirmasi Edit Profil</button>
+                                </div>
                             </form>
                         </div>
                     </div>

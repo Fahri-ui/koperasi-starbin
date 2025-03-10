@@ -21,14 +21,28 @@ class SimpananController extends Controller
 
         $simpanan = Simpanan::where('user_id', auth()->id())->latest()->first();
 
-        $totalWajib = $wajib->sum('jumlah');
+        $simpananWajib = Simpanan::where('user_id', auth()->id())
+            ->where('jenis', 'wajib')
+            ->latest()
+            ->first();
+
+        $statusWajib = Simpanan::where('user_id', auth()->id())
+            ->where('jenis', 'wajib')
+            ->latest()
+            ->first();
+
+
+        $totalWajib = Simpanan::where('user_id', auth()->id())
+            ->where('jenis', 'wajib')
+            ->where('status', 'Berhasil') // Hanya hitung yang disetujui
+            ->sum('jumlah');
 
         // Cek apakah sudah membayar bulan ini
         $bulanIni = Carbon::now()->format('Y-m');
         $sudahBayarBulanIni = Simpanan::where('jenis', 'wajib')
             ->where('user_id', $userId)
             ->where('tanggal_transaksi', 'like', "$bulanIni%")
-            ->where('status', 'completed')
+            ->where('status', 'Berhasil')
             ->exists();
 
         // **🔹 Notifikasi Pembayaran**
@@ -58,7 +72,7 @@ class SimpananController extends Controller
         // Pengingat
         $pengingat = "Anda akan menerima pengingat otomatis setiap awal bulan jika belum melakukan pembayaran.";
 
-        return view('user.simpanan-wajib', compact('wajib', 'simpanan', 'totalWajib', 'statusPembayaran', 'statusPesan', 'pengingat', 'sudahBayarBulanIni'));
+        return view('user.simpanan-wajib', compact('wajib', 'simpananWajib', 'statusWajib', 'simpanan', 'totalWajib', 'statusPembayaran', 'statusPesan', 'pengingat', 'sudahBayarBulanIni'));
     }
 
     public function simpanansukarela()
@@ -71,79 +85,67 @@ class SimpananController extends Controller
         // Hitung total saldo simpanan sukarela milik user yang sedang login
         $totalSukarela = Simpanan::where('jenis', 'sukarela')
             ->where('user_id', auth()->id())
+            ->where('status', 'Berhasil') // Hanya hitung yang berhasil
             ->sum('jumlah');
 
         $simpanan = Simpanan::where('user_id', auth()->id())->latest()->first();
 
-        // Kirim data ke view
-        return view('user.simpanan-sukarela', compact('sukarela', 'totalSukarela', 'simpanan'));
-    }
+        $statusSukarela = Simpanan::where('user_id', auth()->id())
+            ->where('jenis', 'sukarela')
+            ->where('status', 'Dalam Proses')
+            ->latest()
+            ->first();
 
+        // Kirim data ke view
+        return view('user.simpanan-sukarela', compact('sukarela', 'statusSukarela', 'totalSukarela', 'simpanan'));
+    }
 
     public function store(Request $request)
     {
+        // Tentukan jumlah minimal berdasarkan validasi
+        $jumlahMinimal = ($request->validasi == 100000) ? 100000 : 50000;
+
         // Validasi input
         $validatedData = $request->validate([
-            'jenis' => 'required|in:wajib,sukarela', // Jenis simpanan (wajib/sukarela)
-            'jenis_transaksi' => 'required|in:penyetoran,penarikan', // Jenis transaksi
-            'jumlah' => 'required|numeric',
-            'metode_pembayaran' => 'required|in:transfer-bank,ewallet,cash', // Metode pembayaran
+            'jenis' => 'required|in:wajib,sukarela',
+            'jenis_transaksi' => 'required|in:penyetoran,penarikan',
+            'jumlah' => "required|numeric",
+            'metode_pembayaran' => 'required|in:transfer-bank,ewallet,cash',
+            'bukti' => ($request->jenis_transaksi === 'penyetoran' && in_array($request->metode_pembayaran, ['transfer-bank', 'ewallet']))
+                ? 'required|image|mimes:jpeg,png,jpg|max:2048'
+                : 'nullable',
         ]);
 
-        // Ambil user yang sedang login
         $user = auth()->user();
 
-        // Hitung saldo saat ini berdasarkan jenis simpanan
-        $saldoSaatIni = Simpanan::where('jenis', $validatedData['jenis'])
-            ->where('user_id', $user->id)
-            ->sum('jumlah');
-
-        // **Proses Penarikan**
-        if ($validatedData['jenis_transaksi'] === 'penarikan') {
-            if ($saldoSaatIni < $validatedData['jumlah']) {
-                // Jika saldo tidak mencukupi
-                return redirect()->back()->with('error', 'Saldo tidak mencukupi untuk penarikan.');
-            }
-
-            // Simpan transaksi penarikan
-            $data = [
-                'user_id' => $user->id,
-                'jenis' => $validatedData['jenis'],
-                'jenis_transaksi' => 'penarikan',
-                'jumlah' => -$validatedData['jumlah'], // Jumlah negatif untuk penarikan
-                'kode_transaksi' => 'TRX-' . date('YmdHis') . '-' . $user->id,
-                'tanggal_transaksi' => Carbon::now()->toDateTimeString(), // Pastikan format benar
-                'status' => 'completed', // Penarikan langsung dianggap selesai
-                'metode_pembayaran' => $validatedData['metode_pembayaran'],
-            ];
-
-            Simpanan::create($data);
-
-            return redirect()
-                ->route($validatedData['jenis'] === 'wajib' ? 'simpananwajib' : 'simpanansukarela')
-                ->with('success', 'Penarikan berhasil dilakukan!');
+        // Proses penyetoran
+        $buktiPath = null;
+        if ($request->hasFile('bukti_pembayaran')) {
+            $buktiFile = $request->file('bukti_pembayaran');
+            $namaBukti = time() . '-' . $user->id . '.' . $buktiFile->getClientOriginalExtension();
+            $buktiPath = 'picture/bukti_pembayaran/' . $namaBukti;
+            $buktiFile->move(public_path('picture/bukti_pembayaran'), $namaBukti);
         }
 
-        // **Proses Penyetoran**
         $data = [
             'user_id' => $user->id,
             'jenis' => $validatedData['jenis'],
             'jenis_transaksi' => 'penyetoran',
             'jumlah' => $validatedData['jumlah'],
             'kode_transaksi' => 'TRX-' . date('YmdHis') . '-' . $user->id,
-            'tanggal_transaksi' => Carbon::now()->toDateTimeString(), // Pastikan format benar
-            'status' => 'Dalam  Proses', // Status default "completed"
+            'tanggal_transaksi' => now()->toDateTimeString(),
+            'status' => 'Dalam Proses',
             'metode_pembayaran' => $validatedData['metode_pembayaran'],
+            'bukti' => $buktiPath,
         ];
 
         Simpanan::create($data);
 
-        // Redirect ke halaman yang sesuai (wajib/sukarela)
         $redirectRoute = $validatedData['jenis'] === 'wajib' ? 'simpananwajib' : 'simpanansukarela';
 
         return redirect()
             ->route($redirectRoute)
-            ->with('success', 'Transaksi berhasil diajukan!');
+            ->with('success', 'Transaksi berhasil diajukan! Menunggu konfirmasi admin.');
     }
 
     public function boot()

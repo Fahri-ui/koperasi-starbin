@@ -41,6 +41,10 @@ class PinjamanController extends Controller
         $userId = Auth::id();
         $tanggalHariIni = Carbon::today();
 
+        $pembayaranProses = RiwayatPembayaran::where('user_id', auth()->id())
+            ->where('status', 'Dalam Proses')
+            ->exists();
+
         $simpanan = Simpanan::where('user_id', auth()->id())->latest()->first();
         // Ambil semua riwayat transaksi
         $riwayatTransaksi = Pinjaman::where('user_id', $userId)
@@ -68,7 +72,7 @@ class PinjamanController extends Controller
                         'pinjaman.file_jaminan', // Ikut ambil bukti jaminan dari pinjaman
                         'riwayat_pembayaran.metode_pembayaran as metode',
                         'riwayat_pembayaran.bukti_pembayaran as bukti',
-                        DB::raw("'Berhasil' as status"),
+                        'riwayat_pembayaran.status',
                         DB::raw("NULL as tujuan")
                     )
             )
@@ -190,7 +194,7 @@ class PinjamanController extends Controller
                 ->get();
         }
 
-        return view('user.pinjaman', compact('riwayatTransaksi', 'pinjamandalamproses', 'simpanan', 'totalPinjaman', 'pinjamanAktif'));
+        return view('user.pinjaman', compact( 'pembayaranProses','riwayatTransaksi', 'pinjamandalamproses', 'simpanan', 'totalPinjaman', 'pinjamanAktif'));
     }
 
     public function ajukanPinjaman(Request $request)
@@ -208,7 +212,7 @@ class PinjamanController extends Controller
         $namaBuktiJaminan = time() . '-' . $userId . '.' . $buktiJaminanFile->getClientOriginalExtension();
         $buktiJaminanFile->move(public_path('picture/jaminan_pembayaran'), $namaBuktiJaminan);
         $buktiJaminanPath = 'picture/jaminan_pembayaran/' . $namaBuktiJaminan;
-        
+
         // Simpan data pinjaman
         $pinjaman = Pinjaman::create([
             'user_id' => Auth::id(),

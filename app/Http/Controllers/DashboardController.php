@@ -36,8 +36,39 @@ class DashboardController extends Controller
             ->where('is_read', false)
             ->count();
 
-        // Ambil semua transaksi (gabungan dari Simpanan, Pinjaman, dan Riwayat Pembayaran)
-        $riwayatTransaksi = collect([]);
+        // Ambil data simpanan
+        $simpanan = Simpanan::select('jenis', 'tanggal_transaksi as tanggal', 'jumlah', 'status')
+            ->get()
+            ->map(function ($item) {
+                $item->deskripsi = match ($item->jenis) {
+                    'sukarela' => $item->jumlah < 0 ? 'Penarikan Sukarela' : 'Simpanan Sukarela',
+                    'wajib' => 'Simpanan Wajib',
+                    'anggota' => 'Simpanan Anggota',
+                    default => 'Simpanan (Jenis Tidak Diketahui)',
+                };
+                return $item;
+            });
+
+        $pinjaman = Pinjaman::select('tanggal_pengajuan as tanggal', 'jumlah_pinjaman', 'status')
+            ->get()
+            ->map(function ($item) {
+                $item->deskripsi = 'Pinjaman Anda';
+                return $item;
+            });
+
+        $riwayatPembayaran = RiwayatPembayaran::select('tanggal_pembayaran as tanggal', 'jumlah_pembayaran as jumlah', 'status')
+            ->get()
+            ->map(function ($item) {
+                $item->deskripsi = 'Pembayaran Angsuran';
+                return $item;
+            });
+
+        $riwayatTransaksi = collect()
+            ->merge($simpanan)
+            ->merge($pinjaman)
+            ->merge($riwayatPembayaran)
+            ->sortByDesc('tanggal')
+            ->values();
 
         // Ambil data simpanan
         $simpanans = Simpanan::where('user_id', $user->id)
@@ -247,7 +278,7 @@ class DashboardController extends Controller
             $sudahBayarBulanIni = Simpanan::where('jenis', 'wajib')
                 ->where('user_id', $userId)
                 ->where('tanggal_transaksi', 'like', "$bulanIni%")
-                ->where('status', 'completed')
+                ->where('status', 'Berhasil')
                 ->exists();
 
             // **🔹 Notifikasi Pembayaran**

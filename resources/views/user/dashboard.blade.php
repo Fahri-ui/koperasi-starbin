@@ -15,6 +15,24 @@
 
 </head>
 
+<style>
+    .poto-profil {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin: 0 auto;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        margin-bottom: 30px;
+    }
+
+    .poto-profil img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+</style>
+
 <body>
     <div id="app">
         <div id="sidebar" class="active">
@@ -155,7 +173,7 @@
             </div>
             @endif
             @if (auth()->user()->status === 'Belum_Aktif')
-      
+
             <div class="container mt-4">
                 <!-- Card Peringatan -->
                 <div class="card shadow-sm mb-3">
@@ -201,7 +219,7 @@
                     </div>
                 </div>
             </div>
-            
+
             @elseif (auth()->user()->status === 'Ditolak')
             <div class="container mt-4">
                 <!-- Card Peringatan Pengajuan Ditolak -->
@@ -284,24 +302,95 @@
                 </ul>
             </div>
 
-            @elseif (auth()->user()->status === 'Belum_Bayar_Simpanan')
-            {{-- Tampilkan formulir pembayaran simpanan terakhir --}}
-            @include('components.form_pembayaran_simpanan')
+            @elseif (auth()->user()->status === 'Belum_Bayar_Simpanan_Wajib')
+            <!-- -- Tampilkan formulir pembayaran simpanan terakhir - -->
+            <form action="{{ route('simpanan.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" name="jenis" value="wajib">
+                <input type="hidden" name="validasi" value="100000">
+
+                <div class="form-group">
+                    <label for="jenis_transaksi">Jenis Transaksi</label>
+                    <select name="jenis_transaksi" id="jenis_transaksi" class="form-control" required>
+                        <option value="penyetoran">Penyetoran</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="jumlah">Jumlah</label>
+                    <input type="number" name="jumlah" id="jumlah" class="form-control" required min="100000" max="100000">
+                </div>
+
+                <div class="form-group">
+                    <label for="metode_pembayaran">Metode Pembayaran</label>
+                    <select name="metode_pembayaran" id="metode_pembayaran" class="form-control" required>
+                        <option value="cash">Cash</option>
+                        <option value="transfer-bank">Transfer Bank</option>
+                        <option value="ewallet">E-Wallet</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="bukti_pembayaran">Upload Bukti Pembayaran (jpg, jpeg, png)</label>
+                    <input type="file" name="bukti_pembayaran" id="bukti_pembayaran" class="form-control" required accept="image/jpeg, image/png, image/jpg">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Konfirmasi Transaksi</button>
+            </form>
+
 
             @elseif (auth()->user()->status === 'Nonaktif')
             {{-- Tampilkan pesan akun nonaktif --}}
             <h3 class="text-red-500 text-center">Akun Anda Nonaktif. Silakan hubungi admin untuk informasi lebih lanjut.</h3>
 
             @else
-         
-            <div class="page-heading">
-                <h2>Dashboard</h2>
+
+            <div class="page-heading d-flex align-items-center pb-3 border-bottom">
+                <i class="bi bi-house-door me-2 fs-3 text-primary" style="margin-top: -30px; padding-right:30px;"></i>
+                <h2 class="mb-0 fw-bold">Dashboard</h2>
             </div>
-            <div class="page-content">
-                <div class="row">
-                    <!-- Card: Simpanan Sukarela -->
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="card">
+            <div class="row">
+                <!-- Bagian Profil Pengguna (70%) -->
+                <div class="col-20 col-lg-8 d-flex">
+                    <div class="card shadow mb-4 flex-grow-1">
+                        <div class="card-header" style="background-color: #435ebe; color: #fff;">
+                            <h5 class="mb-0 text-white">
+                                <i class="bi bi-person-circle"></i> Profil Pengguna
+                            </h5>
+                        </div>
+                        <div class="card-body d-flex align-items-start justify-content-start p-4">
+                            <div class="text-center me-4">
+                                <div class="poto-profil">
+                                    <img src="{{ asset('picture/account/' . Auth::user()->gambar) }}" alt="Foto Profil" class="rounded-circle" style="width: 180px; height: 180px; object-fit: cover;">
+                                </div>
+                            </div>
+                            <div class="ms-4">
+                                <h3 class="fw-bold mb-3" style="font-size: 28px;">{{ Auth::user()->fullname }}</h3>
+                                <p class="mb-3" style="font-size: 18px;">
+                                    <i class="bi bi-envelope"></i> {{ Auth::user()->email }}
+                                </p>
+                                <p class="mb-3" style="font-size: 18px;">
+                                    <i class="bi bi-phone"></i> {{ Auth::user()->phone }}
+                                </p>
+                                <p class="mb-3" style="font-size: 18px;">
+                                    <i class="bi bi-geo-alt"></i> {{ Auth::user()->address }}
+                                </p>
+                                <p class="mb-0" style="font-size: 18px;">
+                                    <i class="bi bi-person-badge"></i> Status:
+                                    <span class="badge {{ Auth::user()->status == 'Aktif' ? 'bg-success' : 'bg-danger' }}" style="font-size: 16px; padding: 10px 20px;">
+                                        {{ Auth::user()->status }}
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bagian Statistik (30%) -->
+                <div class="col-12 col-lg-4 d-flex flex-column">
+                    <div class="d-flex flex-column gap-3 h-100">
+                        <!-- Card: Total Simpanan -->
+                        <div class="card flex-grow-1">
                             <div class="card-body">
                                 <div class="stats-icon blue">
                                     <i class="bi bi-wallet2" style="margin-right:10px; margin-bottom: 22px;"></i>
@@ -310,11 +399,9 @@
                                 <h6 class="font-extrabold mb-0">Rp {{ number_format($totalSukarela ?? 0, 0, ',', '.') }}</h6>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Card: Pinjaman -->
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="card">
+                        <!-- Card: Pinjaman -->
+                        <div class="card flex-grow-1">
                             <div class="card-body">
                                 <div class="stats-icon green">
                                     <i class="bi bi-cash" style="margin-right:10px; margin-bottom: 22px;"></i>
@@ -323,11 +410,9 @@
                                 <h6 class="font-extrabold mb-0">Rp {{ number_format($totalPinjaman, 0, ',', '.') }}</h6>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Card: Notifikasi -->
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="card">
+                        <!-- Card: Notifikasi -->
+                        <div class="card flex-grow-1">
                             <div class="card-body">
                                 <div class="stats-icon orange">
                                     <i class="bi bi-bell" style="margin-right:10px; margin-bottom: 22px;"></i>
@@ -338,36 +423,45 @@
                         </div>
                     </div>
                 </div>
+            </div>
 
+            <div class="page-content">
                 <!-- Diagram & Aksi Cepat -->
                 <div class="row">
                     <!-- Diagram -->
                     <div class="col-12 col-md-8">
-                        <div class="card">
+                        <div class="card shadow-sm border-0">
                             <div class="card-body">
-                                <h5>Statistik Simpanan dan Pinjaman</h5>
+                                <h5 class="fw-bold d-flex align-items-center">
+                                    <i class="bi bi-graph-up me-2 text-primary" style="margin-top: -15px;padding-right:20px;"></i> Statistik Simpanan dan Pinjaman
+                                </h5>
                                 <canvas id="financialChart"></canvas>
+                                <p class="text-muted mt-3" style="font-size: 13px;">
+                                    <i class="bi bi-calendar3"></i> Direset per bulan
+                                </p>
                             </div>
-                            <p style="font-size: 13px;">Direset per bulan</p>
                         </div>
                     </div>
+
                     <!-- Aksi Cepat -->
                     <div class="col-12 col-md-4">
-                        <div class="card">
+                        <div class="card shadow-sm border-0">
                             <div class="card-body text-center">
-                                <h5>Aksi Cepat</h5>
+                                <h5 class="fw-bold">
+                                    <i class="bi bi-lightning-charge text-warning"></i> Aksi Cepat
+                                </h5>
                                 <a href="{{route('simpanansukarela')}}">
-                                    <button class="btn btn-primary btn-block mb-2" id="btnStartSaving">
+                                    <button class="btn btn-primary w-100 mb-2" id="btnStartSaving">
                                         <i class="bi bi-plus-circle"></i> Mulai Simpanan
                                     </button>
                                 </a>
                                 <a href="{{route('pinjaman')}}">
-                                    <button class="btn btn-success btn-block mb-2" id="btnStartLoan">
+                                    <button class="btn btn-success w-100 mb-2" id="btnStartLoan">
                                         <i class="bi bi-arrow-up-circle"></i> Mulai Pinjaman
                                     </button>
                                 </a>
                                 <a href="{{route('bantuan')}}">
-                                    <button class="btn btn-info btn-block mb-2" id="btnContactSupport">
+                                    <button class="btn btn-info w-100 mb-2" id="btnContactSupport">
                                         <i class="bi bi-chat-dots"></i> Bantuan
                                     </button>
                                 </a>
@@ -376,101 +470,120 @@
                     </div>
                 </div>
 
-                <!-- Daftar Transaksi -->
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 style="margin-bottom: 40px;">Daftar Transaksi Terbaru</h5>
-                                <div style="height: 400px; overflow-y: auto;"> <!-- Wrapper untuk overflow -->
-                                    <table class="table" style="text-align: left;"> <!-- Tambahkan elemen table -->
-                                        <thead>
-                                            <tr>
-                                                <th>No</th>
-                                                <th>Deskripsi</th>
-                                                <th>Tanggal</th>
-                                                <th>Jumlah</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @forelse ($riwayatTransaksi as $index => $transaksi)
-                                            <tr>
-                                                <td>{{ $index + 1 }}</td>
-                                                <td>{{ $transaksi['deskripsi'] }}</td>
-                                                <td>{{ $transaksi['tanggal'] }}</td>
-                                                <td>Rp {{ $transaksi['jumlah'] }}</td>
-                                            </tr>
-                                            @empty
-                                            <tr>
-                                                <td colspan="4" class="text-center">Belum ada transaksi</td>
-                                            </tr>
-                                            @endforelse
-                                        </tbody>
-                                    </table> <!-- Tutup elemen table -->
-                                </div>
-                            </div>
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0 text-white"><i class="bi bi-list-check" style="margin-top: -30px;"></i> Daftar Transaksi Terbaru</h5>
+                    </div>
+                    <div class="card-body">
+                        <div style="max-height: 400px; overflow:auto; font-size:.9rem; text-align:left;">
+                            <table class="table table-hover">
+                                <thead class="table-primary">
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Deskripsi</th>
+                                        <th>Tanggal</th>
+                                        <th>Jumlah</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($riwayatTransaksi as $index => $transaksi)
+                                    <tr>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ $transaksi['deskripsi'] ?? '-' }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($transaksi['tanggal'])->format('Y-m-d') }}</td>
+                                        <td>
+                                            <span class="badge bg-{{ $transaksi['jumlah'] >= 0 ? 'success' : 'danger' }}">
+                                                <i class="bi {{ $transaksi['jumlah'] >= 0 ? 'bi-arrow-down-circle' : 'bi-arrow-up-circle' }}"></i>
+                                                Rp {{ number_format($transaksi['jumlah'], 0, ',', '.') }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @php
+                                            $statusColors = [
+                                            'Dalam Proses' => 'warning',
+                                            'Ditolak' => 'danger',
+                                            'Aktif' => 'primary',
+                                            'Lunas' => 'success',
+                                            'Berhasil' => 'success'
+                                            ];
+                                            $badgeColor = $statusColors[$transaksi['status']] ?? 'secondary';
+                                            @endphp
+                                            <span class="badge bg-{{ $badgeColor }}">{{ $transaksi['status'] }}</span>
+                                        </td>
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan="5" class="text-center">
+                                            <span class="badge bg-warning">
+                                                <i class="bi bi-exclamation-circle"></i> Belum ada transaksi
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
+                @endif
+
+                <footer>
+                    <div class="footer clearfix mb-0 text-muted">
+                        <div class="float-start">
+                            <p>2025 &copy; STARBIN</p>
+                        </div>
+                        <div class="float-end" style="margin-right: 30px;">
+                            <p>Dibuat dengan
+                                <span class="text-danger"><i class="bi bi-heart"></i></span>
+                                oleh
+                                <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
+                                &
+                                <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
+                            </p>
+                        </div>
+                    </div>
+                </footer>
             </div>
-            @endif
-
-            <footer>
-                <div class="footer clearfix mb-0 text-muted">
-                    <div class="float-start">
-                        <p>2025 &copy; STARBIN</p>
-                    </div>
-                    <div class="float-end" style="margin-right: 30px;">
-                        <p>Dibuat dengan
-                            <span class="text-danger"><i class="bi bi-heart"></i></span>
-                            oleh
-                            <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
-                            &
-                            <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
-                        </p>
-                    </div>
-                </div>
-            </footer>
         </div>
-    </div>
-    <script src="{{asset('dist/assets/js/bootstrap.js')}}"></script>
-    <script src="{{asset('dist/assets/js/app.js')}}"></script>
-    <script src="{{asset('dist/assets/js/dashboard.js')}}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var ctx = document.getElementById('financialChart').getContext('2d');
+        <script src="{{asset('dist/assets/js/bootstrap.js')}}"></script>
+        <script src="{{asset('dist/assets/js/app.js')}}"></script>
+        <script src="{{asset('dist/assets/js/dashboard.js')}}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var ctx = document.getElementById('financialChart').getContext('2d');
 
-            var financialChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Simpanan Sukarela', 'Pinjaman'],
-                    datasets: [{
-                        data: [
-                            <?php echo $totalSukarela; ?>, // Data simpanan sukarela dari controller
-                            <?php echo $totalPinjaman; ?> // Data pinjaman dari controller
-                        ],
-                        backgroundColor: ['#007bff', '#28a745'], // Warna untuk simpanan (biru) dan pinjaman (hijau)
-                        borderColor: ['#007bff', '#28a745'],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
+                var financialChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Simpanan Sukarela', 'Pinjaman'],
+                        datasets: [{
+                            data: [
+                                <?php echo $totalSukarela; ?>, // Data simpanan sukarela dari controller
+                                <?php echo $totalPinjaman; ?> // Data pinjaman dari controller
+                            ],
+                            backgroundColor: ['#007bff', '#28a745'], // Warna untuk simpanan (biru) dan pinjaman (hijau)
+                            borderColor: ['#007bff', '#28a745'],
+                            borderWidth: 1
+                        }]
                     },
-                    plugins: {
-                        legend: {
-                            display: false // Menghilangkan legenda
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false // Menghilangkan legenda
+                            }
                         }
                     }
-                }
+                });
             });
-        });
-    </script>
+        </script>
 
 
 </body>

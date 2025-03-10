@@ -28,11 +28,17 @@ class AuthController extends Controller
             'password.required' => 'Password wajib diisi',
         ]);
 
-        // Auth::attempt otomatis mencocokkan password yang di-hash
         if (Auth::attempt($request->only('email', 'password'))) {
-            if (Auth::user()->role === 'admin') {
+            $user = Auth::user();
+        
+            if ($user->status === 'Nonaktif') {
+                Auth::logout(); // Langsung logout jika status Nonaktif
+                return redirect()->route('login')->withErrors(['email' => 'Akun terkait telah dinonaktifkan']);
+            }
+        
+            if ($user->role === 'admin') {
                 return redirect()->route('min')->with('success', 'Halo Admin, Anda berhasil login');
-            } elseif (Auth::user()->role === 'user') {
+            } elseif ($user->role === 'user') {
                 return redirect()->route('user')->with('success', 'Berhasil login');
             }
         }

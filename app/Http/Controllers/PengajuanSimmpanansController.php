@@ -20,12 +20,12 @@ class PengajuanSimmpanansController extends Controller
                     });
             })
             ->get();
-    
+
         $totalPengajuan = $pengajuanSimpanans->count();
         $menunggu = $pengajuanSimpanans->where('status', 'Dalam Proses')->count();
         $disetujui = $pengajuanSimpanans->where('status', 'Berhasil')->count();
         $ditolak = $pengajuanSimpanans->where('status', 'Ditolak')->count();
-    
+
         return view('admin.pengajuan-simpanans', compact(
             'pengajuanSimpanans',
             'totalPengajuan',
@@ -33,7 +33,7 @@ class PengajuanSimmpanansController extends Controller
             'disetujui',
             'ditolak'
         ));
-    }    
+    }
 
     public function updateStatus(Request $request, $id)
     {
@@ -46,26 +46,17 @@ class PengajuanSimmpanansController extends Controller
 
             if ($simpanan->jenis === 'anggota') {
                 $user->status = 'Aktif';
-                $user->save();
-                
             } elseif ($simpanan->jenis === 'wajib') {
-                // Kalau simpanan wajib disetujui, cek apakah ada tunggakan
                 $hasArrears = $this->checkWajibArrears($user->id);
-
-                if ($hasArrears) {
-                    $user->status = 'Belum_Bayar_Simpanan_Wajib';
-                } else {
-                    $user->status = 'Aktif';
-                }
+                $user->status = $hasArrears ? 'Belum_Bayar_Simpanan_Wajib' : 'Aktif';
             } elseif ($simpanan->jenis === 'sukarela') {
-                // Simpanan sukarela nggak ngubah status user, cuma notifikasi aja
                 $message = 'Simpanan sukarela telah disetujui.';
             }
 
             $message = $message ?? 'Pengajuan berhasil disetujui.';
-        } elseif($request->action === 'reject') {
+        } elseif ($request->action === 'reject') {
             $simpanan->status = 'Ditolak';
-        
+
             if ($simpanan->jenis === 'anggota') {
                 $user->status = 'Ditolak';
                 $user->save(); // Tambahkan ini untuk menyimpan perubahan
@@ -77,7 +68,7 @@ class PengajuanSimmpanansController extends Controller
                 // Kalau sukarela ditolak, nggak perlu ubah status user
                 $message = 'Simpanan sukarela telah ditolak.';
             }
-        
+
             $message = $message ?? 'Pengajuan telah ditolak.';
         } else {
             return redirect()->back()->with('error', 'Aksi tidak valid!');
@@ -92,14 +83,14 @@ class PengajuanSimmpanansController extends Controller
     private function checkWajibArrears($userId)
     {
         $latestWajib = Simpanan::where('user_id', $userId)
-            ->where('jenis', 'simpanan_wajib')
+            ->where('jenis', 'wajib')
             ->orderBy('tanggal_transaksi', 'desc')
             ->first();
 
         if (!$latestWajib) return true;
 
         $lastPaymentDate = \Carbon\Carbon::parse($latestWajib->tanggal_transaksi);
-        $monthsSinceLastPayment = $lastPaymentDate->diffInMonths(now());
+        $monthsSinceLastPayment = now()->diffInMonths($lastPaymentDate);
 
         return $monthsSinceLastPayment >= 2;
     }
