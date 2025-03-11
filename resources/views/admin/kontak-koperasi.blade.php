@@ -4,16 +4,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Koperasi STARBIN</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Kontak Koperasi </title>
 
-    <link rel="stylesheet" href="{{ asset('admin-page/assets/css/main/app.css') }}">
-    <link rel="stylesheet" href="{{ asset('admin-page/assets/css/main/app-dark.css') }}">
-    <link rel="shortcut icon" href="{{ asset('admin-page/assets/images/logo/Logo Koperasi STARBIN REAL (1).png') }}" type="image/x-icon">
-    <link rel="shortcut icon" href="{{ asset('admin-page/assets/images/logo/Logo Koperasi STARBIN REAL (1).png') }}" type="image/png">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('admin-page/assets/css/denda.css') }}">
+    <link rel="stylesheet" href="{{asset('admin-page/assets/css/main/app.css')}}">
+    <link rel="stylesheet" href="{{asset('admin-page/assets/css/main/app-dark.css')}}">
+    <link rel="shortcut icon" href="{{asset('admin-page/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{asset('admin-page/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/png">
+    <link rel="stylesheet" href="{{asset('admin-page/assets/css/profil-admin.css')}}">
 
 </head>
+
+<style>
+    .card {
+        background-color: #FFFFFF;
+        border-radius: 10px;
+    }
+
+    h3 {
+        font-weight: bold;
+    }
+
+    .table {
+        background-color: rgba(48, 47, 47, 0);
+    }
+
+    .table th {
+        background-color: rgb(255, 255, 255);
+    }
+
+    .table tbody tr:hover {
+        background-color: transparent;
+    }
+
+    .btn-primary {
+        background-color: #5865F2;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background-color: #4752C4;
+    }
+
+    .btn-warning {
+        background-color: #F1C40F;
+        border: none;
+    }
+
+    .btn-danger {
+        background-color: #E74C3C;
+        border: none;
+    }
+
+    /* Tambah jarak antara Edit Kontak dan Hapus Kontak */
+    .edit-kontak {
+        margin-bottom: 20px;
+        /* Atur sesuai kebutuhan */
+    }
+
+    /* Tambah padding di dalam form */
+    .form-group {
+        padding: 10px 0;
+    }
+</style>
 
 <body>
     <div id="app">
@@ -22,7 +75,7 @@
                 <div class="sidebar-header position-relative">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="logo" style="width: 50px; height: 50px; margin-left: 15%;">
-                            <img src="{{ asset('admin-page/assets/images/logo/Logo Koperasi STARBIN REAL (1).png') }}" alt="Logo" srcset="" style="width: 100%; height: 100%; object-fit: cover;">
+                            <img src="{{asset('admin-page/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" alt="Logo" srcset="" style="width: 100%; height: 100%; object-fit: cover;">
                             <h6 style="margin-top: 5px; margin-left: -15%;">Koperasi</h6>
                             <h5 style="margin-left: -35%; margin-top: -20%; ">STARBIN</h5>
                         </div>
@@ -110,7 +163,7 @@
                         </li>
 
                         <li
-                            class="sidebar-item active">
+                            class="sidebar-item">
                             <a href="{{route('denda')}}" class='sidebar-link'>
                                 <i class="bi bi-exclamation-circle"></i>
                                 <span>Denda</span>
@@ -184,7 +237,7 @@
                             </a>
                         </li>
 
-                        <li class="sidebar-item ">
+                        <li class="sidebar-item active">
                             <a href="{{route('kontakkoperasi')}}" class="sidebar-link">
                                 <i class="bi-envelope-paper"></i>
                                 <span>Kontak Koperasi</span>
@@ -210,81 +263,78 @@
                     <i class="bi bi-justify fs-3"></i>
                 </a>
             </header>
-            <div class="container mt-4" style="font-size: .9rem;">
-                <h4>Laporan Denda Pinjaman</h4>
-                <p>Halaman ini menampilkan daftar anggota yang memiliki denda akibat keterlambatan pembayaran pinjaman.</p>
+            @if (Session::has('error'))
+            <div class="alert alert-danger" style="background-color: salmon; color:aliceblue; border-radius:20px; margin-bottom:20px;">
+                {{ Session::get('error') }}
+            </div>
+            @endif
 
-                <div class="container mt-4">
-                    <h4>Ringkasan Denda</h4>
-                    <div class="row text-center">
-                        <!-- Total Denda Keseluruhan -->
-                        <div class="col-md-4">
-                            <div class="card mb-4">
-                                <div class="card-body">
-                                    <h6>Total Denda Keseluruhan</h6>
-                                    <p><strong>Rp {{ number_format($totalDenda, 0, ',', '.') }}</strong></p>
-                                </div>
-                            </div>
-                        </div>
+            <div class="container">
+                <h3 class="my-4">Kontak Koperasi</h3>
 
-                        <div class="col-md-4">
-                            <div class="card mb-4">
-                                <div class="card-body">
-                                    <h6>Total Pinjaman Bermasalah</h6>
-                                    <p><strong>{{ $jumlahPinjamanBermasalah }} Pinjaman</strong></p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Total Anggota Kena Denda -->
-                        <div class="col-md-4">
-                            <div class="card mb-4">
-                                <div class="card-body">
-                                    <h6>Total Anggota Kena Denda</h6>
-                                    <p><strong>{{ $jumlahAnggotaDenda }} Anggota</strong></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <!-- Jika berhasil -->
+                @if (Session::has('success'))
+                <div class="alert alert-success" style="background-color: lightgreen; color:aliceblue; border-radius:20px;">
+                    {{ Session::get('success') }}
                 </div>
+                @endif
 
-
-                <!-- Filter Pencarian -->
-                <div class="filter-denda mb-4">
-                    <input type="text" id="search-denda" class="form-control" placeholder="Cari berdasarkan Nama, atay ID Pinjaman">
-                </div>
-
-                <!-- Detail Laporan Denda -->
-                <div class="card">
-                    <div class="card-body">
-                        <h5>Detail Laporan Denda</h5>
-                        <div style="max-height: 450px; overflow:auto;">
-                            <table class="table table-striped">
+                <div class="container">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Kelola Kontak Koperasi</h4>
+                        </div>
+                        <div class="card-body">
+                            <form action="{{ route('kontakkoperasi.store') }}" method="POST">
+                                @csrf
+                                <h5>Tambah / Edit Kontak</h5>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label>Kategori</label>
+                                        <select name="key" class="form-control" required>
+                                            <option value="alamat" {{ isset($kontakData) && $kontakData->key == 'alamat' ? 'selected' : '' }}>📍 Alamat</option>
+                                            <option value="telepon" {{ isset($kontakData) && $kontakData->key == 'telepon' ? 'selected' : '' }}>📞 Telepon</option>
+                                            <option value="email" {{ isset($kontakData) && $kontakData->key == 'email' ? 'selected' : '' }}>✉️ Email</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label>Judul</label>
+                                        <input type="text" name="title" class="form-control" value="{{ $kontakData->title ?? '' }}" required>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label>URL</label>
+                                        <input type="text" name="value" class="form-control" value="{{ $kontakData->value ?? '' }}" required>
+                                    </div>
+                                    <div class="col-md-3 d-flex align-items-end">
+                                        <button type="submit" class="btn btn-success">Simpan</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <h5 class="mt-4">Daftar Kontak</h5>
+                            <table class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th>No</th>
-                                        <th>Nama Anggota</th>
-                                        <th>ID Pinjaman</th>
-                                        <th>Tanggal Jatuh Tempo</th>
-                                        <th>Jumlah Pinjaman</th>
-                                        <th>Denda</th>
-                                        <th>Total Bayar</th>
-                                        <th>Sisa Angsuran</th>
-                                        <th>Status</th>
+                                        <th>Kategori</th>
+                                        <th>Judul</th>
+                                        <th>URL</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
-                                <tbody id="denda-table-body">
-                                    @foreach($laporanDenda as $index => $data)
+                                <tbody>
+                                    @foreach ($kontak as $item)
                                     <tr>
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>{{ $data->nama }}</td>
-                                        <td>{{ $data->id_pinjaman }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($data->tanggal_jatuh_tempo)->format('d M Y') }}</td>
-                                        <td>Rp {{ number_format($data->jumlah_pinjaman, 0, ',', '.') }}</td>
-                                        <td>Rp {{ number_format($data->denda, 0, ',', '.') }}</td>
-                                        <td>Rp {{ number_format($data->total_bayar, 0, ',', '.') }}</td>
-                                        <td>Rp {{ number_format($data->sisa_angsuran, 0, ',', '.') }}</td>
-                                        <td>{{ ucfirst($data->status) }}</td>
+                                        <td>{{ ucfirst($item->key) }}</td>
+                                        <td>{{ $item->title }}</td>
+                                        <td>{{ $item->value }}</td>
+                                        <td>
+                                            <a href="{{ route('kontakkoperasi.edit', $item->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                            <form action="{{ route('kontakkoperasi.destroy') }}" method="POST" class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <input type="hidden" name="id" value="{{ $item->id }}">
+                                                <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                                            </form>
+                                        </td>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -292,52 +342,28 @@
                         </div>
                     </div>
                 </div>
+
+                <footer>
+                    <div class="footer clearfix mb-0 text-muted">
+                        <div class="float-start">
+                            <p>2025 &copy; STARBIN</p>
+                        </div>
+                        <div class="float-end" style="margin-right: 30px;">
+                            <p>Dibuat dengan
+                                <span class="text-danger"><i class="bi bi-heart"></i></span>
+                                oleh
+                                <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
+                                &
+                                <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
+                            </p>
+                        </div>
+                    </div>
+                </footer>
             </div>
-
-           <footer>
-                <div class="footer clearfix mb-0 text-muted">
-                    <div class="float-start">
-                        <p>2025 &copy; STARBIN</p>
-                    </div>
-                    <div class="float-end" style="margin-right: 30px;">
-                        <p>Dibuat dengan
-                            <span class="text-danger"><i class="bi bi-heart"></i></span>
-                            oleh
-                            <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
-                            &
-                            <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
-                        </p>
-                    </div>
-                </div>
-            </footer>
         </div>
-    </div>
-    <script src="{{ asset('admin-page/assets/js/bootstrap.js') }}"></script>
-    <script src="{{ asset('admin-page/assets/js/app.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const searchInput = document.getElementById("search-denda");
-            const tableRows = document.querySelectorAll("#denda-table-body tr");
-
-            searchInput.addEventListener("keyup", function() {
-                let filter = searchInput.value.toLowerCase();
-
-                tableRows.forEach(row => {
-                    let nama = row.cells[1].textContent.toLowerCase();
-                    let idPinjaman = row.cells[2].textContent.toLowerCase();
-                    let status = row.cells[7].textContent.toLowerCase();
-
-                    if (nama.includes(filter) || idPinjaman.includes(filter) || status.includes(filter)) {
-                        row.style.display = "";
-                    } else {
-                        row.style.display = "none";
-                    }
-                });
-            });
-        });
-    </script>
+        <script src="{{asset('admin-page/assets/js/bootstrap.')}}js"></script>
+        <script src="{{asset('admin-page/assets/js/app.')}}js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>

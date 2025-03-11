@@ -56,7 +56,7 @@
                             class="sidebar-item ">
                             <a href="{{route('min')}}" class='sidebar-link'>
                                 <i class="bi bi-house-door-fill"></i>
-                                <span>Dashboard</span>
+                                <span>Beranda</span>
                             </a>
                         </li>
                         <li
@@ -93,7 +93,7 @@
                         </li>
 
                         <li
-                            class="sidebar-item  ">
+                            class="sidebar-item ">
                             <a href="{{route('pinjamanadmin')}}" class='sidebar-link'>
                                 <i class="bi bi-cash-stack"></i>
                                 <span>Pinjaman</span>
@@ -129,7 +129,7 @@
                             </a>
                         </li>
 
-                        <li class="sidebar-item">
+                        <li class="sidebar-item ">
                             <a href="{{ route('simpanans') }}" class="sidebar-link">
                                 <i class="bi bi-wallet-fill"></i>
                                 <span>Data Pengajuan Simpanan</span>
@@ -154,7 +154,7 @@
                                 <span>Kelola Pesan</span>
                             </a>
                         </li>
-                        <li class="nav-item sidebar-item position-relative">
+                        <li class="nav-item sidebar-item position-relative ">
                             <a href="{{ route('notifikasiadmin') }}" class="nav-link sidebar-link">
                                 <i class="bi bi-bell-fill"></i>
                                 <span>Notifikasi</span>
@@ -169,17 +169,24 @@
 
 
                         <li
-                            class="sidebar-item  ">
+                            class="sidebar-item">
                             <a href="{{route('laporan')}}" class='sidebar-link'>
                                 <i class="bi bi-file-earmark-bar-graph-fill"></i>
                                 <span>Laporan</span>
                             </a>
                         </li>
 
-                        <li class="sidebar-item">
+                        <li class="sidebar-item ">
                             <a href="{{route('sosmed')}}" class="sidebar-link">
                                 <i class="bi bi-link-45deg"></i>
                                 <span>Kelola Sosial Media</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item ">
+                            <a href="{{route('kontakkoperasi')}}" class="sidebar-link">
+                                <i class="bi-envelope-paper"></i>
+                                <span>Kontak Koperasi</span>
                             </a>
                         </li>
 
@@ -188,7 +195,7 @@
                                 @csrf
                                 <button type="submit" class="btn btn-link sidebar-link" style="padding: 0; color: inherit; text-decoration: none;">
                                     <i class="bi bi-x-octagon-fill"></i>
-                                    <span>Log Out</span>
+                                    <span>Keluar</span>
                                 </button>
                             </form>
                         </li>

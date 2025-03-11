@@ -394,41 +394,28 @@
         <!-- Informasi Kontak dalam Card -->
         <div class="container" data-aos="fade-up" data-aos-delay="100">
           <div class="container" data-aos="fade-up" data-aos-delay="100" style="margin-bottom: 30px;">
-
-            <div class="row gy-4">
-
-              <!-- Alamat -->
-              <div class="col-lg-4">
-                <div class="card text-center shadow p-3">
-                  <div class="card-body">
-                    <i class="bi bi-geo-alt fs-2 text-primary"></i>
-                    <h5 class="card-title mt-2">Alamat</h5>
-                    <p class="card-text">Kec. Binong, Kab. Subang, Prov. Jawa Barat</p>
+            <div class="row">
+              @foreach ($kontak as $kontak)
+              <div class="col-md-4">
+                <div class="card">
+                  <div class="card-body text-center">
+                    <i class="{{ $kontak->icon }}" style="font-size: 40px;"></i>
+                    <h5 class="card-title">{{ ucfirst($kontak->key) }}</h5>
+                    <p class="card-text">
+                      @if ($kontak->key == 'alamat')
+                      <a href="{{ $kontak->value }}" target="_blank">{{ $kontak->title }}</a>
+                      @elseif ($kontak->key == 'email')
+                      <a href="mailto:{{ $kontak->value }}">{{ $kontak->value }}</a>
+                      @elseif ($kontak->key == 'telepon') {{-- Cek apakah key == "telepon" --}}
+                      <a href="tel:{{ $kontak->value }}">{{ $kontak->value }}</a>
+                      @else
+                      {{ $kontak->key }}
+                      @endif
+                    </p>
                   </div>
                 </div>
               </div>
-
-              <!-- Kontak -->
-              <div class="col-lg-4">
-                <div class="card text-center shadow p-3">
-                  <div class="card-body">
-                    <i class="bi bi-telephone fs-2 text-success"></i>
-                    <h5 class="card-title mt-2">Nomor Telepon</h5>
-                    <span>Hubungi Kami:</span><a href="tel:+6282295206040" class="link-custom"> +62 822-9520-6040</a>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Email -->
-              <div class="col-lg-4">
-                <div class="card text-center shadow p-3">
-                  <div class="card-body">
-                    <i class="bi bi-envelope fs-2 text-danger"></i>
-                    <h5 class="card-title mt-2">Email</h5>
-                    <a href="mailto:fahriabdurohman@gmail.com" class="link-custom">fahriabdurohman@gmail.com</a>
-                  </div>
-                </div>
-              </div>
+              @endforeach
 
             </div>
           </div>

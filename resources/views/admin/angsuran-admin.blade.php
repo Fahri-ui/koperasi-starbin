@@ -57,11 +57,11 @@
                             class="sidebar-item ">
                             <a href="{{route('min')}}" class='sidebar-link'>
                                 <i class="bi bi-house-door-fill"></i>
-                                <span>Dashboard</span>
+                                <span>Beranda</span>
                             </a>
                         </li>
                         <li
-                            class="sidebar-item">
+                            class="sidebar-item ">
                             <a href="{{route('profiladmin')}}" class='sidebar-link'>
                                 <i class="bi bi-person-badge-fill"></i>
                                 <span>Profil</span>
@@ -110,7 +110,7 @@
                         </li>
 
                         <li
-                            class="sidebar-item  ">
+                            class="sidebar-item">
                             <a href="{{route('denda')}}" class='sidebar-link'>
                                 <i class="bi bi-exclamation-circle"></i>
                                 <span>Denda</span>
@@ -129,7 +129,7 @@
                                 @endif
                             </a>
                         </li>
-                       
+
                         <li class="sidebar-item">
                             <a href="{{ route('simpanans') }}" class="sidebar-link">
                                 <i class="bi bi-wallet-fill"></i>
@@ -168,6 +168,7 @@
                             </a>
                         </li>
 
+
                         <li
                             class="sidebar-item  ">
                             <a href="{{route('laporan')}}" class='sidebar-link'>
@@ -176,10 +177,17 @@
                             </a>
                         </li>
 
-                        <li class="sidebar-item">
+                        <li class="sidebar-item ">
                             <a href="{{route('sosmed')}}" class="sidebar-link">
                                 <i class="bi bi-link-45deg"></i>
                                 <span>Kelola Sosial Media</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item ">
+                            <a href="{{route('kontakkoperasi')}}" class="sidebar-link">
+                                <i class="bi-envelope-paper"></i>
+                                <span>Kontak Koperasi</span>
                             </a>
                         </li>
 
@@ -188,7 +196,7 @@
                                 @csrf
                                 <button type="submit" class="btn btn-link sidebar-link" style="padding: 0; color: inherit; text-decoration: none;">
                                     <i class="bi bi-x-octagon-fill"></i>
-                                    <span>Log Out</span>
+                                    <span>Keluar</span>
                                 </button>
                             </form>
                         </li>
