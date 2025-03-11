@@ -14,44 +14,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
 </head>
-
-<style>
-    .card {
-        width: 98%;
-        max-width: 1000px;
-        border-radius: 10px;
-        padding: 15px;
-        display: flex;
-        align-items: left;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .icon-container i {
-        font-size: 24px;
-        padding: 10px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .text-success {
-        color: #28a745 !important;
-    }
-
-    .text-warning {
-        color: #ff9800 !important;
-    }
-
-    .text-danger {
-        color: #dc3545 !important;
-    }
-
-    .text-primary {
-        color: #007bff !important;
-    }
-</style>
-
 <body>
     <div id="app">
         <div id="sidebar" class="active">
@@ -309,7 +271,7 @@
 
             @elseif (auth()->user()->status === 'Belum_Bayar_Simpanan_Wajib')
             <!-- Section Peringatan Keterlambatan -->
-            <div class="card shadow-lg border-0 mb-4" style="text-align: center;">
+            <div class="card shadow-lg border-0 mb-4" style="text-align: center; border: 1px solid #d9d9d9;">
                 <div class="card-body bg-warning text-dark" style="border-radius: 10px;">
                     <div class="d-flex align-items-start">
                         <i class="bi bi-info-circle-fill text-primary fs-1 me-3" style="margin-top:-20px;"></i>

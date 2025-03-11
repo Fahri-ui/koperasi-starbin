@@ -12,17 +12,6 @@
     <link rel="shortcut icon" href="{{asset('dist/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/png">
 
 </head>
-<style>
-    /* Style untuk Card */
-    .card {
-        border: 1px solid #d9d9d9;
-        border-radius: 8px;
-        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
-        background-color: #ffffff;
-        padding: 20px;
-    }
-</style>
 
 <body>
     <div id="app">
@@ -301,7 +290,7 @@
 
             @elseif (auth()->user()->status === 'Belum_Bayar_Simpanan_Wajib')
             <!-- Section Peringatan Keterlambatan -->
-            <div class="card shadow-lg border-0 mb-4" style="text-align: center;">
+            <div class="card shadow-lg border-0 mb-4" style="text-align: center;    border: 1px solid #d9d9d9;border-radius: 8px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);margin-bottom: 20px;background-color: #ffffff;padding: 20px;">
                 <div class="card-body bg-warning text-dark" style="border-radius: 10px;">
                     <div class="d-flex align-items-start">
                         <i class="bi bi-info-circle-fill text-primary fs-1 me-3" style="margin-top:-20px;"></i>
@@ -370,55 +359,111 @@
 
             <br><br><br>
 
-            <h2 style="margin-bottom: 50px;">Simpanan Sukarela</h2>
+            <div class="container">
+                <h2 class="pb-3 border-bottom">
+                    <i class="bi bi-gem "></i> Simpanan Sukarela
+                </h2>
+            </div>
+
             <!-- Definisi Simpanan Sukarela -->
             <section class="mb-4">
-                <div class="card">
+                <div class="card shadow">
                     <div class="card-body">
-                        <h5>Definisi</h5>
-                        <p>Simpanan Sukarela adalah simpanan fleksibel yang dapat disetor atau ditarik kapan saja oleh anggota koperasi. Nominal simpanan tidak dibatasi dan dapat digunakan sebagai tabungan atau investasi.</p>
+                        <span class="fw-bold d-flex align-items-center">
+                            <i class="bi bi-bookmark-heart-fill text-primary" style="margin-top: -20px;"></i>
+                            <h5 style="margin-left: 10px;">Definisi Simpanan Sukarela</h5>
+                        </span>
+                        <hr style="border-top: 2px solid #25396f; border-radius: 5px;">
+                        <p style="color: #495057;">
+                            <i class="bi bi-info-circle-fill text-primary"></i> Simpanan Sukarela adalah simpanan fleksibel yang dapat disetor atau ditarik kapan saja oleh anggota koperasi. Nominal simpanan tidak dibatasi dan dapat digunakan sebagai tabungan atau investasi.
+                        </p>
                     </div>
                 </div>
             </section>
 
             <!-- Saldo Simpanan Sukarela -->
             <section class="mb-4">
-                <div class="card">
+                <div class="card shadow-sm border-0">
                     <div class="card-body text-center">
-                        <h5>Saldo Simpanan Sukarela</h5>
-                        <h2 class="font-extrabold mt-3">Rp {{ number_format($totalSukarela, 0, ',', '.') }}</h2>
-                        <p class="text-muted">Saldo total Anda saat ini</p>
+                        <h5 class="pb-2 mb-3 border-bottom">
+                            <i class="bi bi-wallet2 text-success"></i> Saldo Simpanan Sukarela
+                        </h5>
+                        <h2 class="font-extrabold mt-3 text-primary">
+                            <i class="bi bi-cash-stack"></i> Rp {{ number_format($totalSukarela, 0, ',', '.') }}
+                        </h2>
+                        <p class="text-muted">
+                            <i class="bi bi-info-circle"></i> Saldo total Anda saat ini
+                        </p>
                     </div>
                 </div>
             </section>
 
             <section class="mb-4">
-                <div class="card">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0 text-white">
+                            <i class="bi bi-piggy-bank-fill"></i> Daftar Simpanan Sukarela
+                        </h5>
+                    </div>
                     <div class="card-body">
-                        <h5>Daftar Simpanan Sukarela</h5>
-                        <div style="height: 400px; overflow-y: auto;"> <!-- Wrapper untuk overflow -->
-                            <table class="table table-striped">
-                                <thead>
+                        <div style="max-height: 400px; overflow: auto; font-size: .9rem; text-align: left;">
+                            <table class="table table-hover">
+                                <thead class="table-primary">
                                     <tr>
+                                        <th>No</th>
                                         <th>Kode Transaksi</th>
                                         <th>Tanggal</th>
+                                        <th>Metode</th>
                                         <th>Jenis Transaksi</th>
+                                        <th>Bukti</th>
                                         <th>Jumlah</th>
                                         <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($sukarela as $data)
+                                    @forelse ($sukarela as $index => $data)
                                     <tr>
+                                        <td>{{ $index + 1 }}</td>
                                         <td>{{ $data->kode_transaksi }}</td>
                                         <td>{{ \Carbon\Carbon::parse($data->tanggal_transaksi)->translatedFormat('d F Y') }}</td>
-                                        <td>{{ ucfirst($data->jenis_transaksi) }}</td>
-                                        <td>{{ number_format($data->jumlah, 0, ',', '.') }}</td>
-                                        <td>{{ ucfirst($data->status) }}</td>
+                                        <td>{{$data->metode_pembayaran}}</td>
+                                        <td>
+                                            <span class="badge bg-info">
+                                                <i class="bi {{ $data->jenis_transaksi === 'penyetoran' ? 'bi-arrow-down-circle' : 'bi-arrow-up-circle' }}"></i>
+                                                {{ ucfirst($data->jenis_transaksi) }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @if(!empty($data->bukti))
+                                            <a href="{{ route('bukti.pembayaran', ['bukti' => basename($data->bukti)]) }}" target="_blank" class="btn btn-sm btn-outline-success">Lihat Bukti</a>
+                                            @else
+                                            <span class="badge bg-secondary">Tidak Ada</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-{{ $data->jumlah >= 0 ? 'success' : 'danger' }}">
+                                                Rp {{ number_format($data->jumlah, 0, ',', '.') }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @php
+                                            $statusColors = [
+                                            'Berhasil' => 'success',
+                                            'Dalam Proses' => 'warning',
+                                            'Gagal' => 'danger'
+                                            ];
+                                            $badgeColor = $statusColors[$data->status] ?? 'secondary';
+                                            @endphp
+                                            <span class="badge bg-{{ $badgeColor }}">{{ ucfirst($data->status) }}</span>
+                                        </td>
                                     </tr>
                                     @empty
                                     <tr>
-                                        <td colspan="5">Belum ada data transaksi.</td>
+                                        <td colspan="5" class="text-center">
+                                            <span class="badge bg-warning">
+                                                <i class="bi bi-exclamation-circle"></i> Belum ada data transaksi
+                                            </span>
+                                        </td>
                                     </tr>
                                     @endforelse
                                 </tbody>
@@ -430,53 +475,62 @@
 
             <!-- Formulir Penyetoran dan Penarikan -->
             <section class="mb-4">
-                <div class="card">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header bg-gradient bg-primary text-white">
+                        <h5 class="mb-0 text-white">
+                            <i class="bi bi-wallet2"></i> Simpanan Sukarela
+                        </h5>
+                    </div>
                     <div class="card-body">
                         @if ($statusSukarela && $statusSukarela->status === 'Dalam Proses')
                         <!-- Jika ada transaksi dalam proses -->
                         <div class="alert alert-warning d-flex align-items-center" role="alert">
-                            <i class="bi bi-hourglass-split me-2" style="font-size: 2rem; margin-top: -40px;"></i>
+                            <i class="bi bi-hourglass-split me-3" style="font-size: 2rem;"></i>
                             <div>
-                                <h5 class="alert-heading" style="margin-left: 20px;">Transaksi Sedang Diproses</h5>
-                                <p style="margin-left: 20px;">Anda memiliki transaksi penyetoran/penarikan yang masih dalam proses. Silakan tunggu hingga transaksi selesai sebelum mengajukan yang baru.</p>
+                                <h5 class="alert-heading">Transaksi Sedang Diproses</h5>
+                                <p>Anda memiliki transaksi yang masih dalam proses. Silakan tunggu hingga transaksi selesai sebelum mengajukan yang baru.</p>
                             </div>
                         </div>
                         @else
                         <!-- Jika tidak ada transaksi dalam proses, tampilkan form -->
-                        <h5>Formulir Penyetoran / Penarikan</h5>
+                        <h5 class="pb-2 border-bottom" style="margin-top: 10px;"><i class="bi bi-file-earmark-text"></i> Formulir Penyetoran / Penarikan</h5>
                         <form action="{{ route('simpanan.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="jenis" value="sukarela">
 
-                            <div class="form-group">
-                                <label for="jenis_transaksi">Jenis Transaksi</label>
-                                <select name="jenis_transaksi" id="jenis_transaksi" class="form-control" required>
+                            <div class="mb-3">
+                                <label for="jenis_transaksi" class="form-label"><i class="bi bi-shuffle"></i> Jenis Transaksi</label>
+                                <select name="jenis_transaksi" id="jenis_transaksi" class="form-select" required>
                                     <option value="penyetoran">Penyetoran</option>
                                     <option value="penarikan">Penarikan</option>
                                 </select>
                             </div>
 
-                            <div class="form-group">
-                                <label for="jumlah">Jumlah</label>
-                                <input type="number" name="jumlah" id="jumlah" class="form-control" min="5000" step="5000" max="1000000000" required>
+                            <div class="mb-3">
+                                <label for="jumlah" class="form-label"><i class="bi bi-cash"></i> Jumlah (Rp)</label>
+                                <input type="number" name="jumlah" id="jumlah" class="form-control" min="5000" step="5000" max="1000000000" required placeholder="Masukkan nominal transaksi">
+                                <small class="text-muted"><i class="bi bi-info-circle"></i> Minimal Rp 5.000 dan kelipatan Rp 5.000.</small>
                             </div>
 
-                            <div class="form-group">
-                                <label for="metode_pembayaran">Metode Pembayaran</label>
-                                <select name="metode_pembayaran" id="metode_pembayaran" class="form-control" required>
-                                    <option value="cash">Cash</option>
+                            <div class="mb-3">
+                                <label for="metode_pembayaran" class="form-label"><i class="bi bi-credit-card"></i> Metode Pembayaran</label>
+                                <select name="metode_pembayaran" id="metode_pembayaran" class="form-select" required onchange="toggleBukti()">
+                                    <option value="cash">Tunai (Bayar Langsung)</option>
                                     <option value="transfer-bank">Transfer Bank</option>
-                                    <option value="ewallet">E-Wallet</option>
+                                    <option value="ewallet">E-Wallet (Dana, OVO, Gopay)</option>
                                 </select>
                             </div>
 
-                            <!-- Input Bukti Pembayaran (Hanya muncul untuk transfer atau e-wallet) -->
-                            <div class="form-group" id="bukti_pembayaran_group" style="display: none;">
-                                <label for="bukti">Upload Bukti Pembayaran</label>
-                                <input type="file" name="bukti" id="bukti" class="form-control" accept="image/*">
+                            <!-- Input Bukti Pembayaran (Dinamis) -->
+                            <div class="mb-3">
+                                <label for="bukti" class="form-label"><i class="bi bi-upload"></i> Upload Bukti Pembayaran</label>
+                                <input type="file" name="bukti" id="bukti" class="form-control" accept="image/jpeg, image/png, image/jpg">
+                                <small class="text-muted"><i class="bi bi-image"></i> Format yang didukung: JPG, JPEG, PNG.</small>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">Konfirmasi Transaksi</button>
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="bi bi-check-circle-fill"></i> Konfirmasi Transaksi
+                            </button>
                         </form>
                         @endif
                     </div>
@@ -489,55 +543,111 @@
 
             @else
 
-            <h2 style="margin-bottom: 50px;">Simpanan Sukarela</h2>
+            <div class="container">
+                <h2 class="pb-3 border-bottom">
+                    <i class="bi bi-gem "></i> Simpanan Sukarela
+                </h2>
+            </div>
+
             <!-- Definisi Simpanan Sukarela -->
             <section class="mb-4">
-                <div class="card">
+                <div class="card shadow"  style="border: 1px solid #435ebe;">
                     <div class="card-body">
-                        <h5>Definisi</h5>
-                        <p>Simpanan Sukarela adalah simpanan fleksibel yang dapat disetor atau ditarik kapan saja oleh anggota koperasi. Nominal simpanan tidak dibatasi dan dapat digunakan sebagai tabungan atau investasi.</p>
+                        <span class="fw-bold d-flex align-items-center">
+                            <i class="bi bi-bookmark-heart-fill text-primary" style="margin-top: -20px;"></i>
+                            <h5 style="margin-left: 10px;">Definisi Simpanan Sukarela</h5>
+                        </span>
+                        <hr style="border-top: 2px solid #25396f; border-radius: 5px;">
+                        <p style="color: #495057;">
+                            <i class="bi bi-info-circle-fill text-primary"></i> Simpanan Sukarela adalah simpanan fleksibel yang dapat disetor atau ditarik kapan saja oleh anggota koperasi. Nominal simpanan tidak dibatasi dan dapat digunakan sebagai tabungan atau investasi.
+                        </p>
                     </div>
                 </div>
             </section>
 
             <!-- Saldo Simpanan Sukarela -->
             <section class="mb-4">
-                <div class="card">
+                <div class="card shadow"  style="border: 1px solid #435ebe;">
                     <div class="card-body text-center">
-                        <h5>Saldo Simpanan Sukarela</h5>
-                        <h2 class="font-extrabold mt-3">Rp {{ number_format($totalSukarela, 0, ',', '.') }}</h2>
-                        <p class="text-muted">Saldo total Anda saat ini</p>
+                        <h5 class="pb-2 mb-3 border-bottom">
+                            <i class="bi bi-wallet2 text-success"></i> Saldo Simpanan Sukarela
+                        </h5>
+                        <h2 class="font-extrabold mt-3 text-primary">
+                            <i class="bi bi-cash-stack"></i> Rp {{ number_format($totalSukarela, 0, ',', '.') }}
+                        </h2>
+                        <p class="text-muted">
+                            <i class="bi bi-info-circle"></i> Saldo total Anda saat ini
+                        </p>
                     </div>
                 </div>
             </section>
 
             <section class="mb-4">
-                <div class="card">
+                <div class="card shadow" style="border: 1px solid #435ebe;">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0 text-white">
+                            <i class="bi bi-piggy-bank-fill"></i> Daftar Simpanan Sukarela
+                        </h5>
+                    </div>
                     <div class="card-body">
-                        <h5>Daftar Simpanan Sukarela</h5>
-                        <div style="height: 400px; overflow-y: auto;"> <!-- Wrapper untuk overflow -->
-                            <table class="table table-striped">
-                                <thead>
+                        <div style="max-height: 400px; overflow: auto; font-size: .9rem; text-align: left;">
+                            <table class="table table-hover">
+                                <thead class="table-primary">
                                     <tr>
+                                        <th>No</th>
                                         <th>Kode Transaksi</th>
                                         <th>Tanggal</th>
+                                        <th>Metode</th>
                                         <th>Jenis Transaksi</th>
+                                        <th>Bukti</th>
                                         <th>Jumlah</th>
                                         <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($sukarela as $data)
+                                    @forelse ($sukarela as $index => $data)
                                     <tr>
+                                        <td>{{ $index + 1 }}</td>
                                         <td>{{ $data->kode_transaksi }}</td>
                                         <td>{{ \Carbon\Carbon::parse($data->tanggal_transaksi)->translatedFormat('d F Y') }}</td>
-                                        <td>{{ ucfirst($data->jenis_transaksi) }}</td>
-                                        <td>{{ number_format($data->jumlah, 0, ',', '.') }}</td>
-                                        <td>{{ ucfirst($data->status) }}</td>
+                                        <td>{{$data->metode_pembayaran}}</td>
+                                        <td>
+                                            <span class="badge bg-info">
+                                                <i class="bi {{ $data->jenis_transaksi === 'penyetoran' ? 'bi-arrow-down-circle' : 'bi-arrow-up-circle' }}"></i>
+                                                {{ ucfirst($data->jenis_transaksi) }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @if(!empty($data->bukti))
+                                            <a href="{{ route('bukti.pembayaran', ['bukti' => basename($data->bukti)]) }}" target="_blank" class="btn btn-sm btn-outline-success">Lihat Bukti</a>
+                                            @else
+                                            <span class="badge bg-secondary">Tidak Ada</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-{{ $data->jumlah >= 0 ? 'success' : 'danger' }}">
+                                                Rp {{ number_format($data->jumlah, 0, ',', '.') }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @php
+                                            $statusColors = [
+                                            'Berhasil' => 'success',
+                                            'Dalam Proses' => 'warning',
+                                            'Gagal' => 'danger'
+                                            ];
+                                            $badgeColor = $statusColors[$data->status] ?? 'secondary';
+                                            @endphp
+                                            <span class="badge bg-{{ $badgeColor }}">{{ ucfirst($data->status) }}</span>
+                                        </td>
                                     </tr>
                                     @empty
                                     <tr>
-                                        <td colspan="5">Belum ada data transaksi.</td>
+                                        <td colspan="5" class="text-center">
+                                            <span class="badge bg-warning">
+                                                <i class="bi bi-exclamation-circle"></i> Belum ada data transaksi
+                                            </span>
+                                        </td>
                                     </tr>
                                     @endforelse
                                 </tbody>
@@ -549,53 +659,62 @@
 
             <!-- Formulir Penyetoran dan Penarikan -->
             <section class="mb-4">
-                <div class="card">
+                <div class="card shadow" style="border: 1px solid #435ebe;">
+                    <div class="card-header bg-gradient bg-primary text-white">
+                        <h5 class="mb-0 text-white">
+                            <i class="bi bi-wallet2"></i> Simpanan Sukarela
+                        </h5>
+                    </div>
                     <div class="card-body">
                         @if ($statusSukarela && $statusSukarela->status === 'Dalam Proses')
                         <!-- Jika ada transaksi dalam proses -->
                         <div class="alert alert-warning d-flex align-items-center" role="alert">
-                            <i class="bi bi-hourglass-split me-2" style="font-size: 2rem; margin-top: -40px;"></i>
+                            <i class="bi bi-hourglass-split me-3" style="font-size: 2rem;"></i>
                             <div>
-                                <h5 class="alert-heading" style="margin-left: 20px;">Transaksi Sedang Diproses</h5>
-                                <p style="margin-left: 20px;">Anda memiliki transaksi penyetoran/penarikan yang masih dalam proses. Silakan tunggu hingga transaksi selesai sebelum mengajukan yang baru.</p>
+                                <h5 class="alert-heading">Transaksi Sedang Diproses</h5>
+                                <p>Anda memiliki transaksi yang masih dalam proses. Silakan tunggu hingga transaksi selesai sebelum mengajukan yang baru.</p>
                             </div>
                         </div>
                         @else
                         <!-- Jika tidak ada transaksi dalam proses, tampilkan form -->
-                        <h5>Formulir Penyetoran / Penarikan</h5>
+                        <h5 class="pb-2 border-bottom" style="margin-top: 10px;"><i class="bi bi-file-earmark-text"></i> Formulir Penyetoran / Penarikan</h5>
                         <form action="{{ route('simpanan.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="jenis" value="sukarela">
 
-                            <div class="form-group">
-                                <label for="jenis_transaksi">Jenis Transaksi</label>
-                                <select name="jenis_transaksi" id="jenis_transaksi" class="form-control" required>
+                            <div class="mb-3">
+                                <label for="jenis_transaksi" class="form-label"><i class="bi bi-shuffle"></i> Jenis Transaksi</label>
+                                <select name="jenis_transaksi" id="jenis_transaksi" class="form-select" required onchange="toggleBukti()">
                                     <option value="penyetoran">Penyetoran</option>
                                     <option value="penarikan">Penarikan</option>
                                 </select>
                             </div>
 
-                            <div class="form-group">
-                                <label for="jumlah">Jumlah</label>
-                                <input type="number" name="jumlah" id="jumlah" class="form-control" min="5000" step="5000" max="1000000000" required>
+                            <div class="mb-3">
+                                <label for="jumlah" class="form-label"><i class="bi bi-cash"></i> Jumlah (Rp)</label>
+                                <input type="number" name="jumlah" id="jumlah" class="form-control" min="5000" step="5000" max="1000000000" required placeholder="Masukkan nominal transaksi">
+                                <small class="text-muted"><i class="bi bi-info-circle"></i> Minimal Rp 5.000 dan kelipatan Rp 5.000.</small>
                             </div>
 
-                            <div class="form-group">
-                                <label for="metode_pembayaran">Metode Pembayaran</label>
-                                <select name="metode_pembayaran" id="metode_pembayaran" class="form-control" required>
-                                    <option value="cash">Cash</option>
+                            <div class="mb-3">
+                                <label for="metode_pembayaran" class="form-label"><i class="bi bi-credit-card"></i> Metode Pembayaran</label>
+                                <select name="metode_pembayaran" id="metode_pembayaran" class="form-select" required onchange="toggleBukti()">
+                                    <option value="cash">Tunai (Bayar Langsung)</option>
                                     <option value="transfer-bank">Transfer Bank</option>
-                                    <option value="ewallet">E-Wallet</option>
+                                    <option value="ewallet">E-Wallet (Dana, OVO, Gopay)</option>
                                 </select>
                             </div>
 
-                            <!-- Input Bukti Pembayaran (Hanya muncul untuk transfer atau e-wallet) -->
-                            <div class="form-group" id="bukti_pembayaran_group" style="display: none;">
-                                <label for="bukti">Upload Bukti Pembayaran</label>
-                                <input type="file" name="bukti" id="bukti" class="form-control" accept="image/*">
+                            <!-- Input Bukti Pembayaran (Dinamis) -->
+                            <div class="mb-3">
+                                <label for="bukti" class="form-label"><i class="bi bi-upload"></i> Upload Bukti Pembayaran</label>
+                                <input type="file" name="bukti" id="bukti" class="form-control" accept="image/jpeg, image/png, image/jpg">
+                                <small class="text-muted"><i class="bi bi-image"></i> Format yang didukung: JPG, JPEG, PNG.</small>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">Konfirmasi Transaksi</button>
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="bi bi-check-circle-fill"></i> Konfirmasi Transaksi
+                            </button>
                         </form>
                         @endif
                     </div>
@@ -623,26 +742,29 @@
     </div>
     <script src="{{asset('dist/assets/js/bootstrap.js')}}"></script>
     <script src="{{asset('dist/assets/js/app.js')}}"></script>
-    <!-- JavaScript untuk mengatur visibilitas input bukti -->
     <script>
-        const metodePembayaran = document.getElementById('metode_pembayaran');
-        const buktiPembayaranGroup = document.getElementById('bukti_pembayaran_group');
-        const jenisTransaksi = document.getElementById('jenis_transaksi');
+        function toggleBukti() {
+            const jenisTransaksi = document.getElementById('jenis_transaksi').value;
+            const metodePembayaran = document.getElementById('metode_pembayaran').value;
+            const buktiInput = document.getElementById('bukti');
+            const buktiLabel = document.querySelector('label[for="bukti"]');
 
-        // Fungsi untuk atur tampilan input bukti pembayaran
-        function toggleBuktiPembayaran() {
-            if (metodePembayaran.value === 'transfer-bank' || metodePembayaran.value === 'ewallet') {
-                buktiPembayaranGroup.style.display = 'block';
+            // Sembunyikan bukti jika penarikan
+            if (jenisTransaksi === 'penarikan') {
+                buktiInput.removeAttribute('required');
+                buktiInput.style.display = 'none';
+                buktiLabel.style.display = 'none';
+            } else if (metodePembayaran === 'cash') {
+                buktiInput.removeAttribute('required');
+                buktiInput.style.display = 'none';
+                buktiLabel.style.display = 'none';
             } else {
-                buktiPembayaranGroup.style.display = 'none';
+                buktiInput.setAttribute('required', true);
+                buktiInput.style.display = 'block';
+                buktiLabel.style.display = 'block';
             }
         }
-
-        // Panggil fungsi saat metode pembayaran berubah
-        metodePembayaran.addEventListener('change', toggleBuktiPembayaran);
     </script>
-
-
 </body>
 
 </html>

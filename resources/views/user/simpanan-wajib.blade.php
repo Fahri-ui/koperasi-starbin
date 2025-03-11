@@ -12,18 +12,6 @@
     <link rel="shortcut icon" href="{{asset('dist/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 </head>
-<style>
-    /* Style untuk Card */
-    .card {
-        border: 1px solid #d9d9d9;
-        border-radius: 8px;
-        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
-        background-color: #ffffff;
-        padding: 20px;
-    }
-</style>
-
 <body>
     <div id="app">
         <div id="sidebar" class="active">
@@ -302,7 +290,7 @@
 
             @elseif (auth()->user()->status === 'Belum_Bayar_Simpanan_Wajib')
             <!-- Section Peringatan Keterlambatan -->
-            <div class="card shadow-lg border-0 mb-4" style="text-align: center;">
+            <div class="card shadow-lg border-0 mb-4" style="text-align: center; border: 1px solid #d9d9d9; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); margin-bottom: 20px; background-color: #ffffff; padding: 20px;">
                 <div class="card-body bg-warning text-dark" style="border-radius: 10px;">
                     <div class="d-flex align-items-start">
                         <i class="bi bi-info-circle-fill text-primary fs-1 me-3" style="margin-top:-20px;"></i>
@@ -448,6 +436,7 @@
                                         <th>No</th>
                                         <th>Kode Transaksi</th>
                                         <th>Tanggal</th>
+                                        <th>Metode</th>
                                         <th>Jumlah</th>
                                         <th>Jenis Transaksi</th>
                                         <th>Bukti Pembayaran</th>
@@ -460,6 +449,7 @@
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $data->kode_transaksi }}</td>
                                         <td>{{ \Carbon\Carbon::parse($data->tanggal_transaksi)->translatedFormat('d F Y') }}</td>
+                                        <td>{{$data->metode_pembayaran}}</td>
                                         <td>
                                             <span class="badge bg-{{ $data->jumlah >= 0 ? 'success' : 'danger' }}">
                                                 <i class="bi {{ $data->jumlah >= 0 ? 'bi-arrow-down-circle' : 'bi-arrow-up-circle' }}"></i>
@@ -468,10 +458,8 @@
                                         </td>
                                         <td>{{ ucfirst($data->jenis_transaksi) }}</td>
                                         <td>
-                                            @if(!empty($data->bukti_pembayaran))
-                                            <a href="{{ route('bukti.pembayaran', ['bukti' => basename($data->bukti_pembayaran)]) }}" target="_blank" class="btn btn-sm btn-outline-success">
-                                                <i class="bi bi-receipt"></i> Lihat Bukti
-                                            </a>
+                                            @if(!empty($data->bukti))
+                                            <a href="{{ route('bukti.pembayaran', ['bukti' => basename($data->bukti)]) }}" target="_blank" class="btn btn-sm btn-outline-success">Lihat Bukti</a>
                                             @else
                                             <span class="badge bg-secondary">Tidak Ada</span>
                                             @endif
@@ -516,7 +504,7 @@
 
             <!-- Definisi Simpanan Pokok -->
             <section class="mb-4">
-                <div class="card">
+                <div class="card shadow" style="border: 1px solid #435ebe;">
                     <div class="card-body">
                         <div class="d-flex align-items-center mb-3 border-bottom" style="padding-bottom: 20px;">
                             <i class="bi bi-info-circle fs-4  me-2" style="margin-top: -20px;"></i>
@@ -532,7 +520,7 @@
 
             <!-- ✅ Status Pembayaran -->
             <section class="mb-4">
-                <div class="card">
+                <div class="card shadow" style="border: 1px solid #435ebe;">
                     <div class="card-body">
                         <div class="d-flex align-items-center mb-3 border-bottom" style="padding-bottom: 10px;">
                             <i class="bi bi-wallet2 fs-4 text-{{ $statusPembayaran === 'success' ? 'success' : ($statusPembayaran === 'warning' ? 'warning' : 'danger') }} me-2" style="margin-top:-20px;"></i>
@@ -555,7 +543,7 @@
 
             <!-- 💰 Saldo Simpanan Wajib -->
             <section class="mb-4">
-                <div class="card">
+                <div class="card shadow" style="border: 1px solid #435ebe;">
                     <div class="card-body text-center">
                         <div class="d-flex justify-content-center align-items-center mb-3 border-bottom" style="padding-bottom: 10px;">
                             <i class="bi bi-piggy-bank-fill fs-3 me-2" style="margin-top: -30px;"></i>
@@ -572,7 +560,7 @@
 
             <!-- 📊 Riwayat Transaksi Simpanan Wajib -->
             <section class="mb-4">
-                <div class="card shadow">
+                <div class="card shadow" style="border: 1px solid #435ebe;">
                     <div class="card-header bg-primary text-white">
                         <h5 class="mb-0 text-white">
                             <i class="bi bi-wallet2" style="margin-top: -30px;"></i> Daftar Simpanan Wajib
@@ -606,8 +594,8 @@
                                         </td>
                                         <td>{{ ucfirst($data->jenis_transaksi) }}</td>
                                         <td>
-                                            @if(!empty($data->bukti_pembayaran))
-                                            <a href="{{ route('bukti.pembayaran', ['bukti' => basename($data->bukti_pembayaran)]) }}" target="_blank" class="btn btn-sm btn-outline-success">
+                                            @if(!empty($data->bukti))
+                                            <a href="{{ route('bukti.pembayaran', ['bukti' => basename($data->bukti)]) }}" target="_blank" class="btn btn-sm btn-outline-success">
                                                 <i class="bi bi-receipt"></i> Lihat Bukti
                                             </a>
                                             @else
@@ -646,7 +634,7 @@
             <!-- Formulir Penyetoran dan Penarikan -->
             <section class="mb-4" id="bayar">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body shadow" style="border: 1px solid #435ebe; border-radius:10px;">
                         @if ($statusWajib && $statusWajib->status === 'Dalam Proses')
                         <!-- Jika pembayaran masih dalam proses -->
                         <div class="alert alert-warning d-flex align-items-center" role="alert">
@@ -669,53 +657,53 @@
 
                         @else
                         <!-- Jika belum membayar bulan ini, tampilkan formulir -->
-                            <div class="card-header bg-gradient bg-primary text-white">
-                                <h5 class="mb-0 text-white"><i class="bi bi-wallet-fill"></i> Formulir Penyetoran Simpanan Wajib</h5>
-                            </div>
-                            <div class="card-body" style="margin-top: 20px;">
-                                <form action="{{ route('simpanan.store') }}" method="POST" enctype="multipart/form-data">
-                                    @csrf
-                                    <input type="hidden" name="jenis" value="wajib">
-                                    <input type="hidden" name="validasi" value="50000">
+                        <div class="card-header bg-gradient bg-primary text-white">
+                            <h5 class="mb-0 text-white"><i class="bi bi-wallet-fill"></i> Formulir Penyetoran Simpanan Wajib</h5>
+                        </div>
+                        <div class="card-body" style="margin-top: 20px;">
+                            <form action="{{ route('simpanan.store') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <input type="hidden" name="jenis" value="wajib">
+                                <input type="hidden" name="validasi" value="50000">
 
-                                    <!-- Jenis Transaksi -->
-                                    <div class="mb-3">
-                                        <label for="jenis_transaksi" class="form-label"><i class="bi bi-shuffle"></i> Jenis Transaksi</label>
-                                        <select name="jenis_transaksi" id="jenis_transaksi" class="form-select" required>
-                                            <option value="penyetoran">Penyetoran</option>
-                                        </select>
-                                    </div>
+                                <!-- Jenis Transaksi -->
+                                <div class="mb-3">
+                                    <label for="jenis_transaksi" class="form-label"><i class="bi bi-shuffle"></i> Jenis Transaksi</label>
+                                    <select name="jenis_transaksi" id="jenis_transaksi" class="form-select" required>
+                                        <option value="penyetoran">Penyetoran</option>
+                                    </select>
+                                </div>
 
-                                    <!-- Jumlah -->
-                                    <div class="mb-3">
-                                        <label for="jumlah" class="form-label"><i class="bi bi-cash"></i> Jumlah (Rp)</label>
-                                        <input type="number" name="jumlah" id="jumlah" class="form-control" required min="50000" max="50000" placeholder="Masukkan Rp 50.000">
-                                        <small class="text-muted"><i class="bi bi-info-circle"></i> Nominal wajib adalah Rp 50.000/bulan</small>
-                                    </div>
+                                <!-- Jumlah -->
+                                <div class="mb-3">
+                                    <label for="jumlah" class="form-label"><i class="bi bi-cash"></i> Jumlah (Rp)</label>
+                                    <input type="number" name="jumlah" id="jumlah" class="form-control" required min="50000" max="50000" placeholder="Masukkan Rp 50.000">
+                                    <small class="text-muted"><i class="bi bi-info-circle"></i> Nominal wajib adalah Rp 50.000/bulan</small>
+                                </div>
 
-                                    <!-- Metode Pembayaran -->
-                                    <div class="mb-3">
-                                        <label for="metode_pembayaran" class="form-label"><i class="bi bi-credit-card"></i> Metode Pembayaran</label>
-                                        <select name="metode_pembayaran" id="metode_pembayaran" class="form-select" required>
-                                            <option value="cash">Tunai (Bayar Langsung)</option>
-                                            <option value="transfer-bank">Transfer Bank</option>
-                                            <option value="ewallet">E-Wallet (Dana, OVO, Gopay)</option>
-                                        </select>
-                                    </div>
+                                <!-- Metode Pembayaran -->
+                                <div class="mb-3">
+                                    <label for="metode_pembayaran" class="form-label"><i class="bi bi-credit-card"></i> Metode Pembayaran</label>
+                                    <select name="metode_pembayaran" id="metode_pembayaran" class="form-select" required>
+                                        <option value="cash">Tunai (Bayar Langsung)</option>
+                                        <option value="transfer-bank">Transfer Bank</option>
+                                        <option value="ewallet">E-Wallet (Dana, OVO, Gopay)</option>
+                                    </select>
+                                </div>
 
-                                    <!-- Upload Bukti Pembayaran -->
-                                    <div class="mb-3">
-                                        <label for="bukti" class="form-label"><i class="bi bi-upload"></i> Unggah Bukti Pembayaran</label>
-                                        <input type="file" name="bukti" id="bukti" class="form-control" required accept="image/jpeg, image/png, image/jpg">
-                                        <small class="text-muted"><i class="bi bi-image"></i> Format yang didukung: JPG, JPEG, PNG (max 2MB)</small>
-                                    </div>
+                                <!-- Upload Bukti Pembayaran -->
+                                <div class="mb-3">
+                                    <label for="bukti" class="form-label"><i class="bi bi-upload"></i> Unggah Bukti Pembayaran</label>
+                                    <input type="file" name="bukti" id="bukti" class="form-control" required accept="image/jpeg, image/png, image/jpg">
+                                    <small class="text-muted"><i class="bi bi-image"></i> Format yang didukung: JPG, JPEG, PNG (max 2MB)</small>
+                                </div>
 
-                                    <!-- Tombol Submit -->
-                                    <button type="submit" class="btn btn-primary w-100">
-                                        <i class="bi bi-check-circle-fill"></i> Konfirmasi Transaksi
-                                    </button>
-                                </form>
-                            </div>
+                                <!-- Tombol Submit -->
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="bi bi-check-circle-fill"></i> Konfirmasi Transaksi
+                                </button>
+                            </form>
+                        </div>
                         @endif
                     </div>
                 </div>

@@ -1,13 +1,3 @@
-/* Style untuk Card */
-.card {
-    border: 1px solid #d9d9d9;
-    border-radius: 8px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-    background-color: #ffffff;
-    padding: 20px;
-}
-
 /* Style untuk Foto Profil */
 .poto-profil {
     width: 200px;

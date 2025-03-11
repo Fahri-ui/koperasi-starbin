@@ -13,17 +13,6 @@
     <link rel="stylesheet" href="{{asset('dist/assets/css/pinjaman.css')}}">
 
 </head>
-<style>
-    /* Style untuk Card */
-.card {
-    border: 1px solid #d9d9d9;
-    border-radius: 8px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-    background-color: #ffffff;
-    padding: 20px;
-}
-</style>
 <body>
     <div id="app">
         <div id="sidebar" class="active">
@@ -301,7 +290,7 @@
 
             @elseif (auth()->user()->status === 'Belum_Bayar_Simpanan_Wajib')
             <!-- Section Peringatan Keterlambatan -->
-            <div class="card shadow-lg border-0 mb-4" style="text-align: center;">
+            <div class="card shadow-lg border-0 mb-4" style="text-align: center; border: 1px solid #d9d9d9; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); margin-bottom: 20px; background-color: #ffffff; padding: 20px;">
                 <div class="card-body bg-warning text-dark" style="border-radius: 10px;">
                     <div class="d-flex align-items-start">
                         <i class="bi bi-info-circle-fill text-primary fs-1 me-3" style="margin-top:-20px;"></i>
@@ -662,7 +651,7 @@
             <div class="container mt-5" style="font-size:.9rem;">
                 <!-- Definisi Pinjaman -->
                 <section class="mb-4">
-                    <div class="card shadow">
+                    <div class="card shadow" style="border: 1px solid #435ebe;">
                         <div class="card-body">
                             <h5 class="fw-bold d-flex align-items-center">
                                 <i class="bi bi-book me-2" style="margin-top: -10px;"></i> Definisi Pinjaman
@@ -677,7 +666,7 @@
 
                 <!-- Total Pinjaman -->
                 <section class="mb-4">
-                    <div class="card shadow">
+                    <div class="card shadow" style="border: 1px solid #435ebe;">
                         <div class="card-body text-center">
                             <h5 class="fw-bold d-flex align-items-center justify-content-center">
                                 <i class="bi bi-cash-stack me-2" style="margin-top: -10px;"></i> Total Pinjaman Anda
@@ -736,7 +725,7 @@
                 <!-- Formulir Pengajuan Pinjaman -->
                 @if (!$pinjamanAktif && !$pinjamandalamproses)
                 <section class="mb-4">
-                    <div class="card mb-4 shadow" style="border: 1px solid #007bff; border-radius: 10px;">
+                    <div class="card mb-4 shadow"  style="border: 1px solid #435ebe; border-radius: 10px;">
                         <div class="card-header bg-primary text-white">
                             <h5 class="text-white"><i class="bi bi-file-earmark-text me-2"></i> Formulir Pengajuan Pinjaman</h5>
                         </div>
@@ -781,7 +770,7 @@
                 <!-- Status Pinjaman Aktif -->
                 @if ($pinjamanAktif)
                 <section class="mb-4">
-                    <div class="card shadow p-4">
+                    <div class="card shadow p-4" style="border: 1px solid #435ebe;">
                         <h5 class="text-center mb-3 fw-bold d-flex align-items-center pb-3" style="border-bottom: 2px solid #e0e0e0;">
                             <i class="bi bi-list-check me-2" style="margin-top: -10px; padding-right:20px;"></i> Status Pinjaman Aktif
                         </h5>
@@ -827,7 +816,7 @@
 
                 <!-- Riwayat Transaksi (Pengajuan dan Pembayaran) -->
                 <section class="mb-4">
-                    <div class="card shadow">
+                    <div class="card shadow" style="border: 1px solid #435ebe;">
                         <div class="card-header bg-primary text-white">
                             <h5 class="mb-0 text-white">
                                 <i class="bi bi-clock-history" style="margin-top: -30px;"></i> Riwayat Transaksi Pinjaman
@@ -910,7 +899,7 @@
                 <!-- Formulir Pembayaran Pinjaman -->
                 @if ($pinjamanAktif)
                 <section class="mb-4">
-                    <div class="card shadow">
+                    <div class="card shadow" style="border: 1px solid #435ebe;">
                         <div class="card-header bg-primary text-white">
                             <h5 class="mb-0 text-white">
                                 <i class="bi bi-cash-coin" style="margin-top: -30px;"></i> Formulir Pembayaran Pinjaman

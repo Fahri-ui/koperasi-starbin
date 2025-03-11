@@ -306,8 +306,14 @@
             </div>
 
             @elseif (auth()->user()->status === 'Belum_Bayar_Simpanan_Wajib')
+            
+            <div class="page-heading d-flex align-items-center pb-3 border-bottom">
+                <i class="bi bi-house-door me-2 fs-3 text-primary" style="margin-top: -30px; padding-right:30px;"></i>
+                <h2 class="mb-0 fw-bold">Dashboard</h2>
+            </div>
+            
             <!-- Section Peringatan Keterlambatan -->
-            <div class="card shadow-lg border-0 mb-4">
+            <div class="card shadow-lg border-0 mb-4" style="text-align: center; border: 1px solid #d9d9d9; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); margin-bottom: 20px; background-color: #ffffff; padding: 20px;">
                 <div class="card-body bg-warning text-dark" style="border-radius: 10px;">
                     <div class="d-flex align-items-start">
                         <i class="bi bi-info-circle-fill text-primary fs-1 me-3" style="margin-top:-20px;"></i>
@@ -375,22 +381,18 @@
                 </div>
             </div>
 
-            <br><br><br>
+            <br><br>
 
-            <div class="page-heading d-flex align-items-center pb-3 border-bottom">
-                <i class="bi bi-house-door me-2 fs-3 text-primary" style="margin-top: -30px; padding-right:30px;"></i>
-                <h2 class="mb-0 fw-bold">Dashboard</h2>
-            </div>
             <div class="row">
                 <!-- Bagian Profil Pengguna (70%) -->
-                <div class="col-20 col-lg-8 d-flex" style="height: 450px;">
-                    <div class="card shadow mb-4 flex-grow-1" style="border: 1px solid rgb(7, 81, 160); border-bottom-right-radius:20px;border-bottom-left-radius:20px;">
+                <div class="col-2 col-lg-8 d-flex" style="height: 450px;">
+                    <div class="card shadow mb-4 flex-grow-1">
                         <div class="card-header" style="background-color: #435ebe; color: #fff;">
                             <h5 class="mb-0 text-white">
                                 <i class="bi bi-person-circle"></i> Profil Pengguna
                             </h5>
                         </div>
-                        <div class="card-body d-flex align-items-start justify-content-start p-4">
+                        <div class="card-body d-flex align-items-start justify-content-start p-4" style="border: 1px solid rgb(7, 81, 160); border-bottom-right-radius:10px;border-bottom-left-radius:10px;">
                             <div class="text-center me-4">
                                 <div class="poto-profil">
                                     <img src="{{ asset('picture/account/' . Auth::user()->gambar) }}" alt="Foto Profil" class="rounded-circle" style="width: 180px; height: 180px; object-fit: cover;">
@@ -398,18 +400,18 @@
                             </div>
                             <div class="ms-4">
                                 <h3 class="fw-bold mb-3" style="font-size: 28px;">{{ Auth::user()->fullname }}</h3>
-                                <p class="mb-3" style="font-size: 15px;">
+                                <p class="mb-3" style="font-size: 18px;">
                                     <i class="bi bi-envelope"></i> {{ Auth::user()->email }}
                                 </p>
-                                <p class="mb-3" style="font-size: 15px;">
+                                <p class="mb-3" style="font-size: 18px;">
                                     <i class="bi bi-phone"></i> {{ Auth::user()->phone }}
                                 </p>
-                                <p class="mb-3" style="font-size: 15px;">
+                                <p class="mb-3" style="font-size: 18px;">
                                     <i class="bi bi-geo-alt"></i> {{ Auth::user()->address }}
                                 </p>
-                                <p class="mb-0" style="font-size: 15px;">
+                                <p class="mb-0" style="font-size: 18px;">
                                     <i class="bi bi-person-badge"></i> Status:
-                                    <span class="badge {{ Auth::user()->status == 'Aktif' ? 'bg-success' : 'bg-danger' }}" style="font-size: 13px; padding: 10px 20px;">
+                                    <span class="badge {{ Auth::user()->status == 'Aktif' ? 'bg-success' : 'bg-danger' }}" style="font-size: 16px; padding: 10px 20px;">
                                         {{ Auth::user()->status }}
                                     </span>
                                 </p>
@@ -422,9 +424,9 @@
                 <div class="col-12 col-lg-4 d-flex flex-column">
                     <div class="d-flex flex-column gap-3 h-100">
                         <!-- Card: Total Simpanan -->
-                        <div class="card flex-grow-1">
+                        <div class="card flex-grow-1 shadow" style="border: 1px solid #435ebe;">
                             <div class="card-body">
-                                <div class="stats-icon blue">
+                                <div class="stats-icon blue" style="border: 1px solid #435ebe;">
                                     <i class="bi bi-wallet2" style="margin-right:10px; margin-bottom: 22px;"></i>
                                 </div>
                                 <h6 class="text-muted font-semibold">Total Simpanan</h6>
@@ -433,9 +435,9 @@
                         </div>
 
                         <!-- Card: Pinjaman -->
-                        <div class="card flex-grow-1">
+                        <div class="card flex-grow-1 shadow" style="border: 1px solid #435ebe;">
                             <div class="card-body">
-                                <div class="stats-icon green">
+                                <div class="stats-icon green" style="border: 1px solid #435ebe;">
                                     <i class="bi bi-cash" style="margin-right:10px; margin-bottom: 22px;"></i>
                                 </div>
                                 <h6 class="text-muted font-semibold">Pinjaman</h6>
@@ -444,9 +446,9 @@
                         </div>
 
                         <!-- Card: Notifikasi -->
-                        <div class="card flex-grow-1">
+                        <div class="card flex-grow-1 shadow" style="border: 1px solid #435ebe;">
                             <div class="card-body">
-                                <div class="stats-icon orange">
+                                <div class="stats-icon orange" style="border: 1px solid #435ebe;">
                                     <i class="bi bi-bell" style="margin-right:10px; margin-bottom: 22px;"></i>
                                 </div>
                                 <h6 class="text-muted font-semibold">Notifikasi</h6>
@@ -462,7 +464,7 @@
                 <div class="row">
                     <!-- Diagram -->
                     <div class="col-12 col-md-8">
-                        <div class="card shadow-sm border-0">
+                        <div class="card shadow" style="border: 1px solid #435ebe;">
                             <div class="card-body">
                                 <h5 class="fw-bold d-flex align-items-center">
                                     <i class="bi bi-graph-up me-2 text-primary" style="margin-top: -15px;padding-right:20px;"></i> Statistik Simpanan dan Pinjaman
@@ -478,7 +480,7 @@
                     <!-- Aksi Cepat -->
                     <div class="col-12 col-md-4">
                         <div class="card shadow-sm border-0">
-                            <div class="card-body text-center">
+                            <div class="card-body text-center shadow" style="border: 1px solid #435ebe; border-radius:10px;">
                                 <h5 class="fw-bold">
                                     <i class="bi bi-lightning-charge text-warning"></i> Aksi Cepat
                                 </h5>
@@ -502,7 +504,7 @@
                     </div>
                 </div>
 
-                <div class="card shadow">
+                <div class="card shadow" style="border: 1px solid #435ebe;">
                     <div class="card-header bg-primary text-white">
                         <h5 class="mb-0 text-white"><i class="bi bi-list-check" style="margin-top: -30px;"></i> Daftar Transaksi Terbaru</h5>
                     </div>
@@ -585,14 +587,14 @@
             </div>
             <div class="row">
                 <!-- Bagian Profil Pengguna (70%) -->
-                <div class="col-20 col-lg-8 d-flex" style="height: 450px;">
+                <div class="col-2 col-lg-8 d-flex" style="height: 450px;">
                     <div class="card shadow mb-4 flex-grow-1">
                         <div class="card-header" style="background-color: #435ebe; color: #fff;">
                             <h5 class="mb-0 text-white">
                                 <i class="bi bi-person-circle"></i> Profil Pengguna
                             </h5>
                         </div>
-                        <div class="card-body d-flex align-items-start justify-content-start p-4" style="border: 1px solid rgb(7, 81, 160); border-bottom-right-radius:20px;border-bottom-left-radius:20px;">
+                        <div class="card-body d-flex align-items-start justify-content-start p-4" style="border: 1px solid rgb(7, 81, 160); border-bottom-right-radius:10px;border-bottom-left-radius:10px;">
                             <div class="text-center me-4">
                                 <div class="poto-profil">
                                     <img src="{{ asset('picture/account/' . Auth::user()->gambar) }}" alt="Foto Profil" class="rounded-circle" style="width: 180px; height: 180px; object-fit: cover;">
@@ -624,9 +626,9 @@
                 <div class="col-12 col-lg-4 d-flex flex-column">
                     <div class="d-flex flex-column gap-3 h-100">
                         <!-- Card: Total Simpanan -->
-                        <div class="card flex-grow-1">
+                        <div class="card flex-grow-1 shadow" style="border: 1px solid #435ebe;">
                             <div class="card-body">
-                                <div class="stats-icon blue">
+                                <div class="stats-icon blue" style="border: 1px solid #435ebe;">
                                     <i class="bi bi-wallet2" style="margin-right:10px; margin-bottom: 22px;"></i>
                                 </div>
                                 <h6 class="text-muted font-semibold">Total Simpanan</h6>
@@ -635,9 +637,9 @@
                         </div>
 
                         <!-- Card: Pinjaman -->
-                        <div class="card flex-grow-1">
+                        <div class="card flex-grow-1 shadow" style="border: 1px solid #435ebe;">
                             <div class="card-body">
-                                <div class="stats-icon green">
+                                <div class="stats-icon green" style="border: 1px solid #435ebe;">
                                     <i class="bi bi-cash" style="margin-right:10px; margin-bottom: 22px;"></i>
                                 </div>
                                 <h6 class="text-muted font-semibold">Pinjaman</h6>
@@ -646,9 +648,9 @@
                         </div>
 
                         <!-- Card: Notifikasi -->
-                        <div class="card flex-grow-1">
+                        <div class="card flex-grow-1 shadow" style="border: 1px solid #435ebe;">
                             <div class="card-body">
-                                <div class="stats-icon orange">
+                                <div class="stats-icon orange" style="border: 1px solid #435ebe;">
                                     <i class="bi bi-bell" style="margin-right:10px; margin-bottom: 22px;"></i>
                                 </div>
                                 <h6 class="text-muted font-semibold">Notifikasi</h6>
@@ -664,7 +666,7 @@
                 <div class="row">
                     <!-- Diagram -->
                     <div class="col-12 col-md-8">
-                        <div class="card shadow-sm border-0">
+                        <div class="card shadow" style="border: 1px solid #435ebe;">
                             <div class="card-body">
                                 <h5 class="fw-bold d-flex align-items-center">
                                     <i class="bi bi-graph-up me-2 text-primary" style="margin-top: -15px;padding-right:20px;"></i> Statistik Simpanan dan Pinjaman
@@ -680,7 +682,7 @@
                     <!-- Aksi Cepat -->
                     <div class="col-12 col-md-4">
                         <div class="card shadow-sm border-0">
-                            <div class="card-body text-center">
+                            <div class="card-body text-center shadow" style="border: 1px solid #435ebe; border-radius:10px;">
                                 <h5 class="fw-bold">
                                     <i class="bi bi-lightning-charge text-warning"></i> Aksi Cepat
                                 </h5>
@@ -704,7 +706,7 @@
                     </div>
                 </div>
 
-                <div class="card shadow">
+                <div class="card shadow" style="border: 1px solid #435ebe;">
                     <div class="card-header bg-primary text-white">
                         <h5 class="mb-0 text-white"><i class="bi bi-list-check" style="margin-top: -30px;"></i> Daftar Transaksi Terbaru</h5>
                     </div>

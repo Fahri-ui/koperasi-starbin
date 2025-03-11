@@ -14,18 +14,6 @@
 
 </head>
 
-<style>
-    /* Style untuk Card */
-    .card {
-        border: 1px solid #d9d9d9;
-        border-radius: 8px;
-        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
-        background-color: #ffffff;
-        padding: 20px;
-    }
-</style>
-
 <body>
     <div id="app">
         <div id="sidebar" class="active">
@@ -305,7 +293,7 @@
 
             @elseif (auth()->user()->status === 'Belum_Bayar_Simpanan_Wajib')
             <!-- Section Peringatan Keterlambatan -->
-            <div class="card shadow-lg border-0 mb-4" style="text-align: center;">
+            <div class="card shadow-lg border-0 mb-4" style="text-align: center; border: 1px solid #d9d9d9; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); margin-bottom: 20px; background-color: #ffffff; padding: 20px;">
                 <div class="card-body bg-warning text-dark" style="border-radius: 10px;">
                     <div class="d-flex align-items-start">
                         <i class="bi bi-info-circle-fill text-primary fs-1 me-3" style="margin-top:-20px;"></i>
@@ -612,7 +600,7 @@
 
                 <!-- Formulir Hubungi Kami -->
                 <section class="mb-4">
-                    <div class="card shadow-sm">
+                    <div class="card shadow" style="border: 1px solid #435ebe;">
                         <div class="card-header bg-primary text-white">
                             <h5 class="mb-0 text-white"><i class="bi bi-envelope me-2"></i> Hubungi Kami</h5>
                         </div>
@@ -636,7 +624,7 @@
 
                             <!-- Alamat -->
                             <div class="col-lg-4">
-                                <div class="card text-center shadow p-3 border-primary">
+                                <div class="card text-center shadow p-3 border-primary" style="border: 1px solid #435ebe;">
                                     <div class="card-header bg-primary text-white">
                                         <h5 class="mb-0 text-white"><i class="bi bi-geo-alt me-2"></i> Alamat</h5>
                                     </div>
@@ -654,7 +642,7 @@
 
                             <!-- Kontak -->
                             <div class="col-lg-4">
-                                <div class="card text-center shadow p-3 border-success">
+                                <div class="card text-center shadow p-3 border-success" style="border: 1px solid #435ebe;">
                                     <div class="card-header bg-success text-white">
                                         <h5 class="mb-0 text-white"><i class="bi bi-telephone me-2"></i> Nomor Telepon</h5>
                                     </div>
@@ -674,7 +662,7 @@
 
                             <!-- Email -->
                             <div class="col-lg-4">
-                                <div class="card text-center shadow p-3 border-danger">
+                                <div class="card text-center shadow p-3 border-danger" style="border: 1px solid #435ebe;">
                                     <div class="card-header bg-danger text-white">
                                         <h5 class="mb-0 text-white"><i class="bi bi-envelope me-2"></i> Email</h5>
                                     </div>

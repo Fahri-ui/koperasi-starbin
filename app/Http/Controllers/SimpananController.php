@@ -102,14 +102,10 @@ class SimpananController extends Controller
 
     public function store(Request $request)
     {
-        // Tentukan jumlah minimal berdasarkan validasi
-        $jumlahMinimal = ($request->validasi == 100000) ? 100000 : 50000;
-
-        // Validasi input
         $validatedData = $request->validate([
             'jenis' => 'required|in:wajib,sukarela',
             'jenis_transaksi' => 'required|in:penyetoran,penarikan',
-            'jumlah' => "required|numeric",
+            'jumlah' => "required|numeric|min:5000|max:1000000000",
             'metode_pembayaran' => 'required|in:transfer-bank,ewallet,cash',
             'bukti' => ($request->jenis_transaksi === 'penyetoran' && in_array($request->metode_pembayaran, ['transfer-bank', 'ewallet']))
                 ? 'required|image|mimes:jpeg,png,jpg|max:2048'
@@ -118,28 +114,39 @@ class SimpananController extends Controller
 
         $user = auth()->user();
 
-        // Proses penyetoran
+        // Hitung saldo dari transaksi yang ada
+        $saldo = Simpanan::where('jenis', 'sukarela')
+            ->where('user_id', auth()->id())
+            ->where('status', 'Berhasil') // Hanya hitung yang berhasil
+            ->sum('jumlah');
+
+        if ($validatedData['jenis_transaksi'] === 'penarikan' && $saldo < $validatedData['jumlah']) {
+            return back()->with('error', 'Saldo tidak mencukupi untuk penarikan.');
+        }
+
+        $jumlahTransaksi = $validatedData['jenis_transaksi'] === 'penarikan'
+            ? -abs($validatedData['jumlah'])
+            : abs($validatedData['jumlah']);
+
         $buktiPath = null;
-        if ($request->hasFile('bukti_pembayaran')) {
-            $buktiFile = $request->file('bukti_pembayaran');
+        if ($request->hasFile('bukti')) {
+            $buktiFile = $request->file('bukti');
             $namaBukti = time() . '-' . $user->id . '.' . $buktiFile->getClientOriginalExtension();
             $buktiPath = 'picture/bukti_pembayaran/' . $namaBukti;
             $buktiFile->move(public_path('picture/bukti_pembayaran'), $namaBukti);
         }
 
-        $data = [
+        Simpanan::create([
             'user_id' => $user->id,
             'jenis' => $validatedData['jenis'],
-            'jenis_transaksi' => 'penyetoran',
-            'jumlah' => $validatedData['jumlah'],
+            'jenis_transaksi' => $validatedData['jenis_transaksi'],
+            'jumlah' => $jumlahTransaksi,
             'kode_transaksi' => 'TRX-' . date('YmdHis') . '-' . $user->id,
             'tanggal_transaksi' => now()->toDateTimeString(),
             'status' => 'Dalam Proses',
             'metode_pembayaran' => $validatedData['metode_pembayaran'],
             'bukti' => $buktiPath,
-        ];
-
-        Simpanan::create($data);
+        ]);
 
         $redirectRoute = $validatedData['jenis'] === 'wajib' ? 'simpananwajib' : 'simpanansukarela';
 
@@ -147,6 +154,7 @@ class SimpananController extends Controller
             ->route($redirectRoute)
             ->with('success', 'Transaksi berhasil diajukan! Menunggu konfirmasi admin.');
     }
+
 
     public function boot()
     {
