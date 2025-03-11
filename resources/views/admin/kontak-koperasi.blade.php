@@ -4,15 +4,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simapanan Sukarela</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Kontak Koperasi </title>
 
     <link rel="stylesheet" href="{{asset('admin-page/assets/css/main/app.css')}}">
     <link rel="stylesheet" href="{{asset('admin-page/assets/css/main/app-dark.css')}}">
     <link rel="shortcut icon" href="{{asset('admin-page/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/x-icon">
     <link rel="shortcut icon" href="{{asset('admin-page/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/png">
-    <link rel="stylesheet" href="{{asset('admin-page/assets/css/simpanan-sukarela.css')}}">
+    <link rel="stylesheet" href="{{asset('admin-page/assets/css/profil-admin.css')}}">
 
 </head>
+
+<style>
+    .card {
+        background-color: #FFFFFF;
+        border-radius: 10px;
+    }
+
+    h3 {
+        font-weight: bold;
+    }
+
+    .table {
+        background-color: rgba(48, 47, 47, 0);
+    }
+
+    .table th {
+        background-color: rgb(255, 255, 255);
+    }
+
+    .table tbody tr:hover {
+        background-color: transparent;
+    }
+
+    .btn-primary {
+        background-color: #5865F2;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background-color: #4752C4;
+    }
+
+    .btn-warning {
+        background-color: #F1C40F;
+        border: none;
+    }
+
+    .btn-danger {
+        background-color: #E74C3C;
+        border: none;
+    }
+
+    /* Tambah jarak antara Edit Kontak dan Hapus Kontak */
+    .edit-kontak {
+        margin-bottom: 20px;
+        /* Atur sesuai kebutuhan */
+    }
+
+    /* Tambah padding di dalam form */
+    .form-group {
+        padding: 10px 0;
+    }
+</style>
 
 <body>
     <div id="app">
@@ -76,7 +130,7 @@
                         </li>
 
                         <li
-                            class="sidebar-item  has-sub active">
+                            class="sidebar-item  has-sub">
                             <a href="#" class='sidebar-link'>
                                 <i class="bi bi-wallet-fill"></i>
                                 <span>Simpanan</span>
@@ -93,23 +147,18 @@
                         </li>
 
                         <li
-                            class="sidebar-item ">
+                            class="sidebar-item  ">
                             <a href="{{route('pinjamanadmin')}}" class='sidebar-link'>
                                 <i class="bi bi-cash-stack"></i>
                                 <span>Pinjaman</span>
                             </a>
                         </li>
 
-                        <li class="sidebar-item">
-                            <a href="{{ route('angsuran') }}" class='sidebar-link'>
+                        <li
+                            class="sidebar-item  ">
+                            <a href="{{route('angsuran')}}" class='sidebar-link'>
                                 <i class="bi bi-coin"></i>
                                 <span>Angsuran</span>
-                                @if ($jumlahAngsuranDalamProses > 0)
-                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning">
-                                    {{ $jumlahAngsuranDalamProses }}
-                                    <span class="visually-hidden">angsuran dalam proses</span>
-                                </span>
-                                @endif
                             </a>
                         </li>
 
@@ -134,7 +183,7 @@
                             </a>
                         </li>
 
-                        <li class="sidebar-item ">
+                        <li class="sidebar-item">
                             <a href="{{ route('simpanans') }}" class="sidebar-link">
                                 <i class="bi bi-wallet-fill"></i>
                                 <span>Data Pengajuan Simpanan</span>
@@ -159,7 +208,7 @@
                                 <span>Kelola Pesan</span>
                             </a>
                         </li>
-                        <li class="nav-item sidebar-item position-relative ">
+                        <li class="nav-item sidebar-item position-relative">
                             <a href="{{ route('notifikasiadmin') }}" class="nav-link sidebar-link">
                                 <i class="bi bi-bell-fill"></i>
                                 <span>Notifikasi</span>
@@ -174,7 +223,7 @@
 
 
                         <li
-                            class="sidebar-item">
+                            class="sidebar-item  ">
                             <a href="{{route('laporan')}}" class='sidebar-link'>
                                 <i class="bi bi-file-earmark-bar-graph-fill"></i>
                                 <span>Laporan</span>
@@ -188,7 +237,7 @@
                             </a>
                         </li>
 
-                        <li class="sidebar-item ">
+                        <li class="sidebar-item active">
                             <a href="{{route('kontakkoperasi')}}" class="sidebar-link">
                                 <i class="bi-envelope-paper"></i>
                                 <span>Kontak Koperasi</span>
@@ -215,114 +264,106 @@
                 </a>
             </header>
             @if (Session::has('error'))
-            <div class="alert alert-danger d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #ff7f7f, #ff4d4d); color: #fff; border-radius: 20px; border: 2px solid #ff4d4d;">
-                <i class="bi bi-exclamation-triangle-fill me-3 fs-4" style="margin-top: -20px;"></i>
-                <div>
-                    <h5 class="mb-1">🚨 Oops! Terjadi Kesalahan</h5>
-                    <p class="mb-0">⚠️ {{ Session::get('error') }}</p>
-                </div>
+            <div class="alert alert-danger" style="background-color: salmon; color:aliceblue; border-radius:20px; margin-bottom:20px;">
+                {{ Session::get('error') }}
             </div>
             @endif
 
-            @if (Session::has('success'))
-            <div class="alert alert-success d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #66cc66, #33b233); color: #fff; border-radius: 20px; border: 2px solid #33b233;">
-                <i class="bi bi-check-circle-fill me-3 fs-4" style="margin-top: -20px;"></i>
-                <div>
-                    <h5 class="mb-1">🌟 Yeay! Berhasil</h5>
-                    <p class="mb-0">✅ {{ Session::get('success') }}</p>
+            <div class="container">
+                <h3 class="my-4">Kontak Koperasi</h3>
+
+                <!-- Jika berhasil -->
+                @if (Session::has('success'))
+                <div class="alert alert-success" style="background-color: lightgreen; color:aliceblue; border-radius:20px;">
+                    {{ Session::get('success') }}
                 </div>
-            </div>
-            @endif
+                @endif
 
-            <h3>Simpanan sukarela</h3>
-
-            <!-- Filter Pencarian -->
-            <div class="filter-simpanan" style="margin-bottom: 20px;">
-                <input type="text" id="search-simpanan-sukarela" class="form-control" placeholder="Cari anggota berdasarkan nama atau ID...">
-            </div>
-
-
-            <div class="card">
-                <div class="card-body">
-                    <h5>Data Simpanan Sukarela</h5>
-                    <div style="max-height: 450px;  overflow:auto; font-size:.9rem;">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>ID Simpanan</th>
-                                    <th>Nama Anggota</th>
-                                    <th>Jumlah Simpanan</th>
-                                    <th>Tanggal Simpanan</th>
-                                    <th>Jenis Transaksi</th> <!-- Mengganti Status ke Jenis Transaksi -->
-                                </tr>
-                            </thead>
-                            <tbody id="tabel-simpanan-sukarela">
-                                @foreach($simpananSukarela as $index => $simpanan)
-                                <tr>
-                                    <td>{{$index + 1}}</td>
-                                    <td>{{ $simpanan->id }}</td>
-                                    <td>{{ $simpanan->user->fullname ?? 'Tidak Diketahui' }}</td>
-                                    <td>Rp {{ number_format($simpanan->jumlah, 0, ',', '.') }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($simpanan->tanggal_transaksi)->format('Y-m-d') }}</td>
-                                    <td>{{ ucfirst($simpanan->jenis_transaksi) }}</td> <!-- Jenis Transaksi -->
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                <div class="container">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Kelola Kontak Koperasi</h4>
+                        </div>
+                        <div class="card-body">
+                            <form action="{{ route('kontakkoperasi.store') }}" method="POST">
+                                @csrf
+                                <h5>Tambah / Edit Kontak</h5>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label>Kategori</label>
+                                        <select name="key" class="form-control" required>
+                                            <option value="alamat" {{ isset($kontakData) && $kontakData->key == 'alamat' ? 'selected' : '' }}>📍 Alamat</option>
+                                            <option value="telepon" {{ isset($kontakData) && $kontakData->key == 'telepon' ? 'selected' : '' }}>📞 Telepon</option>
+                                            <option value="email" {{ isset($kontakData) && $kontakData->key == 'email' ? 'selected' : '' }}>✉️ Email</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label>Judul</label>
+                                        <input type="text" name="title" class="form-control" value="{{ $kontakData->title ?? '' }}" required>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label>URL</label>
+                                        <input type="text" name="value" class="form-control" value="{{ $kontakData->value ?? '' }}" required>
+                                    </div>
+                                    <div class="col-md-3 d-flex align-items-end">
+                                        <button type="submit" class="btn btn-success">Simpan</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <h5 class="mt-4">Daftar Kontak</h5>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Kategori</th>
+                                        <th>Judul</th>
+                                        <th>URL</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($kontak as $item)
+                                    <tr>
+                                        <td>{{ ucfirst($item->key) }}</td>
+                                        <td>{{ $item->title }}</td>
+                                        <td>{{ $item->value }}</td>
+                                        <td>
+                                            <a href="{{ route('kontakkoperasi.edit', $item->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                            <form action="{{ route('kontakkoperasi.destroy') }}" method="POST" class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <input type="hidden" name="id" value="{{ $item->id }}">
+                                                <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Statistik -->
-            <div class="simpanan-statistik mt-3">
-                <h4>Total Simpanan: <span id="total-simpanan-sukarela">Rp {{ number_format($totalSimpananSukarela, 0, ',', '.') }}</span></h4>
+                <footer>
+                    <div class="footer clearfix mb-0 text-muted">
+                        <div class="float-start">
+                            <p>2025 &copy; STARBIN</p>
+                        </div>
+                        <div class="float-end" style="margin-right: 30px;">
+                            <p>Dibuat dengan
+                                <span class="text-danger"><i class="bi bi-heart"></i></span>
+                                oleh
+                                <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
+                                &
+                                <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
+                            </p>
+                        </div>
+                    </div>
+                </footer>
             </div>
-
-            <footer>
-                <div class="footer clearfix mb-0 text-muted">
-                    <div class="float-start">
-                        <p>2025 &copy; STARBIN</p>
-                    </div>
-                    <div class="float-end" style="margin-right: 30px;">
-                        <p>Dibuat dengan
-                            <span class="text-danger"><i class="bi bi-heart"></i></span>
-                            oleh
-                            <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
-                            &
-                            <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
-                        </p>
-                    </div>
-                </div>
-            </footer>
         </div>
-    </div>
-    <script src="{{asset('admin-page/assets/js/bootstrap.js')}}"></script>
-    <script src="{{asset('admin-page/assets/js/app.js')}}"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const searchInput = document.getElementById("search-simpanan-sukarela");
-            const tableRows = document.querySelectorAll("#tabel-simpanan-sukarela tr");
-
-            searchInput.addEventListener("keyup", function() {
-                const searchText = searchInput.value.toLowerCase();
-
-                tableRows.forEach(row => {
-                    const id = row.cells[0].textContent.toLowerCase();
-                    const nama = row.cells[1].textContent.toLowerCase();
-                    const jenisTransaksi = row.cells[4].textContent.toLowerCase(); // Tambahkan jenis transaksi
-
-                    if (id.includes(searchText) || nama.includes(searchText) || jenisTransaksi.includes(searchText)) {
-                        row.style.display = "";
-                    } else {
-                        row.style.display = "none";
-                    }
-                });
-            });
-        });
-    </script>
-
-
+        <script src="{{asset('admin-page/assets/js/bootstrap.')}}js"></script>
+        <script src="{{asset('admin-page/assets/js/app.')}}js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>

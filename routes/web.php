@@ -11,6 +11,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataAnggotaController;
 use App\Http\Controllers\DataPengajuanController;
 use App\Http\Controllers\DendaController;
+use App\Http\Controllers\KontakController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\LogAktivitasController;
@@ -112,6 +113,12 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/admin/social-links/store', [SocialMediaController::class, 'store'])->name('admin.social-links.store');
         Route::put('/admin/social-links/update/{id}', [SocialMediaController::class, 'update'])->name('admin.social-links.update');
         Route::delete('/admin/social-links/delete/{id}', [SocialMediaController::class, 'destroy'])->name('admin.social-links.delete');
+        // Kontak Koperasi
+        Route::get('/Kontak-Koperasi', [KontakController::class, 'kontakkoperasi'])->name('kontakkoperasi');
+        Route::post('/kontak', [KontakController::class, 'store'])->name('kontakkoperasi.store');
+        Route::get('/kontakkoperasi/edit/{id}', [KontakController::class, 'edit'])->name('kontakkoperasi.edit');
+        Route::put('/kontak/update}', [KontakController::class, 'update'])->name('kontakkoperasi.update');
+        Route::delete('/kontak/delete', [KontakController::class, 'destroy'])->name('kontakkoperasi.destroy');
         // Bukti Pembayaram
         Route::get('/admin/bukti/{bukti}', [BuktiPembayaranController::class, 'showAdmin'])->name('admin.bukti.pembayaran');
         Route::get('admin//jaminan/{bukti}', [BuktiPembayaranController::class, 'showjaminanadmin'])->name('bukti.jaminan.admin');
