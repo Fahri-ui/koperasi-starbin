@@ -154,11 +154,11 @@
                 </div>
             </div>
             @endif
-            
             @if (auth()->user()->status === 'Belum_Aktif')
+
             <div class="container mt-4">
                 <!-- Card Peringatan -->
-                <div class="card shadow-sm mb-3">
+                <div class="card shadow-sm mb-3" style="text-align: center;">
                     <div class="card-body bg-warning text-dark">
                         <div class="d-flex align-items-center">
                             <i class="bi bi-exclamation-triangle-fill me-2 fs-4"></i>
@@ -206,11 +206,14 @@
             <div class="container mt-4">
                 <!-- Card Peringatan Pengajuan Ditolak -->
                 <div class="card shadow-sm mb-3">
-                    <div class="card-body bg-danger text-white">
+                    <div class="card-body bg-danger text-white" style="padding: 30px; border-radius: 10px;text-align:center;">
                         <div class="d-flex align-items-center">
-                            <i class="bi bi-x-circle-fill me-4 fs-2" style="margin-top: -30px;"></i>
+                            <i class="bi bi-x-circle-fill me-4" style="font-size: 3rem; margin-top:-150px;"></i>
                             <div>
-                                <strong style="font-size: 2rem;">Pengajuan Anda Ditolak!</strong><br> Mohon maaf, pengajuan simpanan anggota Anda tidak dapat diproses. Silakan periksa kembali data yang Anda kirimkan atau lakukan pembayaran ulang sesuai ketentuan koperasi.
+                                <strong style="font-size: 2.5rem; display: block; margin-bottom: 10px;">Pengajuan Anda Ditolak!</strong>
+                                <p style="font-size: 1.2rem; line-height: 1.5; margin: 0;">
+                                    Mohon maaf, pengajuan simpanan anggota Anda tidak dapat diproses. Silakan periksa kembali data yang Anda kirimkan atau lakukan pembayaran ulang sesuai ketentuan koperasi.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -250,7 +253,6 @@
             </div>
 
             @elseif (auth()->user()->status === 'Pending')
-           
             <div class="alert p-4 shadow" style="background-color: #435ebe; color: #fff; border-radius: 10px;">
                 <div class="d-flex align-items-start">
                     <i class="bi bi-hourglass-split fs-1 me-3" style="color: #ffdd57; margin-top:-15px; padding-right:30px;"></i>
@@ -286,40 +288,196 @@
             </div>
 
             @elseif (auth()->user()->status === 'Belum_Bayar_Simpanan_Wajib')
-            <!-- -- Tampilkan formulir pembayaran simpanan terakhir - -->
-            <form action="{{ route('simpanan.store') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <input type="hidden" name="jenis" value="wajib">
-                <input type="hidden" name="validasi" value="100000">
-
-                <div class="form-group">
-                    <label for="jenis_transaksi">Jenis Transaksi</label>
-                    <select name="jenis_transaksi" id="jenis_transaksi" class="form-control" required>
-                        <option value="penyetoran">Penyetoran</option>
-                    </select>
+            <!-- Section Peringatan Keterlambatan -->
+            <div class="card shadow-lg border-0 mb-4" style="text-align: center;">
+                <div class="card-body bg-warning text-dark" style="border-radius: 10px;">
+                    <div class="d-flex align-items-start">
+                        <i class="bi bi-info-circle-fill text-primary fs-1 me-3" style="margin-top:-20px;"></i>
+                        <div>
+                            <h4 class="fw-bold"> Peringatan: Keterlambatan Pembayaran Simpanan Wajib</h4>
+                            <hr style="border: 2px solid rgb(0, 0, 0);">
+                            <p style="color:rgb(80, 83, 85);">
+                                Anda memiliki keterlambatan pembayaran simpanan wajib selama <strong>2 bulan</strong> dengan total sebesar <strong>Rp 100.000</strong>.
+                                Mohon segera melunasi sebelum <strong>bulan depan</strong> untuk mencegah akun menjadi <strong>nonaktif</strong>.
+                                Jika tidak dapat membayar simpanan wajib, <strong>segera tarik simpanan sukarela</strong> Anda sebelum akun dinonaktifkan.
+                                Apabila akun <strong>nonaktif</strong>, jaminan pada pinjaman aktif akan kami <strong>ambil</strong>.
+                                Jika Anda memiliki saldo <strong>simpanan sukarela</strong>, Anda dapat mengunjungi kantor kami dengan membawa bukti tangkapan layar <strong>pada halaman Simpanan Sukarela</strong>.
+                                <br><br>
+                                Pastikan pembayaran tepat waktu agar status keanggotaan Anda tetap aktif.
+                            </p>
+                        </div>
+                    </div>
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label for="jumlah">Jumlah</label>
-                    <input type="number" name="jumlah" id="jumlah" class="form-control" required min="100000" max="100000">
+            <!-- Card Form Pembayaran Simpanan -->
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-gradient bg-primary text-white">
+                    <h5 class="mb-0 text-white"><i class="bi bi-wallet-fill"></i> Form Pembayaran Simpanan</h5>
                 </div>
+                <div class="card-body" style="margin-top: 20px;">
+                    <form action="{{ route('simpanan.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="jenis" value="wajib">
+                        <input type="hidden" name="validasi" value="100000">
 
-                <div class="form-group">
-                    <label for="metode_pembayaran">Metode Pembayaran</label>
-                    <select name="metode_pembayaran" id="metode_pembayaran" class="form-control" required>
-                        <option value="cash">Cash</option>
-                        <option value="transfer-bank">Transfer Bank</option>
-                        <option value="ewallet">E-Wallet</option>
-                    </select>
+                        <div class="mb-3">
+                            <label for="jenis_transaksi" class="form-label"><i class="bi bi-shuffle"></i> Jenis Transaksi</label>
+                            <select name="jenis_transaksi" id="jenis_transaksi" class="form-select" required>
+                                <option value="penyetoran">Penyetoran</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="jumlah" class="form-label"><i class="bi bi-cash"></i> Jumlah (Rp)</label>
+                            <input type="number" name="jumlah" id="jumlah" class="form-control" required min="100000" max="100000" placeholder="Masukan Nominal Bayar">
+                            <small class="text-muted"><i class="bi bi-info-circle"></i> Jumlah simpanan adalah tunggakan simpanan wajib 2 bulan</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="metode_pembayaran" class="form-label"><i class="bi bi-credit-card"></i> Metode Pembayaran</label>
+                            <select name="metode_pembayaran" id="metode_pembayaran" class="form-select" required>
+                                <option value="cash">Tunai (Bayar Langsung)</option>
+                                <option value="transfer-bank">Transfer Bank</option>
+                                <option value="ewallet">E-Wallet (Dana, OVO, Gopay)</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="bukti" class="form-label"><i class="bi bi-upload"></i> Unggah Bukti Pembayaran</label>
+                            <input type="file" name="bukti" id="bukti" class="form-control" required accept="image/jpeg, image/png, image/jpg">
+                            <small class="text-muted"><i class="bi bi-image"></i> Format yang didukung: JPG, JPEG, PNG.</small>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-check-circle-fill"></i> Konfirmasi Pembayaran
+                        </button>
+                    </form>
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label for="bukti_pembayaran">Upload Bukti Pembayaran (jpg, jpeg, png)</label>
-                    <input type="file" name="bukti_pembayaran" id="bukti_pembayaran" class="form-control" required accept="image/jpeg, image/png, image/jpg">
+            <br><br><br>
+
+            <div class="page-heading d-flex align-items-center pb-3 border-bottom">
+                <i class="bi bi-person-circle me-2 fs-3 text-primary" style="margin-top: -30px; padding-right: 30px;"></i>
+                <h3 class="mb-0 fw-bold">👋 Halo, {{ Auth::user()->fullname }}</h3>
+            </div>
+
+
+            <div class="page-content">
+                <div class="container">
+                    <div class="container">
+                        <div class="row">
+                            <!-- Profil Section -->
+                            <div class="col-md-6">
+                                <div class="card mb-4 shadow" style="background: linear-gradient(135deg, #007bff, #6610f2); color: #fff; border-radius: 10px;">
+                                    <div class="card-body text-center">
+                                        <div class="poto-profil">
+                                            <img src="{{asset('picture/account/'. Auth::user()->gambar)}}" alt="Foto Profil" class="img-fluid rounded-circle">
+                                        </div>
+                                        <h3 class="mt-3 text-white">{{ Auth::user()->fullname }}</h3>
+                                        <p><i class="bi bi-envelope"></i> {{ Auth::user()->email }}</p>
+                                        <p><i class="bi bi-telephone"></i> {{ Auth::user()->phone }}</p>
+                                        <p><i class="bi bi-geo-alt"></i> {{ Auth::user()->address }}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Statistik Section -->
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <!-- Card 1 -->
+                                    <div class="col-12 col-lg-6 mb-4">
+                                        <div class="card shadow" style="border-left: 5px solid #007bff; border-radius: 10px;">
+                                            <div class="card-body">
+                                                <h6 style="color: #007bff;"><i class="bi bi-calendar me-2"></i>Tanggal Bergabung</h6>
+                                                <p>{{ Auth::user()->created_at->translatedFormat('d F Y') }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card 2 -->
+                                    <div class="col-12 col-lg-6 mb-4">
+                                        <div class="card shadow" style="border-left: 5px solid #ffc107; border-radius: 10px;">
+                                            <div class="card-body">
+                                                <h6 style="color: #ffc107;"><i class="bi bi-clock-history me-2"></i>Terakhir Diperbarui</h6>
+                                                <p>{{ Auth::user()->updated_at ? Auth::user()->updated_at->translatedFormat('d F Y') : 'Belum ada pembaruan' }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card 3 -->
+                                    <div class="col-12 col-lg-6 mb-4">
+                                        <div class="card shadow" style="border-left: 5px solid #28a745; border-radius: 10px;">
+                                            <div class="card-body">
+                                                <h6 style="color: #28a745;"><i class="bi bi-piggy-bank me-2"></i>Total Simpanan</h6>
+                                                <p><strong>Rp {{ number_format($totalSukarela ?? 0, 0, ',', '.') }}</strong></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card 4 -->
+                                    <div class="col-12 col-lg-6 mb-4">
+                                        <div class="card shadow" style="border-left: 5px solid #dc3545; border-radius: 10px;">
+                                            <div class="card-body">
+                                                <h6 style="color: #dc3545;"><i class="bi bi-cash-stack me-2"></i>Total Pinjaman</h6>
+                                                <p><strong>Rp {{ number_format($totalPinjaman, 0, ',', '.') }}</strong></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kotak Ketiga: Formulir Edit Profil -->
+                    <div class="card mb-4 shadow" style="border: 1px solid #007bff; border-radius: 10px;">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="text-white"><i class="bi bi-pencil-square me-2"></i> Edit Profil</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="edit-profile-form" enctype="multipart/form-data" method="POST" action="{{ route('edit.profil') }}">
+                                @csrf
+                                <input type="hidden" name="_method" value="PUT">
+
+                                <!-- Nama -->
+                                <div class="mb-3">
+                                    <label for="fullname" class="form-label"><i class="bi bi-person"></i> Nama</label>
+                                    <input type="text" class="form-control" id="fullname" name="fullname" value="{{ old('fullname', Auth::user()->fullname) }}" required>
+                                </div>
+
+                                <!-- Email -->
+                                <div class="mb-3">
+                                    <label for="email" class="form-label"><i class="bi bi-envelope"></i> Email</label>
+                                    <input type="email" class="form-control" id="email" name="email" value="{{ old('email', Auth::user()->email) }}" required>
+                                </div>
+
+                                <!-- Gambar -->
+                                <div class="mb-3">
+                                    <label for="gambar" class="form-label"><i class="bi bi-camera"></i> Foto Profil</label>
+                                    <input type="file" class="form-control" id="gambar" name="gambar" accept="image/*">
+                                </div>
+
+                                <!-- Nomor Telepon -->
+                                <div class="mb-3">
+                                    <label for="phone" class="form-label"><i class="bi bi-telephone"></i> Nomor Telepon</label>
+                                    <input type="tel" class="form-control" id="phone" name="phone" value="{{ old('phone', Auth::user()->phone) }}" required>
+                                </div>
+
+                                <!-- Alamat -->
+                                <div class="mb-3">
+                                    <label for="address" class="form-label"><i class="bi bi-geo-alt"></i> Alamat</label>
+                                    <textarea class="form-control" id="address" name="address" rows="5" required>{{ old('address', Auth::user()->address) }}</textarea>
+                                </div>
+
+                                <!-- Tombol Submit -->
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-check-circle me-2"></i> Konfirmasi Edit Profil
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-
-                <button type="submit" class="btn btn-primary">Konfirmasi Transaksi</button>
-            </form>
+            </div>
 
             @elseif (auth()->user()->status === 'Nonaktif')
             {{-- Tampilkan pesan akun nonaktif --}}
@@ -327,92 +485,119 @@
 
             @else
 
-            <div class="page-heading">
-                <center>
-                    <h2>Selamat Datang {{Auth::user()->fullname}}</h2>
-                </center>
+            <div class="page-heading d-flex align-items-center pb-3 border-bottom">
+                <i class="bi bi-person-circle me-2 fs-3 text-primary" style="margin-top: -30px; padding-right: 30px;"></i>
+                <h3 class="mb-0 fw-bold">👋 Halo, {{ Auth::user()->fullname }}</h3>
             </div>
 
             <div class="page-content">
                 <div class="container">
-                    <!-- Kotak Pertama: Profil User -->
-                    <div class="card mb-4">
-                        <div class="card-body text-center">
-                            <div class="poto-profil">
-                                <img src="{{asset('picture/account/'. Auth::user()->gambar)}}" alt="Foto Profil">
+                    <div class="container">
+                        <div class="row">
+                            <!-- Profil Section -->
+                            <div class="col-md-6">
+                                <div class="card mb-4 shadow" style="background: linear-gradient(135deg, #007bff, #6610f2); color: #fff; border-radius: 10px;">
+                                    <div class="card-body text-center">
+                                        <div class="poto-profil">
+                                            <img src="{{asset('picture/account/'. Auth::user()->gambar)}}" alt="Foto Profil" class="img-fluid rounded-circle">
+                                        </div>
+                                        <h3 class="mt-3 text-white">{{ Auth::user()->fullname }}</h3>
+                                        <p><i class="bi bi-envelope"></i> {{ Auth::user()->email }}</p>
+                                        <p><i class="bi bi-telephone"></i> {{ Auth::user()->phone }}</p>
+                                        <p><i class="bi bi-geo-alt"></i> {{ Auth::user()->address }}</p>
+                                    </div>
+                                </div>
                             </div>
-                            <h3 class="mt-3">{{Auth::user()->fullname}}</h3>
-                            <p>{{Auth::user()->email}}</p>
-                            <p>{{Auth::user()->phone}}</p>
-                            <p>{{Auth::user()->address}}</p>
-                        </div>
-                    </div>
 
-                    <!-- Kotak Kedua: Detail Akun -->
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h5 style="margin-bottom: 10px;">Detail Akun</h5>
-                            <br>
-                            <p>Tanggal Bergabung: {{ Auth::user()->created_at->translatedFormat('d F Y') }}</p>
-                            <p>Terakhir Diperbarui: {{ Auth::user()->updated_at ? Auth::user()->updated_at->translatedFormat('d F Y') : 'Anda belum pernah mengupdate profil Anda' }}</p>
-                            <p>Total Simpanan: Rp {{ number_format($totalSukarela ?? 0, 0, ',', '.') }}</p>
-                            <p>Total Pinjaman: Rp Rp {{ number_format($totalPinjaman, 0, ',', '.') }}</p>
+                            <!-- Statistik Section -->
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <!-- Card 1 -->
+                                    <div class="col-12 col-lg-6 mb-4">
+                                        <div class="card shadow" style="border-left: 5px solid #007bff; border-radius: 10px;">
+                                            <div class="card-body">
+                                                <h6 style="color: #007bff;"><i class="bi bi-calendar me-2"></i>Tanggal Bergabung</h6>
+                                                <p>{{ Auth::user()->created_at->translatedFormat('d F Y') }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card 2 -->
+                                    <div class="col-12 col-lg-6 mb-4">
+                                        <div class="card shadow" style="border-left: 5px solid #ffc107; border-radius: 10px;">
+                                            <div class="card-body">
+                                                <h6 style="color: #ffc107;"><i class="bi bi-clock-history me-2"></i>Terakhir Diperbarui</h6>
+                                                <p>{{ Auth::user()->updated_at ? Auth::user()->updated_at->translatedFormat('d F Y') : 'Belum ada pembaruan' }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card 3 -->
+                                    <div class="col-12 col-lg-6 mb-4">
+                                        <div class="card shadow" style="border-left: 5px solid #28a745; border-radius: 10px;">
+                                            <div class="card-body">
+                                                <h6 style="color: #28a745;"><i class="bi bi-piggy-bank me-2"></i>Total Simpanan</h6>
+                                                <p><strong>Rp {{ number_format($totalSukarela ?? 0, 0, ',', '.') }}</strong></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card 4 -->
+                                    <div class="col-12 col-lg-6 mb-4">
+                                        <div class="card shadow" style="border-left: 5px solid #dc3545; border-radius: 10px;">
+                                            <div class="card-body">
+                                                <h6 style="color: #dc3545;"><i class="bi bi-cash-stack me-2"></i>Total Pinjaman</h6>
+                                                <p><strong>Rp {{ number_format($totalPinjaman, 0, ',', '.') }}</strong></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Kotak Ketiga: Formulir Edit Profil -->
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <h5>Edit Profil</h5>
+                    <div class="card mb-4 shadow" style="border: 1px solid #007bff; border-radius: 10px;">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="text-white"><i class="bi bi-pencil-square me-2"></i> Edit Profil</h5>
                         </div>
                         <div class="card-body">
                             <form id="edit-profile-form" enctype="multipart/form-data" method="POST" action="{{ route('edit.profil') }}">
                                 @csrf
-                                <input type="hidden" name="_method" value="PUT"> <!-- Metode PUT untuk update -->
+                                <input type="hidden" name="_method" value="PUT">
+
                                 <!-- Nama -->
                                 <div class="mb-3">
-                                    <label for="fullname" class="form-label">Nama</label>
-                                    <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Nama Lengkap" value="{{ old('fullname', Auth::user()->fullname) }}" required>
+                                    <label for="fullname" class="form-label"><i class="bi bi-person"></i> Nama</label>
+                                    <input type="text" class="form-control" id="fullname" name="fullname" value="{{ old('fullname', Auth::user()->fullname) }}" required>
                                 </div>
 
                                 <!-- Email -->
                                 <div class="mb-3">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="{{ old('email', Auth::user()->email) }}" required>
-                                </div>
-
-                                <!-- Password -->
-                                <div class="mb-3">
-                                    <label for="password" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-                                </div>
-
-                                <!-- Konfirmasi Password -->
-                                <div class="mb-3">
-                                    <label for="confirm-password" class="form-label">Konfirmasi Password</label>
-                                    <input type="password" class="form-control" id="confirm-password" name="confirm_password" placeholder="Konfirmasi Password">
+                                    <label for="email" class="form-label"><i class="bi bi-envelope"></i> Email</label>
+                                    <input type="email" class="form-control" id="email" name="email" value="{{ old('email', Auth::user()->email) }}" required>
                                 </div>
 
                                 <!-- Gambar -->
                                 <div class="mb-3">
-                                    <label for="gambar" class="form-label">Foto Profil</label>
+                                    <label for="gambar" class="form-label"><i class="bi bi-camera"></i> Foto Profil</label>
                                     <input type="file" class="form-control" id="gambar" name="gambar" accept="image/*">
                                 </div>
 
                                 <!-- Nomor Telepon -->
                                 <div class="mb-3">
-                                    <label for="phone" class="form-label">Nomor Telepon</label>
-                                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="Nomor Telepon" value="{{ old('phone', Auth::user()->phone) }}" required>
+                                    <label for="phone" class="form-label"><i class="bi bi-telephone"></i> Nomor Telepon</label>
+                                    <input type="tel" class="form-control" id="phone" name="phone" value="{{ old('phone', Auth::user()->phone) }}" required>
                                 </div>
 
                                 <!-- Alamat -->
                                 <div class="mb-3">
-                                    <label for="address" class="form-label">Alamat</label>
-                                    <textarea class="form-control" id="address" name="address" rows="5" placeholder="Alamat" required>{{ old('address', Auth::user()->address) }}</textarea>
+                                    <label for="address" class="form-label"><i class="bi bi-geo-alt"></i> Alamat</label>
+                                    <textarea class="form-control" id="address" name="address" rows="5" required>{{ old('address', Auth::user()->address) }}</textarea>
                                 </div>
 
+                                <!-- Tombol Submit -->
                                 <div class="text-end">
-                                    <button type="submit" class="btn btn-primary">Konfirmasi Edit Profil</button>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-check-circle me-2"></i> Konfirmasi Edit Profil
+                                    </button>
                                 </div>
                             </form>
                         </div>

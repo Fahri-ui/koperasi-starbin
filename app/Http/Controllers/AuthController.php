@@ -29,13 +29,7 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($request->only('email', 'password'))) {
-            $user = Auth::user();
-        
-            if ($user->status === 'Nonaktif') {
-                Auth::logout(); // Langsung logout jika status Nonaktif
-                return redirect()->route('login')->withErrors(['email' => 'Akun terkait telah dinonaktifkan']);
-            }
-        
+            $user = Auth::user();       
             if ($user->role === 'admin') {
                 return redirect()->route('min')->with('success', 'Halo Admin, Anda berhasil login');
             } elseif ($user->role === 'user') {

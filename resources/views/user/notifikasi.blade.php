@@ -174,29 +174,11 @@
                     <i class="bi bi-justify fs-3"></i>
                 </a>
             </header>
-            @if (Session::has('error'))
-            <div class="alert alert-danger d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #ff7f7f, #ff4d4d); color: #fff; border-radius: 20px; border: 2px solid #ff4d4d;">
-                <i class="bi bi-exclamation-triangle-fill me-3 fs-4" style="margin-top: -20px;"></i>
-                <div>
-                    <h5 class="mb-1">🚨 Oops! Terjadi Kesalahan</h5>
-                    <p class="mb-0">⚠️ {{ Session::get('error') }}</p>
-                </div>
-            </div>
-            @endif
-
-            @if (Session::has('success'))
-            <div class="alert alert-success d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #66cc66, #33b233); color: #fff; border-radius: 20px; border: 2px solid #33b233;">
-                <i class="bi bi-check-circle-fill me-3 fs-4" style="margin-top: -20px;"></i>
-                <div>
-                    <h5 class="mb-1">🌟 Yeay! Berhasil</h5>
-                    <p class="mb-0">✅ {{ Session::get('success') }}</p>
-                </div>
-            </div>
-            @endif
             @if (auth()->user()->status === 'Belum_Aktif')
+
             <div class="container mt-4">
                 <!-- Card Peringatan -->
-                <div class="card shadow-sm mb-3">
+                <div class="card shadow-sm mb-3" style="text-align: center;">
                     <div class="card-body bg-warning text-dark">
                         <div class="d-flex align-items-center">
                             <i class="bi bi-exclamation-triangle-fill me-2 fs-4"></i>
@@ -244,11 +226,14 @@
             <div class="container mt-4">
                 <!-- Card Peringatan Pengajuan Ditolak -->
                 <div class="card shadow-sm mb-3">
-                    <div class="card-body bg-danger text-white">
+                    <div class="card-body bg-danger text-white" style="padding: 30px; border-radius: 10px;text-align:center;">
                         <div class="d-flex align-items-center">
-                            <i class="bi bi-x-circle-fill me-4 fs-2" style="margin-top: -30px;"></i>
+                            <i class="bi bi-x-circle-fill me-4" style="font-size: 3rem; margin-top:-150px;"></i>
                             <div>
-                                <strong style="font-size: 2rem;">Pengajuan Anda Ditolak!</strong><br> Mohon maaf, pengajuan simpanan anggota Anda tidak dapat diproses. Silakan periksa kembali data yang Anda kirimkan atau lakukan pembayaran ulang sesuai ketentuan koperasi.
+                                <strong style="font-size: 2.5rem; display: block; margin-bottom: 10px;">Pengajuan Anda Ditolak!</strong>
+                                <p style="font-size: 1.2rem; line-height: 1.5; margin: 0;">
+                                    Mohon maaf, pengajuan simpanan anggota Anda tidak dapat diproses. Silakan periksa kembali data yang Anda kirimkan atau lakukan pembayaran ulang sesuai ketentuan koperasi.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -321,80 +306,198 @@
                     </li>
                 </ul>
             </div>
+
             @elseif (auth()->user()->status === 'Belum_Bayar_Simpanan_Wajib')
-            <!-- -- Tampilkan formulir pembayaran simpanan terakhir - -->
-            <form action="{{ route('simpanan.store') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <input type="hidden" name="jenis" value="wajib">
-                <input type="hidden" name="validasi" value="100000">
-
-                <div class="form-group">
-                    <label for="jenis_transaksi">Jenis Transaksi</label>
-                    <select name="jenis_transaksi" id="jenis_transaksi" class="form-control" required>
-                        <option value="penyetoran">Penyetoran</option>
-                    </select>
+            <!-- Section Peringatan Keterlambatan -->
+            <div class="card shadow-lg border-0 mb-4" style="text-align: center;">
+                <div class="card-body bg-warning text-dark" style="border-radius: 10px;">
+                    <div class="d-flex align-items-start">
+                        <i class="bi bi-info-circle-fill text-primary fs-1 me-3" style="margin-top:-20px;"></i>
+                        <div>
+                            <h4 class="fw-bold"> Peringatan: Keterlambatan Pembayaran Simpanan Wajib</h4>
+                            <hr style="border: 2px solid rgb(0, 0, 0);">
+                            <p style="color:rgb(80, 83, 85);">
+                                Anda memiliki keterlambatan pembayaran simpanan wajib selama <strong>2 bulan</strong> dengan total sebesar <strong>Rp 100.000</strong>.
+                                Mohon segera melunasi sebelum <strong>bulan depan</strong> untuk mencegah akun menjadi <strong>nonaktif</strong>.
+                                Jika tidak dapat membayar simpanan wajib, <strong>segera tarik simpanan sukarela</strong> Anda sebelum akun dinonaktifkan.
+                                Apabila akun <strong>nonaktif</strong>, jaminan pada pinjaman aktif akan kami <strong>ambil</strong>.
+                                Jika Anda memiliki saldo <strong>simpanan sukarela</strong>, Anda dapat mengunjungi kantor kami dengan membawa bukti tangkapan layar <strong>pada halaman Simpanan Sukarela</strong>.
+                                <br><br>
+                                Pastikan pembayaran tepat waktu agar status keanggotaan Anda tetap aktif.
+                            </p>
+                        </div>
+                    </div>
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label for="jumlah">Jumlah</label>
-                    <input type="number" name="jumlah" id="jumlah" class="form-control" required min="100000" max="100000">
+            <!-- Card Form Pembayaran Simpanan -->
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-gradient bg-primary text-white">
+                    <h5 class="mb-0 text-white"><i class="bi bi-wallet-fill"></i> Form Pembayaran Simpanan</h5>
                 </div>
+                <div class="card-body" style="margin-top: 20px;">
+                    <form action="{{ route('simpanan.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="jenis" value="wajib">
+                        <input type="hidden" name="validasi" value="100000">
 
-                <div class="form-group">
-                    <label for="metode_pembayaran">Metode Pembayaran</label>
-                    <select name="metode_pembayaran" id="metode_pembayaran" class="form-control" required>
-                        <option value="cash">Cash</option>
-                        <option value="transfer-bank">Transfer Bank</option>
-                        <option value="ewallet">E-Wallet</option>
-                    </select>
+                        <div class="mb-3">
+                            <label for="jenis_transaksi" class="form-label"><i class="bi bi-shuffle"></i> Jenis Transaksi</label>
+                            <select name="jenis_transaksi" id="jenis_transaksi" class="form-select" required>
+                                <option value="penyetoran">Penyetoran</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="jumlah" class="form-label"><i class="bi bi-cash"></i> Jumlah (Rp)</label>
+                            <input type="number" name="jumlah" id="jumlah" class="form-control" required min="100000" max="100000" placeholder="Masukan Nominal Bayar">
+                            <small class="text-muted"><i class="bi bi-info-circle"></i> Jumlah simpanan adalah tunggakan simpanan wajib 2 bulan</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="metode_pembayaran" class="form-label"><i class="bi bi-credit-card"></i> Metode Pembayaran</label>
+                            <select name="metode_pembayaran" id="metode_pembayaran" class="form-select" required>
+                                <option value="cash">Tunai (Bayar Langsung)</option>
+                                <option value="transfer-bank">Transfer Bank</option>
+                                <option value="ewallet">E-Wallet (Dana, OVO, Gopay)</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="bukti" class="form-label"><i class="bi bi-upload"></i> Unggah Bukti Pembayaran</label>
+                            <input type="file" name="bukti" id="bukti" class="form-control" required accept="image/jpeg, image/png, image/jpg">
+                            <small class="text-muted"><i class="bi bi-image"></i> Format yang didukung: JPG, JPEG, PNG.</small>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-check-circle-fill"></i> Konfirmasi Pembayaran
+                        </button>
+                    </form>
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label for="bukti_pembayaran">Upload Bukti Pembayaran (jpg, jpeg, png)</label>
-                    <input type="file" name="bukti_pembayaran" id="bukti_pembayaran" class="form-control" required accept="image/jpeg, image/png, image/jpg">
-                </div>
+            <br><br><br>
 
-                <button type="submit" class="btn btn-primary">Konfirmasi Transaksi</button>
-            </form>
-
-            @elseif (auth()->user()->status === 'Nonaktif')
-            {{-- Tampilkan pesan akun nonaktif --}}
-            <h3 class="text-red-500 text-center">Akun Anda Nonaktif. Silakan hubungi admin untuk informasi lebih lanjut.</h3>
-
-            @else
             <div class="container">
-                <h2 class="text-center fw-bold my-4">📢 Halaman Notifikasi</h2>
+                <div class="mb-4 pb-2 border-bottom">
+                    <h2 class="text-center fw-bold">
+                        <i class="bi bi-bell-fill me-2"></i> Halaman Notifikasi
+                    </h2>
+                </div>
 
                 <div class="d-flex flex-column align-items-center">
                     @foreach ($notifikasiPerBulan as $bulan => $notifikasi)
-                    <h4 class="text-primary fw-bold mt-3">
-                        {{ \Carbon\Carbon::parse($bulan . '-01')->translatedFormat('F Y') }}
-                    </h4>
+                    <div class="w-100">
+                        <h4 class="text-primary fw-bold mt-4 border-bottom pb-2">
+                            <i class="bi bi-calendar3 me-2"></i>
+                            {{ \Carbon\Carbon::parse($bulan . '-01')->translatedFormat('F Y') }}
+                        </h4>
+                    </div>
 
                     @foreach ($notifikasi as $item)
-                    @if ($item->type !== 'info') {{-- Sembunyikan notifikasi dengan type 'info' --}}
-                    <div class="card shadow-sm p-4 mb-6 rounded border-1 {{ $item->is_read ? '' : 'border-primary' }}">
-                        <div class="d-flex align-items-start">
-                            <div class="icon-container">
-                                <i class="bi {{ $item->icon }} text-{{ $item->type }}"></i>
-                            </div>
-                            <div class="ms-3">
-                                <h6 class="fw-bold text-{{ $item->type }}">
-                                    {{ $item->user_id == 0 ? 'Pesan Umum' : 'Pesan Untuk Anda' }}
-                                </h6>
-                                <p class="mb-1">
-                                    {{ $item->message }}
-                                    @if (!$item->is_read)
-                                    <span class="badge bg-primary ms-2">Baru</span>
-                                    @endif
-                                </p>
-                                <small class="text-muted">Diterima: {{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d F Y') }}</small>
+                    @if ($item->type !== 'info')
+                    <div class="card shadow-sm p-0 mb-4 rounded border-1 {{ $item->is_read ? '' : 'border-primary' }}">
+                        <!-- Header notifikasi dengan warna sesuai tipe -->
+                        <div class="card-header bg-{{ $item->type }} text-white">
+                            <h4 class="fw-bold mb-0 text-white">
+                                <i class="bi {{ $item->icon }} me-2"></i>
+                                {{ $item->user_id == 0 ? 'Pesan Umum' : 'Pesan Untuk Anda' }}
+                            </h4>
+                        </div>
+
+                        <!-- Isi notifikasi -->
+                        <div class="card-body" style="margin-top: 20px;">
+                            <p class="mb-3 pb-2 border-bottom">
+                                {{ $item->message }}
+                                @if (!$item->is_read)
+                                <span class="badge bg-primary ms-2">Baru</span>
+                                @endif
+                            </p>
+
+                            <!-- Bagian tanggal diterima -->
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="bi bi-clock-history me-1"></i>
+                                    Diterima: {{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d F Y - H:i') }}
+                                </small>
+                                <small class="text-muted">
+                                    <i class="bi bi-eye{{ $item->is_read ? '-fill' : '' }} me-1"></i>
+                                    {{ $item->is_read ? 'Sudah Dibaca' : 'Belum Dibaca' }}
+                                </small>
                             </div>
                         </div>
                     </div>
                     @endif
                     @endforeach
                     @endforeach
+
+                    @if ($notifikasiPerBulan->isEmpty())
+                    <div class="alert alert-info text-center mt-4">
+                        <i class="bi bi-info-circle-fill"></i> Tidak ada notifikasi terbaru.
+                    </div>
+                    @endif
+                </div>
+            </div>
+
+            
+            @elseif (auth()->user()->status === 'Nonaktif')
+            {{-- Tampilkan pesan akun nonaktif --}}
+            <h3 class="text-red-500 text-center">Akun Anda Nonaktif. Silakan hubungi admin untuk informasi lebih lanjut.</h3>
+
+            @else
+            <div class="container">
+                <div class="mb-4 pb-2 border-bottom">
+                    <h2 class="text-center fw-bold">
+                        <i class="bi bi-bell-fill me-2"></i> Halaman Notifikasi
+                    </h2>
+                </div>
+
+                <div class="d-flex flex-column align-items-center">
+                    @foreach ($notifikasiPerBulan as $bulan => $notifikasi)
+                    <div class="w-100">
+                        <h4 class="text-primary fw-bold mt-4 border-bottom pb-2">
+                            <i class="bi bi-calendar3 me-2"></i>
+                            {{ \Carbon\Carbon::parse($bulan . '-01')->translatedFormat('F Y') }}
+                        </h4>
+                    </div>
+
+                    @foreach ($notifikasi as $item)
+                    @if ($item->type !== 'info')
+                    <div class="card shadow-sm p-0 mb-4 rounded border-1 {{ $item->is_read ? '' : 'border-primary' }}">
+                        <!-- Header notifikasi dengan warna sesuai tipe -->
+                        <div class="card-header bg-{{ $item->type }} text-white">
+                            <h4 class="fw-bold mb-0 text-white">
+                                <i class="bi {{ $item->icon }} me-2"></i>
+                                {{ $item->user_id == 0 ? 'Pesan Umum' : 'Pesan Untuk Anda' }}
+                            </h4>
+                        </div>
+
+                        <!-- Isi notifikasi -->
+                        <div class="card-body" style="margin-top: 20px;">
+                            <p class="mb-3 pb-2 border-bottom">
+                                {{ $item->message }}
+                                @if (!$item->is_read)
+                                <span class="badge bg-primary ms-2">Baru</span>
+                                @endif
+                            </p>
+
+                            <!-- Bagian tanggal diterima -->
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="bi bi-clock-history me-1"></i>
+                                    Diterima: {{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d F Y - H:i') }}
+                                </small>
+                                <small class="text-muted">
+                                    <i class="bi bi-eye{{ $item->is_read ? '-fill' : '' }} me-1"></i>
+                                    {{ $item->is_read ? 'Sudah Dibaca' : 'Belum Dibaca' }}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+                    @endforeach
+                    @endforeach
+
                     @if ($notifikasiPerBulan->isEmpty())
                     <div class="alert alert-info text-center mt-4">
                         <i class="bi bi-info-circle-fill"></i> Tidak ada notifikasi terbaru.

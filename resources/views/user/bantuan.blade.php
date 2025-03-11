@@ -14,6 +14,18 @@
 
 </head>
 
+<style>
+    /* Style untuk Card */
+    .card {
+        border: 1px solid #d9d9d9;
+        border-radius: 8px;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        background-color: #ffffff;
+        padding: 20px;
+    }
+</style>
+
 <body>
     <div id="app">
         <div id="sidebar" class="active">
@@ -157,11 +169,12 @@
                 </div>
             </div>
             @endif
-            
+
             @if (auth()->user()->status === 'Belum_Aktif')
+
             <div class="container mt-4">
                 <!-- Card Peringatan -->
-                <div class="card shadow-sm mb-3">
+                <div class="card shadow-sm mb-3" style="text-align: center;">
                     <div class="card-body bg-warning text-dark">
                         <div class="d-flex align-items-center">
                             <i class="bi bi-exclamation-triangle-fill me-2 fs-4"></i>
@@ -209,11 +222,14 @@
             <div class="container mt-4">
                 <!-- Card Peringatan Pengajuan Ditolak -->
                 <div class="card shadow-sm mb-3">
-                    <div class="card-body bg-danger text-white">
+                    <div class="card-body bg-danger text-white" style="padding: 30px; border-radius: 10px;text-align:center;">
                         <div class="d-flex align-items-center">
-                            <i class="bi bi-x-circle-fill me-4 fs-2" style="margin-top: -30px;"></i>
+                            <i class="bi bi-x-circle-fill me-4" style="font-size: 3rem; margin-top:-150px;"></i>
                             <div>
-                                <strong style="font-size: 2rem;">Pengajuan Anda Ditolak!</strong><br> Mohon maaf, pengajuan simpanan anggota Anda tidak dapat diproses. Silakan periksa kembali data yang Anda kirimkan atau lakukan pembayaran ulang sesuai ketentuan koperasi.
+                                <strong style="font-size: 2.5rem; display: block; margin-bottom: 10px;">Pengajuan Anda Ditolak!</strong>
+                                <p style="font-size: 1.2rem; line-height: 1.5; margin: 0;">
+                                    Mohon maaf, pengajuan simpanan anggota Anda tidak dapat diproses. Silakan periksa kembali data yang Anda kirimkan atau lakukan pembayaran ulang sesuai ketentuan koperasi.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -288,80 +304,101 @@
             </div>
 
             @elseif (auth()->user()->status === 'Belum_Bayar_Simpanan_Wajib')
-            <!-- -- Tampilkan formulir pembayaran simpanan terakhir - -->
-            <form action="{{ route('simpanan.store') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <input type="hidden" name="jenis" value="wajib">
-                <input type="hidden" name="validasi" value="100000">
-
-                <div class="form-group">
-                    <label for="jenis_transaksi">Jenis Transaksi</label>
-                    <select name="jenis_transaksi" id="jenis_transaksi" class="form-control" required>
-                        <option value="penyetoran">Penyetoran</option>
-                    </select>
+            <!-- Section Peringatan Keterlambatan -->
+            <div class="card shadow-lg border-0 mb-4" style="text-align: center;">
+                <div class="card-body bg-warning text-dark" style="border-radius: 10px;">
+                    <div class="d-flex align-items-start">
+                        <i class="bi bi-info-circle-fill text-primary fs-1 me-3" style="margin-top:-20px;"></i>
+                        <div>
+                            <h4 class="fw-bold"> Peringatan: Keterlambatan Pembayaran Simpanan Wajib</h4>
+                            <hr style="border: 2px solid rgb(0, 0, 0);">
+                            <p style="color:rgb(80, 83, 85);">
+                                Anda memiliki keterlambatan pembayaran simpanan wajib selama <strong>2 bulan</strong> dengan total sebesar <strong>Rp 100.000</strong>.
+                                Mohon segera melunasi sebelum <strong>bulan depan</strong> untuk mencegah akun menjadi <strong>nonaktif</strong>.
+                                Jika tidak dapat membayar simpanan wajib, <strong>segera tarik simpanan sukarela</strong> Anda sebelum akun dinonaktifkan.
+                                Apabila akun <strong>nonaktif</strong>, jaminan pada pinjaman aktif akan kami <strong>ambil</strong>.
+                                Jika Anda memiliki saldo <strong>simpanan sukarela</strong>, Anda dapat mengunjungi kantor kami dengan membawa bukti tangkapan layar <strong>pada halaman Simpanan Sukarela</strong>.
+                                <br><br>
+                                Pastikan pembayaran tepat waktu agar status keanggotaan Anda tetap aktif.
+                            </p>
+                        </div>
+                    </div>
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label for="jumlah">Jumlah</label>
-                    <input type="number" name="jumlah" id="jumlah" class="form-control" required min="100000" max="100000">
+            <!-- Card Form Pembayaran Simpanan -->
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-gradient bg-primary text-white">
+                    <h5 class="mb-0 text-white"><i class="bi bi-wallet-fill"></i> Form Pembayaran Simpanan</h5>
                 </div>
+                <div class="card-body" style="margin-top: 20px;">
+                    <form action="{{ route('simpanan.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="jenis" value="wajib">
+                        <input type="hidden" name="validasi" value="100000">
 
-                <div class="form-group">
-                    <label for="metode_pembayaran">Metode Pembayaran</label>
-                    <select name="metode_pembayaran" id="metode_pembayaran" class="form-control" required>
-                        <option value="cash">Cash</option>
-                        <option value="transfer-bank">Transfer Bank</option>
-                        <option value="ewallet">E-Wallet</option>
-                    </select>
+                        <div class="mb-3">
+                            <label for="jenis_transaksi" class="form-label"><i class="bi bi-shuffle"></i> Jenis Transaksi</label>
+                            <select name="jenis_transaksi" id="jenis_transaksi" class="form-select" required>
+                                <option value="penyetoran">Penyetoran</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="jumlah" class="form-label"><i class="bi bi-cash"></i> Jumlah (Rp)</label>
+                            <input type="number" name="jumlah" id="jumlah" class="form-control" required min="100000" max="100000" placeholder="Masukan Nominal Bayar">
+                            <small class="text-muted"><i class="bi bi-info-circle"></i> Jumlah simpanan adalah tunggakan simpanan wajib 2 bulan</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="metode_pembayaran" class="form-label"><i class="bi bi-credit-card"></i> Metode Pembayaran</label>
+                            <select name="metode_pembayaran" id="metode_pembayaran" class="form-select" required>
+                                <option value="cash">Tunai (Bayar Langsung)</option>
+                                <option value="transfer-bank">Transfer Bank</option>
+                                <option value="ewallet">E-Wallet (Dana, OVO, Gopay)</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="bukti" class="form-label"><i class="bi bi-upload"></i> Unggah Bukti Pembayaran</label>
+                            <input type="file" name="bukti" id="bukti" class="form-control" required accept="image/jpeg, image/png, image/jpg">
+                            <small class="text-muted"><i class="bi bi-image"></i> Format yang didukung: JPG, JPEG, PNG.</small>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-check-circle-fill"></i> Konfirmasi Pembayaran
+                        </button>
+                    </form>
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label for="bukti_pembayaran">Upload Bukti Pembayaran (jpg, jpeg, png)</label>
-                    <input type="file" name="bukti_pembayaran" id="bukti_pembayaran" class="form-control" required accept="image/jpeg, image/png, image/jpg">
-                </div>
+            <br><br><br>
 
-                <button type="submit" class="btn btn-primary">Konfirmasi Transaksi</button>
-            </form>
-
-            @elseif (auth()->user()->status === 'Nonaktif')
-            {{-- Tampilkan pesan akun nonaktif --}}
-            <h3 class="text-red-500 text-center">Akun Anda Nonaktif. Silakan hubungi admin untuk informasi lebih lanjut.</h3>
-
-            @else
             <div class="container mt-4">
                 <!-- Judul Halaman -->
-                <div class="text-center mb-4">
-                    <h2>Pusat Bantuan</h2>
-                    <p class="text-muted">Kami di sini untuk membantu Anda. Temukan jawaban atas pertanyaan Anda atau hubungi kami langsung.</p>
+                <div class="mb-4 pb-2 border-bottom text-center">
+                    <h2 class="fw-bold">
+                        <i class="bi bi-question-circle me-2"></i> Pusat Bantuan
+                    </h2>
+                    <p class="text-muted">
+                        Kami di sini untuk membantu Anda. Temukan jawaban atas pertanyaan Anda atau hubungi kami langsung.
+                    </p>
                 </div>
 
                 <!-- Daftar FAQ -->
                 <section class="mb-4">
                     <div class="accordion mb-4" id="helpAccordion">
+
                         <!-- Pertanyaan 1 -->
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingOne">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseOne" aria-expanded="true" aria-controls="faqCollapseOne">
-                                    Bagaimana cara melakukan pembayaran simpanan pokok?
+                                <button class="accordion-button bg-primary text-white" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseOne" aria-expanded="true" aria-controls="faqCollapseOne">
+                                    <i class="bi bi-credit-card me-2"></i> Apa itu Simpanan Wajib
                                 </button>
                             </h2>
                             <div id="faqCollapseOne" class="accordion-collapse collapse show" aria-labelledby="faqHeadingOne" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body">
-                                    Anda dapat melakukan pembayaran melalui transfer bank, e-wallet, atau secara tunai di kantor koperasi kami.
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Pertanyaan 2 -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingTwo">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                    Apakah ada denda keterlambatan pembayaran angsuran?
-                                </button>
-                            </h2>
-                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#helpAccordion">
-                                <div class="accordion-body">
-                                    Ya, Denda dihitung dari muali lewat tanggga jatuh tempo sebesar 2%. Nilai ini akan terus naik perminggunya jika tidal segera di lunaskan
+                                <div class="accordion-body border-bottom" style="background:rgb(230, 231, 249); border-left: 5px solid rgb(13, 0, 197); padding: 15px;">
+                                    Adalah Simpanan yang harus di bayarakan rutin perbulan agar akun tetap aktif
                                 </div>
                             </div>
                         </div>
@@ -369,13 +406,40 @@
                         <!-- Pertanyaan 3 -->
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingThree">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                    Bagaimana cara mengajukan pinjaman?
+                                <button class="accordion-button collapsed bg-success text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    <i class="bi bi-journal-check me-2"></i> Bagaimana cara mengajukan pinjaman?
                                 </button>
                             </h2>
                             <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#helpAccordion">
-                                <div class="accordion-body">
+                                <div class="accordion-body border-bottom" style="background: #e6f9ed; border-left: 5px solid #198754; padding: 15px;">
                                     Anda dapat mengajukan pinjaman melalui halaman pinjaman di sistem kami atau datang langsung ke kantor koperasi untuk konsultasi.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pertanyaan 2 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed bg-warning text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    <i class="bi bi-exclamation-triangle me-2"></i> Apakah ada denda keterlambatan pembayaran angsuran?
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#helpAccordion">
+                                <div class="accordion-body border-bottom" style="background:rgb(252, 255, 205); border-left: 5px solid rgb(255, 239, 15); padding: 15px;">
+                                    Ya, denda dihitung sejak lewat tanggal jatuh tempo sebesar 2%. Nilai ini akan terus naik per minggu jika tidak segera dilunasi.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingThree">
+                                <button class="accordion-button collapsed bg-danger text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapsefor" aria-expanded="false" aria-controls="collapseThree">
+                                    <i class="bi bi-journal-check me-2"></i> Apa yang terjadi ketika akun dinonaktifkan
+                                </button>
+                            </h2>
+                            <div id="collapsefor" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#helpAccordion">
+                                <div class="accordion-body border-bottom" style="background:rgb(249, 230, 230); border-left: 5px solid rgb(211, 2, 2); padding: 15px;">
+                                    Anda tidak akan bisa login dan jika ada pinjaman aktif, jaminan darinya kita sita.
                                 </div>
                             </div>
                         </div>
@@ -384,16 +448,18 @@
 
                 <!-- Formulir Hubungi Kami -->
                 <section class="mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5>Hubungi Kami</h5>
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0 text-white"><i class="bi bi-envelope me-2"></i> Hubungi Kami</h5>
+                        </div>
+                        <div class="card-body" style="margin-top: 10px;">
                             <form action="{{ route('user.kirim-pesan') }}" method="POST">
                                 @csrf
                                 <div class="mb-3">
-                                    <label for="message" class="form-label">Pesan Anda</label>
+                                    <label for="message" class="form-label"><i class="bi bi-chat-text me-2"></i> Pesan Anda</label>
                                     <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Kirim Pesan</button>
+                                <button type="submit" class="btn btn-success"><i class="bi bi-send me-2"></i> Kirim Pesan</button>
                             </form>
                         </div>
                     </div>
@@ -402,38 +468,62 @@
                 <!-- Informasi Kontak dalam Card -->
                 <div class="container" data-aos="fade-up" data-aos-delay="100">
                     <div class="container" data-aos="fade-up" data-aos-delay="100" style="margin-bottom: 30px;">
-
                         <div class="row gy-4">
 
                             <!-- Alamat -->
                             <div class="col-lg-4">
-                                <div class="card text-center shadow p-3">
+                                <div class="card text-center shadow p-3 border-primary">
+                                    <div class="card-header bg-primary text-white">
+                                        <h5 class="mb-0 text-white"><i class="bi bi-geo-alt me-2"></i> Alamat</h5>
+                                    </div>
                                     <div class="card-body">
-                                        <i class="bi bi-geo-alt fs-2 text-primary"></i>
-                                        <h5 class="card-title mt-2">Alamat</h5>
-                                        <p class="card-text">Kec. Binong, Kab. Subang, Prov. Jawa Barat</p>
+                                        <i class="bi bi-map fs-2 text-primary"></i>
+                                        <p class="card-text mt-2">Kec. Binong, Kab. Subang, Prov. Jawa Barat</p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <a href="https://maps.google.com" target="_blank" class="btn btn-outline-primary btn-sm">
+                                            <i class="bi bi-map-fill me-1"></i> Lihat di Peta
+                                        </a>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Kontak -->
                             <div class="col-lg-4">
-                                <div class="card text-center shadow p-3">
+                                <div class="card text-center shadow p-3 border-success">
+                                    <div class="card-header bg-success text-white">
+                                        <h5 class="mb-0 text-white"><i class="bi bi-telephone me-2"></i> Nomor Telepon</h5>
+                                    </div>
                                     <div class="card-body">
-                                        <i class="bi bi-telephone fs-2 text-success"></i>
-                                        <h5 class="card-title mt-2">Nomor Telepon</h5>
-                                        <p class="card-text">62839320338692 <br> 6285175101350</p>
+                                        <i class="bi bi-phone fs-2 text-success"></i>
+                                        <p class="card-text mt-2">
+                                            62839320338692
+                                        </p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <a href="https://wa.me/62839320338692" target="_blank" class="btn btn-outline-success btn-sm">
+                                            <i class="bi bi-whatsapp me-1"></i> Hubungi via WhatsApp
+                                        </a>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Email -->
                             <div class="col-lg-4">
-                                <div class="card text-center shadow p-3">
+                                <div class="card text-center shadow p-3 border-danger">
+                                    <div class="card-header bg-danger text-white">
+                                        <h5 class="mb-0 text-white"><i class="bi bi-envelope me-2"></i> Email</h5>
+                                    </div>
                                     <div class="card-body">
-                                        <i class="bi bi-envelope fs-2 text-danger"></i>
-                                        <h5 class="card-title mt-2">Email</h5>
-                                        <p class="card-text">fahriabdurohman@gmail.com <br> bagasdipras@gmail.com</p>
+                                        <i class="bi bi-file-earmark-text fs-2 text-danger"></i>
+                                        <p class="card-text mt-2">
+                                            example@gmail.com
+                                        </p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <a href="mailto:fahriabdurohman@gmail.com" class="btn btn-outline-danger btn-sm">
+                                            <i class="bi bi-send me-1"></i> Kirim Email
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -441,29 +531,193 @@
                         </div>
                     </div>
                 </div>
-                @endif
+            </div>
 
-                <footer>
-                    <div class="footer clearfix mb-0 text-muted">
-                        <div class="float-start">
-                            <p>2025 &copy; STARBIN</p>
+            @elseif (auth()->user()->status === 'Nonaktif')
+            {{-- Tampilkan pesan akun nonaktif --}}
+            <h3 class="text-red-500 text-center">Akun Anda Nonaktif. Silakan hubungi admin untuk informasi lebih lanjut.</h3>
+
+            @else
+             <div class="container mt-4">
+                <!-- Judul Halaman -->
+                <div class="mb-4 pb-2 border-bottom text-center">
+                    <h2 class="fw-bold">
+                        <i class="bi bi-question-circle me-2"></i> Pusat Bantuan
+                    </h2>
+                    <p class="text-muted">
+                        Kami di sini untuk membantu Anda. Temukan jawaban atas pertanyaan Anda atau hubungi kami langsung.
+                    </p>
+                </div>
+
+                <!-- Daftar FAQ -->
+                <section class="mb-4">
+                    <div class="accordion mb-4" id="helpAccordion">
+
+                        <!-- Pertanyaan 1 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button bg-primary text-white" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseOne" aria-expanded="true" aria-controls="faqCollapseOne">
+                                    <i class="bi bi-credit-card me-2"></i> Apa itu Simpanan Wajib
+                                </button>
+                            </h2>
+                            <div id="faqCollapseOne" class="accordion-collapse collapse show" aria-labelledby="faqHeadingOne" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body border-bottom" style="background:rgb(230, 231, 249); border-left: 5px solid rgb(13, 0, 197); padding: 15px;">
+                                    Adalah Simpanan yang harus di bayarakan rutin perbulan agar akun tetap aktif
+                                </div>
+                            </div>
                         </div>
-                        <div class="float-end" style="margin-right: 30px;">
-                            <p>Dibuat dengan
-                                <span class="text-danger"><i class="bi bi-heart"></i></span>
-                                oleh
-                                <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
-                                &
-                                <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
-                            </p>
+
+                        <!-- Pertanyaan 3 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingThree">
+                                <button class="accordion-button collapsed bg-success text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    <i class="bi bi-journal-check me-2"></i> Bagaimana cara mengajukan pinjaman?
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#helpAccordion">
+                                <div class="accordion-body border-bottom" style="background: #e6f9ed; border-left: 5px solid #198754; padding: 15px;">
+                                    Anda dapat mengajukan pinjaman melalui halaman pinjaman di sistem kami atau datang langsung ke kantor koperasi untuk konsultasi.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pertanyaan 2 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed bg-warning text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    <i class="bi bi-exclamation-triangle me-2"></i> Apakah ada denda keterlambatan pembayaran angsuran?
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#helpAccordion">
+                                <div class="accordion-body border-bottom" style="background:rgb(252, 255, 205); border-left: 5px solid rgb(255, 239, 15); padding: 15px;">
+                                    Ya, denda dihitung sejak lewat tanggal jatuh tempo sebesar 2%. Nilai ini akan terus naik per minggu jika tidak segera dilunasi.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingThree">
+                                <button class="accordion-button collapsed bg-danger text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapsefor" aria-expanded="false" aria-controls="collapseThree">
+                                    <i class="bi bi-journal-check me-2"></i> Apa yang terjadi ketika akun dinonaktifkan
+                                </button>
+                            </h2>
+                            <div id="collapsefor" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#helpAccordion">
+                                <div class="accordion-body border-bottom" style="background:rgb(249, 230, 230); border-left: 5px solid rgb(211, 2, 2); padding: 15px;">
+                                    Anda tidak akan bisa login dan jika ada pinjaman aktif, jaminan darinya kita sita.
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </footer>
+                </section>
+
+                <!-- Formulir Hubungi Kami -->
+                <section class="mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0 text-white"><i class="bi bi-envelope me-2"></i> Hubungi Kami</h5>
+                        </div>
+                        <div class="card-body" style="margin-top: 10px;">
+                            <form action="{{ route('user.kirim-pesan') }}" method="POST">
+                                @csrf
+                                <div class="mb-3">
+                                    <label for="message" class="form-label"><i class="bi bi-chat-text me-2"></i> Pesan Anda</label>
+                                    <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-success"><i class="bi bi-send me-2"></i> Kirim Pesan</button>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Informasi Kontak dalam Card -->
+                <div class="container" data-aos="fade-up" data-aos-delay="100">
+                    <div class="container" data-aos="fade-up" data-aos-delay="100" style="margin-bottom: 30px;">
+                        <div class="row gy-4">
+
+                            <!-- Alamat -->
+                            <div class="col-lg-4">
+                                <div class="card text-center shadow p-3 border-primary">
+                                    <div class="card-header bg-primary text-white">
+                                        <h5 class="mb-0 text-white"><i class="bi bi-geo-alt me-2"></i> Alamat</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <i class="bi bi-map fs-2 text-primary"></i>
+                                        <p class="card-text mt-2">Kec. Binong, Kab. Subang, Prov. Jawa Barat</p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <a href="https://maps.google.com" target="_blank" class="btn btn-outline-primary btn-sm">
+                                            <i class="bi bi-map-fill me-1"></i> Lihat di Peta
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Kontak -->
+                            <div class="col-lg-4">
+                                <div class="card text-center shadow p-3 border-success">
+                                    <div class="card-header bg-success text-white">
+                                        <h5 class="mb-0 text-white"><i class="bi bi-telephone me-2"></i> Nomor Telepon</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <i class="bi bi-phone fs-2 text-success"></i>
+                                        <p class="card-text mt-2">
+                                            62839320338692
+                                        </p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <a href="https://wa.me/62839320338692" target="_blank" class="btn btn-outline-success btn-sm">
+                                            <i class="bi bi-whatsapp me-1"></i> Hubungi via WhatsApp
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="col-lg-4">
+                                <div class="card text-center shadow p-3 border-danger">
+                                    <div class="card-header bg-danger text-white">
+                                        <h5 class="mb-0 text-white"><i class="bi bi-envelope me-2"></i> Email</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <i class="bi bi-file-earmark-text fs-2 text-danger"></i>
+                                        <p class="card-text mt-2">
+                                            example@gmail.com
+                                        </p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <a href="mailto:fahriabdurohman@gmail.com" class="btn btn-outline-danger btn-sm">
+                                            <i class="bi bi-send me-1"></i> Kirim Email
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+            @endif
+
+            <footer>
+                <div class="footer clearfix mb-0 text-muted">
+                    <div class="float-start">
+                        <p>2025 &copy; STARBIN</p>
+                    </div>
+                    <div class="float-end" style="margin-right: 30px;">
+                        <p>Dibuat dengan
+                            <span class="text-danger"><i class="bi bi-heart"></i></span>
+                            oleh
+                            <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
+                            &
+                            <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
+                        </p>
+                    </div>
+                </div>
+            </footer>
         </div>
-        <script src="{{asset('dist/assets/js/bootstrap.js')}}"></script>
-        <script src="{{asset('dist/assets/js/app.js')}}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </div>
+    <script src="{{asset('dist/assets/js/bootstrap.js')}}"></script>
+    <script src="{{asset('dist/assets/js/app.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 
 </body>

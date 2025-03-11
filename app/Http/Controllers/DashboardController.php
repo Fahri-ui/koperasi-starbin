@@ -21,14 +21,22 @@ class DashboardController extends Controller
 
         $simpanan = Simpanan::where('user_id', auth()->id())->latest()->first();
 
-        // Hitung total saldo simpanan sukarela
-        $totalSukarela = Simpanan::where('user_id', $user->id)
-            ->where('jenis', 'sukarela')
+        // Ambil bulan dan tahun saat ini
+        $currentMonth = now()->month;
+        $currentYear = now()->year;
+
+        // Hitung total saldo simpanan sukarela (hanya bulan ini)
+        $totalSimpanan = Simpanan::where('user_id', $user->id)
+            ->whereNotIn('status', ['Ditolak', 'Dalam Proses'])
+            ->whereMonth('tanggal_transaksi', $currentMonth)
+            ->whereYear('tanggal_transaksi', $currentYear)
             ->sum('jumlah');
 
-        // Hitung total pinjaman yang diambil user
+        // Hitung total pinjaman yang diambil user (hanya bulan ini)
         $totalPinjaman = Pinjaman::where('user_id', $user->id)
             ->where('status', '!=', 'Ditolak')
+            ->whereMonth('tanggal_pengajuan', $currentMonth)
+            ->whereYear('tanggal_pengajuan', $currentYear)
             ->sum('jumlah_pinjaman');
 
         // Ambil jumlah notifikasi terbaru yang belum dibaca
@@ -36,8 +44,8 @@ class DashboardController extends Controller
             ->where('is_read', false)
             ->count();
 
-        // Ambil data simpanan
-        $simpanan = Simpanan::select('jenis', 'tanggal_transaksi as tanggal', 'jumlah', 'status')
+        $simpanans = Simpanan::where('user_id', $user->id)
+            ->select('id', 'jenis', 'tanggal_transaksi as tanggal', 'jumlah', 'status')
             ->get()
             ->map(function ($item) {
                 $item->deskripsi = match ($item->jenis) {
@@ -49,69 +57,29 @@ class DashboardController extends Controller
                 return $item;
             });
 
-        $pinjaman = Pinjaman::select('tanggal_pengajuan as tanggal', 'jumlah_pinjaman', 'status')
+        $pinjamans = Pinjaman::where('user_id', $user->id) // Filter berdasarkan user yang login
+            ->select('tanggal_pengajuan as tanggal', 'jumlah_pinjaman as jumlah', 'status')
             ->get()
             ->map(function ($item) {
                 $item->deskripsi = 'Pinjaman Anda';
                 return $item;
             });
 
-        $riwayatPembayaran = RiwayatPembayaran::select('tanggal_pembayaran as tanggal', 'jumlah_pembayaran as jumlah', 'status')
+        $riwayatPembayarans = RiwayatPembayaran::where('user_id', $user->id) // Filter berdasarkan user yang login
+            ->select('tanggal_pembayaran as tanggal', 'jumlah_pembayaran as jumlah', 'status')
             ->get()
             ->map(function ($item) {
                 $item->deskripsi = 'Pembayaran Angsuran';
                 return $item;
             });
 
-        $riwayatTransaksi = collect()
-            ->merge($simpanan)
-            ->merge($pinjaman)
-            ->merge($riwayatPembayaran)
-            ->sortByDesc('tanggal')
-            ->values();
-
-        // Ambil data simpanan
-        $simpanans = Simpanan::where('user_id', $user->id)
-            ->select('kode_transaksi', 'tanggal_transaksi', 'jumlah', 'jenis_transaksi')
-            ->get()
-            ->map(function ($simpanan) {
-                return [
-                    'deskripsi' => ucfirst($simpanan->jenis_transaksi) . ' Simpanan',
-                    'tanggal' => $simpanan->tanggal_transaksi ? Carbon::parse($simpanan->tanggal_transaksi)->translatedFormat('d F Y') : '-',
-                    'jumlah' => number_format($simpanan->jumlah, 0, ',', '.'),
-                ];
-            });
-
-        $pinjamans = Pinjaman::where('user_id', $user->id)
-            ->select('id', 'tanggal_pinjaman', 'tanggal_pengajuan', 'jumlah_pinjaman', 'status')
-            ->get()
-            ->map(function ($pinjaman) {
-                return [
-                    'deskripsi' => 'Pinjaman ' . ucfirst($pinjaman->status),
-                    'tanggal' => $pinjaman->tanggal_pinjaman
-                        ? Carbon::parse($pinjaman->tanggal_pinjaman)->translatedFormat('d F Y')
-                        : Carbon::parse($pinjaman->tanggal_pengajuan)->translatedFormat('d F Y'), // Ambil tanggal_pengajuan jika tanggal_pinjaman null
-                    'jumlah' => number_format($pinjaman->jumlah_pinjaman, 0, ',', '.'),
-                ];
-            });
-
-        $pembayarans = RiwayatPembayaran::where('user_id', $user->id)
-            ->select('pinjaman_id', 'tanggal_pembayaran', 'jumlah_pembayaran', 'metode_pembayaran')
-            ->get()
-            ->map(function ($pembayaran) {
-                return [
-                    'deskripsi' => 'Pembayaran Pinjaman via ' . ucfirst($pembayaran->metode_pembayaran),
-                    'tanggal' => $pembayaran->tanggal_pembayaran ? Carbon::parse($pembayaran->tanggal_pembayaran)->translatedFormat('d F Y') : '-',
-                    'jumlah' => '-' . number_format($pembayaran->jumlah_pembayaran, 0, ',', '.'),
-                ];
-            });
-
-        // ⬇️ Tambahkan collect() untuk memastikan semuanya adalah Collection
-        $riwayatTransaksi = collect($simpanans)
+        $riwayatTransaksis = collect()
+            ->merge($simpanans)
             ->merge($pinjamans)
-            ->merge($pembayarans)
+            ->merge($riwayatPembayarans)
             ->sortByDesc('tanggal')
             ->values();
+
 
         $userId = Auth::id();
         $tanggalHariIni = Carbon::today();
@@ -307,6 +275,6 @@ class DashboardController extends Controller
         }
 
         // Kirim ke view
-        return view('user.dashboard', compact('totalSukarela', 'totalPinjaman', 'riwayatTransaksi', 'jumlahNotifikasiBaru', 'simpanan'));
+        return view('user.dashboard', compact('totalSimpanan', 'totalPinjaman', 'riwayatTransaksi', 'riwayatTransaksis', 'jumlahNotifikasiBaru', 'simpanan'));
     }
 }
