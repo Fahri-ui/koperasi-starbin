@@ -11,69 +11,73 @@ class KontakController extends Controller
 {
     public function kontakkoperasi()
     {
-        // Ambil data kontak berdasarkan kategori
-        $kontak = Setting::whereIn('key', ['alamat', 'email', 'telepon'])->get();
+        $kontak = Setting::all();
         return view('admin.kontak-koperasi', compact('kontak'));
     }
 
     public function store(Request $request)
     {
-        // Tentukan ikon berdasarkan kategori yang dipilih
-        $iconMapping = [
+        $request->validate([
+            'key' => 'required',
+            'title' => 'required|string|max:255',
+            'value' => 'required|string|max:255',
+        ]);
+    
+        // Cek apakah key sudah ada
+        $existing = Setting::where('key', $request->key)->first();
+        if ($existing) {
+            return redirect()->route('kontakkoperasi')->with('error', 'Data dengan kategori ini sudah ada!');
+        }
+    
+        $icons = [
             'alamat' => 'bi bi-geo-alt',
             'telepon' => 'bi bi-telephone',
             'email' => 'bi bi-envelope',
         ];
-
-        $icon = $iconMapping[$request->key] ?? 'bi bi-question-circle'; // Default jika tidak ditemukan
-
+    
         Setting::create([
-            'key' => $request->key, // Ambil key dari pilihan dropdown
-            'icon' => $icon, // Ambil icon dari mapping di atas
+            'key' => $request->key,
+            'icon' => $icons[$request->key] ?? '',
             'title' => $request->title,
             'value' => $request->value,
         ]);
-
-        return redirect()->route('kontakkoperasi')->with('success', 'Kontak berhasil ditambahkan');
-    }
-
-    public function edit($id)
-    {
-        $kontakData = Setting::findOrFail($id);
-        $kontak = Setting::whereIn('key', ['alamat', 'email', 'telepon'])->get();
-
-        return view('admin.kontak-koperasi', compact('kontak', 'kontakData'));
-    }
-
-
-
+    
+        return redirect()->route('kontakkoperasi')->with('success', 'Kontak berhasil ditambahkan!');
+    }    
+    
     public function update(Request $request, $id)
     {
         $request->validate([
-            'key' => 'required|string|max:50',
+            'key' => 'required',
             'title' => 'required|string|max:255',
-            'value' => 'nullable|string|max:255',
-            'icon' => 'required|string',
+            'value' => 'required|string|max:255',
         ]);
-
-        // Update kontak berdasarkan ID
-        Setting::where('id', $id)->update([
+    
+        $icons = [
+            'alamat' => 'bi bi-geo-alt',
+            'telepon' => 'bi bi-telephone',
+            'email' => 'bi bi-envelope',
+        ];
+    
+        $kontak = Setting::findOrFail($id);
+        $kontak->update([
             'key' => $request->key,
+            'icon' => $icons[$request->key] ?? '',
             'title' => $request->title,
             'value' => $request->value,
-            'icon' => $request->icon,
-            'updated_at' => now()
         ]);
-
-        return redirect()->back()->with('success', 'Data kontak berhasil diperbarui.');
+    
+        return redirect()->route('kontakkoperasi')->with('success', 'Kontak berhasil diperbarui!');
     }
-
-
+    
     public function destroy(Request $request)
     {
-        // Hapus kontak berdasarkan ID
-        Setting::where('id', $request->id)->delete();
-
-        return redirect()->route('kontakkoperasi')->with('success', 'Kontak berhasil dihapus');
-    }
+        try {
+            $kontak = Setting::findOrFail($request->id);
+            $kontak->delete();
+            return redirect()->route('kontakkoperasi')->with('success', 'Kontak berhasil dihapus.');
+        } catch (\Exception $e) {
+            return redirect()->route('kontakkoperasi')->with('error', 'Gagal menghapus kontak.');
+        }
+    }    
 }

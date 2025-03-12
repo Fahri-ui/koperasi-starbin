@@ -237,149 +237,143 @@
             </div>
             @endif
             <div class="container mt-4">
-                <h3 style="margin-bottom: 40px;">Data Pengajuan Simpanans </h3>
-                <!-- Statistik Ringkasan -->
-                <div class="row mb-4">
-                    <div class="col-md-3">
-                        <div class="card text-center shadow">
-                            <div class="card-body">
-                                <h5 class="card-title"><i class="bi bi-list-ul"></i> Total Pengajuan</h5>
-                                <p class="card-text">{{ $totalPengajuan }} Pengajuan</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card text-center shadow">
-                            <div class="card-body">
-                                <h5 class="card-title"><i class="bi bi-hourglass-split"></i> Menunggu</h5>
-                                <p class="card-text">{{ $menunggu }} Pengajuan</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card text-center shadow">
-                            <div class="card-body">
-                                <h5 class="card-title"><i class="bi bi-check-circle"></i> Disetujui</h5>
-                                <p class="card-text">{{ $disetujui }} Pengajuan</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card text-center shadow">
-                            <div class="card-body">
-                                <h5 class="card-title"><i class="bi bi-x-circle"></i> Ditolak</h5>
-                                <p class="card-text">{{ $ditolak }} Pengajuan</p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="page-header mb-4">
+                    <h3 class="fw-bold">
+                        <i class="bi bi-clipboard-check"></i> Kelola Pengajuan Simpanan
+                    </h3>
                 </div>
+                <hr style="border-top: 2px solid black; margin-bottom: 30px;">
 
-                <!-- Data Pengajuan -->
-                <div class="card shadow">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0 text-white"><i class="bi bi-table"></i> Data Pengajuan</h5>
+                <!-- Ringkasan Pengajuan -->
+                <section class="mb-4">
+                    <div class="card shadow" style="border: 1px solid #435ebe;">
+                        <div class="card-body">
+                            <h5 class="fw-bold d-flex align-items-center">
+                                <i class="bi bi-journal-text me-2" style="margin-top: -10px;"></i> Ringkasan Pengajuan Simpanan
+                            </h5>
+                            <hr style="border-top: 2px solid #25396f; border-radius: 5px;">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="card shadow" style="border-left: 5px solid #007bff; border-radius: 10px;">
+                                        <div class="card-body text-center">
+                                            <h6 style="color: #007bff;"><i class="bi bi-list-ul me-2"></i>Total Pengajuan</h6>
+                                            <p><strong>{{ $totalPengajuan }} Pengajuan</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card shadow" style="border-left: 5px solid #ffc107; border-radius: 10px;">
+                                        <div class="card-body text-center">
+                                            <h6 style="color: #ffc107;"><i class="bi bi-hourglass-split me-2"></i>Menunggu</h6>
+                                            <p><strong>{{ $menunggu }} Pengajuan</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card shadow" style="border-left: 5px solid #28a745; border-radius: 10px;">
+                                        <div class="card-body text-center">
+                                            <h6 style="color: #28a745;"><i class="bi bi-check-circle me-2"></i>Disetujui</h6>
+                                            <p><strong>{{ $disetujui }} Pengajuan</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card shadow" style="border-left: 5px solid #dc3545; border-radius: 10px;">
+                                        <div class="card-body text-center">
+                                            <h6 style="color: #dc3545;"><i class="bi bi-x-circle me-2"></i>Ditolak</h6>
+                                            <p><strong>{{ $ditolak }} Pengajuan</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <div style="max-height: 750px; overflow:auto; font-size:.9rem;">
-                            <table class="table table-hover">
-                                <thead class="table-primary">
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Nama Anggota</th>
-                                        <th>Tanggal Pengajuan</th>
-                                        <th>Jumlah</th>
-                                        <th>Tipe Pengajuan</th>
-                                        <th>Alasan / Keterangan</th>
-                                        <th>Status</th>
-                                        <th>Bukti</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($pengajuanSimpanans as $key => $data)
-                                    <tr>
-                                        <td>{{ $key + 1 }}</td>
-                                        <td>{{ $data->user->fullname }}</td>
-                                        <td>{{ $data->tanggal_pengajuan }}</td>
-                                        <td>Rp {{ number_format($data->jumlah, 0, ',', '.') }}</td>
-                                        <td>
-                                            <span class="badge bg-secondary">
-                                                <i class="bi bi-wallet2"></i> Simpanan ({{ ucfirst($data->jenis) }})
-                                            </span>
-                                        </td>
-                                        <td>{{ $data->keterangan ?? '-' }}</td>
-                                        <td>
-                                            <span class="badge bg-{{ $data->status == 'Dalam Proses' ? 'warning' : ($data->status == 'Berhasil' ? 'success' : 'danger') }}">
-                                                <i class="bi {{ $data->status == 'Dalam Proses' ? 'bi-hourglass-split' : ($data->status == 'Disetujui' ? 'bi-check-circle' : 'bi-x-circle') }}"></i> {{ $data->status }}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            @if ($data->bukti)
-                                            <a href="{{ route('admin.bukti.pembayaran', ['bukti' => basename($data->bukti)]) }}"
-                                                target="_blank"
-                                                class="btn btn-outline-primary btn-sm">
-                                                <i class="bi bi-eye"></i> Lihat Bukti
-                                            </a>
-                                            @else
-                                            <span class="badge bg-danger">
-                                                <i class="bi bi-x-circle"></i> <br> Bukti <br> belum <br> diunggah
-                                            </span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if ($data->status == 'Dalam Proses')
-                                            <form action="{{ route('updateStatusSimpanan', $data->id) }}" method="POST" style="display:inline;">
-                                                @csrf
-                                                <input type="hidden" name="action" value="approve">
-                                                <button type="submit" class="btn btn-sm btn-success">
-                                                    <i class="bi bi-check-lg"></i> Setujui
+                </section>
+
+                <!-- Tabel Pengajuan -->
+                <section class="mb-4">
+                    <div class="card shadow" style="border: 1px solid #435ebe;">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0 text-white">
+                                <i class="bi bi-table" style="margin-top: -30px;"></i> Data Pengajuan Simpanan
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div style="max-height: 750px; overflow:auto; font-size:.9rem;">
+                                <table class="table table-hover">
+                                    <thead class="table-primary">
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Nama Anggota</th>
+                                            <th>Tanggal Pengajuan</th>
+                                            <th>Jumlah</th>
+                                            <th>Tipe Pengajuan</th>
+                                            <th>Alasan / Keterangan</th>
+                                            <th>Status</th>
+                                            <th>Bukti</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($pengajuanSimpanans as $key => $data)
+                                        <tr>
+                                            <td>{{ $key + 1 }}</td>
+                                            <td>{{ $data->user->fullname }}</td>
+                                            <td>{{ $data->tanggal_pengajuan }}</td>
+                                            <td>Rp {{ number_format($data->jumlah, 0, ',', '.') }}</td>
+                                            <td>
+                                                <span class="badge bg-secondary">
+                                                    <i class="bi bi-wallet2"></i> Simpanan ({{ ucfirst($data->jenis) }})
+                                                </span>
+                                            </td>
+                                            <td>{{ $data->keterangan ?? '-' }}</td>
+                                            <td>
+                                                <span class="badge bg-{{ $data->status == 'Dalam Proses' ? 'warning' : ($data->status == 'Berhasil' ? 'success' : 'danger') }}">
+                                                    <i class="bi {{ $data->status == 'Dalam Proses' ? 'bi-hourglass-split' : ($data->status == 'Disetujui' ? 'bi-check-circle' : 'bi-x-circle') }}"></i> {{ $data->status }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                @if ($data->bukti)
+                                                <a href="{{ route('admin.bukti.pembayaran', ['bukti' => basename($data->bukti)]) }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                                                    <i class="bi bi-eye"></i> Lihat Bukti
+                                                </a>
+                                                @else
+                                                <span class="badge bg-danger">
+                                                    <i class="bi bi-x-circle"></i> <br> Bukti <br> belum <br> diunggah
+                                                </span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($data->status == 'Dalam Proses')
+                                                <form action="{{ route('updateStatusSimpanan', $data->id) }}" method="POST" style="display:inline;">
+                                                    @csrf
+                                                    <input type="hidden" name="action" value="approve">
+                                                    <button type="submit" class="btn btn-sm btn-success">
+                                                        <i class="bi bi-check-lg"></i> Setujui
+                                                    </button>
+                                                </form>
+
+                                                <form action="{{ route('updateStatusSimpanan', $data->id) }}" method="POST" style="display:inline;">
+                                                    @csrf
+                                                    <input type="hidden" name="action" value="reject">
+                                                    <button type="submit" class="btn btn-sm btn-danger">
+                                                        <i class="bi bi-x-lg"></i> Tolak
+                                                    </button>
+                                                </form>
+                                                @else
+                                                <button class="btn btn-sm btn-secondary" disabled>
+                                                    <i class="bi bi-lock"></i> Tidak Ada Aksi
                                                 </button>
-                                            </form>
-
-                                            <form action="{{ route('updateStatusSimpanan', $data->id) }}" method="POST" style="display:inline;">
-                                                @csrf
-                                                <input type="hidden" name="action" value="reject">
-                                                <button type="submit" class="btn btn-sm btn-danger">
-                                                    <i class="bi bi-x-lg"></i> Tolak
-                                                </button>
-                                            </form>
-                                            @else
-                                            <button class="btn btn-sm btn-secondary" disabled>
-                                                <i class="bi bi-lock"></i> Tidak Ada Aksi
-                                            </button>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tips Section -->
-                <div class="row mt-5">
-                    <div class="col-12">
-                        <div class="card shadow">
-                            <div class="card-header bg-secondary text-white">
-                                <h5 class="text-white"><i class="bi bi-lightbulb"></i> Tips Pengelolaan Pengajuan</h5>
-                            </div>
-                            <div class="card-body">
-                                <ul class="list-group">
-                                    <li class="list-group-item">
-                                        <i class="bi bi-check2-circle text-success"></i> Pastikan data pengajuan lengkap sebelum disetujui.
-                                    </li>
-                                    <li class="list-group-item">
-                                        <i class="bi bi-hourglass-split text-warning"></i> Pantau pengajuan yang masih dalam proses secara berkala.
-                                    </li>
-                                    <li class="list-group-item">
-                                        <i class="bi bi-x-circle text-danger"></i> Tolak pengajuan jika ada ketidaksesuaian data atau syarat yang belum terpenuhi.
-                                    </li>
-                                </ul>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
-                </div>
+                </section>
             </div>
 
             <footer>

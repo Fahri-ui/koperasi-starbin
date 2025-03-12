@@ -101,14 +101,8 @@
                             </a>
                         </li>
 
-<<<<<<< HEAD
                         <li class="sidebar-item">
                             <a href="{{ route('angsuran') }}" class='sidebar-link'>
-=======
-                        <li
-                            class="sidebar-item  ">
-                            <a href="{{route('angsuran')}}" class='sidebar-link'>
->>>>>>> 6f4806058e1db78d928918a17b8f10ea62c1848f
                                 <i class="bi bi-coin"></i>
                                 <span>Angsuran</span>
                                 @if ($jumlahAngsuranDalamProses > 0)
@@ -240,91 +234,139 @@
                 </div>
             </div>
             @endif
-            <div class="container mt-4" style="font-size: .9rem;">
-                <h4>Laporan Denda Pinjaman</h4>
-                <p>Halaman ini menampilkan daftar anggota yang memiliki denda akibat keterlambatan pembayaran pinjaman.</p>
+            <div class="container mt-4">
+                <div class="page-header mb-4">
+                    <h3 class="fw-bold">
+                        <i class="bi bi-exclamation-triangle"></i> Laporan Denda Pinjaman
+                    </h3>
+                </div>
+                <hr style="border-top: 2px solid black; margin-bottom: 30px;">
 
-                <div class="container mt-4">
-                    <h4>Ringkasan Denda</h4>
-                    <div class="row text-center">
-                        <!-- Total Denda Keseluruhan -->
-                        <div class="col-md-4">
-                            <div class="card mb-4">
-                                <div class="card-body">
-                                    <h6>Total Denda Keseluruhan</h6>
-                                    <p><strong>Rp {{ number_format($totalDenda, 0, ',', '.') }}</strong></p>
+                <section class="mb-4">
+                    <div class="card shadow" style="border: 1px solid #435ebe;">
+                        <div class="card-body">
+                            <h5 class="fw-bold d-flex align-items-center">
+                                <i class="bi bi-info-circle me-2" style="margin-top: -10px;"></i> Definisi Laporan Denda
+                            </h5>
+                            <hr style="border-top: 2px solid #25396f; border-radius: 5px;">
+                            <p style="color: #495057;">
+                                Laporan denda berisi daftar anggota yang terkena denda akibat keterlambatan pembayaran pinjaman. Admin dapat memantau jumlah denda, status pembayaran, dan sisa angsuran untuk pengelolaan lebih lanjut.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Ringkasan Denda -->
+                <section class="mb-4">
+                    <div class="card shadow" style="border: 1px solid #435ebe;">
+                        <div class="card-body">
+                            <h5 class="fw-bold d-flex align-items-center">
+                                <i class="bi bi-bar-chart me-2" style="margin-top: -10px;"></i> Ringkasan Denda
+                            </h5>
+                            <hr style="border-top: 2px solid #25396f; border-radius: 5px;">
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card shadow" style="border-left: 5px solid #dc3545; border-radius: 10px;">
+                                        <div class="card-body text-center">
+                                            <h6 style="color: #dc3545;"><i class="bi bi-cash me-2"></i>Total Denda Keseluruhan</h6>
+                                            <p><strong>Rp {{ number_format($totalDenda, 0, ',', '.') }}</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card shadow" style="border-left: 5px solid #ffc107; border-radius: 10px;">
+                                        <div class="card-body text-center">
+                                            <h6 style="color: #ffc107;"><i class="bi bi-exclamation-circle me-2"></i>Total Pinjaman Bermasalah</h6>
+                                            <p><strong>{{ $jumlahPinjamanBermasalah }} Pinjaman</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card shadow" style="border-left: 5px solid #007bff; border-radius: 10px;">
+                                        <div class="card-body text-center">
+                                            <h6 style="color: #007bff;"><i class="bi bi-people me-2"></i>Total Anggota Kena Denda</h6>
+                                            <p><strong>{{ $jumlahAnggotaDenda }} Anggota</strong></p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="col-md-4">
-                            <div class="card mb-4">
-                                <div class="card-body">
-                                    <h6>Total Pinjaman Bermasalah</h6>
-                                    <p><strong>{{ $jumlahPinjamanBermasalah }} Pinjaman</strong></p>
-                                </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Tabel Laporan Denda -->
+                <section class="mb-4">
+                    <div class="card shadow" style="border: 1px solid #435ebe;">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0 text-white">
+                                <i class="bi bi-table" style="margin-top: -30px;"></i> Data Laporan Denda
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="filter-denda mb-4">
+                                <input type="text" id="search-denda" class="form-control" placeholder="Cari berdasarkan Nama atau ID Pinjaman">
                             </div>
-                        </div>
 
-                        <!-- Total Anggota Kena Denda -->
-                        <div class="col-md-4">
-                            <div class="card mb-4">
-                                <div class="card-body">
-                                    <h6>Total Anggota Kena Denda</h6>
-                                    <p><strong>{{ $jumlahAnggotaDenda }} Anggota</strong></p>
-                                </div>
+                            <div style="max-height: 450px; overflow: auto; font-size: .9rem; text-align: left;">
+                                <table class="table table-hover">
+                                    <thead class="table-primary">
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Nama Anggota</th>
+                                            <th>ID Pinjaman</th>
+                                            <th>Tanggal Jatuh Tempo</th>
+                                            <th>Jumlah Pinjaman</th>
+                                            <th>Denda</th>
+                                            <th>Total Bayar</th>
+                                            <th>Sisa Angsuran</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="denda-table-body">
+                                        @forelse($laporanDenda as $index => $data)
+                                        <tr>
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ $data->nama }}</td>
+                                            <td>{{ $data->id_pinjaman }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($data->tanggal_jatuh_tempo)->format('d M Y') }}</td>
+                                            <td>
+                                                <span class="badge bg-info">
+                                                    <i class="bi bi-cash-stack"></i> Rp {{ number_format($data->jumlah_pinjaman, 0, ',', '.') }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-danger">
+                                                    <i class="bi bi-x-circle"></i> Rp {{ number_format($data->denda, 0, ',', '.') }}
+                                                </span>
+                                            </td>
+                                            <td>Rp {{ number_format($data->total_bayar, 0, ',', '.') }}</td>
+                                            <td>Rp {{ number_format($data->sisa_angsuran, 0, ',', '.') }}</td>
+                                            <td>
+                                                <span class="badge bg-{{ $data->status === 'Lunas' ? 'success' : 'warning' }}">
+                                                    {{ ucfirst($data->status) }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        @empty
+                                        <tr>
+                                            <td colspan="9" class="text-center">
+                                                <span class="badge bg-warning">
+                                                    <i class="bi bi-exclamation-circle"></i> Belum ada data denda
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
-                </div>
-
-
-                <!-- Filter Pencarian -->
-                <div class="filter-denda mb-4">
-                    <input type="text" id="search-denda" class="form-control" placeholder="Cari berdasarkan Nama, atay ID Pinjaman">
-                </div>
-
-                <!-- Detail Laporan Denda -->
-                <div class="card">
-                    <div class="card-body">
-                        <h5>Detail Laporan Denda</h5>
-                        <div style="max-height: 450px; overflow:auto;">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Nama Anggota</th>
-                                        <th>ID Pinjaman</th>
-                                        <th>Tanggal Jatuh Tempo</th>
-                                        <th>Jumlah Pinjaman</th>
-                                        <th>Denda</th>
-                                        <th>Total Bayar</th>
-                                        <th>Sisa Angsuran</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="denda-table-body">
-                                    @foreach($laporanDenda as $index => $data)
-                                    <tr>
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>{{ $data->nama }}</td>
-                                        <td>{{ $data->id_pinjaman }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($data->tanggal_jatuh_tempo)->format('d M Y') }}</td>
-                                        <td>Rp {{ number_format($data->jumlah_pinjaman, 0, ',', '.') }}</td>
-                                        <td>Rp {{ number_format($data->denda, 0, ',', '.') }}</td>
-                                        <td>Rp {{ number_format($data->total_bayar, 0, ',', '.') }}</td>
-                                        <td>Rp {{ number_format($data->sisa_angsuran, 0, ',', '.') }}</td>
-                                        <td>{{ ucfirst($data->status) }}</td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+                </section>
             </div>
 
-           <footer>
+            <footer>
                 <div class="footer clearfix mb-0 text-muted">
                     <div class="float-start">
                         <p>2025 &copy; STARBIN</p>

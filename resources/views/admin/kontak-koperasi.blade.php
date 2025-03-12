@@ -264,20 +264,26 @@
                 </a>
             </header>
             @if (Session::has('error'))
-            <div class="alert alert-danger" style="background-color: salmon; color:aliceblue; border-radius:20px; margin-bottom:20px;">
-                {{ Session::get('error') }}
+            <div class="alert alert-danger d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #ff7f7f, #ff4d4d); color: #fff; border-radius: 20px; border: 2px solid #ff4d4d;">
+                <i class="bi bi-exclamation-triangle-fill me-3 fs-4" style="margin-top: -20px;"></i>
+                <div>
+                    <h5 class="mb-1">🚨 Oops! Terjadi Kesalahan</h5>
+                    <p class="mb-0">⚠️ {{ Session::get('error') }}</p>
+                </div>
             </div>
             @endif
 
+            @if (Session::has('success'))
+            <div class="alert alert-success d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #66cc66, #33b233); color: #fff; border-radius: 20px; border: 2px solid #33b233;">
+                <i class="bi bi-check-circle-fill me-3 fs-4" style="margin-top: -20px;"></i>
+                <div>
+                    <h5 class="mb-1">🌟 Yeay! Berhasil</h5>
+                    <p class="mb-0">✅ {{ Session::get('success') }}</p>
+                </div>
+            </div>
+            @endif
             <div class="container">
                 <h3 class="my-4">Kontak Koperasi</h3>
-
-                <!-- Jika berhasil -->
-                @if (Session::has('success'))
-                <div class="alert alert-success" style="background-color: lightgreen; color:aliceblue; border-radius:20px;">
-                    {{ Session::get('success') }}
-                </div>
-                @endif
 
                 <div class="container">
                     <div class="card">
@@ -285,35 +291,41 @@
                             <h4>Kelola Kontak Koperasi</h4>
                         </div>
                         <div class="card-body">
-                            <form action="{{ route('kontakkoperasi.store') }}" method="POST">
+                            <form id="kontakForm" method="POST" action="{{ route('kontakkoperasi.store') }}">
                                 @csrf
+                                <input type="hidden" id="kontakId" name="id">
+                                <input type="hidden" id="icon" name="icon">
+
                                 <h5>Tambah / Edit Kontak</h5>
                                 <div class="row">
                                     <div class="col-md-3">
                                         <label>Kategori</label>
-                                        <select name="key" class="form-control" required>
-                                            <option value="alamat" {{ isset($kontakData) && $kontakData->key == 'alamat' ? 'selected' : '' }}>📍 Alamat</option>
-                                            <option value="telepon" {{ isset($kontakData) && $kontakData->key == 'telepon' ? 'selected' : '' }}>📞 Telepon</option>
-                                            <option value="email" {{ isset($kontakData) && $kontakData->key == 'email' ? 'selected' : '' }}>✉️ Email</option>
+                                        <select name="key" id="key" class="form-control" required>
+                                            <option value="alamat" data-icon="bi bi-geo-alt">📍 Alamat</option>
+                                            <option value="telepon" data-icon="bi bi-telephone">📞 Telepon</option>
+                                            <option value="email" data-icon="bi bi-envelope">✉️ Email</option>
                                         </select>
                                     </div>
                                     <div class="col-md-3">
                                         <label>Judul</label>
-                                        <input type="text" name="title" class="form-control" value="{{ $kontakData->title ?? '' }}" required>
+                                        <input type="text" name="title" id="title" class="form-control" required>
                                     </div>
                                     <div class="col-md-3">
                                         <label>URL</label>
-                                        <input type="text" name="value" class="form-control" value="{{ $kontakData->value ?? '' }}" required>
+                                        <input type="text" name="value" id="value" class="form-control" required>
                                     </div>
                                     <div class="col-md-3 d-flex align-items-end">
                                         <button type="submit" class="btn btn-success">Simpan</button>
                                     </div>
                                 </div>
                             </form>
+
                             <h5 class="mt-4">Daftar Kontak</h5>
                             <table class="table table-bordered">
-                                <thead>
+                                <thead class="table-primary">
                                     <tr>
+                                        <th>#</th>
+                                        <th>Ikon</th>
                                         <th>Kategori</th>
                                         <th>Judul</th>
                                         <th>URL</th>
@@ -323,14 +335,20 @@
                                 <tbody>
                                     @foreach ($kontak as $item)
                                     <tr>
-                                        <td>{{ ucfirst($item->key) }}</td>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td><i class="{{ $item->icon }}"></i></td>
+                                        <td>{{ $item->key }}</td>
                                         <td>{{ $item->title }}</td>
                                         <td>{{ $item->value }}</td>
                                         <td>
-                                            <a href="{{ route('kontakkoperasi.edit', $item->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                            <form action="{{ route('kontakkoperasi.destroy') }}" method="POST" class="d-inline">
+                                            <button type="button" class="btn btn-warning btn-sm"
+                                                onclick="editKontak({{ $item->id }}, '{{ $item->key }}', '{{ $item->title }}', '{{ $item->value }}')">
+                                                Edit
+                                            </button>
+
+                                            <form action="{{ route('kontakkoperasi.destroy') }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus kontak ini?')">
                                                 @csrf
-                                                @method('DELETE')
+                                                <input type="hidden" name="_method" value="DELETE">
                                                 <input type="hidden" name="id" value="{{ $item->id }}">
                                                 <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
                                             </form>
@@ -342,28 +360,56 @@
                         </div>
                     </div>
                 </div>
-
-                <footer>
-                    <div class="footer clearfix mb-0 text-muted">
-                        <div class="float-start">
-                            <p>2025 &copy; STARBIN</p>
-                        </div>
-                        <div class="float-end" style="margin-right: 30px;">
-                            <p>Dibuat dengan
-                                <span class="text-danger"><i class="bi bi-heart"></i></span>
-                                oleh
-                                <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
-                                &
-                                <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
-                            </p>
-                        </div>
-                    </div>
-                </footer>
             </div>
+
+            <footer>
+                <div class="footer clearfix mb-0 text-muted">
+                    <div class="float-start">
+                        <p>2025 &copy; STARBIN</p>
+                    </div>
+                    <div class="float-end" style="margin-right: 30px;">
+                        <p>Dibuat dengan
+                            <span class="text-danger"><i class="bi bi-heart"></i></span>
+                            oleh
+                            <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
+                            &
+                            <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
+                        </p>
+                    </div>
+                </div>
+            </footer>
         </div>
-        <script src="{{asset('admin-page/assets/js/bootstrap.')}}js"></script>
-        <script src="{{asset('admin-page/assets/js/app.')}}js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </div>
+    <script src="{{asset('admin-page/assets/js/bootstrap.')}}js"></script>
+    <script src="{{asset('admin-page/assets/js/app.')}}js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function editKontak(id, key, title, value) {
+            document.getElementById('kontakId').value = id;
+            document.getElementById('key').value = key;
+            document.getElementById('title').value = title;
+            document.getElementById('value').value = value;
+
+            const form = document.getElementById('kontakForm');
+            form.action = `/kontak-koperasi/update/${id}`;
+
+            // Tambahkan input hidden _method untuk PUT
+            if (!form.querySelector('input[name="_method"]')) {
+                const methodInput = document.createElement('input');
+                methodInput.type = 'hidden';
+                methodInput.name = '_method';
+                methodInput.value = 'PUT';
+                form.appendChild(methodInput);
+            }
+
+            // Set ikon otomatis
+            const selectedOption = document.querySelector(`#key option[value="${key}"]`);
+            if (selectedOption) {
+                const iconClass = selectedOption.getAttribute('data-icon');
+                document.getElementById('icon').value = iconClass;
+            }
+        }
+    </script>
 </body>
 
 </html>

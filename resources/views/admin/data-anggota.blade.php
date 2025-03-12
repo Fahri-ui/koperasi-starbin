@@ -238,11 +238,14 @@
             <!-- Content -->
             <div class="container mt-5">
                 <!-- text judul -->
-                <h3 class="text-center bold">Kelola Data Anggota</h3>
+                <div class="page-heading d-flex pb-3 border-bottom">
+                    <i class="bi bi-people-fill me-3 fs-3 text-primary" style="margin-top: -10px;"></i>
+                    <h3 class="fw-bold mb-0">Kelola Data Anggota</h3>
+                </div>
                 <!-- end text judul -->
 
                 <!-- Form Tambah Anggota -->
-                <div class="card mb-4" style="margin-top: 20px;">
+                <div class="card mb-4" style="margin-top: 20px; border: 1px solid #435ebe;">
                     <div class="card-header bg-primary text-white">
                         <h5 class="text-white">
                             <i class="bi bi-person-plus text-white"></i> Tambah Anggota Baru
@@ -297,77 +300,84 @@
                 <!-- end Form Tambah Anggota -->
 
                 <!-- Tabel Data Anggota -->
-                <div class="card" style="margin-top: 30px;">
-                    <div class="card-body">
-                        <h5 class="text-center">Data Anggota</h5>
-                        <div style="margin-bottom: 20px; position: relative;">
-                            <div class="input-group">
-                                <input
-                                    type="text"
-                                    id="search-anggota"
-                                    class="form-control"
-                                    placeholder="Cari anggota berdasarkan Nama atau ID..."
-                                    onkeyup="searchAnggota()"
-                                    style="box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);">
-                                <button
-                                    class="btn btn-danger"
-                                    onclick="resetSearch()"
-                                    style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
-                                    <i class="bi bi-x-circle"></i> Bersihkan
-                                </button>
+                <!-- Data Anggota -->
+                <section class="mb-4">
+                    <div class="card shadow" style="border: 1px solid #435ebe;">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0 text-white">
+                                <i class="bi bi-people" style="margin-top: -30px;"></i> Data Anggota
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div style="margin-bottom: 20px; position: relative;">
+                                <div class="input-group">
+                                    <input
+                                        type="text"
+                                        id="search-anggota"
+                                        class="form-control"
+                                        placeholder="Cari anggota berdasarkan Nama atau ID..."
+                                        onkeyup="searchAnggota()"
+                                        style="box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);">
+                                    <button
+                                        class="btn btn-danger"
+                                        onclick="resetSearch()"
+                                        style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
+                                        <i class="bi bi-x-circle"></i> Bersihkan
+                                    </button>
+                                </div>
+                            </div>
+                            <div style="max-height: 500px; overflow: auto; font-size: .9rem; text-align: left;">
+                                <table class="table table-hover">
+                                    <thead class="table-primary">
+                                        <tr>
+                                            <th>No</th>
+                                            <th>ID</th>
+                                            <th>Nama Anggota</th>
+                                            <th>Email</th>
+                                            <th>Role</th>
+                                            <th>Nomor Telepon</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="data-anggota">
+                                        @foreach ($users as $index => $user)
+                                        <tr>
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ $user->id }}</td>
+                                            <td>
+                                                @if ($user->role === 'admin')
+                                                <span class="text-muted">{{ $user->fullname }}</span>
+                                                @else
+                                                <a href="#" class="text-primary" data-bs-toggle="modal" data-bs-target="#modalDetail" onclick="getDetail({{ $user->id }})">
+                                                    {{ $user->fullname }}
+                                                </a>
+                                                @endif
+                                            </td>
+                                            <td>{{ $user->email }}</td>
+                                            <td>
+                                                <select class="form-select role-select" data-user-id="{{ $user->id }}" data-original-role="{{ $user->role }}">
+                                                    <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>User</option>
+                                                    <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
+                                                </select>
+                                            </td>
+                                            <td>{{ $user->phone }}</td>
+                                            <td>
+                                                <form id="deleteForm-{{ $user->id }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="confirmDelete({{ $user->id }})">
+                                                        <i class="bi bi-trash"></i> Hapus
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                        <div style="max-height: 500px; overflow:auto; font-size:.9rem;">
-                            <table class="table table-striped">
-                                <thead class="table-dark">
-                                    <tr>
-                                        <th>No</th>
-                                        <th>ID</th>
-                                        <th>Nama Anggota</th>
-                                        <th>Email</th>
-                                        <th>Role</th>
-                                        <th>Nomor Telepon</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="data-anggota">
-                                    @foreach ($users as $index => $user)
-                                    <tr>
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>{{ $user->id }}</td>
-                                        <td>
-                                            @if ($user->role === 'admin')
-                                            <span class="text-muted">{{ $user->fullname }}</span>
-                                            @else
-                                            <a href="#" class="text-primary" data-bs-toggle="modal" data-bs-target="#modalDetail" onclick="getDetail({{$user->id}})">
-                                                {{ $user->fullname }}
-                                            </a>
-                                            @endif
-                                        </td>
-                                        <td>{{ $user->email }}</td>
-                                        <td>
-                                            <select class="form-select role-select" data-user-id="{{ $user->id }}" data-original-role="{{ $user->role }}">
-                                                <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>User</option>
-                                                <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
-                                            </select>
-                                        </td>
-                                        <td>{{ $user->phone }}</td>
-                                        <td>
-                                            <form id="deleteForm-{{ $user->id }}" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $user->id }})">
-                                                    <i class="bi bi-trash"></i> Hapus
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
                     </div>
-                </div>
+                </section>
                 <!-- end Tabel Data Anggota -->
             </div>
             <!-- end Content-->

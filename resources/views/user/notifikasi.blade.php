@@ -14,6 +14,15 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
 </head>
+
+<style>
+    .card {
+        width: 100%;
+        max-width: 900px;
+        min-width: 400px;
+    }
+</style>
+
 <body>
     <div id="app">
         <div id="sidebar" class="active">
@@ -270,9 +279,14 @@
             </div>
 
             @elseif (auth()->user()->status === 'Belum_Bayar_Simpanan_Wajib')
+            <div class="mb-4 pb-2 border-bottom">
+                <h2 class="text-center fw-bold">
+                    <i class="bi bi-bell-fill me-2"></i> Halaman Notifikasi
+                </h2>
+            </div>
             <!-- Section Peringatan Keterlambatan -->
-            <div class="card shadow-lg border-0 mb-4" style="text-align: center; border: 1px solid #d9d9d9;">
-                <div class="card-body bg-warning text-dark" style="border-radius: 10px;">
+            <div class="card shadow-lg border-0 mb-4" style="text-align: center; border: 1px solid #d9d9d9; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); margin-bottom: 20px; background-color: #ffffff; padding: 20px;">
+                <div class="card-body bg-warning text-dark" style="border: 1px solid #435ebe; border-radius: 10px;">
                     <div class="d-flex align-items-start">
                         <i class="bi bi-info-circle-fill text-primary fs-1 me-3" style="margin-top:-20px;"></i>
                         <div>
@@ -291,7 +305,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- Card Form Pembayaran Simpanan -->
             <div class="card shadow-lg border-0">
                 <div class="card-header bg-gradient bg-primary text-white">
@@ -338,15 +351,9 @@
                 </div>
             </div>
 
-            <br><br><br>
+            
 
             <div class="container">
-                <div class="mb-4 pb-2 border-bottom">
-                    <h2 class="text-center fw-bold">
-                        <i class="bi bi-bell-fill me-2"></i> Halaman Notifikasi
-                    </h2>
-                </div>
-
                 <div class="d-flex flex-column align-items-center">
                     @foreach ($notifikasiPerBulan as $bulan => $notifikasi)
                     <div class="w-100">
@@ -401,7 +408,7 @@
                 </div>
             </div>
 
-            
+
             @elseif (auth()->user()->status === 'Nonaktif')
             {{-- Tampilkan pesan akun nonaktif --}}
             <h3 class="text-red-500 text-center">Akun Anda Nonaktif. Silakan hubungi admin untuk informasi lebih lanjut.</h3>

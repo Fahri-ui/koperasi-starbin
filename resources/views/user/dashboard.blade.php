@@ -312,9 +312,10 @@
                 <h2 class="mb-0 fw-bold">Dashboard</h2>
             </div>
             
+        
             <!-- Section Peringatan Keterlambatan -->
             <div class="card shadow-lg border-0 mb-4" style="text-align: center; border: 1px solid #d9d9d9; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); margin-bottom: 20px; background-color: #ffffff; padding: 20px;">
-                <div class="card-body bg-warning text-dark" style="border-radius: 10px;">
+                <div class="card-body bg-warning text-dark" style="border: 1px solid #435ebe; border-radius: 10px;">
                     <div class="d-flex align-items-start">
                         <i class="bi bi-info-circle-fill text-primary fs-1 me-3" style="margin-top:-20px;"></i>
                         <div>
@@ -330,11 +331,9 @@
                                 Pastikan pembayaran tepat waktu agar status keanggotaan Anda tetap aktif.
                             </p>
                         </div>
-
                     </div>
                 </div>
             </div>
-
             <!-- Card Form Pembayaran Simpanan -->
             <div class="card shadow-lg border-0">
                 <div class="card-header bg-gradient bg-primary text-white">
@@ -380,8 +379,6 @@
                     </form>
                 </div>
             </div>
-
-            <br><br>
 
             <div class="row">
                 <!-- Bagian Profil Pengguna (70%) -->
@@ -509,7 +506,7 @@
                         <h5 class="mb-0 text-white"><i class="bi bi-list-check" style="margin-top: -30px;"></i> Daftar Transaksi Terbaru</h5>
                     </div>
                     <div class="card-body">
-                        <div style="max-height: 400px; overflow:auto; font-size:.9rem; text-align:left;">
+                        <div style="max-height: 500px; overflow:auto; font-size:.9rem; text-align:left;">
                             <table class="table table-hover">
                                 <thead class="table-primary">
                                     <tr>
@@ -711,7 +708,7 @@
                         <h5 class="mb-0 text-white"><i class="bi bi-list-check" style="margin-top: -30px;"></i> Daftar Transaksi Terbaru</h5>
                     </div>
                     <div class="card-body">
-                        <div style="max-height: 400px; overflow:auto; font-size:.9rem; text-align:left;">
+                        <div style="max-height: 500px; overflow:auto; font-size:.9rem; text-align:left;">
                             <table class="table table-hover">
                                 <thead class="table-primary">
                                     <tr>

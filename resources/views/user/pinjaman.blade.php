@@ -289,9 +289,15 @@
             </div>
 
             @elseif (auth()->user()->status === 'Belum_Bayar_Simpanan_Wajib')
+            
+            <div class="page-heading d-flex align-items-center pb-3 border-bottom">
+                <i class="bi bi-cash-coin me-2 fs-3 text-primary" style="margin-top: -30px; padding-right: 30px;"></i>
+                <h2 class="mb-0 fw-bold">Pinjaman</h2>
+            </div>
+            
             <!-- Section Peringatan Keterlambatan -->
             <div class="card shadow-lg border-0 mb-4" style="text-align: center; border: 1px solid #d9d9d9; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); margin-bottom: 20px; background-color: #ffffff; padding: 20px;">
-                <div class="card-body bg-warning text-dark" style="border-radius: 10px;">
+                <div class="card-body bg-warning text-dark" style="border: 1px solid #435ebe; border-radius: 10px;">
                     <div class="d-flex align-items-start">
                         <i class="bi bi-info-circle-fill text-primary fs-1 me-3" style="margin-top:-20px;"></i>
                         <div>
@@ -357,17 +363,10 @@
                 </div>
             </div>
 
-            <br><br><br>
-
-            <div class="page-heading d-flex align-items-center pb-3 border-bottom">
-                <i class="bi bi-cash-coin me-2 fs-3 text-primary" style="margin-top: -30px; padding-right: 30px;"></i>
-                <h2 class="mb-0 fw-bold">Pinjaman</h2>
-            </div>
-
             <div class="container mt-5" style="font-size:.9rem;">
                 <!-- Definisi Pinjaman -->
                 <section class="mb-4">
-                    <div class="card shadow">
+                    <div class="card shadow" style="border: 1px solid #435ebe;">
                         <div class="card-body">
                             <h5 class="fw-bold d-flex align-items-center">
                                 <i class="bi bi-book me-2" style="margin-top: -10px;"></i> Definisi Pinjaman
@@ -382,7 +381,7 @@
 
                 <!-- Total Pinjaman -->
                 <section class="mb-4">
-                    <div class="card shadow">
+                    <div class="card shadow" style="border: 1px solid #435ebe;">
                         <div class="card-body text-center">
                             <h5 class="fw-bold d-flex align-items-center justify-content-center">
                                 <i class="bi bi-cash-stack me-2" style="margin-top: -10px;"></i> Total Pinjaman Anda
@@ -438,10 +437,55 @@
                 </section>
                 @endif
 
+                <!-- Formulir Pengajuan Pinjaman -->
+                @if (!$pinjamanAktif && !$pinjamandalamproses)
+                <section class="mb-4">
+                    <div class="card mb-4 shadow"  style="border: 1px solid #435ebe; border-radius: 10px;">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="text-white"><i class="bi bi-file-earmark-text me-2"></i> Formulir Pengajuan Pinjaman</h5>
+                        </div>
+                        <div class="card-body" style="margin-top: 20px;">
+                            <form action="{{ route('pinjaman.ajukan') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <!-- Jumlah Pinjaman -->
+                                <div class="mb-3">
+                                    <label for="loan-amount" class="form-label"><i class="bi bi-cash"></i> Jumlah Pinjaman</label>
+                                    <input type="number" class="form-control" id="loan-amount" name="jumlah_pinjaman" placeholder="Masukkan jumlah pinjaman" min="100000" step="100000" required>
+                                </div>
+
+                                <!-- Jenis Jaminan -->
+                                <div class="mb-3">
+                                    <label for="jenis-jaminan" class="form-label"><i class="bi bi-shield-lock"></i> Jenis Jaminan</label>
+                                    <select class="form-control" id="jenis-jaminan" name="jenis_jaminan" required>
+                                        <option value="" disabled selected>Pilih jenis jaminan</option>
+                                        <option value="BPKB Kendaraan">BPKB Kendaraan</option>
+                                        <option value="Sertifikat Tanah">Sertifikat Tanah</option>
+                                        <option value="Kartu Keluarga">Kartu Keluarga</option>
+                                    </select>
+                                </div>
+
+                                <!-- Upload Jaminan -->
+                                <div class="mb-3">
+                                    <label for="file-jaminan" class="form-label"><i class="bi bi-upload"></i> Upload Jaminan (JPG, PNG, JPEG, maks 2MB)</label>
+                                    <input type="file" class="form-control" id="jaminan-proof" name="jaminan-proof" accept="image/*" required>
+                                </div>
+
+                                <!-- Tombol Submit -->
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-send me-2"></i> Ajukan Pinjaman
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+                @endif
+
                 <!-- Status Pinjaman Aktif -->
                 @if ($pinjamanAktif)
                 <section class="mb-4">
-                    <div class="card shadow p-4">
+                    <div class="card shadow p-4" style="border: 1px solid #435ebe;">
                         <h5 class="text-center mb-3 fw-bold d-flex align-items-center pb-3" style="border-bottom: 2px solid #e0e0e0;">
                             <i class="bi bi-list-check me-2" style="margin-top: -10px; padding-right:20px;"></i> Status Pinjaman Aktif
                         </h5>
@@ -487,7 +531,7 @@
 
                 <!-- Riwayat Transaksi (Pengajuan dan Pembayaran) -->
                 <section class="mb-4">
-                    <div class="card shadow">
+                    <div class="card shadow" style="border: 1px solid #435ebe;">
                         <div class="card-header bg-primary text-white">
                             <h5 class="mb-0 text-white">
                                 <i class="bi bi-clock-history" style="margin-top: -30px;"></i> Riwayat Transaksi Pinjaman
@@ -570,7 +614,7 @@
                 <!-- Formulir Pembayaran Pinjaman -->
                 @if ($pinjamanAktif)
                 <section class="mb-4">
-                    <div class="card shadow">
+                    <div class="card shadow" style="border: 1px solid #435ebe;">
                         <div class="card-header bg-primary text-white">
                             <h5 class="mb-0 text-white">
                                 <i class="bi bi-cash-coin" style="margin-top: -30px;"></i> Formulir Pembayaran Pinjaman
@@ -607,7 +651,7 @@
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label for="payment-amount" class="form-label">Jumlah Pembayaran</label>
-                                        <input type="number" class="form-control" id="payment-amount" name="payment-amount" placeholder="Masukkan jumlah pembayaran" min="50000" step="50000" required>
+                                        <input type="number" class="form-control" id="payment-amount" name="payment-amount" placeholder="Masukkan jumlah pembayaran" min="10000" step="10000" required>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -823,7 +867,7 @@
                             </h5>
                         </div>
                         <div class="card-body">
-                            <div style="max-height: 400px; overflow: auto; font-size: .9rem; text-align: left;">
+                            <div style="max-height: 700px; overflow: auto; font-size: .9rem; text-align: left;">
                                 <table class="table table-hover">
                                     <thead class="table-primary">
                                         <tr>

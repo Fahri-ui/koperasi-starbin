@@ -236,165 +236,196 @@
             </div>
             @endif
             <div class="container mt-4">
-                <h3>Data Pengajuan</h3>
-                <p>Berikut adalah daftar pengajuan dari anggota koperasi.</p>
-
-                <!-- Statistik Ringkasan -->
-                <div class="row mb-4">
-                    <div class="col-md-3">
-                        <div class="card text-center">
-                            <div class="card-body">
-                                <h5 class="card-title">Total Pengajuan</h5>
-                                <p class="card-text">{{ $pengajuan->count() }} Pengajuan</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card text-center">
-                            <div class="card-body">
-                                <h5 class="card-title">Pengajuan Menunggu</h5>
-                                <p class="card-text">{{ $pengajuan->where('status', 'Dalam Proses')->count() }} Pengajuan</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card text-center">
-                            <div class="card-body">
-                                <h5 class="card-title">Pengajuan Disetujui</h5>
-                                <p class="card-text">{{ $pengajuan->where('status', 'Aktif')->count() }} Pengajuan</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card text-center">
-                            <div class="card-body">
-                                <h5 class="card-title">Pengajuan Ditolak</h5>
-                                <p class="card-text">{{ $pengajuan->where('status', 'Ditolak')->count() }} Pengajuan</p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="page-header mb-4">
+                    <h3 class="fw-bold">
+                        <i class="bi bi-clipboard-data"></i> Kelola Pengajuan Pinjaman
+                    </h3>
                 </div>
+                <hr style="border-top: 2px solid #435ebe; margin-bottom: 30px;">
 
-                <div class="card">
-                    <div class="card-body">
-                        <h5>Data Pegajuan</h5>
-                        <div style="max-height: 450px;  overflow:auto; font-size:.9rem;">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Nama Anggota</th>
-                                        <th>Tanggal Pengajuan</th>
-                                        <th>Jumlah Pengajuan</th>
-                                        <th>Jenis Jaminan</th>
-                                        <th>Bukti Jaminan</th>
-                                        <th>Status</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse($pengajuan as $index => $item)
-                                    <tr>
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>{{ $item->user->fullname }}</td>
-                                        <td>{{ $item->tanggal_pengajuan }}</td>
-                                        <td>Rp {{ number_format($item->jumlah_pinjaman, 0, ',', '.') }}</td>
-                                        <td>{{ $item->jenis_jaminan}}</td>
-                                        <td>
-                                            @if($item->file_jaminan)
-                                            <a href="{{ route('bukti.jaminan.admin', ['bukti' => basename($item->file_jaminan)]) }}" target="_blank">Lihat Jaminan</a>
-                                            @else
-                                            -
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($item->status == 'Dalam Proses')
-                                            <span class="badge bg-warning">Menunggu</span>
-                                            @elseif($item->status == 'Aktif')
-                                            <span class="badge bg-success">Disetujui</span>
-                                            @elseif($item->status == 'Ditolak')
-                                            <span class="badge bg-danger">Ditolak</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($item->status == 'Dalam Proses')
-                                            <button class="btn btn-sm btn-success btn-ubah-status" data-id="{{ $item->id }}" data-status="Aktif">Setujui</button>
-                                            <button class="btn btn-sm btn-danger btn-ubah-status" data-id="{{ $item->id }}" data-status="Ditolak">Tolak</button>
-                                            @else
-                                            -
-                                            @endif
-                                        </td>
-                                    </tr>
-                                    @empty
-                                    <tr>
-                                        <td colspan="7">Belum ada data transaksi.</td>
-                                    </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
+                <!-- Ringkasan Statistik -->
+                <section class="mb-4">
+                    <div class="card shadow" style="border: 1px solid #435ebe;">
+                        <div class="card-body">
+                            <h5 class="fw-bold d-flex align-items-center">
+                                <i class="bi bi-bar-chart-line me-2"></i> Statistik Ringkasan Pengajuan
+                            </h5>
+                            <hr style="border-top: 2px solid #25396f; border-radius: 5px;">
+
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="card shadow" style="border-left: 5px solid #007bff; border-radius: 10px;">
+                                        <div class="card-body text-center">
+                                            <h6 style="color: #007bff;"><i class="bi bi-clipboard-plus"></i> Total Pengajuan</h6>
+                                            <p><strong>{{ $pengajuan->count() }} Pengajuan</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card shadow" style="border-left: 5px solid #ffc107; border-radius: 10px;">
+                                        <div class="card-body text-center">
+                                            <h6 style="color: #ffc107;"><i class="bi bi-hourglass-split"></i> Menunggu Persetujuan</h6>
+                                            <p><strong>{{ $pengajuan->where('status', 'Dalam Proses')->count() }} Pengajuan</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card shadow" style="border-left: 5px solid #28a745; border-radius: 10px;">
+                                        <div class="card-body text-center">
+                                            <h6 style="color: #28a745;"><i class="bi bi-check-circle"></i> Pengajuan Disetujui</h6>
+                                            <p><strong>{{ $pengajuan->where('status', 'Aktif')->count() }} Pengajuan</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card shadow" style="border-left: 5px solid #dc3545; border-radius: 10px;">
+                                        <div class="card-body text-center">
+                                            <h6 style="color: #dc3545;"><i class="bi bi-x-circle"></i> Pengajuan Ditolak</h6>
+                                            <p><strong>{{ $pengajuan->where('status', 'Ditolak')->count() }} Pengajuan</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
-                </div>
+                </section>
 
-                <footer>
-                    <div class="footer clearfix mb-0 text-muted">
-                        <div class="float-start">
-                            <p>2025 &copy; STARBIN</p>
+                <!-- Tabel Data Pengajuan -->
+                <section class="mb-4">
+                    <div class="card shadow" style="border: 1px solid #435ebe;">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0 text-white"><i class="bi bi-table"></i> Data Pengajuan Pinjaman</h5>
                         </div>
-                        <div class="float-end" style="margin-right: 30px;">
-                            <p>Dibuat dengan
-                                <span class="text-danger"><i class="bi bi-heart"></i></span>
-                                oleh
-                                <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
-                                &
-                                <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
-                            </p>
+                        <div class="card-body">
+                            <div style="max-height: 450px; overflow: auto; font-size: .9rem;">
+                                <table class="table table-hover">
+                                    <thead class="table-primary">
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Nama Anggota</th>
+                                            <th>Tanggal Pengajuan</th>
+                                            <th>Jumlah Pengajuan</th>
+                                            <th>Jenis Jaminan</th>
+                                            <th>Bukti Jaminan</th>
+                                            <th>Status</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse($pengajuan as $index => $item)
+                                        <tr>
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ $item->user->fullname ?? '-' }}</td>
+                                            <td>{{ $item->tanggal_pengajuan ?? '-' }}</td>
+                                            <td>Rp {{ number_format($item->jumlah_pinjaman, 0, ',', '.') }}</td>
+                                            <td>{{ $item->jenis_jaminan ?? '-' }}</td>
+                                            <td>
+                                                @if($item->file_jaminan)
+                                                <a href="{{ route('bukti.jaminan.admin', ['bukti' => basename($item->file_jaminan)]) }}" target="_blank" class="btn btn-outline-info btn-sm">Lihat Jaminan</a>
+                                                @else
+                                                <span class="badge bg-secondary">Tidak Ada</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @php
+                                                $statusColors = [
+                                                'Dalam Proses' => 'warning',
+                                                'Aktif' => 'success',
+                                                'Ditolak' => 'danger'
+                                                ];
+                                                $badgeColor = $statusColors[$item->status] ?? 'secondary';
+                                                @endphp
+                                                <span class="badge bg-{{ $badgeColor }}">{{ $item->status }}</span>
+                                            </td>
+                                            <td>
+                                                @if($item->status == 'Dalam Proses')
+                                                <button class="btn btn-success btn-sm btn-ubah-status" data-id="{{ $item->id }}" data-status="Aktif">
+                                                    <i class="bi bi-check-circle"></i> Setujui
+                                                </button>
+                                                <button class="btn btn-danger btn-sm btn-ubah-status" data-id="{{ $item->id }}" data-status="Ditolak">
+                                                    <i class="bi bi-x-circle"></i> Tolak
+                                                </button>
+                                                @else
+                                                <span class="text-muted">-</span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        @empty
+                                        <tr>
+                                            <td colspan="8" class="text-center">
+                                                <span class="badge bg-warning"><i class="bi bi-exclamation-circle"></i> Belum ada data pengajuan</span>
+                                            </td>
+                                        </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </footer>
+                </section>
             </div>
-        </div>
-        <script src="{{asset('admin-page/assets/js/bootstrap.js')}}"></script>
-        <script src="{{asset('admin-page/assets/js/app.js')}}"></script>
-        <!-- Script AJAX untuk update status -->
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                document.querySelectorAll(".btn-ubah-status").forEach(button => {
-                    button.addEventListener("click", function() {
-                        let id = this.getAttribute("data-id");
-                        let status = this.getAttribute("data-status");
+            \
 
-                        fetch(`/data-pengajuan/${id}/update`, {
-                                method: "POST",
-                                headers: {
-                                    "Content-Type": "application/json",
-                                    "Accept": "application/json",
-                                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
-                                },
-                                body: JSON.stringify({
-                                    status: status
-                                }),
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.success) {
-                                    alert("Status berhasil diperbarui!");
-                                    location.reload();
-                                } else {
-                                    alert("Gagal memperbarui status: " + data.error);
-                                }
-                            })
-                            .catch(error => {
-                                console.error("Error:", error);
-                                alert("Terjadi kesalahan saat memperbarui status.");
-                            });
-                    });
+            <footer>
+                <div class="footer clearfix mb-0 text-muted">
+                    <div class="float-start">
+                        <p>2025 &copy; STARBIN</p>
+                    </div>
+                    <div class="float-end" style="margin-right: 30px;">
+                        <p>Dibuat dengan
+                            <span class="text-danger"><i class="bi bi-heart"></i></span>
+                            oleh
+                            <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
+                            &
+                            <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
+                        </p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <script src="{{asset('admin-page/assets/js/bootstrap.js')}}"></script>
+    <script src="{{asset('admin-page/assets/js/app.js')}}"></script>
+    <!-- Script AJAX untuk update status -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll(".btn-ubah-status").forEach(button => {
+                button.addEventListener("click", function() {
+                    let id = this.getAttribute("data-id");
+                    let status = this.getAttribute("data-status");
+
+                    fetch(`/data-pengajuan/${id}/update`, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Accept": "application/json",
+                                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+                            },
+                            body: JSON.stringify({
+                                status: status
+                            }),
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert("Status berhasil diperbarui!");
+                                location.reload();
+                            } else {
+                                alert("Gagal memperbarui status: " + data.error);
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error:", error);
+                            alert("Terjadi kesalahan saat memperbarui status.");
+                        });
                 });
             });
-        </script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <!-- Link Bootstrap JS -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Link Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

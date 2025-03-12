@@ -236,13 +236,65 @@
             </div>
             @endif
 
-            <h3 class="text-center">Selamat Datang, Admin</h3>
+             <div class="page-heading d-flex align-items-center pb-3 border-bottom">
+                <i class="bi bi-house-door me-2 fs-3 text-primary" style="margin-top: -30px; padding-right: 30px;"></i>
+                <h2 class="mb-0 fw-bold">Selamat Datang, Admin</h2>
+            </div>
 
             <div class="container mt-4" style="font-size: .7rem;">
+                <div class="container mt-5">
+                    <div class="row">
+                        <!-- Kartu Profil -->
+                        <div class="col-md-4">
+                            <div class="card shadow p-4" style="border: none; border-radius: 12px; border: 1px solid #435ebe;">
+                                <div class="text-center">
+                                    <img src="{{ asset('picture/account/' . Auth::user()->gambar) }}" alt="Foto Profil" class="rounded-circle" style=" width: 150px; height: 150px; object-fit: cover;">
+                                    <h4 class="fw-bold" style="margin-top: 10px;"> {{ Auth::user()->fullname }}</h4>
+                                    <p class="text-muted" style="font-size: 1.2rem;">Role : {{ Auth::user()->role }}</p>
+                                    <span class="badge bg-primary" style="font-size: .9rem;">Status : {{ Auth::user()->status }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Informasi Detail Profil -->
+                        <div class="col-md-8">
+                            <div class="card shadow p-4" style="border: 1px solid #435ebe;">
+                                <h5 class="fw-bold mb-3">Informasi Akun</h5>
+                                <ul class="list-group">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Nama Lengkap
+                                        <span>{{ Auth::user()->fullname }}</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Email
+                                        <span>{{ Auth::user()->email }}</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        No Telepon
+                                        <span>{{ Auth::user()->phone }}</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Alamat
+                                        <span>{{ Auth::user()->address }}</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Bergabung Sejak
+                                        <span>{{ Auth::user()->created_at->translatedFormat('d F Y') }}</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Terakhir Di Perbarui
+                                        <span>{{ Auth::user()->updated_at ? Auth::user()->updated_at->translatedFormat('d F Y') : 'Belum ada pembaruan' }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row">
                     <!-- Statistik Keuangan (Bar Chart - 60%) -->
                     <div class="col-md-8">
-                        <div class="card shadow p-4" style="height: 450px;">
+                        <div class="card shadow p-4" style="border: 1px solid #435ebe; height: 450px;">
                             <h5 class="text-center">Statistik Keuangan</h5>
                             <canvas id="barChart" style="max-height: 400px;"></canvas>
                         </div>
@@ -250,7 +302,7 @@
 
                     <!-- Statistik Keuangan (List - 40%) -->
                     <div class="col-md-4">
-                        <div class="card shadow p-4">
+                        <div class="card shadow p-4" style="border: 1px solid #435ebe;">
                             <h5 class="text-center mb-3">Statistik Keuangan</h5>
                             <ul class="list-group">
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -281,29 +333,9 @@
                         </div>
                     </div>
 
-                    <!-- Grafik Simpanan (40%) -->
-                    <div class="col-md-6 mt-3">
-                        <div class="card shadow p-3" style="height: 350px;">
-                            <h5 class="text-center">Grafik Simpanan</h5>
-                            <canvas id="pieChart" style="max-height: 300px;"></canvas>
-                        </div>
-                    </div>
-
-                    <!-- Notifikasi Keuangan (60%) -->
-                    <div class="col-md-6 mt-3" style="font-size: 1rem;">
-                        <div class="card shadow p-3">
-                            <h5 class="text-center">Notifikasi Keuangan</h5>
-                            <ul class="list-group">
-                                <li class="list-group-item">Pengajuan pinjaman dalam proses: <strong>{{ $jumlahPengajuan }}</strong></li>
-                                <li class="list-group-item">Anggota dengan denda: <strong>{{ $jumlahAnggotaDenda }}</strong></li>
-                                <li class="list-group-item">Total pengajuan yang belum disetujui: <strong>Rp {{ number_format($totalPengajuan) }}</strong></li>
-                            </ul>
-                        </div>
-                    </div>
-
                     <!-- Grafik Pinjaman & Angsuran (100% Width, Lebih Tinggi) -->
                     <div class="col-md-12 mt-3">
-                        <div class="card shadow p-4" style="height: 500px;">
+                        <div class="card shadow p-4" style="border: 1px solid #435ebe; height: 500px;">
                             <h5 class="text-center">Grafik Pinjaman & Angsuran</h5>
                             <canvas id="lineChart" style="max-height: 450px;"></canvas>
                         </div>
@@ -332,6 +364,7 @@
     <script src="{{asset('admin-page/assets/js/bootstrap.js')}}"></script>
     <script src="{{asset('admin-page/assets/js/app.js')}}"></script>
     <!-- Link Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
@@ -342,51 +375,23 @@
             let angsuranData = {!! json_encode($angsuranBulanan) !!};
             let totalSimpananWajib = {{ $totalSimpananWajib }};
             let totalSimpananSukarela = {{ $totalSimpananSukarela }};
+            let totalSimpananAnggota = {{ $totalSimpananAnggota }};
             let totalPinjaman = {{ $totalPinjaman }};
             let totalAngsuran = {{ $totalAngsuran }};
             let totalDenda = {{ $totalDenda }};
 
             // Ambil label bulan dan data hanya yang memiliki nilai
-            let labelsBulan = Object.keys(pinjamanData); // ["Jan", "Feb", "Mar", ...]
+            let labelsBulan = Object.keys(pinjamanData); 
             let pinjamanValues = Object.values(pinjamanData);
             let angsuranValues = Object.values(angsuranData);
 
-            // **PIE CHART** Simpanan
-            new Chart(document.getElementById("pieChart"), {
-                type: "pie",
-                data: {
-                    labels: ["Pinjaman", "Simpanan Sukarela"],
-                    datasets: [{
-                        data: [totalPinjaman, totalSimpananSukarela],
-                        backgroundColor: ["#4CAF50", "#FF9800"],
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    layout: {
-                        padding: {
-                            top: 20,
-                            bottom: 20
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                            labels: {
-                                padding: 20
-                            }
-                        }
-                    }
-                }
-            });
-
-            // **LINE CHART** Pinjaman & Angsuran
+            // **LINE CHART** Pinjaman, Denda, Angsuran
             new Chart(document.getElementById("lineChart"), {
                 type: "line",
                 data: {
-                    labels: labelsBulan, // Hanya bulan dengan data
-                    datasets: [{
+                    labels: labelsBulan, 
+                    datasets: [
+                        {
                             label: "Pinjaman",
                             data: pinjamanValues,
                             backgroundColor: "rgba(54, 162, 235, 0.2)",
@@ -402,6 +407,17 @@
                             data: angsuranValues,
                             backgroundColor: "rgba(255, 159, 64, 0.2)",
                             borderColor: "rgba(255, 159, 64, 1)",
+                            borderWidth: 2,
+                            tension: 0.4,
+                            pointBackgroundColor: "black",
+                            pointBorderColor: "black",
+                            pointRadius: 5
+                        },
+                        {
+                            label: "Denda",
+                            data: Array(labelsBulan.length).fill(totalDenda / labelsBulan.length),
+                            backgroundColor: "rgba(255, 99, 132, 0.2)",
+                            borderColor: "rgba(255, 99, 132, 1)",
                             borderWidth: 2,
                             tension: 0.4,
                             pointBackgroundColor: "black",
@@ -426,7 +442,7 @@
                             align: "top",
                             color: "#fff",
                             backgroundColor: function(context) {
-                                return context.datasetIndex === 0 ? "#007bff" : "#6c757d";
+                                return context.datasetIndex === 0 ? "#007bff" : context.datasetIndex === 1 ? "#ff9f40" : "#ff6384";
                             },
                             borderRadius: 4,
                             font: {
@@ -454,15 +470,15 @@
                 plugins: [ChartDataLabels]
             });
 
-            // **BAR CHART** Statistik Keuangan
+            // **BAR CHART** Simpanan Anggota, Wajib, Sukarela
             new Chart(document.getElementById("barChart"), {
                 type: "bar",
                 data: {
-                    labels: ["Total Pinjaman", "Total Angsuran", "Total Denda"],
+                    labels: ["Simpanan Anggota", "Simpanan Wajib", "Simpanan Sukarela"],
                     datasets: [{
                         label: "Nominal (Rp)",
-                        data: [totalPinjaman, totalAngsuran, totalDenda],
-                        backgroundColor: ["#FF5733", "#33FF57", "#FFC300"],
+                        data: [totalSimpananAnggota, totalSimpananWajib, totalSimpananSukarela],
+                        backgroundColor: ["#435ebe", "#4CAF50", "#FF9800"],
                     }]
                 },
                 options: {

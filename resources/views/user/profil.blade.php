@@ -287,9 +287,14 @@
             </div>
 
             @elseif (auth()->user()->status === 'Belum_Bayar_Simpanan_Wajib')
+            <div class="page-heading d-flex align-items-center pb-3 border-bottom">
+                <i class="bi bi-person-circle me-2 fs-3 text-primary" style="margin-top: -30px; padding-right: 30px;"></i>
+                <h3 class="mb-0 fw-bold">👋 Halo, {{ Auth::user()->fullname }}</h3>
+            </div>
+            
             <!-- Section Peringatan Keterlambatan -->
             <div class="card shadow-lg border-0 mb-4" style="text-align: center; border: 1px solid #d9d9d9; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); margin-bottom: 20px; background-color: #ffffff; padding: 20px;">
-                <div class="card-body bg-warning text-dark" style="border-radius: 10px;">
+                <div class="card-body bg-warning text-dark" style="border: 1px solid #435ebe; border-radius: 10px;">
                     <div class="d-flex align-items-start">
                         <i class="bi bi-info-circle-fill text-primary fs-1 me-3" style="margin-top:-20px;"></i>
                         <div>
@@ -354,14 +359,6 @@
                     </form>
                 </div>
             </div>
-
-            <br><br><br>
-
-            <div class="page-heading d-flex align-items-center pb-3 border-bottom">
-                <i class="bi bi-person-circle me-2 fs-3 text-primary" style="margin-top: -30px; padding-right: 30px;"></i>
-                <h3 class="mb-0 fw-bold">👋 Halo, {{ Auth::user()->fullname }}</h3>
-            </div>
-
 
             <div class="page-content">
                 <div class="container">

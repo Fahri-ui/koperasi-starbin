@@ -14,6 +14,7 @@ class DendaController extends Controller
     {
         // Ambil semua pinjaman yang belum lunas & memiliki denda
         $laporanDenda = Pinjaman::whereIn('pinjaman.status', ['Aktif', 'Menunggak'])
+            ->where('pinjaman.total_denda', '>', 0)
             ->join('users', 'pinjaman.user_id', '=', 'users.id')
             ->leftJoin('riwayat_pembayaran', 'pinjaman.id', '=', 'riwayat_pembayaran.pinjaman_id')
             ->select(

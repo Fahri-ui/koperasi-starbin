@@ -6,13 +6,15 @@ use App\Models\Notifikasi;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Simpanan;
+use App\Models\Setting; // Tambahkan model Setting
 
 class BantuanController extends Controller
 {
     function bantuan()
     {
+        $kontak = Setting::whereIn('key', ['alamat', 'telepon', 'email'])->get();
         $simpanan = Simpanan::where('user_id', auth()->id())->latest()->first();
-        return view('user/bantuan', compact('simpanan'));
+        return view('user/bantuan', compact('simpanan', 'kontak'));
     }
 
     public function kirimPesan(Request $request)

@@ -236,50 +236,72 @@
 
                 <div class="data-simpanan-container">
                     <!-- Judul -->
-                    <h3>Simpanan Wajib</h3>
+                    <h3 class="text-center bold">
+                        <i class="bi bi-wallet2"></i> Simpanan Wajib
+                    </h3>
+                    <hr style="border-top: 2px solid black; margin-bottom: 30px;">
 
                     <!-- Filter Pencarian -->
-                    <div class="filter-simpanan">
-                        <input type="text" id="search-simpanan" class="form-control" placeholder="Cari anggota berdasarkan nama atau ID...">
-                    </div>
+                    <section class="mb-4">
+                        <div class="card shadow" style="border: 1px solid #435ebe;">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0 text-white">
+                                    <i class="bi bi-wallet2"></i> Data Simpanan Wajib
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <!-- Pencarian -->
+                                <div class="input-group mb-3">
+                                    <input type="text" id="search-simpanan" class="form-control" placeholder="Cari anggota berdasarkan nama atau ID..." onkeyup="searchSimpanan()" style="box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);">
+                                    <button class="btn btn-danger" onclick="resetSearch()">
+                                        <i class="bi bi-x-circle"></i> Bersihkan
+                                    </button>
+                                </div>
 
-                    <div class="card">
-                        <div class="card-body">
-                            <h5>Data Simpanan Wajib</h5>
-                            <div style="max-height: 450px;  overflow:auto; font-size:.9rem;">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>ID Simpanan</th>
-                                            <th>Nama Anggota</th>
-                                            <th>Jumlah Simpanan</th>
-                                            <th>Tanggal Simpanan</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tabel-simpanan">
-                                        @foreach($simpananWajib as $index => $simpanan)
-                                        <tr>
-                                            <td>{{$index + 1}}</td>
-                                            <td>{{ $simpanan->id }}</td>
-                                            <td>{{ $simpanan->user->fullname ?? 'Tidak Diketahui' }}</td>
-                                            <td>Rp {{ number_format($simpanan->jumlah, 0, ',', '.') }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($simpanan->tanggal_transaksi)->format('Y-m-d') }}</td>
-                                            <td>{{ ucfirst($simpanan->status) }}</td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                                </table>
+                                <!-- Tabel Simpanan -->
+                                <div style="max-height: 450px; overflow:auto; font-size:.9rem;">
+                                    <table class="table table-striped">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th>No</th>
+                                                <th>ID Simpanan</th>
+                                                <th>Nama Anggota</th>
+                                                <th>Jumlah Simpanan</th>
+                                                <th>Tanggal Simpanan</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tabel-simpanan">
+                                            @foreach($simpananWajib as $index => $simpanan)
+                                            <tr>
+                                                <td>{{$index + 1}}</td>
+                                                <td>{{ $simpanan->id }}</td>
+                                                <td>{{ $simpanan->user->fullname ?? 'Tidak Diketahui' }}</td>
+                                                <td>Rp {{ number_format($simpanan->jumlah, 0, ',', '.') }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($simpanan->tanggal_transaksi)->format('Y-m-d') }}</td>
+                                                <td>
+                                                    <span class="badge bg-{{ $simpanan->status === 'aktif' ? 'success' : 'secondary' }}">
+                                                        {{ ucfirst($simpanan->status) }}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- Total Simpanan -->
+                                <div class="card mt-3" style="background: #f8f9fa; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);">
+                                    <div class="card-body text-center">
+                                        <h4>Total Simpanan Wajib</h4>
+                                        <h3 class="text-primary">
+                                            <i class="bi bi-coin"></i> Rp {{ number_format($totalSimpananWajib, 0, ',', '.') }}
+                                        </h3>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Statistik -->
-                    <div class="simpanan-statistik mt-3">
-                        <h4>Total Simpanan: <span id="total-simpanan-statistik">Rp {{ number_format($totalSimpananWajib, 0, ',', '.') }}</span></h4>
-                    </div>
+                    </section>
                 </div>
                 <footer>
                     <div class="footer clearfix mb-0 text-muted">

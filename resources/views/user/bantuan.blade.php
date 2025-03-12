@@ -292,9 +292,19 @@
             </div>
 
             @elseif (auth()->user()->status === 'Belum_Bayar_Simpanan_Wajib')
+            
+            <div class="mb-4 pb-2 border-bottom text-center">
+                <h2 class="fw-bold">
+                    <i class="bi bi-question-circle me-2"></i> Pusat Bantuan
+                </h2>
+                <p class="text-muted">
+                    Kami di sini untuk membantu Anda. Temukan jawaban atas pertanyaan Anda atau hubungi kami langsung.
+                </p>
+            </div>
+
             <!-- Section Peringatan Keterlambatan -->
             <div class="card shadow-lg border-0 mb-4" style="text-align: center; border: 1px solid #d9d9d9; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); margin-bottom: 20px; background-color: #ffffff; padding: 20px;">
-                <div class="card-body bg-warning text-dark" style="border-radius: 10px;">
+                <div class="card-body bg-warning text-dark" style="border: 1px solid #435ebe; border-radius: 10px;">
                     <div class="d-flex align-items-start">
                         <i class="bi bi-info-circle-fill text-primary fs-1 me-3" style="margin-top:-20px;"></i>
                         <div>
@@ -360,19 +370,7 @@
                 </div>
             </div>
 
-            <br><br><br>
-
             <div class="container mt-4">
-                <!-- Judul Halaman -->
-                <div class="mb-4 pb-2 border-bottom text-center">
-                    <h2 class="fw-bold">
-                        <i class="bi bi-question-circle me-2"></i> Pusat Bantuan
-                    </h2>
-                    <p class="text-muted">
-                        Kami di sini untuk membantu Anda. Temukan jawaban atas pertanyaan Anda atau hubungi kami langsung.
-                    </p>
-                </div>
-
                 <!-- Daftar FAQ -->
                 <section class="mb-4">
                     <div class="accordion mb-4" id="helpAccordion">
@@ -436,7 +434,7 @@
 
                 <!-- Formulir Hubungi Kami -->
                 <section class="mb-4">
-                    <div class="card shadow-sm">
+                    <div class="card shadow" style="border: 1px solid #435ebe;">
                         <div class="card-header bg-primary text-white">
                             <h5 class="mb-0 text-white"><i class="bi bi-envelope me-2"></i> Hubungi Kami</h5>
                         </div>
@@ -457,65 +455,66 @@
                 <div class="container" data-aos="fade-up" data-aos-delay="100">
                     <div class="container" data-aos="fade-up" data-aos-delay="100" style="margin-bottom: 30px;">
                         <div class="row gy-4">
+                            @foreach ($kontak as $item)
+                            @php
+                            // Mapping warna dan ikon sesuai key
+                            $themeColors = [
+                            'alamat' => 'primary',
+                            'telepon' => 'success',
+                            'email' => 'danger',
+                            ];
 
-                            <!-- Alamat -->
+                            $icons = [
+                            'alamat' => 'bi bi-geo-alt',
+                            'telepon' => 'bi bi-telephone',
+                            'email' => 'bi bi-envelope',
+                            ];
+
+                            $buttonIcons = [
+                            'alamat' => 'bi bi-map-fill',
+                            'telepon' => 'bi bi-whatsapp',
+                            'email' => 'bi bi-send',
+                            ];
+
+                            $defaultText = 'Tidak ada data';
+                            $color = $themeColors[$item->key] ?? 'secondary';
+                            $icon = $icons[$item->key] ?? 'bi bi-question-circle';
+                            $buttonIcon = $buttonIcons[$item->key] ?? 'bi bi-arrow-right';
+                            $link = '#';
+                            $linkText = 'Lihat Detail';
+
+                            // Atur link dan teks tombol
+                            if ($item->key === 'alamat') {
+                            $link = $item->value ?: '#';
+                            $linkText = 'Lihat di Peta';
+                            } elseif ($item->key === 'telepon') {
+                            $link = $item->value ? "https://wa.me/{$item->value}" : '#';
+                            $linkText = 'Hubungi via WhatsApp';
+                            } elseif ($item->key === 'email') {
+                            $link = $item->value ? "mailto:{$item->value}" : '#';
+                            $linkText = 'Kirim Email';
+                            }
+                            @endphp
+
                             <div class="col-lg-4">
-                                <div class="card text-center shadow p-3 border-primary">
-                                    <div class="card-header bg-primary text-white">
-                                        <h5 class="mb-0 text-white"><i class="bi bi-geo-alt me-2"></i> Alamat</h5>
+                                <div class="card text-center shadow p-3 border-{{ $color }}" style="border: 1px solid #435ebe;">
+                                    <div class="card-header bg-{{ $color }} text-white">
+                                        <h5 class="mb-0 text-white"><i class="{{ $icon }} me-2"></i> {{ ucfirst($item->key) }}</h5>
                                     </div>
                                     <div class="card-body">
-                                        <i class="bi bi-map fs-2 text-primary"></i>
-                                        <p class="card-text mt-2">Kec. Binong, Kab. Subang, Prov. Jawa Barat</p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <a href="https://maps.google.com" target="_blank" class="btn btn-outline-primary btn-sm">
-                                            <i class="bi bi-map-fill me-1"></i> Lihat di Peta
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Kontak -->
-                            <div class="col-lg-4">
-                                <div class="card text-center shadow p-3 border-success">
-                                    <div class="card-header bg-success text-white">
-                                        <h5 class="mb-0 text-white"><i class="bi bi-telephone me-2"></i> Nomor Telepon</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <i class="bi bi-phone fs-2 text-success"></i>
+                                        <i class="{{ $icon }} fs-2 text-{{ $color }}"></i>
                                         <p class="card-text mt-2">
-                                            62839320338692
+                                            {{ $item->title ?? $defaultText }}
                                         </p>
                                     </div>
                                     <div class="card-footer">
-                                        <a href="https://wa.me/62839320338692" target="_blank" class="btn btn-outline-success btn-sm">
-                                            <i class="bi bi-whatsapp me-1"></i> Hubungi via WhatsApp
+                                        <a href="{{ $link }}" target="_blank" class="btn btn-outline-{{ $color }} btn-sm">
+                                            <i class="{{ $buttonIcon }} me-1"></i> {{ $linkText }}
                                         </a>
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Email -->
-                            <div class="col-lg-4">
-                                <div class="card text-center shadow p-3 border-danger">
-                                    <div class="card-header bg-danger text-white">
-                                        <h5 class="mb-0 text-white"><i class="bi bi-envelope me-2"></i> Email</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <i class="bi bi-file-earmark-text fs-2 text-danger"></i>
-                                        <p class="card-text mt-2">
-                                            example@gmail.com
-                                        </p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <a href="mailto:fahriabdurohman@gmail.com" class="btn btn-outline-danger btn-sm">
-                                            <i class="bi bi-send me-1"></i> Kirim Email
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -526,7 +525,7 @@
             <h3 class="text-red-500 text-center">Akun Anda Nonaktif. Silakan hubungi admin untuk informasi lebih lanjut.</h3>
 
             @else
-             <div class="container mt-4">
+            <div class="container mt-4">
                 <!-- Judul Halaman -->
                 <div class="mb-4 pb-2 border-bottom text-center">
                     <h2 class="fw-bold">
@@ -621,64 +620,66 @@
                 <div class="container" data-aos="fade-up" data-aos-delay="100">
                     <div class="container" data-aos="fade-up" data-aos-delay="100" style="margin-bottom: 30px;">
                         <div class="row gy-4">
+                            @foreach ($kontak as $item)
+                            @php
+                            // Mapping warna dan ikon sesuai key
+                            $themeColors = [
+                            'alamat' => 'primary',
+                            'telepon' => 'success',
+                            'email' => 'danger',
+                            ];
 
-                            <!-- Alamat -->
+                            $icons = [
+                            'alamat' => 'bi bi-geo-alt',
+                            'telepon' => 'bi bi-telephone',
+                            'email' => 'bi bi-envelope',
+                            ];
+
+                            $buttonIcons = [
+                            'alamat' => 'bi bi-map-fill',
+                            'telepon' => 'bi bi-whatsapp',
+                            'email' => 'bi bi-send',
+                            ];
+
+                            $defaultText = 'Tidak ada data';
+                            $color = $themeColors[$item->key] ?? 'secondary';
+                            $icon = $icons[$item->key] ?? 'bi bi-question-circle';
+                            $buttonIcon = $buttonIcons[$item->key] ?? 'bi bi-arrow-right';
+                            $link = '#';
+                            $linkText = 'Lihat Detail';
+
+                            // Atur link dan teks tombol
+                            if ($item->key === 'alamat') {
+                            $link = $item->value ?: '#';
+                            $linkText = 'Lihat di Peta';
+                            } elseif ($item->key === 'telepon') {
+                            $link = $item->value ? "https://wa.me/{$item->value}" : '#';
+                            $linkText = 'Hubungi via WhatsApp';
+                            } elseif ($item->key === 'email') {
+                            $link = $item->value ? "mailto:{$item->value}" : '#';
+                            $linkText = 'Kirim Email';
+                            }
+                            @endphp
+
                             <div class="col-lg-4">
-                                <div class="card text-center shadow p-3 border-primary" style="border: 1px solid #435ebe;">
-                                    <div class="card-header bg-primary text-white">
-                                        <h5 class="mb-0 text-white"><i class="bi bi-geo-alt me-2"></i> Alamat</h5>
+                                <div class="card text-center shadow p-3 border-{{ $color }}" style="border: 1px solid #435ebe;">
+                                    <div class="card-header bg-{{ $color }} text-white">
+                                        <h5 class="mb-0 text-white"><i class="{{ $icon }} me-2"></i> {{ ucfirst($item->key) }}</h5>
                                     </div>
                                     <div class="card-body">
-                                        <i class="bi bi-map fs-2 text-primary"></i>
-                                        <p class="card-text mt-2">Kec. Binong, Kab. Subang, Prov. Jawa Barat</p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <a href="https://maps.google.com" target="_blank" class="btn btn-outline-primary btn-sm">
-                                            <i class="bi bi-map-fill me-1"></i> Lihat di Peta
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Kontak -->
-                            <div class="col-lg-4">
-                                <div class="card text-center shadow p-3 border-success" style="border: 1px solid #435ebe;">
-                                    <div class="card-header bg-success text-white">
-                                        <h5 class="mb-0 text-white"><i class="bi bi-telephone me-2"></i> Nomor Telepon</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <i class="bi bi-phone fs-2 text-success"></i>
+                                        <i class="{{ $icon }} fs-2 text-{{ $color }}"></i>
                                         <p class="card-text mt-2">
-                                            62839320338692
+                                            {{ $item->title ?? $defaultText }}
                                         </p>
                                     </div>
                                     <div class="card-footer">
-                                        <a href="https://wa.me/62839320338692" target="_blank" class="btn btn-outline-success btn-sm">
-                                            <i class="bi bi-whatsapp me-1"></i> Hubungi via WhatsApp
+                                        <a href="{{ $link }}" target="_blank" class="btn btn-outline-{{ $color }} btn-sm">
+                                            <i class="{{ $buttonIcon }} me-1"></i> {{ $linkText }}
                                         </a>
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Email -->
-                            <div class="col-lg-4">
-                                <div class="card text-center shadow p-3 border-danger" style="border: 1px solid #435ebe;">
-                                    <div class="card-header bg-danger text-white">
-                                        <h5 class="mb-0 text-white"><i class="bi bi-envelope me-2"></i> Email</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <i class="bi bi-file-earmark-text fs-2 text-danger"></i>
-                                        <p class="card-text mt-2">
-                                            example@gmail.com
-                                        </p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <a href="mailto:fahriabdurohman@gmail.com" class="btn btn-outline-danger btn-sm">
-                                            <i class="bi bi-send me-1"></i> Kirim Email
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>

@@ -244,7 +244,6 @@
                     <div class="card-body">
                         <form id="formSocialLink" method="POST" action="{{ route('admin.social-links.store') }}">
                             @csrf
-
                             <!-- Input hidden untuk handle edit -->
                             <input type="hidden" id="socialLinkId" name="id">
 

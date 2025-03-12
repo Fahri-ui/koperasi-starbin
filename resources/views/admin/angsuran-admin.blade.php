@@ -236,109 +236,160 @@
             </div>
             @endif
             <div class="container mt-4">
-                <h3>Kelola Persetujuan Angsuran</h3>
-                <p>
-                    Berikut adalah data angsuran anggota yang memerlukan persetujuan admin.
-                    <br>
-                    Data ini hanya menampilkan pinjaman yang belum lunas. Admin dapat menyetujui atau menolak pembayaran.
-                </p>
+                <div class="page-header mb-4">
+                    <h3 class="fw-bold">
+                        <i class="bi bi-clipboard-check"></i> Kelola Persetujuan Angsuran
+                    </h3>
+                </div>
+                <hr style="border-top: 2px solid black; margin-bottom: 30px;">
+
+                <section class="mb-4">
+                    <div class="card shadow" style="border: 1px solid #435ebe;">
+                        <div class="card-body">
+                            <h5 class="fw-bold d-flex align-items-center">
+                                <i class="bi bi-journal-text me-2" style="margin-top: -10px;"></i> Definisi Persetujuan Angsuran
+                            </h5>
+                            <hr style="border-top: 2px solid #25396f; border-radius: 5px;">
+                            <p style="color: #495057;">
+                                Persetujuan angsuran adalah proses verifikasi yang dilakukan oleh admin untuk memastikan setiap pembayaran cicilan anggota telah sesuai dengan ketentuan yang berlaku. Admin dapat menyetujui atau menolak pembayaran berdasarkan validitas data dan bukti pembayaran yang diunggah.
+                            </p>
+                        </div>
+                    </div>
+                </section>
 
                 <!-- Statistik Ringkasan -->
-                <div class="row mb-4">
-                    <div class="col-md-4">
-                        <div class="card text-center">
-                            <div class="card-body">
-                                <h5 class="card-title">Total Angsuran Disetujui</h5>
-                                <p class="card-text">Rp {{ number_format($totalDisetujui, 0, ',', '.') }}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card text-center">
-                            <div class="card-body">
-                                <h5 class="card-title">Total Angsuran Tertunda</h5>
-                                <p class="card-text">Rp {{ number_format($totalTertunda, 0, ',', '.') }}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card text-center">
-                            <div class="card-body">
-                                <h5 class="card-title">Jumlah Transaksi Angsuran</h5>
-                                <p class="card-text">{{ number_format($jumlahTransaksi, 0, ',', '.') }} Transaksi</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <section class="mb-4">
+                    <div class="card shadow" style="border: 1px solid #435ebe;">
+                        <div class="card-body">
+                            <h5 class="fw-bold d-flex align-items-center">
+                                <i class="bi bi-bar-chart-line me-2" style="margin-top: -10px;"></i> Statistik Ringkasan Angsuran
+                            </h5>
+                            <hr style="border-top: 2px solid #25396f; border-radius: 5px;">
 
-                <div class="card">
-                    <div class="card-body">
-                        <h5>Data Angsuran untuk Persetujuan</h5>
-                        <div style="max-height: 450px; overflow:auto;">
-                            <table class="table table-striped" style="font-size: .8rem;">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>ID Pinjaman</th>
-                                        <th>Nama</th>
-                                        <th>Nominal Bayar</th>
-                                        <th>Tanggal Bayar</th>
-                                        <th>Sisa Angsuran</th>
-                                        <th>Denda</th>
-                                        <th>Jatuh Tempo</th>
-                                        <th>Metode</th>
-                                        <th>Status</th>
-                                        <th>Bukti</th>
-                                        <th>Aksi Admin</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($angsuran as $index => $data)
-                                    <tr>
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>{{ $data->pinjaman_id }}</td>
-                                        <td>{{ $data->user->fullname }}</td>
-                                        <td>Rp {{ number_format($data->jumlah_pembayaran, 0, ',', '.') }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($data->tanggal_bayar)->format('d-m-Y') }}</td>
-                                        <td>Rp {{ number_format($data->pinjaman->sisa_angsuran, 0, ',', '.') }}</td>
-                                        <td>Rp {{ number_format($data->pinjaman->total_denda, 0, ',', '.') }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($data->tanggal_jatuh_tempo)->format('d-m-Y') }}</td>
-                                        <td>{{ $data->metode_pembayaran }}</td>
-                                        <td>
-                                            <span class="badge {{ $data->status === 'Dalam Proses' ? 'bg-warning' : ($data->status === 'Berhasil' ? 'bg-success' : 'bg-danger') }}">
-                                                {{ $data->status }}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            @if(!empty($data->bukti_pembayaran))
-                                            <a href="{{ route('admin.bukti.pembayaran', ['bukti' => basename($data->bukti_pembayaran)]) }}" target="_blank">
-                                                <i class="bi bi-file-earmark-text" title="Lihat Bukti"></i>
-                                            </a>
-                                            @else
-                                            <span class="text-danger"><i class="bi bi-x-circle" title="Tidak Ada Bukti"></i></span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($data->status === 'Dalam Proses')
-                                            <form action="{{ route('admin.setujui.angsuran', $data->id) }}" method="POST" style="display: inline;">
-                                                @csrf
-                                                <button type="submit" class="btn btn-success btn-sm">Setujui</button>
-                                            </form>
-                                            <form action="{{ route('admin.tolak.angsuran', $data->id) }}" method="POST" style="display: inline;">
-                                                @csrf
-                                                <button type="submit" class="btn btn-danger btn-sm">Tolak</button>
-                                            </form>
-                                            @else
-                                            <span class="text-muted">Tidak Ada Aksi</span>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card shadow" style="border-left: 5px solid #28a745; border-radius: 10px;">
+                                        <div class="card-body text-center">
+                                            <h6 style="color: #28a745;"><i class="bi bi-check-circle me-2"></i>Total Angsuran Disetujui</h6>
+                                            <p><strong>Rp {{ number_format($totalDisetujui, 0, ',', '.') }}</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card shadow" style="border-left: 5px solid #ffc107; border-radius: 10px;">
+                                        <div class="card-body text-center">
+                                            <h6 style="color: #ffc107;"><i class="bi bi-hourglass-split me-2"></i>Total Angsuran Tertunda</h6>
+                                            <p><strong>Rp {{ number_format($totalTertunda, 0, ',', '.') }}</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card shadow" style="border-left: 5px solid #007bff; border-radius: 10px;">
+                                        <div class="card-body text-center">
+                                            <h6 style="color: #007bff;"><i class="bi bi-list-ol me-2"></i>Jumlah Transaksi Angsuran</h6>
+                                            <p><strong>{{ number_format($jumlahTransaksi, 0, ',', '.') }} Transaksi</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
-                </div>
+                </section>
+
+                <!-- Tabel Persetujuan -->
+                <section class="mb-4">
+                    <div class="card shadow" style="border: 1px solid #435ebe;">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0 text-white">
+                                <i class="bi bi-table" style="margin-top: -30px;"></i> Data Angsuran untuk Persetujuan
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div style="max-height: 450px; overflow: auto; font-size: .9rem; text-align: left;">
+                                <table class="table table-hover">
+                                    <thead class="table-primary">
+                                        <tr>
+                                            <th>No</th>
+                                            <th>ID Pinjaman</th>
+                                            <th>Nama</th>
+                                            <th>Nominal Bayar</th>
+                                            <th>Tanggal Bayar</th>
+                                            <th>Sisa Angsuran</th>
+                                            <th>Denda</th>
+                                            <th>Jatuh Tempo</th>
+                                            <th>Metode</th>
+                                            <th>Status</th>
+                                            <th>Bukti</th>
+                                            <th>Aksi Admin</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse ($angsuran as $index => $data)
+                                        <tr>
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ $data->pinjaman_id }}</td>
+                                            <td>{{ $data->user->fullname }}</td>
+                                            <td>
+                                                <span class="badge bg-success">
+                                                    <i class="bi bi-arrow-down-circle"></i> Rp {{ number_format($data->jumlah_pembayaran, 0, ',', '.') }}
+                                                </span>
+                                            </td>
+                                            <td>{{ \Carbon\Carbon::parse($data->tanggal_bayar)->format('d-m-Y') }}</td>
+                                            <td>Rp {{ number_format($data->pinjaman->sisa_angsuran, 0, ',', '.') }}</td>
+                                            <td>Rp {{ number_format($data->pinjaman->total_denda, 0, ',', '.') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($data->tanggal_jatuh_tempo)->format('d-m-Y') }}</td>
+                                            <td>{{ $data->metode_pembayaran }}</td>
+                                            <td>
+                                                @php
+                                                $statusColors = [
+                                                'Dalam Proses' => 'warning',
+                                                'Ditolak' => 'danger',
+                                                'Berhasil' => 'success'
+                                                ];
+                                                $badgeColor = $statusColors[$data->status] ?? 'secondary';
+                                                @endphp
+                                                <span class="badge bg-{{ $badgeColor }}">{{ $data->status }}</span>
+                                            </td>
+                                            <td>
+                                                @if(!empty($data->bukti_pembayaran))
+                                                <a href="{{ route('admin.bukti.pembayaran', ['bukti' => basename($data->bukti_pembayaran)]) }}" target="_blank" class="btn btn-sm btn-outline-info">
+                                                    Lihat Bukti
+                                                </a>
+                                                @else
+                                                <span class="badge bg-secondary">Tidak Ada</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if($data->status === 'Dalam Proses')
+                                                <form action="{{ route('admin.setujui.angsuran', $data->id) }}" method="POST" style="display: inline;">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-success btn-sm">Setujui</button>
+                                                </form>
+                                                <form action="{{ route('admin.tolak.angsuran', $data->id) }}" method="POST" style="display: inline;">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-danger btn-sm">Tolak</button>
+                                                </form>
+                                                @else
+                                                <span class="text-muted">Tidak Ada Aksi</span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        @empty
+                                        <tr>
+                                            <td colspan="12" class="text-center">
+                                                <span class="badge bg-warning">
+                                                    <i class="bi bi-exclamation-circle"></i> Belum ada data angsuran
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
 
             <footer>

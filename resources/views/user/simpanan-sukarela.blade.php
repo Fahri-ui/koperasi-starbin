@@ -289,9 +289,16 @@
             </div>
 
             @elseif (auth()->user()->status === 'Belum_Bayar_Simpanan_Wajib')
+            
+            <div class="container">
+                <h2 class="pb-3 border-bottom">
+                    <i class="bi bi-gem "></i> Simpanan Sukarela
+                </h2>
+            </div>
+
             <!-- Section Peringatan Keterlambatan -->
-            <div class="card shadow-lg border-0 mb-4" style="text-align: center;    border: 1px solid #d9d9d9;border-radius: 8px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);margin-bottom: 20px;background-color: #ffffff;padding: 20px;">
-                <div class="card-body bg-warning text-dark" style="border-radius: 10px;">
+            <div class="card shadow-lg border-0 mb-4" style="text-align: center; border: 1px solid #d9d9d9; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); margin-bottom: 20px; background-color: #ffffff; padding: 20px;">
+                <div class="card-body bg-warning text-dark" style="border: 1px solid #435ebe; border-radius: 10px;">
                     <div class="d-flex align-items-start">
                         <i class="bi bi-info-circle-fill text-primary fs-1 me-3" style="margin-top:-20px;"></i>
                         <div>
@@ -357,17 +364,9 @@
                 </div>
             </div>
 
-            <br><br><br>
-
-            <div class="container">
-                <h2 class="pb-3 border-bottom">
-                    <i class="bi bi-gem "></i> Simpanan Sukarela
-                </h2>
-            </div>
-
             <!-- Definisi Simpanan Sukarela -->
             <section class="mb-4">
-                <div class="card shadow">
+                <div class="card shadow"  style="border: 1px solid #435ebe;">
                     <div class="card-body">
                         <span class="fw-bold d-flex align-items-center">
                             <i class="bi bi-bookmark-heart-fill text-primary" style="margin-top: -20px;"></i>
@@ -383,7 +382,7 @@
 
             <!-- Saldo Simpanan Sukarela -->
             <section class="mb-4">
-                <div class="card shadow-sm border-0">
+                <div class="card shadow"  style="border: 1px solid #435ebe;">
                     <div class="card-body text-center">
                         <h5 class="pb-2 mb-3 border-bottom">
                             <i class="bi bi-wallet2 text-success"></i> Saldo Simpanan Sukarela
@@ -399,7 +398,7 @@
             </section>
 
             <section class="mb-4">
-                <div class="card shadow">
+                <div class="card shadow" style="border: 1px solid #435ebe;">
                     <div class="card-header bg-primary text-white">
                         <h5 class="mb-0 text-white">
                             <i class="bi bi-piggy-bank-fill"></i> Daftar Simpanan Sukarela
@@ -441,7 +440,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <span class="badge bg-{{ $data->jumlah >= 0 ? 'success' : 'danger' }}">
+                                            <span class="badge bg-{{ $data->jumlah >= 0 ? 'success' : 'primary' }}">
                                                 Rp {{ number_format($data->jumlah, 0, ',', '.') }}
                                             </span>
                                         </td>
@@ -475,7 +474,7 @@
 
             <!-- Formulir Penyetoran dan Penarikan -->
             <section class="mb-4">
-                <div class="card shadow-lg border-0">
+                <div class="card shadow" style="border: 1px solid #435ebe;">
                     <div class="card-header bg-gradient bg-primary text-white">
                         <h5 class="mb-0 text-white">
                             <i class="bi bi-wallet2"></i> Simpanan Sukarela
@@ -500,7 +499,7 @@
 
                             <div class="mb-3">
                                 <label for="jenis_transaksi" class="form-label"><i class="bi bi-shuffle"></i> Jenis Transaksi</label>
-                                <select name="jenis_transaksi" id="jenis_transaksi" class="form-select" required>
+                                <select name="jenis_transaksi" id="jenis_transaksi" class="form-select" required onchange="toggleBukti()">
                                     <option value="penyetoran">Penyetoran</option>
                                     <option value="penarikan">Penarikan</option>
                                 </select>
@@ -625,7 +624,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <span class="badge bg-{{ $data->jumlah >= 0 ? 'success' : 'danger' }}">
+                                            <span class="badge bg-{{ $data->jumlah >= 0 ? 'success' : 'primary' }}">
                                                 Rp {{ number_format($data->jumlah, 0, ',', '.') }}
                                             </span>
                                         </td>

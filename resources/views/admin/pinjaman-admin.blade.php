@@ -216,124 +216,140 @@
             </header>
 
             <div class="pinjaman-container">
-            @if (Session::has('error'))
-            <div class="alert alert-danger d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #ff7f7f, #ff4d4d); color: #fff; border-radius: 20px; border: 2px solid #ff4d4d;">
-                <i class="bi bi-exclamation-triangle-fill me-3 fs-4" style="margin-top: -20px;"></i>
-                <div>
-                    <h5 class="mb-1">🚨 Oops! Terjadi Kesalahan</h5>
-                    <p class="mb-0">⚠️ {{ Session::get('error') }}</p>
+                @if (Session::has('error'))
+                <div class="alert alert-danger d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #ff7f7f, #ff4d4d); color: #fff; border-radius: 20px; border: 2px solid #ff4d4d;">
+                    <i class="bi bi-exclamation-triangle-fill me-3 fs-4" style="margin-top: -20px;"></i>
+                    <div>
+                        <h5 class="mb-1">🚨 Oops! Terjadi Kesalahan</h5>
+                        <p class="mb-0">⚠️ {{ Session::get('error') }}</p>
+                    </div>
                 </div>
-            </div>
-            @endif
+                @endif
 
-            @if (Session::has('success'))
-            <div class="alert alert-success d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #66cc66, #33b233); color: #fff; border-radius: 20px; border: 2px solid #33b233;">
-                <i class="bi bi-check-circle-fill me-3 fs-4" style="margin-top: -20px;"></i>
-                <div>
-                    <h5 class="mb-1">🌟 Yeay! Berhasil</h5>
-                    <p class="mb-0">✅ {{ Session::get('success') }}</p>
+                @if (Session::has('success'))
+                <div class="alert alert-success d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #66cc66, #33b233); color: #fff; border-radius: 20px; border: 2px solid #33b233;">
+                    <i class="bi bi-check-circle-fill me-3 fs-4" style="margin-top: -20px;"></i>
+                    <div>
+                        <h5 class="mb-1">🌟 Yeay! Berhasil</h5>
+                        <p class="mb-0">✅ {{ Session::get('success') }}</p>
+                    </div>
                 </div>
-            </div>
-            @endif
-                <h3>Pinjaman Anggota</h3>
+                @endif
+                <section class="mb-4">
+                    <h3 class="text-center bold">
+                        <i class="bi bi-cash-stack"></i> Pinjaman
+                    </h3>
+                    <hr style="border-top: 2px solid black; margin-bottom: 30px;">
+                    <div class="card shadow" style="border: 1px solid #435ebe;">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0 text-white">
+                                <i class="bi bi-cash-stack"></i> Data Pinjaman Anggota
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <!-- Pencarian -->
+                            <div class="input-group mb-3">
+                                <input type="text" id="search-pinjaman" class="form-control" placeholder="Cari anggota berdasarkan nama atau ID..." onkeyup="searchPinjaman()" style="box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);">
+                                <button class="btn btn-danger" onclick="resetSearch()">
+                                    <i class="bi bi-x-circle"></i> Bersihkan
+                                </button>
+                            </div>
 
-                <!-- Filter Pencarian -->
-                <div class="filter-pinjaman">
-                    <input type="text" id="search-pinjaman" class="form-control" placeholder="Cari anggota berdasarkan nama atau ID...">
-                </div>
+                            <!-- Tabel Pinjaman -->
+                            <div style="max-height: 450px; overflow:auto; font-size:.9rem;">
+                                <table class="table table-striped">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>No</th>
+                                            <th>ID Pinjaman</th>
+                                            <th>Nama</th>
+                                            <th>Jumlah Pinjaman</th>
+                                            <th>Sisa Angsuran</th>
+                                            <th>Tanggal Pengajuan</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse ($pinjaman as $index => $item)
+                                        <tr>
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ $item->id ?? 'N/A' }}</td>
+                                            <td>{{ $item->user->fullname ?? 'Tidak Diketahui' }}</td>
+                                            <td>Rp {{ number_format($item->jumlah_pinjaman, 0, ',', '.') }}</td>
+                                            <td>Rp {{ number_format($item->sisa_angsuran ?? $item->jumlah_pinjaman, 0, ',', '.') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($item->tanggal_pengajuan)->format('d F Y') }}</td>
+                                            <td>{{ ucfirst($item->status ?? '-') }}</td>
+                                        </tr>
+                                        @empty
+                                        <tr>
+                                            <td colspan="7" class="text-center">Tidak ada riwayat pinjaman.</td>
+                                        </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
 
-
-                <div class="card">
-                    <div class="card-body">
-                        <h5>Data PInajaman</h5>
-                        <div style="max-height: 450px;  overflow:auto; font-size:.9rem;">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>no</th>
-                                        <th>ID Pinjaman</th>
-                                        <th>Nama</th>
-                                        <th>Jumlah Pinjaman</th>
-                                        <th>Sisa Angsuran</th>
-                                        <th>Tanggal Pengajuan</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse ($pinjaman as $index => $item)
-                                    <tr>
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>{{ $item->id ?? 'N/A' }}</td>
-                                        <td>{{ $item->user->fullname ?? 'Tidak Diketahui' }}</td>
-                                        <td>Rp {{ number_format($item->jumlah_pinjaman, 0, ',', '.') }}</td>
-                                        <td>Rp {{ number_format($item->sisa_angsuran ?? $item->jumlah_pinjaman, 0, ',', '.') }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($item->tanggal_pengajuan)->format('d F Y') }}</td>
-                                        <td>{{ ucfirst($item->status ?? '-') }}</td>
-                                    </tr>
-                                    @empty
-                                    <tr>
-                                        <td colspan="6" class="text-center">Tidak ada riwayat pembayaran.</td>
-                                    </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
+                            <!-- Statistik Pinjaman -->
+                            <div class="card mt-3" style="background: #f8f9fa; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);">
+                                <div class="card-body">
+                                    <h4>Total Pinjaman:
+                                        <span id="total-pinjaman" class="text-primary">
+                                            <i class="bi bi-currency-dollar"></i> Rp {{ number_format($totalPinjaman, 0, ',', '.') }}
+                                        </span>
+                                    </h4>
+                                    <h5>Status Pinjaman:</h5>
+                                    <ul class="list-unstyled">
+                                        <li><i class="bi bi-check-circle-fill text-success"></i> Aktif: <span id="jumlah-menunggak">{{ $jumlahMenunggak }}</span></li>
+                                        <li><i class="bi bi-check-lg text-primary"></i> Lunas: <span id="jumlah-lunas">{{ $jumlahLunas }}</span></li>
+                                        <li><i class="bi bi-x-circle-fill text-danger"></i> Ditolak: <span id="jumlah-proses">{{ $jumlahProses }}</span></li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </section>
 
-                <!-- Statistik -->
-                <div class="pinjaman-statistik mt-3">
-                    <h5>Total Pinjaman Dicairkan: <span id="total-pinjaman">Rp {{ number_format($totalPinjaman, 0, ',', '.') }}</span></h5>
-                    <h6>Status:
-                        <ul>
-                            <li>Aktif: <span id="jumlah-menunggak">{{ $jumlahMenunggak }}</span></li>
-                            <li>Lunas: <span id="jumlah-lunas">{{ $jumlahLunas }}</span></li>
-                            <li>Ditolak: <span id="jumlah-proses">{{ $jumlahProses }}</span></li>
-                        </ul>
-                    </h6>
-                </div>
+                <footer>
+                    <div class="footer clearfix mb-0 text-muted">
+                        <div class="float-start">
+                            <p>2025 &copy; SATRBIN</p>
+                        </div>
+                        <div class="float-end" style="margin-right: 30px;">
+                            <p>Dibuat dengan
+                                <span class="text-danger"><i class="bi bi-heart"></i></span>
+                                oleh
+                                <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
+                                &
+                                <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
+                            </p>
+                        </div>
+                    </div>
+                </footer>
             </div>
-            <footer>
-                <div class="footer clearfix mb-0 text-muted">
-                    <div class="float-start">
-                        <p>2025 &copy; SATRBIN</p>
-                    </div>
-                    <div class="float-end" style="margin-right: 30px;">
-                        <p>Dibuat dengan
-                            <span class="text-danger"><i class="bi bi-heart"></i></span>
-                            oleh
-                            <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
-                            &
-                            <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
-                        </p>
-                    </div>
-                </div>
-            </footer>
         </div>
-    </div>
-    <script src="{{asset('admin-page/assets/js/bootstrap.js')}}"></script>
-    <script src="{{asset('admin-page/assets/js/app.js')}}"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const searchInput = document.getElementById("search-pinjaman");
-            const tableRows = document.querySelectorAll(".table-container tbody tr");
+        <script src="{{asset('admin-page/assets/js/bootstrap.js')}}"></script>
+        <script src="{{asset('admin-page/assets/js/app.js')}}"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const searchInput = document.getElementById("search-pinjaman");
+                const tableRows = document.querySelectorAll(".table-container tbody tr");
 
-            searchInput.addEventListener("keyup", function() {
-                const searchValue = searchInput.value.toLowerCase();
+                searchInput.addEventListener("keyup", function() {
+                    const searchValue = searchInput.value.toLowerCase();
 
-                tableRows.forEach(row => {
-                    const idPinjaman = row.children[0].textContent.toLowerCase(); // ID Pinjaman
-                    const nama = row.children[1].textContent.toLowerCase(); // Nama Anggota
+                    tableRows.forEach(row => {
+                        const idPinjaman = row.children[0].textContent.toLowerCase(); // ID Pinjaman
+                        const nama = row.children[1].textContent.toLowerCase(); // Nama Anggota
 
-                    if (idPinjaman.includes(searchValue) || nama.includes(searchValue)) {
-                        row.style.display = "";
-                    } else {
-                        row.style.display = "none";
-                    }
+                        if (idPinjaman.includes(searchValue) || nama.includes(searchValue)) {
+                            row.style.display = "";
+                        } else {
+                            row.style.display = "none";
+                        }
+                    });
                 });
             });
-        });
-    </script>
+        </script>
 </body>
 
 </html>
