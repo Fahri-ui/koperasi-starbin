@@ -306,8 +306,8 @@
                             <h5 class="text-center mb-3">Statistik Keuangan</h5>
                             <ul class="list-group">
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    Data Anggota
-                                    <span class="badge bg-primary">{{ $jumlahAnggota }}</span>
+                                    Total Simpanan Anggota
+                                    <span class="badge bg-success">Rp {{ number_format($totalSimpananAnggota) }}</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     Total Simpanan Wajib
@@ -315,19 +315,19 @@
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     Total Simpanan Sukarela
-                                    <span class="badge bg-warning">Rp {{ number_format($totalSimpananSukarela) }}</span>
+                                    <span class="badge bg-success">Rp {{ number_format($totalSimpananSukarela) }}</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     Total Pinjaman
-                                    <span class="badge bg-danger">Rp {{ number_format($totalPinjaman) }}</span>
+                                    <span class="badge bg-success">Rp {{ number_format($totalPinjaman) }}</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     Total Angsuran
-                                    <span class="badge bg-info">Rp {{ number_format($totalAngsuran) }}</span>
+                                    <span class="badge bg-success">Rp {{ number_format($totalAngsuran) }}</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     Total Denda
-                                    <span class="badge bg-secondary">Rp {{ number_format($totalDenda) }}</span>
+                                    <span class="badge bg-success">Rp {{ number_format($totalDenda) }}</span>
                                 </li>
                             </ul>
                         </div>

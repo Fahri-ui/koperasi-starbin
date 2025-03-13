@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="{{asset('dist/assets/css/pinjaman.css')}}">
 
 </head>
+
 <body>
     <div id="app">
         <div id="sidebar" class="active">
@@ -135,7 +136,7 @@
                 </a>
             </header>
 
-          
+
             @if (Session::has('error'))
             <div class="alert alert-danger d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #ff7f7f, #ff4d4d); color: #fff; border-radius: 20px; border: 2px solid #ff4d4d;">
                 <i class="bi bi-exclamation-triangle-fill me-3 fs-4" style="margin-top: -20px;"></i>
@@ -289,12 +290,12 @@
             </div>
 
             @elseif (auth()->user()->status === 'Belum_Bayar_Simpanan_Wajib')
-            
+
             <div class="page-heading d-flex align-items-center pb-3 border-bottom">
                 <i class="bi bi-cash-coin me-2 fs-3 text-primary" style="margin-top: -30px; padding-right: 30px;"></i>
                 <h2 class="mb-0 fw-bold">Pinjaman</h2>
             </div>
-            
+
             <!-- Section Peringatan Keterlambatan -->
             <div class="card shadow-lg border-0 mb-4" style="text-align: center; border: 1px solid #d9d9d9; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); margin-bottom: 20px; background-color: #ffffff; padding: 20px;">
                 <div class="card-body bg-warning text-dark" style="border: 1px solid #435ebe; border-radius: 10px;">
@@ -440,7 +441,7 @@
                 <!-- Formulir Pengajuan Pinjaman -->
                 @if (!$pinjamanAktif && !$pinjamandalamproses)
                 <section class="mb-4">
-                    <div class="card mb-4 shadow"  style="border: 1px solid #435ebe; border-radius: 10px;">
+                    <div class="card mb-4 shadow" style="border: 1px solid #435ebe; border-radius: 10px;">
                         <div class="card-header bg-primary text-white">
                             <h5 class="text-white"><i class="bi bi-file-earmark-text me-2"></i> Formulir Pengajuan Pinjaman</h5>
                         </div>
@@ -487,7 +488,7 @@
                 <section class="mb-4">
                     <div class="card shadow p-4" style="border: 1px solid #435ebe;">
                         <h5 class="text-center mb-3 fw-bold d-flex align-items-center pb-3" style="border-bottom: 2px solid #e0e0e0;">
-                            <i class="bi bi-list-check me-2" style="margin-top: -10px; padding-right:20px;"></i> Status Pinjaman Aktif
+                            <i class="bi bi-list-check me-2" style="margin-top: -10px; padding-right:20px;"></i> Detail Pinjaman Aktif
                         </h5>
                         <div class="row g-3" style="font-size: 1.1rem;">
                             <div class="col-12">
@@ -508,6 +509,14 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="fw-bold"><i class="bi bi-arrow-down-circle me-2"></i>Sisa Angsuran</div>
                                     <div class="text-warning">Rp {{ number_format($pinjamanAktif->sisa_angsuran > 0 ? $pinjamanAktif->sisa_angsuran : $pinjamanAktif->jumlah_pinjaman, 0, ',', '.') }}</div>
+                                </div>
+                                <hr>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="fw-bold"><i class="bi bi-arrow-down-circle me-2"></i>Total Denda</div>
+                                    <div class="text-warning">Rp {{ number_format($pinjamanAktif->total_denda > 0 ? $pinjamanAktif->total_denda : 0) }}
+                                    </div>
                                 </div>
                                 <hr>
                             </div>
@@ -538,7 +547,7 @@
                             </h5>
                         </div>
                         <div class="card-body">
-                            <div style="max-height: 400px; overflow: auto; font-size: .9rem; text-align: left;">
+                            <div style="max-height: 400px; overflow: auto; font-size: .8rem; text-align: left;">
                                 <table class="table table-hover">
                                     <thead class="table-primary">
                                         <tr>
@@ -561,7 +570,6 @@
                                             <td>{{ \Carbon\Carbon::parse($transaksi->tanggal)->format('Y-m-d') }}</td>
                                             <td>
                                                 <span class="badge bg-{{ $transaksi['jumlah'] >= 0 ? 'success' : 'danger' }}">
-                                                    <i class="bi {{ $transaksi['jumlah'] >= 0 ? 'bi-arrow-down-circle' : 'bi-arrow-up-circle' }}"></i>
                                                     Rp {{ number_format($transaksi['jumlah'], 0, ',', '.') }}
                                                 </span>
                                             </td>
@@ -569,14 +577,18 @@
                                             <td>{{ $transaksi['jenis_jaminan'] ?? '-' }}</td>
                                             <td>
                                                 @if($transaksi->file_jaminan)
-                                                <a href="{{ route('bukti.jaminan', ['bukti' => basename($transaksi->file_jaminan)]) }}" target="_blank" class="btn btn-sm btn-outline-info">Lihat Jaminan</a>
+                                                <a href="{{ route('bukti.jaminan', ['bukti' => basename($transaksi->file_jaminan)]) }}" target="_blank" class="btn btn-sm btn-outline-info">
+                                                    <i class="bi bi-file-earmark-text"></i>
+                                                </a>
                                                 @else
                                                 <span class="badge bg-secondary">Tidak Ada</span>
                                                 @endif
                                             </td>
                                             <td>
                                                 @if(!empty($transaksi->bukti))
-                                                <a href="{{ route('bukti.pembayaran', ['bukti' => basename($transaksi->bukti)]) }}" target="_blank" class="btn btn-sm btn-outline-success">Lihat Bukti</a>
+                                                <a href="{{ route('bukti.pembayaran', ['bukti' => basename($transaksi->bukti)]) }}" target="_blank" class="btn btn-sm btn-outline-success">
+                                                    <i class="bi bi-file-earmark-text"></i>
+                                                </a>
                                                 @else
                                                 <span class="badge bg-secondary">Tidak Ada</span>
                                                 @endif
@@ -769,7 +781,7 @@
                 <!-- Formulir Pengajuan Pinjaman -->
                 @if (!$pinjamanAktif && !$pinjamandalamproses)
                 <section class="mb-4">
-                    <div class="card mb-4 shadow"  style="border: 1px solid #435ebe; border-radius: 10px;">
+                    <div class="card mb-4 shadow" style="border: 1px solid #435ebe; border-radius: 10px;">
                         <div class="card-header bg-primary text-white">
                             <h5 class="text-white"><i class="bi bi-file-earmark-text me-2"></i> Formulir Pengajuan Pinjaman</h5>
                         </div>
@@ -816,7 +828,7 @@
                 <section class="mb-4">
                     <div class="card shadow p-4" style="border: 1px solid #435ebe;">
                         <h5 class="text-center mb-3 fw-bold d-flex align-items-center pb-3" style="border-bottom: 2px solid #e0e0e0;">
-                            <i class="bi bi-list-check me-2" style="margin-top: -10px; padding-right:20px;"></i> Status Pinjaman Aktif
+                            <i class="bi bi-list-check me-2" style="margin-top: -10px; padding-right:20px;"></i> Detail Pinjaman Aktif
                         </h5>
                         <div class="row g-3" style="font-size: 1.1rem;">
                             <div class="col-12">
@@ -842,8 +854,16 @@
                             </div>
                             <div class="col-12">
                                 <div class="d-flex justify-content-between align-items-center">
+                                    <div class="fw-bold"><i class="bi bi-arrow-down-circle me-2"></i>Total Denda</div>
+                                    <div class="text-danger">Rp {{ number_format($pinjamanAktif->total_denda > 0 ? $pinjamanAktif->total_denda : 0) }}
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex justify-content-between align-items-center">
                                     <div class="fw-bold"><i class="bi bi-info-circle me-2"></i>Status</div>
-                                    <div class="text-danger">{{ $pinjamanAktif->status }}</div>
+                                    <div class="text-info">{{ $pinjamanAktif->status }}</div>
                                 </div>
                                 <hr>
                             </div>
@@ -867,7 +887,7 @@
                             </h5>
                         </div>
                         <div class="card-body">
-                            <div style="max-height: 700px; overflow: auto; font-size: .9rem; text-align: left;">
+                            <div style="max-height: 700px; overflow: auto; font-size: .8rem; text-align: left;">
                                 <table class="table table-hover">
                                     <thead class="table-primary">
                                         <tr>
@@ -890,7 +910,6 @@
                                             <td>{{ \Carbon\Carbon::parse($transaksi->tanggal)->format('Y-m-d') }}</td>
                                             <td>
                                                 <span class="badge bg-{{ $transaksi['jumlah'] >= 0 ? 'success' : 'danger' }}">
-                                                    <i class="bi {{ $transaksi['jumlah'] >= 0 ? 'bi-arrow-down-circle' : 'bi-arrow-up-circle' }}"></i>
                                                     Rp {{ number_format($transaksi['jumlah'], 0, ',', '.') }}
                                                 </span>
                                             </td>
@@ -898,14 +917,18 @@
                                             <td>{{ $transaksi['jenis_jaminan'] ?? '-' }}</td>
                                             <td>
                                                 @if($transaksi->file_jaminan)
-                                                <a href="{{ route('bukti.jaminan', ['bukti' => basename($transaksi->file_jaminan)]) }}" target="_blank" class="btn btn-sm btn-outline-info">Lihat Jaminan</a>
+                                                <a href="{{ route('bukti.jaminan', ['bukti' => basename($transaksi->file_jaminan)]) }}" target="_blank" class="btn btn-sm btn-outline-info">
+                                                    <i class="bi bi-file-earmark-text"></i>
+                                                </a>
                                                 @else
                                                 <span class="badge bg-secondary">Tidak Ada</span>
                                                 @endif
                                             </td>
                                             <td>
                                                 @if(!empty($transaksi->bukti))
-                                                <a href="{{ route('bukti.pembayaran', ['bukti' => basename($transaksi->bukti)]) }}" target="_blank" class="btn btn-sm btn-outline-success">Lihat Bukti</a>
+                                                <a href="{{ route('bukti.pembayaran', ['bukti' => basename($transaksi->bukti)]) }}" target="_blank" class="btn btn-sm btn-outline-success">
+                                                    <i class="bi bi-file-earmark-text"></i>
+                                                </a>
                                                 @else
                                                 <span class="badge bg-secondary">Tidak Ada</span>
                                                 @endif
@@ -915,9 +938,9 @@
                                                 $statusColors = [
                                                 'Dalam Proses' => 'warning',
                                                 'Ditolak' => 'danger',
-                                                'Aktif' => 'primary',
+                                                'Aktif' => 'info',
                                                 'Lunas' => 'success',
-                                                'Berhasil' => 'success'
+                                                'Berhasil' => 'primary'
                                                 ];
                                                 $badgeColor = $statusColors[$transaksi['status']] ?? 'secondary';
                                                 @endphp

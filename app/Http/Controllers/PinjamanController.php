@@ -52,13 +52,14 @@ class PinjamanController extends Controller
                 'id as kode',
                 'tanggal_pengajuan as tanggal',
                 'jumlah_pinjaman as jumlah',
-                DB::raw("'Pengajuan Pinjaman' as tipe"),
+                DB::raw("'Pengajuan' as tipe"),
                 'jenis_jaminan', // Tambahkan jenis jaminan
                 'file_jaminan', // Tambahkan bukti jaminan
                 DB::raw("NULL as metode"),
                 DB::raw("NULL as bukti"),
                 'status',
-                'alasan as tujuan'
+                'alasan as tujuan',
+                'total_denda'
             )
             ->union(
                 RiwayatPembayaran::join('pinjaman', 'riwayat_pembayaran.pinjaman_id', '=', 'pinjaman.id')
@@ -67,13 +68,14 @@ class PinjamanController extends Controller
                         'riwayat_pembayaran.pinjaman_id as kode',
                         'riwayat_pembayaran.tanggal_pembayaran as tanggal',
                         'riwayat_pembayaran.jumlah_pembayaran as jumlah',
-                        DB::raw("'Pembayaran Pinjaman' as tipe"),
+                        DB::raw("'Pembayaran' as tipe"),
                         'pinjaman.jenis_jaminan', // Ikut ambil jenis jaminan dari pinjaman
                         'pinjaman.file_jaminan', // Ikut ambil bukti jaminan dari pinjaman
                         'riwayat_pembayaran.metode_pembayaran as metode',
                         'riwayat_pembayaran.bukti_pembayaran as bukti',
                         'riwayat_pembayaran.status',
-                        DB::raw("NULL as tujuan")
+                        DB::raw("NULL as tujuan"),
+                        'jumlah_denda_dibayar'
                     )
             )
             ->orderByDesc('tanggal')
@@ -251,6 +253,7 @@ class PinjamanController extends Controller
         }
 
         $jumlahPembayaran = $request->input('payment-amount');
+        
         $buktiFile = $request->file('payment-proof');
         $namaBukti = time() . '-' . $userId . '.' . $buktiFile->getClientOriginalExtension();
         $buktiFile->move(public_path('picture/bukti_pembayaran'), $namaBukti);

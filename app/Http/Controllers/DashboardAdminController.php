@@ -44,10 +44,10 @@ class DashboardAdminController extends Controller
             ->sum('jumlah');
             
         // Menghitung total pinjaman yang diajukan
-        $totalPinjaman =  Pinjaman::whereIn('status', ['Aktif', 'Lunas'])->count();
+        $totalPinjaman =  Pinjaman::whereIn('status', ['Aktif', 'Lunas'])->sum('jumlah_pinjaman');
 
         // Menghitung total angsuran yang telah dibayarkan
-        $totalAngsuran = RiwayatPembayaran::where('status', 'Berhasil')->count();
+        $totalAngsuran = RiwayatPembayaran::where('status', 'Berhasil')->sum('jumlah_Pembayaran');
 
         // Menghitung total nominal pinjaman yang masih dalam status 'Dalam Proses'
         $totalPengajuan = Pinjaman::where('status', 'Dalam Proses')->sum('jumlah_pinjaman');

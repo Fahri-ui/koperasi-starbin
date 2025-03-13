@@ -28,23 +28,23 @@ class DataPengajuanController extends Controller
     {
         $pinjaman = Pinjaman::findOrFail($id);
         $statusBaru = $request->status;
-
+    
         if ($statusBaru === 'Aktif') {
             $pinjaman->update([
                 'status' => 'Aktif',
-                'total_denda' => 0.00,       // ✅ Ubah ke 0.00
-                'status_denda' => 'Belum Lunas', // ✅ Ubah ke 'Belum Lunas'
+                'total_denda' => 0.00,
+                'status_denda' => 'Lunas', // Mulai dari lunas, nanti bisa berubah kalau ada denda
             ]);
         } elseif ($statusBaru === 'Ditolak') {
             $pinjaman->update([
                 'status' => 'Ditolak',
-                'total_denda' => null,  // ✅ Tetap NULL
-                'status_denda' => null, // ✅ Tetap NULL
+                'total_denda' => null,
+                'status_denda' => null,
             ]);
         } else {
             $pinjaman->update(['status' => $statusBaru]);
         }
-
+    
         return response()->json(['success' => true]);
     }
 }

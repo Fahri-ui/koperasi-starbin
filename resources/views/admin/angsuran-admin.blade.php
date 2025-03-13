@@ -306,7 +306,7 @@
                             </h5>
                         </div>
                         <div class="card-body">
-                            <div style="max-height: 450px; overflow: auto; font-size: .9rem; text-align: left;">
+                            <div style="max-height: 750px; overflow: auto; font-size: .8rem; text-align: left;">
                                 <table class="table table-hover">
                                     <thead class="table-primary">
                                         <tr>

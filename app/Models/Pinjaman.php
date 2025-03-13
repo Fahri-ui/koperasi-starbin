@@ -49,6 +49,11 @@ class Pinjaman extends Model
         $mingguTerlambat = ceil($hariTerlambat / 7);
         $denda = ($this->jumlah_pinjaman * 0.02) * $mingguTerlambat;
 
+        // Update total_denda & status_denda secara otomatis
+        $this->total_denda = $denda;
+        $this->status_denda = $denda > 0 ? 'Belum Lunas' : 'Lunas';
+        $this->save();
+
         return $denda;
     }
 

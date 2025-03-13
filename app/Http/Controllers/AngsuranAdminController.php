@@ -24,23 +24,40 @@ class AngsuranAdminController extends Controller
     {
         $angsuran = RiwayatPembayaran::findOrFail($id);
         $pinjaman = $angsuran->pinjaman;
-
-        $pinjaman->sisa_angsuran -= $angsuran->jumlah_pembayaran;
-        $pinjaman->total_denda -= $angsuran->jumlah_denda_dibayar;
-
+        
+        $jumlahBayar = $angsuran->jumlah_pembayaran;
+        
+        // Lunasi denda dulu
+        if ($pinjaman->total_denda > 0) {
+            if ($jumlahBayar >= $pinjaman->total_denda) {
+                $jumlahBayar -= $pinjaman->total_denda;
+                $pinjaman->total_denda = 0;
+                $pinjaman->status_denda = 'Lunas';
+            } else {
+                $pinjaman->total_denda -= $jumlahBayar;
+                $jumlahBayar = 0;
+            }
+        }
+    
+        // Sisa pembayaran masuk ke sisa angsuran
+        if ($jumlahBayar > 0) {
+            $pinjaman->sisa_angsuran -= $jumlahBayar;
+        }
+    
+        // Perbarui status pinjaman
         if ($pinjaman->sisa_angsuran <= 0 && $pinjaman->total_denda <= 0) {
             $pinjaman->status = 'Lunas';
         }
-
+    
         $angsuran->status = 'Berhasil';
         $angsuran->updated_at = Carbon::now();
-
+    
         $pinjaman->save();
         $angsuran->save();
-
+    
         return redirect()->route('angsuran')->with('success', 'Angsuran berhasil disetujui!');
     }
-
+    
     public function reject($id)
     {
         $angsuran = RiwayatPembayaran::findOrFail($id);

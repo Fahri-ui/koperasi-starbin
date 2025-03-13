@@ -336,6 +336,7 @@
                                             <th>Email</th>
                                             <th>Role</th>
                                             <th>Nomor Telepon</th>
+                                            <th>Status</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -361,6 +362,20 @@
                                                 </select>
                                             </td>
                                             <td>{{ $user->phone }}</td>
+                                            <td>
+                                                @php
+                                                $statusColors = [
+                                                'Belum_Aktif' => 'info',
+                                                'Ditolak' => 'secondary',
+                                                'Pending' => 'primary',
+                                                'Aktif' => 'success',
+                                                'Belum_Bayar_Simpanan_Wajib' => 'warning',
+                                                'Nonaktif' => 'danger'
+                                                ];
+                                                $badgeColor = $statusColors[$user['status']] ?? 'secondary';
+                                                @endphp
+                                                <span class="badge bg-{{ $badgeColor }}">{{ $user['status'] }}</span>
+                                            </td>
                                             <td>
                                                 <form id="deleteForm-{{ $user->id }}" method="POST">
                                                     @csrf
