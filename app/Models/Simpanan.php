@@ -51,4 +51,6 @@ class Simpanan extends Model
             ->where('tanggal_transaksi', '>=', now()->subMonths($bulan))
             ->sum('jumlah');
     }
+
+    
 }

@@ -42,46 +42,4 @@ class HitungDenda extends Command
             $p->update(['total_denda' => $denda]);
         }
     }
-
-    protected function cekStatusSimpananWajib()
-    {
-        $users = User::with(['simpanans' => function ($query) {
-            $query->wajib()->orderBy('tanggal_transaksi', 'desc')->limit(1);
-        }])->get();
-
-        foreach ($users as $user) {
-            $simpananTerakhir = $user->simpanans->first();
-
-            if ($simpananTerakhir) {
-                $terlambatBulan = Carbon::parse($simpananTerakhir->tanggal_transaksi)->diffInMonths(now());
-
-                if ($terlambatBulan >= 3) {
-                    // Nonaktifkan akun dan ambil jaminan pinjaman jika ada
-                    $user->update(['status' => 'Nonaktif']);
-                    $this->ambilJaminan($user);
-                } elseif ($terlambatBulan >= 2) {
-                    // Ubah status jadi Belum_Bayar_Simpanan_Wajib
-                    $user->update(['status' => 'Belum_Bayar_Simpanan_Wajib']);
-                }
-            }
-        }
-    }
-
-    protected function ambilJaminan($user)
-    {
-        $pinjamanAktif = $user->pinjaman()->where('status', 'Aktif')->get();
-
-        foreach ($pinjamanAktif as $pinjaman) {
-            // Simulasi tindakan mengambil jaminan
-            $pinjaman->update(['status' => 'Jaminan Diambil']);
-            // Buat notifikasi untuk user
-            $user->notifikasi()->create([
-                'message' => 'Jaminan Anda telah diambil karena status akun menjadi Nonaktif.',
-                'type' => 'danger',
-                'icon' => 'shield-slash',
-                'user_id' => null,
-                'expired_at' => now()->addDays(7),
-            ]);
-        }
-    }
 }

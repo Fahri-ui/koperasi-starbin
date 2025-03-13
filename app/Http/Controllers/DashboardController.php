@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Simpanan;
 use App\Models\Pinjaman;
 use Illuminate\Support\Facades\DB;
-use App\Models\user;
 use App\Models\RiwayatPembayaran; // Import model RiwayatPembayaran
+use App\Models\user;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Notifikasi; // Tambahkan model Notifikasi
 use Carbon\Carbon;
