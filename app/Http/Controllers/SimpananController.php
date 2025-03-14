@@ -30,7 +30,7 @@ class SimpananController extends Controller
             ->latest()
             ->first();
 
-        $statusSimpananWajib = Simpanan::where('user_id', auth()->id())
+        $statusWajib = Simpanan::where('user_id', auth()->id())
             ->where('jenis', 'wajib')
             ->whereMonth('created_at', now()->month)
             ->whereYear('created_at', now()->year)
@@ -38,8 +38,8 @@ class SimpananController extends Controller
             ->first();
 
 
-//-----------------------------------------------------------------------//
-        $statusWajib = Simpanan::where('user_id', auth()->id())
+        //-----------------------------------------------------------------------//
+        $statusWajibtelat = Simpanan::where('user_id', auth()->id())
             ->where('jenis', 'wajib')
             ->whereMonth('created_at', now()->month)
             ->whereYear('created_at', now()->year)
@@ -69,7 +69,7 @@ class SimpananController extends Controller
             ->where('status', 'Ditolak') // Tambahkan kondisi status berhasil
             ->latest()
             ->first();
-//-----------------------------------------------------------------------//
+        //-----------------------------------------------------------------------//
 
 
 
@@ -245,8 +245,6 @@ class SimpananController extends Controller
 
             $simpanan = Simpanan::where('user_id', auth()->id())->latest()->first();
 
-            $totalWajib = $wajib->sum('jumlah');
-
             // Cek apakah sudah membayar bulan ini
             $bulanIni = Carbon::now()->format('Y-m');
             $sudahBayarBulanIni = Simpanan::where('jenis', 'wajib')
@@ -289,7 +287,7 @@ class SimpananController extends Controller
         // Pengingat
         $pengingat = "Anda akan menerima pengingat otomatis setiap awal bulan jika belum melakukan pembayaran.";
 
-        return view('user.simpanan-wajib', compact('statusSimpananWajib', 'statusWajibDitolak', 'statusWajibDalamproses', 'wajib', 'simpananWajib', 'statusWajib', 'simpanan', 'totalWajib', 'statusPembayaran', 'statusPesan', 'pengingat', 'sudahBayarBulanIni'));
+        return view('user.simpanan-wajib', compact('statusWajibtelat', 'statusWajibDitolak', 'statusWajibDalamproses', 'wajib', 'simpananWajib', 'statusWajib', 'simpanan', 'totalWajib', 'statusPembayaran', 'statusPesan', 'pengingat', 'sudahBayarBulanIni'));
     }
 
     public function simpanansukarela()
