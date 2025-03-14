@@ -38,6 +38,29 @@ class PinjamanController extends Controller
             ->where('status', 'Dalam Proses')
             ->first();
 
+        $statusWajib = Simpanan::where('user_id', auth()->id())
+            ->where('jenis', 'wajib')
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->where('status', 'Berhasil') // Tambahkan kondisi status berhasil
+            ->latest()
+            ->first();
+
+        $statusWajibinfo = Simpanan::where('user_id', auth()->id())
+            ->where('jenis', 'wajib')
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->latest()
+            ->first();
+
+        $statusWajibDalamproses = Simpanan::where('user_id', auth()->id())
+            ->where('jenis', 'wajib')
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->where('status', 'Dalam Proses') // Tambahkan kondisi status berhasil
+            ->latest()
+            ->first();
+
         $userId = Auth::id();
         $tanggalHariIni = Carbon::today();
 
@@ -196,7 +219,7 @@ class PinjamanController extends Controller
                 ->get();
         }
 
-        return view('user.pinjaman', compact( 'pembayaranProses','riwayatTransaksi', 'pinjamandalamproses', 'simpanan', 'totalPinjaman', 'pinjamanAktif'));
+        return view('user.pinjaman', compact('statusWajibDalamproses', 'statusWajib', 'statusWajibinfo', 'pembayaranProses', 'riwayatTransaksi', 'pinjamandalamproses', 'simpanan', 'totalPinjaman', 'pinjamanAktif'));
     }
 
     public function ajukanPinjaman(Request $request)
@@ -253,7 +276,7 @@ class PinjamanController extends Controller
         }
 
         $jumlahPembayaran = $request->input('payment-amount');
-        
+
         $buktiFile = $request->file('payment-proof');
         $namaBukti = time() . '-' . $userId . '.' . $buktiFile->getClientOriginalExtension();
         $buktiFile->move(public_path('picture/bukti_pembayaran'), $namaBukti);

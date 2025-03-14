@@ -308,7 +308,6 @@
                                             <th>Tanggal Pengajuan</th>
                                             <th>Jumlah</th>
                                             <th>Tipe Pengajuan</th>
-                                            <th>Alasan / Keterangan</th>
                                             <th>Status</th>
                                             <th>Bukti</th>
                                             <th>Aksi</th>
@@ -319,14 +318,13 @@
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
                                             <td>{{ $data->user->fullname }}</td>
-                                            <td>{{ $data->tanggal_pengajuan }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($data->tanggal_transaksi)->format('Y-m-d') }}</td>
                                             <td>Rp {{ number_format($data->jumlah, 0, ',', '.') }}</td>
                                             <td>
                                                 <span class="badge bg-secondary">
                                                     <i class="bi bi-wallet2"></i> Simpanan ({{ ucfirst($data->jenis) }})
                                                 </span>
-                                            </td>
-                                            <td>{{ $data->keterangan ?? '-' }}</td>
+                                            </td> 
                                             <td>
                                                 <span class="badge bg-{{ $data->status == 'Dalam Proses' ? 'warning' : ($data->status == 'Berhasil' ? 'success' : 'danger') }}">
                                                     <i class="bi {{ $data->status == 'Dalam Proses' ? 'bi-hourglass-split' : ($data->status == 'Disetujui' ? 'bi-check-circle' : 'bi-x-circle') }}"></i> {{ $data->status }}

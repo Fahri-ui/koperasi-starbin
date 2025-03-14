@@ -30,10 +30,47 @@ class SimpananController extends Controller
             ->latest()
             ->first();
 
-        $statusWajib = Simpanan::where('user_id', auth()->id())
+        $statusSimpananWajib = Simpanan::where('user_id', auth()->id())
             ->where('jenis', 'wajib')
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
             ->latest()
             ->first();
+
+
+//-----------------------------------------------------------------------//
+        $statusWajib = Simpanan::where('user_id', auth()->id())
+            ->where('jenis', 'wajib')
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->where('status', 'berhasil') // Tambahkan kondisi status berhasil
+            ->latest()
+            ->first();
+
+        $statusWajibinfo = Simpanan::where('user_id', auth()->id())
+            ->where('jenis', 'wajib')
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->latest()
+            ->first();
+
+        $statusWajibDalamproses = Simpanan::where('user_id', auth()->id())
+            ->where('jenis', 'wajib')
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->where('status', 'Dalam Proses') // Tambahkan kondisi status berhasil
+            ->latest()
+            ->first();
+
+        $statusWajibDitolak = Simpanan::where('user_id', auth()->id())
+            ->where('jenis', 'wajib')
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->where('status', 'Ditolak') // Tambahkan kondisi status berhasil
+            ->latest()
+            ->first();
+//-----------------------------------------------------------------------//
+
 
 
         $totalWajib = Simpanan::where('user_id', auth()->id())
@@ -252,7 +289,7 @@ class SimpananController extends Controller
         // Pengingat
         $pengingat = "Anda akan menerima pengingat otomatis setiap awal bulan jika belum melakukan pembayaran.";
 
-        return view('user.simpanan-wajib', compact('wajib', 'simpananWajib', 'statusWajib', 'simpanan', 'totalWajib', 'statusPembayaran', 'statusPesan', 'pengingat', 'sudahBayarBulanIni'));
+        return view('user.simpanan-wajib', compact('statusSimpananWajib', 'statusWajibDitolak', 'statusWajibDalamproses', 'wajib', 'simpananWajib', 'statusWajib', 'simpanan', 'totalWajib', 'statusPembayaran', 'statusPesan', 'pengingat', 'sudahBayarBulanIni'));
     }
 
     public function simpanansukarela()
@@ -276,8 +313,31 @@ class SimpananController extends Controller
             ->latest()
             ->first();
 
+        $statusWajib = Simpanan::where('user_id', auth()->id())
+            ->where('jenis', 'wajib')
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->where('status', 'berhasil') // Tambahkan kondisi status berhasil
+            ->latest()
+            ->first();
+
+        $statusWajibinfo = Simpanan::where('user_id', auth()->id())
+            ->where('jenis', 'wajib')
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->latest()
+            ->first();
+
+        $statusWajibDalamproses = Simpanan::where('user_id', auth()->id())
+            ->where('jenis', 'wajib')
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->where('status', 'Dalam Proses') // Tambahkan kondisi status berhasil
+            ->latest()
+            ->first();
+
         // Kirim data ke view
-        return view('user.simpanan-sukarela', compact('sukarela', 'statusSukarela', 'totalSukarela', 'simpanan'));
+        return view('user.simpanan-sukarela', compact('statusWajibinfo', 'statusWajibDalamproses', 'statusWajibinfo', 'statusWajib', 'sukarela', 'statusSukarela', 'totalSukarela', 'simpanan'));
     }
 
     public function store(Request $request)

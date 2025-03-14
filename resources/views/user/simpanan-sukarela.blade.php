@@ -289,7 +289,7 @@
             </div>
 
             @elseif (auth()->user()->status === 'Belum_Bayar_Simpanan_Wajib')
-            
+
             <div class="container">
                 <h2 class="pb-3 border-bottom">
                     <i class="bi bi-gem "></i> Simpanan Sukarela
@@ -366,7 +366,7 @@
 
             <!-- Definisi Simpanan Sukarela -->
             <section class="mb-4">
-                <div class="card shadow"  style="border: 1px solid #435ebe;">
+                <div class="card shadow" style="border: 1px solid #435ebe;">
                     <div class="card-body">
                         <span class="fw-bold d-flex align-items-center">
                             <i class="bi bi-bookmark-heart-fill text-primary" style="margin-top: -20px;"></i>
@@ -382,7 +382,7 @@
 
             <!-- Saldo Simpanan Sukarela -->
             <section class="mb-4">
-                <div class="card shadow"  style="border: 1px solid #435ebe;">
+                <div class="card shadow" style="border: 1px solid #435ebe;">
                     <div class="card-body text-center">
                         <h5 class="pb-2 mb-3 border-bottom">
                             <i class="bi bi-wallet2 text-success"></i> Saldo Simpanan Sukarela
@@ -458,7 +458,7 @@
                                     </tr>
                                     @empty
                                     <tr>
-                                        <td colspan="5" class="text-center">
+                                        <td colspan="8" class="text-center">
                                             <span class="badge bg-warning">
                                                 <i class="bi bi-exclamation-circle"></i> Belum ada data transaksi
                                             </span>
@@ -500,7 +500,6 @@
                             <div class="mb-3">
                                 <label for="jenis_transaksi" class="form-label"><i class="bi bi-shuffle"></i> Jenis Transaksi</label>
                                 <select name="jenis_transaksi" id="jenis_transaksi" class="form-select" required onchange="toggleBukti()">
-                                    <option value="penyetoran">Penyetoran</option>
                                     <option value="penarikan">Penarikan</option>
                                 </select>
                             </div>
@@ -535,6 +534,7 @@
                     </div>
                 </div>
             </section>
+
 
             @elseif (auth()->user()->status === 'Nonaktif')
             {{-- Tampilkan pesan akun nonaktif --}}
@@ -550,7 +550,7 @@
 
             <!-- Definisi Simpanan Sukarela -->
             <section class="mb-4">
-                <div class="card shadow"  style="border: 1px solid #435ebe;">
+                <div class="card shadow" style="border: 1px solid #435ebe;">
                     <div class="card-body">
                         <span class="fw-bold d-flex align-items-center">
                             <i class="bi bi-bookmark-heart-fill text-primary" style="margin-top: -20px;"></i>
@@ -566,7 +566,7 @@
 
             <!-- Saldo Simpanan Sukarela -->
             <section class="mb-4">
-                <div class="card shadow"  style="border: 1px solid #435ebe;">
+                <div class="card shadow" style="border: 1px solid #435ebe;">
                     <div class="card-body text-center">
                         <h5 class="pb-2 mb-3 border-bottom">
                             <i class="bi bi-wallet2 text-success"></i> Saldo Simpanan Sukarela
@@ -642,7 +642,7 @@
                                     </tr>
                                     @empty
                                     <tr>
-                                        <td colspan="5" class="text-center">
+                                        <td colspan="8" class="text-center">
                                             <span class="badge bg-warning">
                                                 <i class="bi bi-exclamation-circle"></i> Belum ada data transaksi
                                             </span>
@@ -656,6 +656,45 @@
                 </div>
             </section>
 
+            @if($statusWajibDalamproses)
+            <div class="card shadow-lg border-0 mb-4" style="text-align: center; border: 1px solid #d9d9d9; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); margin-bottom: 20px; background-color: #ffffff; padding: 20px;">
+                <div class="card-body bg-info text-dark" style="border: 1px solid #17a2b8; border-radius: 10px;">
+                    <div class="d-flex align-items-start">
+                        <i class="bi bi-hourglass-split text-white fs-1 me-3" style="margin-top: -20px;"></i>
+                        <div>
+                            <h4 class="fw-bold">Pembayaran Simpanan Wajib Sedang Diproses</h4>
+                            <hr style="border: 2px solid #17a2b8;">
+                            <p style="color: rgb(80, 83, 85);">
+                                Terima kasih telah melakukan pembayaran simpanan wajib bulan ini. Saat ini, pembayaran Anda sedang dalam proses verifikasi oleh admin.
+                                Harap bersabar, proses ini biasanya memakan waktu sekitar <strong>1-2 hari kerja</strong>.
+                                <br><br>
+                                Anda akan menerima notifikasi otomatis setelah pembayaran berhasil diverifikasi. Jika ada kendala, silakan hubungi kami melalui <strong>halaman Bantuan</strong>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            @if(!$statusWajibinfo)
+            <section class="d-flex align-items-center justify-content-center p-4 shadow" style="background-color: #ffffff; margin-bottom: 40px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);">
+                <div class="w-100" style="border: 1px solid #ff6b6b; border-radius: 15px; overflow: hidden; box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.06);">
+                    <div class="text-center p-4 d-flex flex-column align-items-center justify-content-center" style="background: linear-gradient(135deg, #ff6b6b, #ff8787); border-radius: 15px 15px 0 0; position: relative;">
+                        <h2 style="text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1); margin-top: 10px;">🚫 Simpanan Wajib Belum Dibayar</h2>
+                    </div>
+                    <div class="p-3 text-center" style="background-color: #ffffff; border-radius: 0 0 15px 15px;">
+                        <p class="mb-3" style="font-size: 1.2rem; color: #555;">
+                            Anda belum melakukan pembayaran simpanan wajib untuk bulan ini. Pembayaran simpanan wajib adalah syarat utama untuk mengajukan pinjaman.
+                        </p>
+                        <p style="font-size: 1rem; color: #777;">
+                            Segera lakukan pembayaran agar pengajuan pinjaman Anda dapat diproses tanpa kendala.
+                        </p>
+                    </div>
+                </div>
+            </section>
+            @endif
+
+            @if($statusWajib)
             <!-- Formulir Penyetoran dan Penarikan -->
             <section class="mb-4">
                 <div class="card shadow" style="border: 1px solid #435ebe;">
@@ -719,6 +758,7 @@
                     </div>
                 </div>
             </section>
+            @endif
             @endif
 
             <footer>
