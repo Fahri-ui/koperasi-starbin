@@ -316,7 +316,7 @@
                                             <th>Nominal Bayar</th>
                                             <th>Tanggal Bayar</th>
                                             <th>Sisa Angsuran</th>
-                                            <th>Denda</th>
+                                            <th>Sisa Denda</th>
                                             <th>Jatuh Tempo</th>
                                             <th>Metode</th>
                                             <th>Status</th>

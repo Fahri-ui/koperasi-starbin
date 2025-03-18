@@ -63,7 +63,7 @@ class PengajuanSimmpanansController extends Controller
 
             } elseif ($simpanan->jenis === 'wajib') {
                 // Kalau simpanan wajib ditolak, status tetap 'Belum_Bayar_Simpanan_Wajib'
-                $user->status = 'Belum_Bayar_Simpanan_Wajib';
+                $message = 'Simpanan wajib telah ditolak.';
             } elseif ($simpanan->jenis === 'sukarela') {
                 // Kalau sukarela ditolak, nggak perlu ubah status user
                 $message = 'Simpanan sukarela telah ditolak.';

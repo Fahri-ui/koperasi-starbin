@@ -14,7 +14,15 @@ class BantuanController extends Controller
     {
         $kontak = Setting::whereIn('key', ['alamat', 'telepon', 'email'])->get();
         $simpanan = Simpanan::where('user_id', auth()->id())->latest()->first();
-        return view('user/bantuan', compact('simpanan', 'kontak'));
+
+        $statusWajib = Simpanan::where('user_id', auth()->id())
+        ->where('jenis', 'wajib')
+        ->whereMonth('created_at', now()->month)
+        ->whereYear('created_at', now()->year)
+        ->latest('updated_at') // Ambil data terbaru berdasarkan updated_at
+        ->first();
+
+        return view('user/bantuan', compact('statusWajib', 'simpanan', 'kontak'));
     }
 
     public function kirimPesan(Request $request)

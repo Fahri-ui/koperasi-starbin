@@ -19,13 +19,21 @@ class PinjamanController extends Controller
         $userId = Auth::id();
         $tanggalHariIni = Carbon::today();
 
+        $telatwajib = Simpanan::where('user_id', auth()->id())
+            ->where('jenis', 'wajib')
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->latest('updated_at') // Ambil data terbaru berdasarkan updated_at
+            ->first();
+
+
         $simpanan = Simpanan::where('user_id', auth()->id())->latest()->first();
         // Ambil semua riwayat transaksi
         $riwayatTransaksi = RiwayatPembayaran::with('user', 'pinjaman')->get();
 
         // Ambil total pinjaman pengguna yang tidak ditolak
         $totalPinjaman = Pinjaman::where('user_id', $userId)
-            ->whereNotIn('status', ['Ditolak'])
+            ->whereIn('status', ['Aktif', 'Lunas'])
             ->sum('jumlah_pinjaman');
 
         // Ambil pinjaman aktif
@@ -60,6 +68,17 @@ class PinjamanController extends Controller
             ->where('status', 'Dalam Proses') // Tambahkan kondisi status berhasil
             ->latest()
             ->first();
+
+        $statusWajibDitolak = Simpanan::where('user_id', auth()->id())
+            ->where('jenis', 'wajib')
+            ->whereYear('created_at', now()->year)
+            ->whereMonth('created_at', now()->month)
+            ->latest('updated_at') // Ambil data terbaru berdasarkan updated_at
+            ->first();
+
+        // Jika ada data terbaru, cek apakah masih "Dalam Proses"
+        $isDitolak = $statusWajibDitolak && $statusWajibDitolak->status === 'Ditolak';
+
 
         $userId = Auth::id();
         $tanggalHariIni = Carbon::today();
@@ -103,11 +122,6 @@ class PinjamanController extends Controller
             )
             ->orderByDesc('tanggal')
             ->get();
-
-        // Ambil total pinjaman pengguna yang tidak ditolak
-        $totalPinjaman = Pinjaman::where('user_id', $userId)
-            ->whereNotIn('status', ['Ditolak'])
-            ->sum('jumlah_pinjaman');
 
         // Ambil pinjaman aktif
         $pinjamanAktif = Pinjaman::where('user_id', $userId)
@@ -219,7 +233,7 @@ class PinjamanController extends Controller
                 ->get();
         }
 
-        return view('user.pinjaman', compact('statusWajibDalamproses', 'statusWajib', 'statusWajibinfo', 'pembayaranProses', 'riwayatTransaksi', 'pinjamandalamproses', 'simpanan', 'totalPinjaman', 'pinjamanAktif'));
+        return view('user.pinjaman', compact('telatwajib', 'isDitolak', 'statusWajibDitolak', 'statusWajibDalamproses', 'statusWajib', 'statusWajibinfo', 'pembayaranProses', 'riwayatTransaksi', 'pinjamandalamproses', 'simpanan', 'totalPinjaman', 'pinjamanAktif'));
     }
 
     public function ajukanPinjaman(Request $request)

@@ -34,7 +34,7 @@ class SimpananController extends Controller
             ->where('jenis', 'wajib')
             ->whereMonth('created_at', now()->month)
             ->whereYear('created_at', now()->year)
-            ->latest()
+            ->latest('updated_at') // Ambil data terbaru berdasarkan updated_at
             ->first();
 
 
@@ -319,6 +319,14 @@ class SimpananController extends Controller
             ->latest()
             ->first();
 
+        $telatwajib = Simpanan::where('user_id', auth()->id())
+            ->where('jenis', 'wajib')
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->latest('updated_at') // Ambil data terbaru berdasarkan updated_at
+            ->first();
+
+
         $statusWajibinfo = Simpanan::where('user_id', auth()->id())
             ->where('jenis', 'wajib')
             ->whereMonth('created_at', now()->month)
@@ -334,8 +342,17 @@ class SimpananController extends Controller
             ->latest()
             ->first();
 
+        $statusWajibDitolak = Simpanan::where('user_id', auth()->id())
+            ->where('jenis', 'wajib')
+            ->whereYear('created_at', now()->year)
+            ->whereMonth('created_at', now()->month)
+            ->latest('updated_at') // Ambil data terbaru berdasarkan updated_at
+            ->first();
+
+        // Jika ada data terbaru, cek apakah masih "Dalam Proses"
+        $isDitolak = $statusWajibDitolak && $statusWajibDitolak->status === 'Ditolak';
         // Kirim data ke view
-        return view('user.simpanan-sukarela', compact('statusWajibinfo', 'statusWajibDalamproses', 'statusWajibinfo', 'statusWajib', 'sukarela', 'statusSukarela', 'totalSukarela', 'simpanan'));
+        return view('user.simpanan-sukarela', compact('telatwajib', 'isDitolak', 'statusWajibDitolak', 'statusWajibinfo', 'statusWajibDalamproses', 'statusWajibinfo', 'statusWajib', 'sukarela', 'statusSukarela', 'totalSukarela', 'simpanan'));
     }
 
     public function store(Request $request)

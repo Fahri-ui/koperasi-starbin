@@ -157,7 +157,7 @@
 
             <div class="container mt-4">
                 <!-- Card Peringatan -->
-                <div class="card shadow-sm mb-3" style="text-align: center; border: 1px solid #d9d9d9; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); margin-bottom: 20px; background-color: #ffffff; padding: 20px;">
+                <div class="card shadow-sm mb-3" style="text-align: center; border: 1px solid #d9d9d9; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); margin-bottom: 20px;  padding: 20px;">
                     <div class="card-body bg-warning text-dark">
                         <div class="d-flex align-items-center">
                             <i class="bi bi-exclamation-triangle-fill me-2 fs-4"></i>
@@ -292,30 +292,64 @@
                 <h3 class="mb-0 fw-bold">👋 Halo, {{ Auth::user()->fullname }}</h3>
             </div>
             
-            <!-- Section Peringatan Keterlambatan -->
-            <div class="card shadow-lg border-0 mb-4" style="text-align: center; border: 1px solid #d9d9d9; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); margin-bottom: 20px; background-color: #ffffff; padding: 20px;">
-                <div class="card-body bg-warning text-dark" style="border: 1px solid #435ebe; border-radius: 10px;">
-                    <div class="d-flex align-items-start">
-                        <i class="bi bi-info-circle-fill text-primary fs-1 me-3" style="margin-top:-20px;"></i>
-                        <div>
-                            <h4 class="fw-bold"> Peringatan: Keterlambatan Pembayaran Simpanan Wajib</h4>
-                            <hr style="border: 2px solid rgb(0, 0, 0);">
-                            <p style="color:rgb(80, 83, 85);">
-                                Anda memiliki keterlambatan pembayaran simpanan wajib selama <strong>2 bulan</strong> dengan total sebesar <strong>Rp 100.000</strong>.
-                                Mohon segera melunasi sebelum <strong>bulan depan</strong> untuk mencegah akun menjadi <strong>nonaktif</strong>.
-                                Jika tidak dapat membayar simpanan wajib, <strong>segera tarik simpanan sukarela</strong> Anda sebelum akun dinonaktifkan.
-                                Apabila akun <strong>nonaktif</strong>, jaminan pada pinjaman aktif akan kami <strong>ambil</strong>.
-                                Jika Anda memiliki saldo <strong>simpanan sukarela</strong>, Anda dapat mengunjungi kantor kami dengan membawa bukti tangkapan layar <strong>pada halaman Simpanan Sukarela</strong>.
-                                <br><br>
-                                Pastikan pembayaran tepat waktu agar status keanggotaan Anda tetap aktif.
-                            </p>
-                        </div>
-                    </div>
+            @if ($statusWajib && $statusWajib->status === 'Dalam Proses')
+            <div class="alert alert-warning shadow-sm" role="alert" style="border-radius: 10px;">
+                <!-- Header -->
+                <div class="d-flex align-items-center p-3" style="border-bottom: 2px solid #d1a900; color:black;">
+                    <i class="bi bi-hourglass-split me-3 fs-2" style="margin-top: -40px;"></i>
+                    <h5 class="mb-0 fw-bold " style="color:black;">Pengajuan Dalam Proses</h5>
+                </div>
+
+                <!-- Isi Section -->
+                <div class="p-3" style="text-align: justify; border-bottom: 2px solid #d1a900;">
+                    <p class="mb-2">
+                        Pengajuan penyetoran simpanan wajib Anda saat ini <strong>sedang dalam tahap verifikasi oleh admin</strong>.
+                        Proses ini bertujuan untuk memastikan keakuratan data sebelum dana dikonfirmasi.
+                    </p>
+                    <p class="mb-2">
+                        <i class="bi bi-clock-history"></i> <strong>Estimasi waktu:</strong> 1-2 hari kerja.
+                    </p>
+                </div>
+
+                <!-- Footer -->
+                <div class="p-3 text-center" style="border-top: 2px solid #d1a900;">
+                    <p class="mb-0">
+                        Silakan <strong>periksa status pembayaran Anda secara berkala</strong>. Jika membutuhkan bantuan lebih lanjut,
+                        hubungi <strong>admin koperasi</strong> atau kunjungi kantor kami.
+                    </p>
                 </div>
             </div>
+            @elseif ($statusWajib && $statusWajib->status === 'Ditolak')
+            <div class="alert alert-danger shadow-sm" role="alert" style="border-radius: 10px;">
+                <!-- Header -->
+                <div class="d-flex align-items-center p-3" style="border-bottom: 2px solid #a94442;">
+                    <i class="bi bi-x-circle me-3 fs-2 text-white" style="margin-top: -40px; padding-right:30px;"></i>
+                    <h5 class="mb-0 fw-bold text-white">Pengajuan Ditolak</h5>
+                </div>
 
+                <!-- Isi Section -->
+                <div class="p-3" style="text-align: justify; border-bottom: 2px solid #a94442;">
+                    <p class="mb-2">
+                        Pengajuan penyetoran simpanan wajib Anda <strong>ditolak oleh admin</strong>. Hal ini dapat terjadi karena beberapa alasan berikut:
+                    </p>
+                    <div class="mb-2">
+                        <p><i class="bi bi-exclamation-triangle-fill text-white"></i> Data atau bukti pembayaran tidak valid.</p>
+                        <p><i class="bi bi-x-circle-fill text-white"></i> Kesalahan dalam metode pembayaran atau transfer yang tidak terdeteksi.</p>
+                    </div>
+                    <p class="mb-2">
+                        Silakan periksa kembali data Anda dan lakukan pengajuan ulang sesuai dengan ketentuan yang berlaku.
+                    </p>
+                </div>
+
+                <!-- Footer -->
+                <div class="p-3 text-center" style="border-top: 2px solid #a94442;">
+                    <p class="mb-0">
+                        Jika Anda memerlukan bantuan, silakan hubungi <strong>admin koperasi</strong> atau datang langsung ke kantor kami untuk verifikasi lebih lanjut.
+                    </p>
+                </div>
+            </div>
             <!-- Card Form Pembayaran Simpanan -->
-            <div class="card shadow-lg border-0">
+            <div class="card shadow-lg border-0" id="bayar">
                 <div class="card-header bg-gradient bg-primary text-white">
                     <h5 class="mb-0 text-white"><i class="bi bi-wallet-fill"></i> Form Pembayaran Simpanan</h5>
                 </div>
@@ -359,6 +393,75 @@
                     </form>
                 </div>
             </div>
+            @else
+            <!-- Section Peringatan Keterlambatan -->
+            <div class="card shadow-lg border-0 mb-4" style="text-align: center; border: 1px solid #d9d9d9; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); margin-bottom: 20px;  padding: 20px;">
+                <div class="card-body bg-warning text-dark" style="border: 1px solid #435ebe; border-radius: 10px;">
+                    <div class="d-flex align-items-start">
+                        <i class="bi bi-info-circle-fill text-primary fs-1 me-3" style="margin-top:-20px;"></i>
+                        <div>
+                            <h4 class="fw-bold"> Peringatan: Keterlambatan Pembayaran Simpanan Wajib</h4>
+                            <hr style="border: 2px solid rgb(0, 0, 0);">
+                            <p style="color:rgb(80, 83, 85);">
+                                Anda memiliki keterlambatan pembayaran simpanan wajib selama <strong>2 bulan</strong> dengan total sebesar <strong>Rp 100.000</strong>.
+                                Mohon segera melunasi sebelum <strong>bulan depan</strong> untuk mencegah akun menjadi <strong>nonaktif</strong>.
+                                Jika tidak dapat membayar simpanan wajib, <strong>segera tarik simpanan sukarela</strong> Anda sebelum akun dinonaktifkan.
+                                Apabila akun <strong>nonaktif</strong>, jaminan pada pinjaman aktif akan kami <strong>ambil</strong>.
+                                Jika Anda memiliki saldo <strong>simpanan sukarela</strong>, Anda dapat mengunjungi kantor kami dengan membawa bukti tangkapan layar <strong>pada halaman Simpanan Sukarela</strong>.
+                                <br><br>
+                                Pastikan pembayaran tepat waktu agar status keanggotaan Anda tetap aktif.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card Form Pembayaran Simpanan -->
+            <div class="card shadow-lg border-0" id="bayar">
+                <div class="card-header bg-gradient bg-primary text-white">
+                    <h5 class="mb-0 text-white"><i class="bi bi-wallet-fill"></i> Form Pembayaran Simpanan</h5>
+                </div>
+                <div class="card-body" style="margin-top: 20px;">
+                    <form action="{{ route('simpanan.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="jenis" value="wajib">
+                        <input type="hidden" name="validasi" value="100000">
+
+                        <div class="mb-3">
+                            <label for="jenis_transaksi" class="form-label"><i class="bi bi-shuffle"></i> Jenis Transaksi</label>
+                            <select name="jenis_transaksi" id="jenis_transaksi" class="form-select" required>
+                                <option value="penyetoran">Penyetoran</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="jumlah" class="form-label"><i class="bi bi-cash"></i> Jumlah (Rp)</label>
+                            <input type="number" name="jumlah" id="jumlah" class="form-control" required min="100000" max="100000" placeholder="Masukan Nominal Bayar">
+                            <small class="text-muted"><i class="bi bi-info-circle"></i> Jumlah simpanan adalah tunggakan simpanan wajib 2 bulan</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="metode_pembayaran" class="form-label"><i class="bi bi-credit-card"></i> Metode Pembayaran</label>
+                            <select name="metode_pembayaran" id="metode_pembayaran" class="form-select" required>
+                                <option value="cash">Tunai (Bayar Langsung)</option>
+                                <option value="transfer-bank">Transfer Bank</option>
+                                <option value="ewallet">E-Wallet (Dana, OVO, Gopay)</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="bukti" class="form-label"><i class="bi bi-upload"></i> Unggah Bukti Pembayaran</label>
+                            <input type="file" name="bukti" id="bukti" class="form-control" required accept="image/jpeg, image/png, image/jpg">
+                            <small class="text-muted"><i class="bi bi-image"></i> Format yang didukung: JPG, JPEG, PNG.</small>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-check-circle-fill"></i> Konfirmasi Pembayaran
+                        </button>
+                    </form>
+                </div>
+            </div>
+            @endif
 
             <div class="page-content">
                 <div class="container">

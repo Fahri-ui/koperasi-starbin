@@ -13,7 +13,7 @@ class NotifikasiController extends Controller
     public function notifikasi()
     {
         $userId = auth()->id();
-        
+
         // Tandai semua notifikasi sebagai telah dibaca saat user membuka halaman
         Notifikasi::where(function ($query) use ($userId) {
             $query->where('user_id', $userId)
@@ -32,6 +32,13 @@ class NotifikasiController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
+        $statusWajib = Simpanan::where('user_id', auth()->id())
+            ->where('jenis', 'wajib')
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->latest('updated_at') // Ambil data terbaru berdasarkan updated_at
+            ->first();
+
         // Kelompokkan berdasarkan bulan dan tahun
         $notifikasiPerBulan = $notifikasi->groupBy(function ($item) {
             return Carbon::parse($item->created_at)->format('Y-m');
@@ -39,6 +46,6 @@ class NotifikasiController extends Controller
 
         $simpanan = Simpanan::where('user_id', auth()->id())->latest()->first();
 
-        return view('user.notifikasi', compact('notifikasiPerBulan', 'simpanan'));
+        return view('user.notifikasi', compact('statusWajib', 'notifikasiPerBulan', 'simpanan'));
     }
 }

@@ -34,10 +34,17 @@ class DashboardController extends Controller
 
         // Hitung total pinjaman yang diambil user (hanya bulan ini)
         $totalPinjaman = Pinjaman::where('user_id', $user->id)
-            ->where('status', '!=', 'Ditolak')
+            ->whereIn('status', ['Aktif', 'Lunas'])
             ->whereMonth('tanggal_pengajuan', $currentMonth)
             ->whereYear('tanggal_pengajuan', $currentYear)
             ->sum('jumlah_pinjaman');
+
+        $statusWajib = Simpanan::where('user_id', auth()->id())
+            ->where('jenis', 'wajib')
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->latest('updated_at') // Ambil data terbaru berdasarkan updated_at
+            ->first();
 
         // Ambil jumlah notifikasi terbaru yang belum dibaca
         $jumlahNotifikasiBaru = Notifikasi::where('user_id', $user->id)
@@ -114,11 +121,6 @@ class DashboardController extends Controller
             )
             ->orderByDesc('tanggal')
             ->get();
-
-        // Ambil total pinjaman pengguna yang tidak ditolak
-        $totalPinjaman = Pinjaman::where('user_id', $userId)
-            ->whereNotIn('status', ['Ditolak'])
-            ->sum('jumlah_pinjaman');
 
         // Ambil pinjaman aktif
         $pinjamanAktif = Pinjaman::where('user_id', $userId)
@@ -209,6 +211,34 @@ class DashboardController extends Controller
                 ]);
             }
 
+            // 🔹 Notifikasi simpanan Ditolak
+            $simpananditolak = Simpanan::where('user_id', $userId)->where('status', 'Ditolak')->latest()->first();
+
+            if ($simpananditolak) {
+                Notifikasi::updateOrCreate([
+                    'user_id' => $userId,
+                    'message' => "Pengajuan simpanan dengan ID {$simpananditolak->id} telah ditolak."
+                ], [
+                    'type' => 'danger',
+                    'icon' => 'bi-x-circle',
+                    'expired_at' => $tanggalHariIni->addDay()
+                ]);
+            }
+
+            // 🔹 Notifikasi simpaanan setujui 
+            $simpanansetujui = Simpanan::where('user_id', $userId)->where('status', 'Berhasil')->latest()->first();
+
+            if ($simpanansetujui) {
+                Notifikasi::updateOrCreate([
+                    'user_id' => $userId,
+                    'message' => "Pengajuan simpanan dengan ID {$simpanansetujui->id} telah Disetujui."
+                ], [
+                    'type' => 'success',
+                    'icon' => 'bi-check-circle',
+                    'expired_at' => $tanggalHariIni->addDay()
+                ]);
+            }
+
             // 🔹 Notifikasi Pinjaman Lunas
             $pinjamanLunas = Pinjaman::where('user_id', $userId)->where('status', 'Lunas')->latest()->first();
 
@@ -275,6 +305,6 @@ class DashboardController extends Controller
         }
 
         // Kirim ke view
-        return view('user.dashboard', compact('totalSimpanan', 'totalPinjaman', 'riwayatTransaksi', 'riwayatTransaksis', 'jumlahNotifikasiBaru', 'simpanan'));
+        return view('user.dashboard', compact('statusWajib', 'totalSimpanan', 'totalPinjaman', 'riwayatTransaksi', 'riwayatTransaksis', 'jumlahNotifikasiBaru', 'simpanan'));
     }
 }
