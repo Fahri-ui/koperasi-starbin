@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+p<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -11,8 +11,6 @@
     <link rel="stylesheet" href="{{asset('admin-page/assets/css/main/app-dark.css')}}">
     <link rel="shortcut icon" href="{{asset('admin-page/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/x-icon">
     <link rel="shortcut icon" href="{{asset('admin-page/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/png">
-    <link rel="stylesheet" href="{{asset('admin-page/assets/css/profil-admin.css')}}">
-
 </head>
 
 <body>
@@ -235,48 +233,68 @@
             </div>
             @endif
 
-            <div class="container">
-                <h2 class="my-4">Kelola Link Sosial Media</h2>
+            <!-- Judul Halaman -->
+            <div class="page-heading d-flex align-items-center pb-3 border-bottom">
+                <i class="bi bi-link-45deg me-2 fs-3 text-primary" style="margin-top: -30px; padding-right: 30px;"></i>
+                <h2 class="mb-0 fw-bold">Kelola Link Sosial Media</h2>
+            </div>
 
-                <!-- Form Tambah/Edit Link -->
-                <div class="card">
-                    <div class="card-header">Tambah/Edit Link Sosial Media</div>
+            <!-- Form Tambah/Edit Link -->
+            <section class="mb-4">
+                <div class="card shadow" style="border: 1px solid #435ebe;">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0 text-white">
+                            <i class="bi bi-pencil-square"></i> Tambah/Edit Link Sosial Media
+                        </h5>
+                    </div>
                     <div class="card-body">
                         <form id="formSocialLink" method="POST" action="{{ route('admin.social-links.store') }}">
                             @csrf
                             <!-- Input hidden untuk handle edit -->
                             <input type="hidden" id="socialLinkId" name="id">
-
-                            <!-- Input hidden untuk ikon -->
                             <input type="hidden" id="icon" name="icon">
 
-                            <div class="mb-3">
-                                <label for="platform" class="form-label">Platform</label>
-                                <select id="platform" name="platform" class="form-select" required>
-                                    <option value="tiktok" data-icon="bi bi-tiktok">TikTok</option>
-                                    <option value="instagram" data-icon="bi bi-instagram">Instagram</option>
-                                    <option value="youtube" data-icon="bi bi-youtube">YouTube</option>
-                                    <option value="linkedin" data-icon="bi bi-linkedin">LinkedIn</option>
-                                </select>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="platform" class="form-label">Platform</label>
+                                    <select id="platform" name="platform" class="form-select" required>
+                                        <option value="" disabled selected>Pilih platform</option>
+                                        <option value="tiktok" data-icon="bi bi-tiktok">TikTok</option>
+                                        <option value="instagram" data-icon="bi bi-instagram">Instagram</option>
+                                        <option value="youtube" data-icon="bi bi-youtube">YouTube</option>
+                                        <option value="linkedin" data-icon="bi bi-linkedin">LinkedIn</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="url" class="form-label">URL</label>
+                                    <input type="url" id="url" name="url" class="form-control" placeholder="https://example.com" required>
+                                </div>
                             </div>
 
-                            <div id="icon-preview" name="id" class="my-3"></div>
+                            <div id="icon-preview" class="my-3"></div>
 
-                            <div class="mb-3">
-                                <label for="url" class="form-label">URL</label>
-                                <input type="url" id="url" name="url" class="form-control" placeholder="https://example.com" required>
+                            <div class="form-group text-center mt-4">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="bi bi-check-circle"></i> Simpan
+                                </button>
                             </div>
-
-                            <button type="submit" class="btn btn-primary">Simpan</button>
                         </form>
                     </div>
                 </div>
-                <div class="card">
+            </section>
+
+            <!-- Tabel Daftar Link Sosial Media -->
+            <section class="mb-4">
+                <div class="card shadow" style="border: 1px solid #435ebe;">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0 text-white">
+                            <i class="bi bi-list"></i> Daftar Link Sosial Media
+                        </h5>
+                    </div>
                     <div class="card-body">
-                        <h5>Daftar Link Sosial Media</h5>
-                        <div style="max-height: 450px;  overflow:auto; font-size:.9rem;">
-                            <table class="table table-striped">
-                                <thead>
+                        <div style="max-height: 450px; overflow:auto; font-size:.9rem;">
+                            <table class="table table-hover">
+                                <thead class="table-primary">
                                     <tr>
                                         <th>No</th>
                                         <th>Ikon</th>
@@ -287,23 +305,36 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($links as $link)
-                                    <tr data-id="{{ $link->id}}">
+                                    <tr data-id="{{ $link->id }}">
                                         <td>{{ $loop->iteration }}</td>
                                         <td><i class="{{ $link->icon }}"></i></td>
                                         <td>{{ ucfirst($link->platform) }}</td>
                                         <td><a href="{{ $link->url }}" target="_blank">{{ $link->url }}</a></td>
                                         <td>
-                                            <button class="btn btn-warning btn-sm" onclick="editLink({{ $link }})">Edit</button>
-                                            <button class="btn btn-danger btn-sm" onclick="deleteLink({{ $link->id }})">Hapus</button>
+                                            <button class="btn btn-warning btn-sm" onclick="editLink({{ $link }})">
+                                                <i class="bi bi-pencil-square"></i> Edit
+                                            </button>
+                                            <button class="btn btn-danger btn-sm" onclick="deleteLink({{ $link->id }})">
+                                                <i class="bi bi-trash"></i> Hapus
+                                            </button>
                                         </td>
                                     </tr>
                                     @endforeach
+                                    @if($links->isEmpty())
+                                    <tr>
+                                        <td colspan="5" class="text-center">
+                                            <span class="badge bg-warning">
+                                                <i class="bi bi-exclamation-circle"></i> Belum ada link sosial media
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    @endif
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
             <footer>
                 <div class="footer clearfix mb-0 text-muted">

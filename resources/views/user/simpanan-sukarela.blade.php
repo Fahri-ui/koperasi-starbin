@@ -301,7 +301,7 @@
             <div class="alert alert-warning shadow-sm" role="alert" style="border-radius: 10px;">
                 <!-- Header -->
                 <div class="d-flex align-items-center p-3" style="border-bottom: 2px solid #d1a900; color:black;">
-                    <i class="bi bi-hourglass-split me-3 fs-2" style="margin-top: -40px;"></i>
+                    <i class="bi bi-hourglnjass-split me-3 fs-2" style="margin-top: -40px;"></i>
                     <h5 class="mb-0 fw-bold " style="color:black;">Pengajuan Dalam Proses</h5>
                 </div>
 

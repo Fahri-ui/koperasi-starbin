@@ -237,122 +237,145 @@
                 <div class="container">
                     <h2>Kelola Pesan</h2>
 
-                    <!-- Form Pengiriman Pesan -->
-                    <div class="card">
-                        <div class="card-header">
-                            <h5>Kirim Pesan</h5>
+                    <section class="mb-4">
+                        <div class="card shadow" style="border: 1px solid #435ebe;">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0 text-white">
+                                    <i class="bi bi-envelope-paper" style="margin-top: -30px;"></i> Formulir Pengiriman Pesan
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <form action="{{ route('admin.sharemassage.store') }}" method="POST" style="margin-top: 20px;">
+                                    @csrf
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="recipient" class="form-label">Pilih Penerima</label>
+                                            <select name="user_id" id="recipient" class="form-select select2" required>
+                                                <option value="all" selected>Semua User (Global Message)</option>
+                                                @foreach(App\Models\User::where('role', 'user')->get() as $user)
+                                                <option value="{{ $user->id }}">{{ $user->fullname }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="message" class="form-label">Pesan</label>
+                                            <textarea name="message" id="message" class="form-control" rows="4" required></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group text-center mt-4">
+                                        <button type="submit" class="btn btn-success">
+                                            <i class="bi bi-send"></i> Kirim Pesan
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <form action="{{ route('admin.sharemassage.store') }}" method="POST">
-                                @csrf
-                                <div class="mb-3">
-                                    <label for="recipient" class="form-label">Pilih Penerima</label>
-                                    <select name="user_id" id="recipient" class="form-select select2">
-                                        <option value="all" selected>Semua User (Global Message)</option>
-                                        @foreach(App\Models\User::where('role', 'user')->get() as $user)
-                                        <option value="{{ $user->id }}">{{ $user->fullname }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="message" class="form-label">Pesan</label>
-                                    <textarea name="message" id="message" class="form-control" rows="4" required></textarea>
-                                </div>
-
-                                <button type="submit" class="btn btn-primary">Kirim Pesan</button>
-                            </form>
-                        </div>
-                    </div>
+                    </section>
 
                     <!-- Daftar Pesan -->
-                    <div class="card mt-4">
-                        <div class="card-header">
-                            <h5>Daftar Pesan</h5>
-                        </div>
-                        <div class="card-body">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Penerima</th>
-                                        <th>Pesan</th>
-                                        <th>Tanggal</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($notifikasi as $key => $item)
-                                    <tr>
-                                        <td>{{ $key + 1 }}</td>
-                                        <td>{{ $item->user_id == 0 ? 'Semua User' : ($item->user ? $item->user->fullname : 'User Tidak Ditemukan') }}</td>
-                                        <td>{{ $item->message }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($item->created_at)->format('d F Y') }}</td>
-                                        <td>
-                                            <form action="{{ route('admin.sharemassage.destroy', $item->id) }}" method="POST" class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="btn btn-danger btn-sm" onclick="return confirm('Hapus pesan ini?')">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                    @endforeach
+                    <section class="mb-4">
+                        <div class="card shadow" style="border: 1px solid #435ebe;">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0 text-white">
+                                    <i class="bi bi-envelope" style="margin-top: -30px;"></i> Daftar Pesan
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div style="max-height: 700px; overflow: auto; font-size: .8rem; text-align: left;">
+                                    <table class="table table-hover">
+                                        <thead class="table-primary">
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Penerima</th>
+                                                <th>Pesan</th>
+                                                <th>Tanggal</th>
+                                                <th>Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($notifikasi as $key => $item)
+                                            <tr>
+                                                <td>{{ $key + 1 }}</td>
+                                                <td>
+                                                    @if($item->user_id == 0)
+                                                    <span class="badge bg-info">Semua User</span>
+                                                    @else
+                                                    {{ $item->user ? $item->user->fullname : 'User Tidak Ditemukan' }}
+                                                    @endif
+                                                </td>
+                                                <td>{{ $item->message }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($item->created_at)->format('d F Y') }}</td>
+                                                <td>
+                                                    <form action="{{ route('admin.sharemassage.destroy', $item->id) }}" method="POST" class="d-inline">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus pesan ini?')">
+                                                            <i class="bi bi-trash"></i> Hapus
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                            @endforeach
 
-                                    @if($notifikasi->isEmpty())
-                                    <tr>
-                                        <td colspan="5" class="text-center text-muted">Tidak ada pesan.</td>
-                                    </tr>
-                                    @endif
-                                </tbody>
-                            </table>
+                                            @if($notifikasi->isEmpty())
+                                            <tr>
+                                                <td colspan="5" class="text-center">
+                                                    <span class="badge bg-warning">
+                                                        <i class="bi bi-exclamation-circle"></i> Tidak ada pesan.
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            @endif
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </section>
+
+                    <footer>
+                        <div class="footer clearfix mb-0 text-muted">
+                            <div class="float-start">
+                                <p>2025 &copy; STARBIN</p>
+                            </div>
+                            <div class="float-end" style="margin-right: 30px;">
+                                <p>Dibuat dengan
+                                    <span class="text-danger"><i class="bi bi-heart"></i></span>
+                                    oleh
+                                    <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
+                                    &
+                                    <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
+                                </p>
+                            </div>
+                        </div>
+                    </footer>
                 </div>
-
-                <footer>
-                    <div class="footer clearfix mb-0 text-muted">
-                        <div class="float-start">
-                            <p>2025 &copy; STARBIN</p>
-                        </div>
-                        <div class="float-end" style="margin-right: 30px;">
-                            <p>Dibuat dengan
-                                <span class="text-danger"><i class="bi bi-heart"></i></span>
-                                oleh
-                                <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
-                                &
-                                <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
-                            </p>
-                        </div>
-                    </div>
-                </footer>
             </div>
         </div>
-    </div>
-    <script src="{{asset('admin-page/assets/js/bootstrap.js')}}"></script>
-    <script src="{{asset('admin-page/assets/js/app.js')}}"></script>
-    <!-- jQuery (harus ada untuk Select2) -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="{{asset('admin-page/assets/js/bootstrap.js')}}"></script>
+        <script src="{{asset('admin-page/assets/js/app.js')}}"></script>
+        <!-- jQuery (harus ada untuk Select2) -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <!-- Select2 JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#recipient').select2({
-                placeholder: "Pilih User",
-                allowClear: true,
-                tags: true,
-                createTag: function(params) {
-                    return undefined; // Mencegah penambahan tag kustom
-                },
-                language: {
-                    noResults: function() {
-                        return "User tidak ditemukan.";
+        <!-- Select2 JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#recipient').select2({
+                    placeholder: "Pilih User",
+                    allowClear: true,
+                    tags: true,
+                    createTag: function(params) {
+                        return undefined; // Mencegah penambahan tag kustom
+                    },
+                    language: {
+                        noResults: function() {
+                            return "User tidak ditemukan.";
+                        }
                     }
-                }
+                });
             });
-        });
-    </script>
+        </script>
 
 
 </body>
