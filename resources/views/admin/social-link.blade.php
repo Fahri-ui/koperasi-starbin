@@ -13,6 +13,8 @@ p<html lang="en">
     <link rel="shortcut icon" href="{{asset('admin-page/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/png">
 </head>
 
+
+
 <body>
     <div id="app">
         <div id="sidebar" class="active">
@@ -234,9 +236,9 @@ p<html lang="en">
             @endif
 
             <!-- Judul Halaman -->
-            <div class="page-heading d-flex align-items-center pb-3 border-bottom">
+            <div class="page-heading d-flex align-items-center pb-3 border-bottom judul">
                 <i class="bi bi-link-45deg me-2 fs-3 text-primary" style="margin-top: -30px; padding-right: 30px;"></i>
-                <h2 class="mb-0 fw-bold">Kelola Link Sosial Media</h2>
+                <h5 class="mb-0 fw-bold">Kelola Link Sosial Media</h5>
             </div>
 
             <!-- Form Tambah/Edit Link -->
