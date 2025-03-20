@@ -29,6 +29,23 @@
 	<link rel="stylesheet" type="text/css" href="{{asset('login-template/css/main.css')}}">
 <!--===============================================================================================-->
 </head>
+<style>
+	.poto-profil {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    margin-bottom: 30px;
+}
+
+.poto-profil img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+</style>
 <body>
 	
 	<div class="limiter">
@@ -36,9 +53,9 @@
 			<div class="wrap-login100">
 				<form class="login100-form validate-form" method="POST" action="{{ route('login') }}">
                     @csrf
-					<span class="login100-form-logo">
-						<i class="zmdi zmdi-landscape"></i>
-					</span>
+					<div class="poto-profil">
+						<img src="{{asset ('login-template/images/Logo Koperasi STARBIN.png')}}"></img>
+					</div>
 
 					<span class="login100-form-title p-b-34 p-t-27">
 						Login
