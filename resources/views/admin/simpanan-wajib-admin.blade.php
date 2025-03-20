@@ -88,6 +88,9 @@
                                 <li class="submenu-item ">
                                     <a href="{{route('simpanansukarelaadmin')}}">Simpanan Sukarela</a>
                                 </li>
+                                <li class="submenu-item ">
+                                    <a href="{{route('simpanananggota')}}">Simpanan Anggota</a>
+                                </li>
 
                             </ul>
                         </li>
@@ -145,14 +148,6 @@
                                 @endif
                             </a>
                         </li>
-
-                        <li
-                            class="sidebar-item  ">
-                            <a href="{{route('statistikkeuangan')}}" class='sidebar-link'>
-                                <i class="bi bi-bar-chart-line-fill"></i>
-                                <span>Statistik Keuangan</span>
-                            </a>
-                        </li>
                         <li class="sidebar-item">
                             <a href="{{ route('admin.sharemassage') }}" class="sidebar-link">
                                 <i class="bi bi-send"></i>
@@ -169,15 +164,6 @@
                                     <span class="visually-hidden">notifikasi baru</span>
                                 </span>
                                 @endif
-                            </a>
-                        </li>
-
-
-                        <li
-                            class="sidebar-item">
-                            <a href="{{route('laporan')}}" class='sidebar-link'>
-                                <i class="bi bi-file-earmark-bar-graph-fill"></i>
-                                <span>Laporan</span>
                             </a>
                         </li>
 
@@ -199,7 +185,7 @@
                             <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                                 @csrf
                                 <button type="submit" class="btn btn-link sidebar-link" style="padding: 0; color: inherit; text-decoration: none;">
-                                    <i class="bi bi-x-octagon-fill"></i>
+                                    <i class="bi bi-box-arrow-right"></i>
                                     <span>Keluar</span>
                                 </button>
                             </form>
@@ -241,7 +227,6 @@
                     </h3>
                     <hr style="border-top: 2px solid black; margin-bottom: 30px;">
 
-                    <!-- Filter Pencarian -->
                     <section class="mb-4">
                         <div class="card shadow" style="border: 1px solid #435ebe;">
                             <div class="card-header bg-primary text-white">
@@ -250,15 +235,29 @@
                                 </h5>
                             </div>
                             <div class="card-body">
-                                <!-- Pencarian -->
-                                <div class="input-group mb-3">
-                                    <input type="text" id="search-simpanan" class="form-control" placeholder="Cari anggota berdasarkan nama atau ID..." onkeyup="searchSimpanan()" style="box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);">
-                                    <button class="btn btn-danger" onclick="resetSearch()">
-                                        <i class="bi bi-x-circle"></i> Bersihkan
-                                    </button>
+
+                                <!-- Pencarian & Filter -->
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <input type="text" id="search-simpanan-wajib" class="form-control"
+                                                placeholder="Cari ID, Nama, atau Status..." onkeyup="searchSimpananWajib()"
+                                                style="box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);">
+                                            <button class="btn btn-danger" onclick="resetSearchSimpananWajib()">
+                                                <i class="bi bi-x-circle"></i> Bersihkan
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <select id="filter-status" class="form-select" onchange="searchSimpananWajib()">
+                                            <option value="">Semua Status</option>
+                                            <option value="aktif">Aktif</option>
+                                            <option value="nonaktif">Nonaktif</option>
+                                        </select>
+                                    </div>
                                 </div>
 
-                                <!-- Tabel Simpanan -->
+                                <!-- Tabel Simpanan Wajib -->
                                 <div style="max-height: 450px; overflow:auto; font-size:.9rem;">
                                     <table class="table table-striped">
                                         <thead class="table-dark">
@@ -271,13 +270,17 @@
                                                 <th>Status</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="tabel-simpanan">
-                                            @foreach($simpananWajib as $index => $simpanan)
+                                        <tbody id="tabel-simpanan-wajib">
+                                            @forelse($simpananWajib as $index => $simpanan)
                                             <tr>
-                                                <td>{{$index + 1}}</td>
+                                                <td>{{ $index + 1 }}</td>
                                                 <td>{{ $simpanan->id }}</td>
                                                 <td>{{ $simpanan->user->fullname ?? 'Tidak Diketahui' }}</td>
-                                                <td>Rp {{ number_format($simpanan->jumlah, 0, ',', '.') }}</td>
+                                                <td>
+                                                    <span class="badge bg-info">
+                                                        <i class="bi bi-cash-stack"></i> Rp {{ number_format($simpanan->jumlah, 0, ',', '.') }}
+                                                    </span>
+                                                </td>
                                                 <td>{{ \Carbon\Carbon::parse($simpanan->tanggal_transaksi)->format('Y-m-d') }}</td>
                                                 <td>
                                                     <span class="badge bg-{{ $simpanan->status === 'aktif' ? 'success' : 'secondary' }}">
@@ -285,13 +288,21 @@
                                                     </span>
                                                 </td>
                                             </tr>
-                                            @endforeach
+                                            @empty
+                                            <tr>
+                                                <td colspan="7" class="text-center">
+                                                    <span class="badge bg-warning">
+                                                        <i class="bi bi-exclamation-circle"></i> Tidak ada data simpanan.
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            @endforelse
                                         </tbody>
                                     </table>
                                 </div>
 
                                 <!-- Total Simpanan -->
-                                <div class="card mt-3" style="background: #f8f9fa; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);">
+                                <div class="card mt-3" style="box-shadow: 0 0px 7px 2px rgba(0, 0, 0, 0.1);">
                                     <div class="card-body text-center">
                                         <h4>Total Simpanan Wajib</h4>
                                         <h3 class="text-primary">
@@ -299,6 +310,7 @@
                                         </h3>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </section>
@@ -343,6 +355,28 @@
                     });
                 });
             });
+
+            function searchSimpananWajib() {
+                let input = document.getElementById("search-simpanan-wajib").value.toLowerCase();
+                let filterStatus = document.getElementById("filter-status").value.toLowerCase();
+                let rows = document.querySelectorAll("#tabel-simpanan-wajib tr");
+
+                rows.forEach(row => {
+                    let rowText = row.innerText.toLowerCase();
+                    let status = row.cells[5].innerText.toLowerCase();
+
+                    let matchSearch = rowText.includes(input);
+                    let matchFilter = filterStatus === "" || status.includes(filterStatus);
+
+                    row.style.display = matchSearch && matchFilter ? "" : "none";
+                });
+            }
+
+            function resetSearchSimpananWajib() {
+                document.getElementById("search-simpanan-wajib").value = "";
+                document.getElementById("filter-status").value = "";
+                searchSimpananWajib();
+            }
         </script>
     </div>
 </body>

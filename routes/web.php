@@ -27,6 +27,7 @@ use App\Http\Controllers\SimpananController;
 use App\Http\Controllers\SimpananPokokAdminController;
 use App\Http\Controllers\SimpananSukarelaAdminController;
 use App\Http\Controllers\SimpananWajibAdminController;
+use App\Http\Controllers\SimpananAnggotaAdminController;
 use App\Http\Controllers\SocialMediaController;
 use App\Http\Controllers\StatistikKeuanganController;
 use App\Http\Controllers\UserControlController;
@@ -81,8 +82,11 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/Data-Anggota/store', [DataAnggotaController::class, 'store'])->name('users.store');
         // Simpanan Wajib
         Route::get('/Simpanan-Wajib', [SimpananWajibAdminController::class, 'simpananwajibadmin'])->name('simpananwajibadmin');
+        Route::delete('/simpanan-wajib/{id}', [SimpananWajibAdminController::class, 'destroy'])->name('simpanan-wajib.destroy');
         // Simpanan Sukarela
         Route::get('/Simpanan-Sukarela', [SimpananSukarelaAdminController::class, 'simpanansukarelaadmin'])->name('simpanansukarelaadmin');
+        // Simpanan Anggota
+        Route::get('/Simpanan-Anggota', [SimpananAnggotaAdminController::class, 'simpanananggota'])->name('simpanananggota');
         // pinjaman
         Route::get('/Pinjaman', [PinjmanAdminController::class, 'pinjamanadmin'])->name('pinjamanadmin');
         // Angsuran

@@ -89,6 +89,9 @@
                                 <li class="submenu-item ">
                                     <a href="{{route('simpanansukarelaadmin')}}">Simpanan Sukarela</a>
                                 </li>
+                                <li class="submenu-item ">
+                                    <a href="{{route('simpanananggota')}}">Simpanan Anggota</a>
+                                </li>
 
                             </ul>
                         </li>
@@ -147,13 +150,6 @@
                             </a>
                         </li>
 
-                        <li
-                            class="sidebar-item  ">
-                            <a href="{{route('statistikkeuangan')}}" class='sidebar-link'>
-                                <i class="bi bi-bar-chart-line-fill"></i>
-                                <span>Statistik Keuangan</span>
-                            </a>
-                        </li>
                         <li class="sidebar-item">
                             <a href="{{ route('admin.sharemassage') }}" class="sidebar-link">
                                 <i class="bi bi-send"></i>
@@ -170,15 +166,6 @@
                                     <span class="visually-hidden">notifikasi baru</span>
                                 </span>
                                 @endif
-                            </a>
-                        </li>
-
-
-                        <li
-                            class="sidebar-item  ">
-                            <a href="{{route('laporan')}}" class='sidebar-link'>
-                                <i class="bi bi-file-earmark-bar-graph-fill"></i>
-                                <span>Laporan</span>
                             </a>
                         </li>
 
@@ -200,7 +187,7 @@
                             <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                                 @csrf
                                 <button type="submit" class="btn btn-link sidebar-link" style="padding: 0; color: inherit; text-decoration: none;">
-                                    <i class="bi bi-x-octagon-fill"></i>
+                                    <i class="bi bi-box-arrow-right"></i>
                                     <span>Keluar</span>
                                 </button>
                             </form>
@@ -305,11 +292,26 @@
                             </h5>
                         </div>
                         <div class="card-body">
-                            <div class="filter-denda mb-4">
-                                <input type="text" id="search-denda" class="form-control" placeholder="Cari berdasarkan Nama atau ID Pinjaman">
+                            <!-- Input Pencarian -->
+                            <div style="margin-bottom: 20px; position: relative;">
+                                <div class="input-group">
+                                    <input
+                                        type="text"
+                                        id="search-denda"
+                                        class="form-control"
+                                        placeholder="Cari berdasarkan Nama, ID Pinjaman, Tanggal, Jumlah, dll..."
+                                        onkeyup="searchDenda()"
+                                        style="box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);">
+                                    <button
+                                        class="btn btn-danger"
+                                        onclick="resetSearchDenda()"
+                                        style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
+                                        <i class="bi bi-x-circle"></i> Bersihkan
+                                    </button>
+                                </div>
                             </div>
 
-                            <div style="max-height: 450px; overflow: auto; font-size: .9rem; text-align: left;">
+                            <div style="max-height: 450px; overflow:auto; font-size:.9rem; text-align:left;">
                                 <table class="table table-hover">
                                     <thead class="table-primary">
                                         <tr>
@@ -409,6 +411,26 @@
                 });
             });
         });
+
+        function searchDenda() {
+            let input = document.getElementById("search-denda").value.toLowerCase();
+            let rows = document.querySelectorAll("#denda-table-body tr");
+
+            rows.forEach(row => {
+                let rowText = row.innerText.toLowerCase(); // Menggabungkan semua teks dalam satu baris
+
+                if (rowText.includes(input)) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+
+        function resetSearchDenda() {
+            document.getElementById("search-denda").value = "";
+            searchDenda();
+        }
     </script>
 </body>
 

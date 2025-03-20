@@ -88,6 +88,9 @@
                                 <li class="submenu-item ">
                                     <a href="{{route('simpanansukarelaadmin')}}">Simpanan Sukarela</a>
                                 </li>
+                                <li class="submenu-item ">
+                                    <a href="{{route('simpanananggota')}}">Simpanan Anggota</a>
+                                </li>
 
                             </ul>
                         </li>
@@ -146,13 +149,6 @@
                             </a>
                         </li>
 
-                        <li
-                            class="sidebar-item  ">
-                            <a href="{{route('statistikkeuangan')}}" class='sidebar-link'>
-                                <i class="bi bi-bar-chart-line-fill"></i>
-                                <span>Statistik Keuangan</span>
-                            </a>
-                        </li>
                         <li class="sidebar-item">
                             <a href="{{ route('admin.sharemassage') }}" class="sidebar-link">
                                 <i class="bi bi-send"></i>
@@ -169,15 +165,6 @@
                                     <span class="visually-hidden">notifikasi baru</span>
                                 </span>
                                 @endif
-                            </a>
-                        </li>
-
-
-                        <li
-                            class="sidebar-item  active">
-                            <a href="{{route('laporan')}}" class='sidebar-link'>
-                                <i class="bi bi-file-earmark-bar-graph-fill"></i>
-                                <span>Laporan</span>
                             </a>
                         </li>
 
@@ -199,7 +186,7 @@
                             <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                                 @csrf
                                 <button type="submit" class="btn btn-link sidebar-link" style="padding: 0; color: inherit; text-decoration: none;">
-                                    <i class="bi bi-x-octagon-fill"></i>
+                                    <i class="bi bi-box-arrow-right"></i>
                                     <span>Keluar</span>
                                 </button>
                             </form>
@@ -263,42 +250,78 @@
 
 
                 <!-- Filter Pencarian -->
-                <div class="filter-pinjaman mb-4">
-                    <input type="text" id="search-pinjaman" class="form-control" placeholder="Cari data terkait berdasarkan Jenis, Nama, Jumlah, Tanggal, Status">
-                </div>
-
-                <!-- Detail Laporan -->
-                <div class="card">
-                    <div class="card-body">
-                        <h5>Detail Laporan</h5>
-                        <div style="max-height: 450px;  overflow:auto; font-size:.9rem;">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Jenis</th>
-                                        <th>Nama</th>
-                                        <th>Jumlah</th>
-                                        <th>Tanggal</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="laporan-table-body">
-                                    @foreach($laporan as $index => $data)
-                                    <tr>
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>{{ $data->jenis }}</td>
-                                        <td>{{ $data->nama }}</td>
-                                        <td>Rp {{ number_format($data->jumlah, 0, ',', '.') }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($data->tanggal)->format('d M Y') }}</td>
-                                        <td>{{ $data->status }}</td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                <section class="mb-4">
+                    <div class="card shadow" style="border: 1px solid #435ebe;">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0 text-white">
+                                <i class="bi bi-file-earmark-text"></i> Detail Laporan
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div style="margin-bottom: 20px; position: relative;">
+                                <div class="input-group">
+                                    <input
+                                        type="text"
+                                        id="search-laporan"
+                                        class="form-control"
+                                        placeholder="Cari laporan berdasarkan Nama atau Jenis..."
+                                        onkeyup="searchLaporan()"
+                                        style="box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);">
+                                    <button
+                                        class="btn btn-danger"
+                                        onclick="resetSearch()"
+                                        style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
+                                        <i class="bi bi-x-circle"></i> Bersihkan
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- Tabel Detail Laporan -->
+                            <div style="max-height: 500px; overflow: auto; font-size: .9rem;">
+                                <table class="table table-hover">
+                                    <thead class="table-primary">
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Jenis</th>
+                                            <th>Nama</th>
+                                            <th>Jumlah</th>
+                                            <th>Tanggal</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="laporan-table-body">
+                                        @forelse($laporan as $index => $data)
+                                        <tr>
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ ucfirst($data->jenis) }}</td>
+                                            <td>{{ $data->nama }}</td>
+                                            <td>Rp {{ number_format($data->jumlah, 0, ',', '.') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($data->tanggal)->format('d M Y') }}</td>
+                                            <td>
+                                                @php
+                                                $statusColors = [
+                                                'Belum Diproses' => 'info',
+                                                'Diproses' => 'primary',
+                                                'Selesai' => 'success',
+                                                'Dibatalkan' => 'danger'
+                                                ];
+                                                $badgeColor = $statusColors[$data->status] ?? 'secondary';
+                                                @endphp
+                                                <span class="badge bg-{{ $badgeColor }}">{{ ucfirst($data->status) }}</span>
+                                            </td>
+                                        </tr>
+                                        @empty
+                                        <tr>
+                                            <td colspan="6" class="text-center">
+                                                <i class="bi bi-exclamation-circle"></i> Tidak ada laporan tersedia.
+                                            </td>
+                                        </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </section>
             </div>
 
             <footer>
@@ -352,6 +375,28 @@
                 row.style.display = matchFound ? '' : 'none';
             });
         });
+
+        function searchLaporan() {
+            let input = document.getElementById("search-laporan").value.toLowerCase();
+            let table = document.getElementById("laporan-table-body");
+            let rows = table.getElementsByTagName("tr");
+
+            for (let i = 0; i < rows.length; i++) {
+                let jenis = rows[i].getElementsByTagName("td")[1]?.textContent.toLowerCase() || "";
+                let nama = rows[i].getElementsByTagName("td")[2]?.textContent.toLowerCase() || "";
+
+                if (jenis.includes(input) || nama.includes(input)) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+        }
+
+        function resetSearch() {
+            document.getElementById("search-laporan").value = "";
+            searchLaporan();
+        }
     </script>
 
 </body>

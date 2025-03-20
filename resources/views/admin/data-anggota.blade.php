@@ -90,7 +90,9 @@
                                 <li class="submenu-item ">
                                     <a href="{{route('simpanansukarelaadmin')}}">Simpanan Sukarela</a>
                                 </li>
-
+                                <li class="submenu-item ">
+                                    <a href="{{route('simpanananggota')}}">Simpanan Anggota</a>
+                                </li>
                             </ul>
                         </li>
 
@@ -148,13 +150,6 @@
                             </a>
                         </li>
 
-                        <li
-                            class="sidebar-item  ">
-                            <a href="{{route('statistikkeuangan')}}" class='sidebar-link'>
-                                <i class="bi bi-bar-chart-line-fill"></i>
-                                <span>Statistik Keuangan</span>
-                            </a>
-                        </li>
                         <li class="sidebar-item">
                             <a href="{{ route('admin.sharemassage') }}" class="sidebar-link">
                                 <i class="bi bi-send"></i>
@@ -171,15 +166,6 @@
                                     <span class="visually-hidden">notifikasi baru</span>
                                 </span>
                                 @endif
-                            </a>
-                        </li>
-
-
-                        <li
-                            class="sidebar-item  ">
-                            <a href="{{route('laporan')}}" class='sidebar-link'>
-                                <i class="bi bi-file-earmark-bar-graph-fill"></i>
-                                <span>Laporan</span>
                             </a>
                         </li>
 
@@ -201,7 +187,7 @@
                             <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                                 @csrf
                                 <button type="submit" class="btn btn-link sidebar-link" style="padding: 0; color: inherit; text-decoration: none;">
-                                    <i class="bi bi-x-octagon-fill"></i>
+                                    <i class="bi bi-box-arrow-right"></i>
                                     <span>Keluar</span>
                                 </button>
                             </form>
@@ -299,7 +285,6 @@
                 </div>
                 <!-- end Form Tambah Anggota -->
 
-                <!-- Tabel Data Anggota -->
                 <!-- Data Anggota -->
                 <section class="mb-4">
                     <div class="card shadow" style="border: 1px solid #435ebe;">
@@ -389,6 +374,37 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                            </div>
+                            <div class="d-flex flex-wrap justify-content-between gap-3 mt-3">
+                                <!-- Card Jumlah Admin -->
+                                <div class="card flex-fill" style="box-shadow: 0 0px 7px 2px rgba(0, 0, 0, 0.1); min-width: 250px;">
+                                    <div class="card-body text-center">
+                                        <h4>Jumlah Admin</h4>
+                                        <h3 class="text-primary">
+                                            <i class="bi bi-person-badge"></i> {{ $jumlahAdmin }}
+                                        </h3>
+                                    </div>
+                                </div>
+
+                                <!-- Card Jumlah User -->
+                                <div class="card flex-fill" style="box-shadow: 0 0px 7px 2px rgba(0, 0, 0, 0.1); min-width: 250px;">
+                                    <div class="card-body text-center">
+                                        <h4>Jumlah User</h4>
+                                        <h3 class="text-success">
+                                            <i class="bi bi-person"></i> {{ $jumlahUser }}
+                                        </h3>
+                                    </div>
+                                </div>
+
+                                <!-- Card Total Pengguna -->
+                                <div class="card flex-fill" style="box-shadow: 0 0px 7px 2px rgba(0, 0, 0, 0.1); min-width: 250px;">
+                                    <div class="card-body text-center">
+                                        <h4>Total Pengguna</h4>
+                                        <h3 class="text-warning">
+                                            <i class="bi bi-people"></i> {{ $totalUsers }}
+                                        </h3>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

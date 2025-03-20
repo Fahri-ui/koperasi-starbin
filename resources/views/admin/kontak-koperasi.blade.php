@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="{{asset('admin-page/assets/css/main/app-dark.css')}}">
     <link rel="shortcut icon" href="{{asset('admin-page/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/x-icon">
     <link rel="shortcut icon" href="{{asset('admin-page/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/png">
-    <link rel="stylesheet" href="{{asset('admin-page/assets/css/profil-admin.css')}}">
 
 </head>
 
@@ -142,6 +141,9 @@
                                 <li class="submenu-item ">
                                     <a href="{{route('simpanansukarelaadmin')}}">Simpanan Sukarela</a>
                                 </li>
+                                <li class="submenu-item ">
+                                    <a href="{{route('simpanananggota')}}">Simpanan Anggota</a>
+                                </li>
 
                             </ul>
                         </li>
@@ -195,13 +197,6 @@
                             </a>
                         </li>
 
-                        <li
-                            class="sidebar-item  ">
-                            <a href="{{route('statistikkeuangan')}}" class='sidebar-link'>
-                                <i class="bi bi-bar-chart-line-fill"></i>
-                                <span>Statistik Keuangan</span>
-                            </a>
-                        </li>
                         <li class="sidebar-item">
                             <a href="{{ route('admin.sharemassage') }}" class="sidebar-link">
                                 <i class="bi bi-send"></i>
@@ -218,15 +213,6 @@
                                     <span class="visually-hidden">notifikasi baru</span>
                                 </span>
                                 @endif
-                            </a>
-                        </li>
-
-
-                        <li
-                            class="sidebar-item  ">
-                            <a href="{{route('laporan')}}" class='sidebar-link'>
-                                <i class="bi bi-file-earmark-bar-graph-fill"></i>
-                                <span>Laporan</span>
                             </a>
                         </li>
 
@@ -248,7 +234,7 @@
                             <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                                 @csrf
                                 <button type="submit" class="btn btn-link sidebar-link" style="padding: 0; color: inherit; text-decoration: none;">
-                                    <i class="bi bi-x-octagon-fill"></i>
+                                    <i class="bi bi-box-arrow-right"></i>
                                     <span>Keluar</span>
                                 </button>
                             </form>
@@ -282,49 +268,83 @@
                 </div>
             </div>
             @endif
-            <div class="container">
-                <h3 class="my-4">Kontak Koperasi</h3>
+            <div class="page-heading d-flex align-items-center pb-3 border-bottom">
+                <i class="bi bi-telephone me-2 fs-3 text-primary" style="margin-top: -30px; padding-right: 30px;"></i>
+                <h2 class="mb-0 fw-bold">Kontak Koperasi</h2>
+            </div>
 
-                <div class="container">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Kelola Kontak Koperasi</h4>
-                        </div>
-                        <div class="card-body">
-                            <form id="kontakForm" method="POST" action="{{ route('kontakkoperasi.store') }}">
-                                @csrf
-                                <input type="hidden" id="kontakId" name="id">
-                                <input type="hidden" id="icon" name="icon">
+            <section class="mb-4">
+                <div class="card shadow" style="border: 1px solid #435ebe;">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0 text-white">
+                            <i class="bi bi-gear"></i> Kelola Kontak Koperasi
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="kontakForm" method="POST" action="{{ route('kontakkoperasi.store') }}">
+                            @csrf
+                            <input type="hidden" id="kontakId" name="id">
+                            <input type="hidden" id="icon" name="icon">
 
-                                <h5>Tambah / Edit Kontak</h5>
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <label>Kategori</label>
-                                        <select name="key" id="key" class="form-control" required>
-                                            <option value="alamat" data-icon="bi bi-geo-alt">📍 Alamat</option>
-                                            <option value="telepon" data-icon="bi bi-telephone">📞 Telepon</option>
-                                            <option value="email" data-icon="bi bi-envelope">✉️ Email</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label>Judul</label>
-                                        <input type="text" name="title" id="title" class="form-control" required>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label>URL</label>
-                                        <input type="text" name="value" id="value" class="form-control" required>
-                                    </div>
-                                    <div class="col-md-3 d-flex align-items-end">
-                                        <button type="submit" class="btn btn-success">Simpan</button>
-                                    </div>
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label for="key" class="form-label">Kategori</label>
+                                    <select name="key" id="key" class="form-select" required>
+                                        <option value="" disabled selected>Pilih kategori</option>
+                                        <option value="alamat" data-icon="bi bi-geo-alt">📍 Alamat</option>
+                                        <option value="telepon" data-icon="bi bi-telephone">📞 Telepon</option>
+                                        <option value="email" data-icon="bi bi-envelope">✉️ Email</option>
+                                    </select>
                                 </div>
-                            </form>
+                                <div class="col-md-4 mb-3">
+                                    <label for="title" class="form-label">Judul</label>
+                                    <input type="text" name="title" id="title" class="form-control" required>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="value" class="form-label">URL / Nomor</label>
+                                    <input type="text" name="value" id="value" class="form-control" required>
+                                </div>
+                            </div>
 
-                            <h5 class="mt-4">Daftar Kontak</h5>
-                            <table class="table table-bordered">
+                            <div class="text-center mt-3">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="bi bi-check-circle"></i> Simpan
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tabel Daftar Kontak Koperasi -->
+            <section class="mb-4">
+                <div class="card shadow" style="border: 1px solid #435ebe;">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0 text-white">
+                            <i class="bi bi-list"></i> Daftar Kontak Koperasi
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Input Pencarian -->
+                        <div style="margin-bottom: 20px; position: relative;">
+                            <div class="input-group">
+                                <input type="text" id="search-kontak" class="form-control"
+                                    placeholder="Cari kontak berdasarkan kategori, judul, atau URL..."
+                                    onkeyup="searchKontak()"
+                                    style="box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);">
+                                <button class="btn btn-danger" onclick="resetSearchKontak()"
+                                    style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
+                                    <i class="bi bi-x-circle"></i> Bersihkan
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Tabel -->
+                        <div style="max-height: 500px; overflow:auto; font-size:.9rem;">
+                            <table class="table table-hover">
                                 <thead class="table-primary">
                                     <tr>
-                                        <th>#</th>
+                                        <th>No</th>
                                         <th>Ikon</th>
                                         <th>Kategori</th>
                                         <th>Judul</th>
@@ -332,35 +352,47 @@
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="data-kontak">
                                     @foreach ($kontak as $item)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td><i class="{{ $item->icon }}"></i></td>
-                                        <td>{{ $item->key }}</td>
+                                        <td>{{ ucfirst($item->key) }}</td>
                                         <td>{{ $item->title }}</td>
-                                        <td>{{ $item->value }}</td>
+                                        <td><a href="{{ $item->value }}" target="_blank">{{ $item->value }}</a></td>
                                         <td>
                                             <button type="button" class="btn btn-warning btn-sm"
                                                 onclick="editKontak({{ $item->id }}, '{{ $item->key }}', '{{ $item->title }}', '{{ $item->value }}')">
-                                                Edit
+                                                <i class="bi bi-pencil-square"></i> Edit
                                             </button>
 
-                                            <form action="{{ route('kontakkoperasi.destroy') }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus kontak ini?')">
+                                            <form action="{{ route('kontakkoperasi.destroy') }}" method="POST" class="d-inline"
+                                                onsubmit="return confirm('Yakin ingin menghapus kontak ini?')">
                                                 @csrf
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <input type="hidden" name="id" value="{{ $item->id }}">
-                                                <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    <i class="bi bi-trash"></i> Hapus
+                                                </button>
                                             </form>
                                         </td>
                                     </tr>
                                     @endforeach
+                                    @if($kontak->isEmpty())
+                                    <tr>
+                                        <td colspan="6" class="text-center">
+                                            <span class="badge bg-warning">
+                                                <i class="bi bi-exclamation-circle"></i> Belum ada kontak koperasi
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    @endif
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
             <footer>
                 <div class="footer clearfix mb-0 text-muted">
@@ -408,6 +440,28 @@
                 const iconClass = selectedOption.getAttribute('data-icon');
                 document.getElementById('icon').value = iconClass;
             }
+        }
+
+        function searchKontak() {
+            let input = document.getElementById("search-kontak").value.toLowerCase();
+            let rows = document.querySelectorAll("#data-kontak tr");
+
+            rows.forEach(row => {
+                let kategori = row.cells[2].innerText.toLowerCase();
+                let judul = row.cells[3].innerText.toLowerCase();
+                let url = row.cells[4].innerText.toLowerCase();
+
+                if (kategori.includes(input) || judul.includes(input) || url.includes(input)) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+
+        function resetSearchKontak() {
+            document.getElementById("search-kontak").value = "";
+            searchKontak();
         }
     </script>
 </body>

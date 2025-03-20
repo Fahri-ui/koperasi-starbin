@@ -88,6 +88,9 @@
                                 <li class="submenu-item ">
                                     <a href="{{route('simpanansukarelaadmin')}}">Simpanan Sukarela</a>
                                 </li>
+                                <li class="submenu-item ">
+                                    <a href="{{route('simpanananggota')}}">Simpanan Anggota</a>
+                                </li>
 
                             </ul>
                         </li>
@@ -146,13 +149,6 @@
                             </a>
                         </li>
 
-                        <li
-                            class="sidebar-item  ">
-                            <a href="{{route('statistikkeuangan')}}" class='sidebar-link'>
-                                <i class="bi bi-bar-chart-line-fill"></i>
-                                <span>Statistik Keuangan</span>
-                            </a>
-                        </li>
                         <li class="sidebar-item">
                             <a href="{{ route('admin.sharemassage') }}" class="sidebar-link">
                                 <i class="bi bi-send"></i>
@@ -169,15 +165,6 @@
                                     <span class="visually-hidden">notifikasi baru</span>
                                 </span>
                                 @endif
-                            </a>
-                        </li>
-
-
-                        <li
-                            class="sidebar-item">
-                            <a href="{{route('laporan')}}" class='sidebar-link'>
-                                <i class="bi bi-file-earmark-bar-graph-fill"></i>
-                                <span>Laporan</span>
                             </a>
                         </li>
 
@@ -199,7 +186,7 @@
                             <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                                 @csrf
                                 <button type="submit" class="btn btn-link sidebar-link" style="padding: 0; color: inherit; text-decoration: none;">
-                                    <i class="bi bi-x-octagon-fill"></i>
+                                    <i class="bi bi-box-arrow-right"></i>
                                     <span>Keluar</span>
                                 </button>
                             </form>
@@ -247,9 +234,26 @@
                         </h5>
                     </div>
                     <div class="card-body">
-                        <!-- Pencarian -->
-                        <div class="input-group mb-3">
-                            <input type="text" id="search-simpanan-sukarela" class="form-control" placeholder="Cari anggota berdasarkan nama atau ID..." onkeyup="searchSimpananSukarela()" style="box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);">
+
+                        <!-- Pencarian & Filter -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <input type="text" id="search-simpanan-sukarela" class="form-control"
+                                        placeholder="Cari berdasarkan ID, Nama, atau Jenis Transaksi..." onkeyup="searchSimpananSukarela()"
+                                        style="box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);">
+                                    <button class="btn btn-danger" onclick="resetSearchSimpananSukarela()">
+                                        <i class="bi bi-x-circle"></i> Bersihkan
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <select id="filter-jenis" class="form-select" onchange="searchSimpananSukarela()">
+                                    <option value="">Semua Transaksi</option>
+                                    <option value="penyetoran">penyetoran</option>
+                                    <option value="penarikan">Penarikan</option>
+                                </select>
+                            </div>
                         </div>
 
                         <!-- Tabel Simpanan Sukarela -->
@@ -266,22 +270,38 @@
                                     </tr>
                                 </thead>
                                 <tbody id="tabel-simpanan-sukarela">
-                                    @foreach($simpananSukarela as $index => $simpanan)
+                                    @forelse($simpananSukarela as $index => $simpanan)
                                     <tr>
-                                        <td>{{$index + 1}}</td>
+                                        <td>{{ $index + 1 }}</td>
                                         <td>{{ $simpanan->id }}</td>
                                         <td>{{ $simpanan->user->fullname ?? 'Tidak Diketahui' }}</td>
-                                        <td>Rp {{ number_format($simpanan->jumlah, 0, ',', '.') }}</td>
+                                        <td>
+                                            <span class="badge bg-info">
+                                                <i class="bi bi-cash-stack"></i> Rp {{ number_format($simpanan->jumlah, 0, ',', '.') }}
+                                            </span>
+                                        </td>
                                         <td>{{ \Carbon\Carbon::parse($simpanan->tanggal_transaksi)->format('Y-m-d') }}</td>
-                                        <td>{{ ucfirst($simpanan->jenis_transaksi) }}</td>
+                                        <td>
+                                            <span class="badge bg-{{ $simpanan->jenis_transaksi === 'penarikan' ? 'danger' : 'success' }}">
+                                                {{ ucfirst($simpanan->jenis_transaksi) }}
+                                            </span>
+                                        </td>
                                     </tr>
-                                    @endforeach
+                                    @empty
+                                    <tr>
+                                        <td colspan="6" class="text-center">
+                                            <span class="badge bg-warning">
+                                                <i class="bi bi-exclamation-circle"></i> Tidak ada data simpanan.
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
 
                         <!-- Total Simpanan -->
-                        <div class="card mt-3" style="background: #f8f9fa; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);">
+                        <div class="card mt-3" style="box-shadow: 0 0px 7px 2px rgba(0, 0, 0, 0.1);">
                             <div class="card-body text-center">
                                 <h4>Total Simpanan Sukarela</h4>
                                 <h3 class="text-primary">
@@ -334,9 +354,29 @@
                 });
             });
         });
+
+        function searchSimpananSukarela() {
+            let input = document.getElementById("search-simpanan-sukarela").value.toLowerCase();
+            let filterJenis = document.getElementById("filter-jenis").value.toLowerCase();
+            let rows = document.querySelectorAll("#tabel-simpanan-sukarela tr");
+
+            rows.forEach(row => {
+                let rowText = row.innerText.toLowerCase();
+                let jenisTransaksi = row.cells[5].innerText.toLowerCase();
+
+                let matchSearch = rowText.includes(input);
+                let matchFilter = filterJenis === "" || jenisTransaksi.includes(filterJenis);
+
+                row.style.display = matchSearch && matchFilter ? "" : "none";
+            });
+        }
+
+        function resetSearchSimpananSukarela() {
+            document.getElementById("search-simpanan-sukarela").value = "";
+            document.getElementById("filter-jenis").value = "";
+            searchSimpananSukarela();
+        }
     </script>
-
-
 </body>
 
 </html>
