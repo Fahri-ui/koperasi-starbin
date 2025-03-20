@@ -20,7 +20,16 @@ class DataAnggotaController extends Controller
                 ->orWhere('id', 'like', "%{$search}%");
         })->orderBy('id', 'asc')->get();
 
-        return view('admin.data-anggota', compact('users', 'search'));
+        // 1. Menghitung seluruh data pada tabel users
+        $totalUsers = User::count();
+
+        // 2. Menghitung jumlah data dengan role 'admin'
+        $jumlahAdmin = User::where('role', 'admin')->count();
+
+        // 3. Menghitung jumlah data dengan role 'user'
+        $jumlahUser = User::where('role', 'user')->count();
+
+        return view('admin.data-anggota', compact('users', 'search', 'jumlahUser', 'jumlahAdmin', 'totalUsers'));
     }
 
     // Delate Aksi Hapus Anggota

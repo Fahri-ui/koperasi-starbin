@@ -88,6 +88,9 @@
                                 <li class="submenu-item ">
                                     <a href="{{route('simpanansukarelaadmin')}}">Simpanan Sukarela</a>
                                 </li>
+                                <li class="submenu-item ">
+                                    <a href="{{route('simpanananggota')}}">Simpanan Anggota</a>
+                                </li>
 
                             </ul>
                         </li>
@@ -146,13 +149,6 @@
                             </a>
                         </li>
 
-                        <li
-                            class="sidebar-item  ">
-                            <a href="{{route('statistikkeuangan')}}" class='sidebar-link'>
-                                <i class="bi bi-bar-chart-line-fill"></i>
-                                <span>Statistik Keuangan</span>
-                            </a>
-                        </li>
                         <li class="sidebar-item">
                             <a href="{{ route('admin.sharemassage') }}" class="sidebar-link">
                                 <i class="bi bi-send"></i>
@@ -169,15 +165,6 @@
                                     <span class="visually-hidden">notifikasi baru</span>
                                 </span>
                                 @endif
-                            </a>
-                        </li>
-
-
-                        <li
-                            class="sidebar-item">
-                            <a href="{{route('laporan')}}" class='sidebar-link'>
-                                <i class="bi bi-file-earmark-bar-graph-fill"></i>
-                                <span>Laporan</span>
                             </a>
                         </li>
 
@@ -199,7 +186,7 @@
                             <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                                 @csrf
                                 <button type="submit" class="btn btn-link sidebar-link" style="padding: 0; color: inherit; text-decoration: none;">
-                                    <i class="bi bi-x-octagon-fill"></i>
+                                    <i class="bi bi-box-arrow-right"></i>
                                     <span>Keluar</span>
                                 </button>
                             </form>
@@ -247,12 +234,24 @@
                             </h5>
                         </div>
                         <div class="card-body">
-                            <!-- Pencarian -->
-                            <div class="input-group mb-3">
-                                <input type="text" id="search-pinjaman" class="form-control" placeholder="Cari anggota berdasarkan nama atau ID..." onkeyup="searchPinjaman()" style="box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);">
-                                <button class="btn btn-danger" onclick="resetSearch()">
-                                    <i class="bi bi-x-circle"></i> Bersihkan
-                                </button>
+
+                            <!-- Input Pencarian -->
+                            <div style="margin-bottom: 20px; position: relative;">
+                                <div class="input-group">
+                                    <input
+                                        type="text"
+                                        id="search-pinjaman"
+                                        class="form-control"
+                                        placeholder="Cari berdasarkan ID, Nama, Status, dll..."
+                                        onkeyup="searchPinjaman()"
+                                        style="box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);">
+                                    <button
+                                        class="btn btn-danger"
+                                        onclick="resetSearchPinjaman()"
+                                        style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
+                                        <i class="bi bi-x-circle"></i> Bersihkan
+                                    </button>
+                                </div>
                             </div>
 
                             <!-- Tabel Pinjaman -->
@@ -269,7 +268,7 @@
                                             <th>Status</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="pinjaman-table-body">
                                         @forelse ($pinjaman as $index => $item)
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
@@ -278,11 +277,19 @@
                                             <td>Rp {{ number_format($item->jumlah_pinjaman, 0, ',', '.') }}</td>
                                             <td>Rp {{ number_format($item->sisa_angsuran ?? $item->jumlah_pinjaman, 0, ',', '.') }}</td>
                                             <td>{{ \Carbon\Carbon::parse($item->tanggal_pengajuan)->format('d F Y') }}</td>
-                                            <td>{{ ucfirst($item->status ?? '-') }}</td>
+                                            <td>
+                                                <span class="badge bg-{{ $item->status === 'Lunas' ? 'success' : ($item->status === 'Ditolak' ? 'danger' : 'primary') }}">
+                                                    {{ ucfirst($item->status ?? '-') }}
+                                                </span>
+                                            </td>
                                         </tr>
                                         @empty
                                         <tr>
-                                            <td colspan="7" class="text-center">Tidak ada riwayat pinjaman.</td>
+                                            <td colspan="7" class="text-center">
+                                                <span class="badge bg-warning">
+                                                    <i class="bi bi-exclamation-circle"></i> Tidak ada riwayat pinjaman.
+                                                </span>
+                                            </td>
                                         </tr>
                                         @endforelse
                                     </tbody>
@@ -290,7 +297,7 @@
                             </div>
 
                             <!-- Statistik Pinjaman -->
-                            <div class="card mt-3" style="background: #f8f9fa; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);">
+                            <div class="card mt-3" style="box-shadow: 0 0px 7px 2px rgba(0, 0, 0, 0.1);">
                                 <div class="card-body">
                                     <h4>Total Pinjaman:
                                         <span id="total-pinjaman" class="text-primary">
@@ -307,6 +314,7 @@
                             </div>
                         </div>
                     </div>
+
                 </section>
 
                 <footer>
@@ -349,6 +357,26 @@
                     });
                 });
             });
+
+            function searchPinjaman() {
+                let input = document.getElementById("search-pinjaman").value.toLowerCase();
+                let rows = document.querySelectorAll("#pinjaman-table-body tr");
+
+                rows.forEach(row => {
+                    let rowText = row.innerText.toLowerCase(); // Menggabungkan semua teks dalam satu baris
+
+                    if (rowText.includes(input)) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
+                });
+            }
+
+            function resetSearchPinjaman() {
+                document.getElementById("search-pinjaman").value = "";
+                searchPinjaman();
+            }
         </script>
 </body>
 

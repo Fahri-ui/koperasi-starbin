@@ -403,11 +403,7 @@ class SimpananController extends Controller
             'bukti' => $buktiPath,
         ]);
 
-        $redirectRoute = $validatedData['jenis'] === 'wajib' ? 'simpananwajib' : 'simpanansukarela';
-
-        return redirect()
-            ->route($redirectRoute)
-            ->with('success', 'Transaksi berhasil diajukan! Menunggu konfirmasi admin.');
+        return redirect()->back()->with('success', 'Transaksi berhasil diajukan! Menunggu konfirmasi admin.');
     }
 
 

@@ -88,6 +88,9 @@
                                 <li class="submenu-item ">
                                     <a href="{{route('simpanansukarelaadmin')}}">Simpanan Sukarela</a>
                                 </li>
+                                <li class="submenu-item ">
+                                    <a href="{{route('simpanananggota')}}">Simpanan Anggota</a>
+                                </li>
 
                             </ul>
                         </li>
@@ -146,13 +149,6 @@
                             </a>
                         </li>
 
-                        <li
-                            class="sidebar-item  ">
-                            <a href="{{route('statistikkeuangan')}}" class='sidebar-link'>
-                                <i class="bi bi-bar-chart-line-fill"></i>
-                                <span>Statistik Keuangan</span>
-                            </a>
-                        </li>
                         <li class="sidebar-item">
                             <a href="{{ route('admin.sharemassage') }}" class="sidebar-link">
                                 <i class="bi bi-send"></i>
@@ -169,15 +165,6 @@
                                     <span class="visually-hidden">notifikasi baru</span>
                                 </span>
                                 @endif
-                            </a>
-                        </li>
-
-
-                        <li
-                            class="sidebar-item">
-                            <a href="{{route('laporan')}}" class='sidebar-link'>
-                                <i class="bi bi-file-earmark-bar-graph-fill"></i>
-                                <span>Laporan</span>
                             </a>
                         </li>
 
@@ -199,7 +186,7 @@
                             <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                                 @csrf
                                 <button type="submit" class="btn btn-link sidebar-link" style="padding: 0; color: inherit; text-decoration: none;">
-                                    <i class="bi bi-x-octagon-fill"></i>
+                                    <i class="bi bi-box-arrow-right"></i>
                                     <span>Keluar</span>
                                 </button>
                             </form>

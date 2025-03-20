@@ -184,6 +184,7 @@
                             <div class="mb-3">
                                 <label for="nominal" class="form-label"><i class="bi bi-cash-stack"></i> Nominal Pembayaran</label>
                                 <input type="number" id="nominal" name="nominal" class="form-control" placeholder="Masukkan jumlah simpanan" min="500000" max="500000" required>
+                                <small class="text-muted"><i class="bi bi-info-circle"></i> Nominal wajib adalah Rp 500.000</small>
                             </div>
 
                             <div class="mb-3">
@@ -198,6 +199,7 @@
                             <div class="form-group mb-3">
                                 <label for="payment-proof">Unggah Bukti Pembayaran</label>
                                 <input type="file" class="form-control" id="payment-proof" name="payment-proof" accept="image/*" required>
+                                <small class="text-muted" style="font-size:.8rem;"><i class="bi bi-image"></i> Format yang didukung: JPG, JPEG, PNG (max 2MB)</small>
                             </div>
 
                             <button type="submit" class="btn btn-primary w-100"><i class="bi bi-send"></i> Bayar Sekarang</button>
@@ -228,12 +230,13 @@
                     <div class="card-header bg-primary text-white">
                         <h5 class="mb-0" style="color: white;"><i class="bi bi-credit-card"></i> Pembayaran Simpanan Anggota</h5>
                     </div>
-                    <div class="card-body" style="margin-top: 30px;">
+                    <div class="card-body" style="margin-top: 30px; text-align: left;">
                         <form action="{{ route('simpanan.bayar') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="mb-3">
                                 <label for="nominal" class="form-label"><i class="bi bi-cash-stack"></i> Nominal Pembayaran</label>
                                 <input type="number" id="nominal" name="nominal" class="form-control" placeholder="Masukkan jumlah simpanan" min="500000" max="500000" required>
+                                <small class="text-muted"><i class="bi bi-info-circle"></i> Nominal wajib adalah Rp 500.000</small>
                             </div>
 
                             <div class="mb-3">
@@ -248,6 +251,7 @@
                             <div class="form-group mb-3">
                                 <label for="payment-proof">Unggah Bukti Pembayaran</label>
                                 <input type="file" class="form-control" id="payment-proof" name="payment-proof" accept="image/*" required>
+                                <small class="text-muted" style="font-size:.8rem;"><i class="bi bi-image"></i> Format yang didukung: JPG, JPEG, PNG (max 2MB)</small>
                             </div>
 
                             <button type="submit" class="btn btn-primary w-100"><i class="bi bi-send"></i> Bayar Sekarang</button>
@@ -379,7 +383,7 @@
                         <div class="mb-3">
                             <label for="jumlah" class="form-label"><i class="bi bi-cash"></i> Jumlah (Rp)</label>
                             <input type="number" name="jumlah" id="jumlah" class="form-control" required min="100000" max="100000" placeholder="Masukan Nominal Bayar">
-                            <small class="text-muted"><i class="bi bi-info-circle"></i> Jumlah simpanan adalah tunggakan simpanan wajib 2 bulan</small>
+                            <small class="text-muted"><i class="bi bi-info-circle"></i>Total bayar adalah tunggakan simpanan wajib 2 bulan, yaitu 100.000</small>
                         </div>
 
                         <div class="mb-3">
@@ -444,10 +448,15 @@
                             </select>
                         </div>
 
+                        <!-- <div class="mb-3">
+                            <label for="jenis_transaksi" class="form-label"><i class="bi bi-shuffle"></i> Jenis Transaksi</label>
+                            <input type="text" id="jenis_transaksi" name="jenis_transaksi" class="form-control" value="Penyetoran" readonly>
+                        </div> -->
+
                         <div class="mb-3">
                             <label for="jumlah" class="form-label"><i class="bi bi-cash"></i> Jumlah (Rp)</label>
                             <input type="number" name="jumlah" id="jumlah" class="form-control" required min="100000" max="100000" placeholder="Masukan Nominal Bayar">
-                            <small class="text-muted"><i class="bi bi-info-circle"></i> Jumlah simpanan adalah tunggakan simpanan wajib 2 bulan</small>
+                            <small class="text-muted"><i class="bi bi-info-circle"></i>Total bayar adalah tunggakan simpanan wajib 2 bulan, yaitu 100.000</small>
                         </div>
 
                         <div class="mb-3">
@@ -809,7 +818,19 @@
     <script src="{{asset('dist/assets/js/bootstrap.js')}}"></script>
     <script src="{{asset('dist/assets/js/app.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // document.getElementById('nominal').addEventListener('input', function(e) {
+        //     let value = e.target.value.replace(/\D/g, ''); // Hapus semua karakter kecuali angka
+        //     value = new Intl.NumberFormat('id-ID').format(value); // Format angka dengan titik
+        //     e.target.value = value;
+        // });
 
+        // document.getElementById('jumlah').addEventListener('input', function(e) {
+        //     let value = e.target.value.replace(/\D/g, ''); // Hapus semua karakter kecuali angka
+        //     value = new Intl.NumberFormat('id-ID').format(value); // Format angka dengan titik
+        //     e.target.value = value;
+        // });
+    </script>
 
 </body>
 

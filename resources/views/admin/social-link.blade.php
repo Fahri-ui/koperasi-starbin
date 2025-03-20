@@ -87,6 +87,9 @@ p<html lang="en">
                                 <li class="submenu-item ">
                                     <a href="{{route('simpanansukarelaadmin')}}">Simpanan Sukarela</a>
                                 </li>
+                                <li class="submenu-item ">
+                                    <a href="{{route('simpanananggota')}}">Simpanan Anggota</a>
+                                </li>
 
                             </ul>
                         </li>
@@ -145,13 +148,6 @@ p<html lang="en">
                             </a>
                         </li>
 
-                        <li
-                            class="sidebar-item  ">
-                            <a href="{{route('statistikkeuangan')}}" class='sidebar-link'>
-                                <i class="bi bi-bar-chart-line-fill"></i>
-                                <span>Statistik Keuangan</span>
-                            </a>
-                        </li>
                         <li class="sidebar-item">
                             <a href="{{ route('admin.sharemassage') }}" class="sidebar-link">
                                 <i class="bi bi-send"></i>
@@ -168,15 +164,6 @@ p<html lang="en">
                                     <span class="visually-hidden">notifikasi baru</span>
                                 </span>
                                 @endif
-                            </a>
-                        </li>
-
-
-                        <li
-                            class="sidebar-item">
-                            <a href="{{route('laporan')}}" class='sidebar-link'>
-                                <i class="bi bi-file-earmark-bar-graph-fill"></i>
-                                <span>Laporan</span>
                             </a>
                         </li>
 
@@ -198,7 +185,7 @@ p<html lang="en">
                             <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                                 @csrf
                                 <button type="submit" class="btn btn-link sidebar-link" style="padding: 0; color: inherit; text-decoration: none;">
-                                    <i class="bi bi-x-octagon-fill"></i>
+                                    <i class="bi bi-box-arrow-right"></i>
                                     <span>Keluar</span>
                                 </button>
                             </form>
@@ -283,7 +270,6 @@ p<html lang="en">
                 </div>
             </section>
 
-            <!-- Tabel Daftar Link Sosial Media -->
             <section class="mb-4">
                 <div class="card shadow" style="border: 1px solid #435ebe;">
                     <div class="card-header bg-primary text-white">
@@ -292,6 +278,25 @@ p<html lang="en">
                         </h5>
                     </div>
                     <div class="card-body">
+                        <!-- Input Pencarian -->
+                        <div style="margin-bottom: 20px; position: relative;">
+                            <div class="input-group">
+                                <input
+                                    type="text"
+                                    id="search-link"
+                                    class="form-control"
+                                    placeholder="Cari berdasarkan Platform atau URL..."
+                                    onkeyup="searchLink()"
+                                    style="box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);">
+                                <button
+                                    class="btn btn-danger"
+                                    onclick="resetSearchLink()"
+                                    style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
+                                    <i class="bi bi-x-circle"></i> Bersihkan
+                                </button>
+                            </div>
+                        </div>
+
                         <div style="max-height: 450px; overflow:auto; font-size:.9rem;">
                             <table class="table table-hover">
                                 <thead class="table-primary">
@@ -303,9 +308,9 @@ p<html lang="en">
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="data-link">
                                     @foreach ($links as $link)
-                                    <tr data-id="{{ $link->id }}">
+                                    <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td><i class="{{ $link->icon }}"></i></td>
                                         <td>{{ ucfirst($link->platform) }}</td>
@@ -495,6 +500,26 @@ p<html lang="en">
             rows.forEach((row, index) => {
                 row.cells[0].innerText = index + 1;
             });
+        }
+
+        function searchLink() {
+            let input = document.getElementById("search-link").value.toLowerCase();
+            let rows = document.querySelectorAll("#data-link tr");
+
+            rows.forEach(row => {
+                let rowText = row.innerText.toLowerCase(); // Menggabungkan semua teks dalam satu baris
+
+                if (rowText.includes(input)) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+
+        function resetSearchLink() {
+            document.getElementById("search-link").value = "";
+            searchLink();
         }
     </script>
 

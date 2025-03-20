@@ -4,14 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelola Pesan Untuk User</title>
+    <title>Simpanan Wajib</title>
 
     <link rel="stylesheet" href="{{asset('admin-page/assets/css/main/app.css')}}">
     <link rel="stylesheet" href="{{asset('admin-page/assets/css/main/app-dark.css')}}">
     <link rel="shortcut icon" href="{{asset('admin-page/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/x-icon">
     <link rel="shortcut icon" href="{{asset('admin-page/assets/images/logo/Logo Koperasi STARBIN REAL (1).png')}}" type="image/png">
     <link rel="stylesheet" href="{{asset('admin-page/assets/css/simpanan-wajib.css')}}">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 
 </head>
 
@@ -77,7 +76,7 @@
                         </li>
 
                         <li
-                            class="sidebar-item  has-sub">
+                            class="sidebar-item  has-sub active">
                             <a href="#" class='sidebar-link'>
                                 <i class="bi bi-wallet-fill"></i>
                                 <span>Simpanan</span>
@@ -97,7 +96,7 @@
                         </li>
 
                         <li
-                            class="sidebar-item  ">
+                            class="sidebar-item ">
                             <a href="{{route('pinjamanadmin')}}" class='sidebar-link'>
                                 <i class="bi bi-cash-stack"></i>
                                 <span>Pinjaman</span>
@@ -118,7 +117,7 @@
                         </li>
 
                         <li
-                            class="sidebar-item ">
+                            class="sidebar-item">
                             <a href="{{route('denda')}}" class='sidebar-link'>
                                 <i class="bi bi-exclamation-circle"></i>
                                 <span>Denda</span>
@@ -138,7 +137,7 @@
                             </a>
                         </li>
 
-                        <li class="sidebar-item">
+                        <li class="sidebar-item ">
                             <a href="{{ route('simpanans') }}" class="sidebar-link">
                                 <i class="bi bi-wallet-fill"></i>
                                 <span>Data Pengajuan Simpanan</span>
@@ -150,13 +149,13 @@
                             </a>
                         </li>
 
-                        <li class="sidebar-item active">
+                        <li class="sidebar-item">
                             <a href="{{ route('admin.sharemassage') }}" class="sidebar-link">
                                 <i class="bi bi-send"></i>
                                 <span>Kelola Pesan</span>
                             </a>
                         </li>
-                        <li class="nav-item sidebar-item position-relative">
+                        <li class="nav-item sidebar-item position-relative ">
                             <a href="{{ route('notifikasiadmin') }}" class="nav-link sidebar-link">
                                 <i class="bi bi-bell-fill"></i>
                                 <span>Notifikasi</span>
@@ -221,188 +220,150 @@
                     </div>
                 </div>
                 @endif
-                <div class="container">
-                    <h2>Kelola Pesan</h2>
 
-                    <section class="mb-4">
-                        <div class="card shadow" style="border: 1px solid #435ebe;">
-                            <div class="card-header bg-primary text-white">
-                                <h5 class="mb-0 text-white">
-                                    <i class="bi bi-envelope-paper" style="margin-top: -30px;"></i> Formulir Pengiriman Pesan
-                                </h5>
-                            </div>
-                            <div class="card-body">
-                                <form action="{{ route('admin.sharemassage.store') }}" method="POST" style="margin-top: 20px;">
-                                    @csrf
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <label for="recipient" class="form-label">Pilih Penerima</label>
-                                            <select name="user_id" id="recipient" class="form-select select2" required>
-                                                <option value="all" selected>Semua User (Global Message)</option>
-                                                @foreach(App\Models\User::where('role', 'user')->get() as $user)
-                                                <option value="{{ $user->id }}">{{ $user->fullname }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label for="message" class="form-label">Pesan</label>
-                                            <textarea name="message" id="message" class="form-control" rows="4" required></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="form-group text-center mt-4">
-                                        <button type="submit" class="btn btn-success">
-                                            <i class="bi bi-send"></i> Kirim Pesan
-                                        </button>
-                                    </div>
-                                </form>
+                <h3 class="text-center bold">
+                    <i class="bi bi-person-lines-fill"></i> Simpanan Anggota
+                </h3>
+                <hr style="border-top: 2px solid black; margin-bottom: 30px;">
+
+                <!-- Tabel Simpanan Sukarela -->
+                <div class="card shadow" style="border: 1px solid #435ebe;">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0 text-white">
+                            <i class="bi bi-piggy-bank"></i> Data Simpanan Anggota
+                        </h5>
+                    </div>
+                    <div class="card-body">
+
+                        <!-- Input Pencarian -->
+                        <div style="margin-bottom: 20px; position: relative;">
+                            <div class="input-group">
+                                <input
+                                    type="text"
+                                    id="search-simpanan"
+                                    class="form-control"
+                                    placeholder="Cari berdasarkan ID, Nama, Jenis Transaksi, dll..."
+                                    onkeyup="searchSimpanan()"
+                                    style="box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);">
+                                <button
+                                    class="btn btn-danger"
+                                    onclick="resetSearchSimpanan()"
+                                    style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
+                                    <i class="bi bi-x-circle"></i> Bersihkan
+                                </button>
                             </div>
                         </div>
-                    </section>
 
-                    <!-- Daftar Pesan -->
-                    <section class="mb-4">
-                        <div class="card shadow" style="border: 1px solid #435ebe;">
-                            <div class="card-header bg-primary text-white">
-                                <h5 class="mb-0 text-white">
-                                    <i class="bi bi-envelope" style="margin-top: -30px;"></i> Daftar Pesan
-                                </h5>
-                            </div>
-                            <div class="card-body">
-                                <!-- Input Pencarian -->
-                                <div style="margin-bottom: 20px; position: relative;">
-                                    <div class="input-group">
-                                        <input
-                                            type="text"
-                                            id="search-message"
-                                            class="form-control"
-                                            placeholder="Cari berdasarkan Penerima, Pesan, atau Tanggal..."
-                                            onkeyup="searchMessage()"
-                                            style="box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);">
-                                        <button
-                                            class="btn btn-danger"
-                                            onclick="resetSearchMessage()"
-                                            style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
-                                            <i class="bi bi-x-circle"></i> Bersihkan
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <div style="max-height: 700px; overflow:auto; font-size:.8rem; text-align:left;">
-                                    <table class="table table-hover">
-                                        <thead class="table-primary">
-                                            <tr>
-                                                <th>No</th>
-                                                <th>Penerima</th>
-                                                <th>Pesan</th>
-                                                <th>Tanggal</th>
-                                                <th>Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="data-message">
-                                            @foreach($notifikasi as $key => $item)
-                                            <tr>
-                                                <td>{{ $key + 1 }}</td>
-                                                <td>
-                                                    @if($item->user_id == 0)
-                                                    <span class="badge bg-info">Semua User</span>
-                                                    @else
-                                                    {{ $item->user ? $item->user->fullname : 'User Tidak Ditemukan' }}
-                                                    @endif
-                                                </td>
-                                                <td>{{ $item->message }}</td>
-                                                <td>{{ \Carbon\Carbon::parse($item->created_at)->format('d F Y') }}</td>
-                                                <td>
-                                                    <form action="{{ route('admin.sharemassage.destroy', $item->id) }}" method="POST" class="d-inline">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus pesan ini?')">
-                                                            <i class="bi bi-trash"></i> Hapus
-                                                        </button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                            @endforeach
-
-                                            @if($notifikasi->isEmpty())
-                                            <tr>
-                                                <td colspan="5" class="text-center">
-                                                    <span class="badge bg-warning">
-                                                        <i class="bi bi-exclamation-circle"></i> Tidak ada pesan.
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                            @endif
-                                        </tbody>
-                                    </table>
-                                </div>
+                        <!-- Tabel Simpanan -->
+                        <div style="max-height: 450px; overflow:auto; font-size:.9rem;">
+                            <table class="table table-striped">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>No</th>
+                                        <th>ID Simpanan</th>
+                                        <th>Nama Anggota</th>
+                                        <th>Jumlah Simpanan</th>
+                                        <th>Tanggal Simpanan</th>
+                                        <th>Jenis Transaksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabel-simpanan-sukarela">
+                                    @forelse($simpanananggota as $index => $simpanan)
+                                    <tr>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ $simpanan->id }}</td>
+                                        <td>{{ $simpanan->user->fullname ?? 'Tidak Diketahui' }}</td>
+                                        <td>
+                                            <span class="badge bg-info">
+                                                <i class="bi bi-cash-stack"></i> Rp {{ number_format($simpanan->jumlah, 0, ',', '.') }}
+                                            </span>
+                                        </td>
+                                        <td>{{ \Carbon\Carbon::parse($simpanan->tanggal_transaksi)->format('Y-m-d') }}</td>
+                                        <td>
+                                            <span class="badge bg-{{ $simpanan->jenis_transaksi === 'penarikan' ? 'danger' : 'success' }}">
+                                                {{ ucfirst($simpanan->jenis_transaksi) }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan="6" class="text-center">
+                                            <span class="badge bg-warning">
+                                                <i class="bi bi-exclamation-circle"></i> Tidak ada data simpanan.
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="card mt-3" style=" box-shadow: 0 0px 7px 2px rgba(0, 0, 0, 0.1);">
+                            <div class="card-body text-center">
+                                <h4>Total Simpanan Sukarela</h4>
+                                <h3 class="text-primary">
+                                    <i class="bi bi-coin"></i> Rp {{ number_format($totalSimpanananggota, 0, ',', '.') }}
+                                </h3>
                             </div>
                         </div>
-                    </section>
-
-                    <footer>
-                        <div class="footer clearfix mb-0 text-muted">
-                            <div class="float-start">
-                                <p>2025 &copy; STARBIN</p>
-                            </div>
-                            <div class="float-end" style="margin-right: 30px;">
-                                <p>Dibuat dengan
-                                    <span class="text-danger"><i class="bi bi-heart"></i></span>
-                                    oleh
-                                    <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
-                                    &
-                                    <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
-                                </p>
-                            </div>
-                        </div>
-                    </footer>
+                    </div>
                 </div>
+                <footer>
+                    <div class="footer clearfix mb-0 text-muted">
+                        <div class="float-start">
+                            <p>2025 &copy; STARBIN</p>
+                        </div>
+                        <div class="float-end" style="margin-right: 30px;">
+                            <p>Dibuat dengan
+                                <span class="text-danger"><i class="bi bi-heart"></i></span>
+                                oleh
+                                <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
+                                &
+                                <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
+                            </p>
+                        </div>
+                    </div>
+                </footer>
             </div>
         </div>
         <script src="{{asset('admin-page/assets/js/bootstrap.js')}}"></script>
         <script src="{{asset('admin-page/assets/js/app.js')}}"></script>
-        <!-- jQuery (harus ada untuk Select2) -->
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-        <!-- Select2 JS -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
         <script>
-            $(document).ready(function() {
-                $('#recipient').select2({
-                    placeholder: "Pilih User",
-                    allowClear: true,
-                    tags: true,
-                    createTag: function(params) {
-                        return undefined; // Mencegah penambahan tag kustom
-                    },
-                    language: {
-                        noResults: function() {
-                            return "User tidak ditemukan.";
+            document.addEventListener("DOMContentLoaded", function() {
+                const searchInput = document.getElementById("search-simpanan");
+                const tableRows = document.querySelectorAll("#tabel-simpanan tr");
+
+                searchInput.addEventListener("keyup", function() {
+                    const searchText = searchInput.value.toLowerCase();
+
+                    tableRows.forEach(row => {
+                        const id = row.cells[0].textContent.toLowerCase();
+                        const nama = row.cells[1].textContent.toLowerCase();
+
+                        if (id.includes(searchText) || nama.includes(searchText)) {
+                            row.style.display = "";
+                        } else {
+                            row.style.display = "none";
                         }
-                    }
+                    });
                 });
             });
 
-            function searchMessage() {
-                let input = document.getElementById("search-message").value.toLowerCase();
-                let rows = document.querySelectorAll("#data-message tr");
+            function searchSimpanan() {
+                let input = document.getElementById("search-simpanan").value.toLowerCase();
+                let rows = document.querySelectorAll("#tabel-simpanan-sukarela tr");
 
                 rows.forEach(row => {
-                    let rowText = row.innerText.toLowerCase(); // Menggabungkan semua teks dalam satu baris
-
-                    if (rowText.includes(input)) {
-                        row.style.display = "";
-                    } else {
-                        row.style.display = "none";
-                    }
+                    let rowText = row.innerText.toLowerCase();
+                    row.style.display = rowText.includes(input) ? "" : "none";
                 });
             }
 
-            function resetSearchMessage() {
-                document.getElementById("search-message").value = "";
-                searchMessage();
+            function resetSearchSimpanan() {
+                document.getElementById("search-simpanan").value = "";
+                searchSimpanan();
             }
         </script>
-
+    </div>
 </body>
 
 </html>

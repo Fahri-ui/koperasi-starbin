@@ -126,6 +126,9 @@
                                 <li class="submenu-item ">
                                     <a href="{{route('simpanansukarelaadmin')}}">Simpanan Sukarela</a>
                                 </li>
+                                <li class="submenu-item ">
+                                    <a href="{{route('simpanananggota')}}">Simpanan Anggota</a>
+                                </li>
 
                             </ul>
                         </li>
@@ -184,13 +187,6 @@
                             </a>
                         </li>
 
-                        <li
-                            class="sidebar-item  ">
-                            <a href="{{route('statistikkeuangan')}}" class='sidebar-link'>
-                                <i class="bi bi-bar-chart-line-fill"></i>
-                                <span>Statistik Keuangan</span>
-                            </a>
-                        </li>
                         <li class="sidebar-item">
                             <a href="{{ route('admin.sharemassage') }}" class="sidebar-link">
                                 <i class="bi bi-send"></i>
