@@ -34,6 +34,7 @@ class BantuanController extends Controller
         $notifikasi = Notifikasi::create([
             'user_id' => null, // ✅ Biarkan NULL agar bisa difilter untuk admin
             'nama_pengirim' => Auth::user()->fullname ?? 'User Tidak Dikenal', // ✅ Simpan fullname user yang login
+            'gambar_pengirim' => Auth::user()->gambar ?? 'User Tidak Dikenal', // ✅ Simpan gambar user yang login
             'message' => $request->message,
             'type' => 'info',
             'icon' => 'bi-chat-dots',

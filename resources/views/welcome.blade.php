@@ -77,10 +77,6 @@
           <h1 data-aos="fade-up">Selamat Datang di <span>Koperasi STARBIN</span></h1>
           <p data-aos="fade-up" data-aos-delay="100">Solusi Simpan Pinjam Terpercaya untuk mendukung komunitas Sekolah<br>
             Bersama, Kita Wujudkan impian Finansial Anda</p>
-          <div class="d-flex" data-aos="fade-up" data-aos-delay="200">
-            <a href="{{route('registrasi')}}" class="btn-get-started">Daftar Sekarang</a>
-            <a href="{{route('login')}}" class="btn-get-started">Login di sini</a>
-          </div>
           <img src="{{asset('landing-template/assets/img/hero-services-img.png')}}" class="img-fluid hero-img" alt="" data-aos="zoom-out" data-aos-delay="300">
         </div>
       </div>

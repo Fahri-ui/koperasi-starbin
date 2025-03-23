@@ -21,6 +21,7 @@ class Notifikasi extends Model
         'status_balasan',
         'expired_at',
         'nama_pengirim',
+        'gambar_pengirim',
     ];
 
     public function user()
