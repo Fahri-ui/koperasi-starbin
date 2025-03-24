@@ -218,7 +218,7 @@
             <div class="container mt-4">
                 <div class="page-header mb-4 hidden-content-right">
                     <h3 class="fw-bold">
-                        <i class="bi bi-exclamation-triangle"></i> Laporan Denda Pinjaman
+                        <i class="bi bi-exclamation-triangle"></i> Denda Pinjaman
                     </h3>
                 </div>
                 <hr style="border-top: 2px solid black; margin-bottom: 30px;">
@@ -227,7 +227,7 @@
                     <div class="card shadow hidden-content-right" style="border: 1px solid #435ebe;">
                         <div class="card-body">
                             <h5 class="fw-bold d-flex align-items-center hidden-content-right">
-                                <i class="bi bi-info-circle me-2" style="margin-top: -10px;"></i> Definisi Laporan Denda
+                                <i class="bi bi-info-circle me-2" style="margin-top: -10px;"></i> Deskripsi Halaman Denda
                             </h5>
                             <hr style="border-top: 2px solid #25396f; border-radius: 5px;">
                             <p class="hidden-content-right">
@@ -248,7 +248,7 @@
                             <hr style="border-top: 2pxwarning solid #25396f; border-radius: 5px;">
 
                             <div class="row hidden-content-right">
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="card shadow" style="border-left: 5px solid #dc3545; border-radius: 10px;">
                                         <div class="card-body text-center">
                                             <h6 style="color: #dc3545;"><i class="bi bi-cash me-2"></i>Total Denda Keseluruhan</h6>
@@ -256,19 +256,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="card shadow" style="border-left: 5px solid #ffc107; border-radius: 10px;">
                                         <div class="card-body text-center">
                                             <h6 style="color: #ffc107;"><i class="bi bi-exclamation-circle me-2"></i>Total Pinjaman Bermasalah</h6>
                                             <p><strong>{{ $jumlahPinjamanBermasalah }} Pinjaman</strong></p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="card shadow" style="border-left: 5px solid #007bff; border-radius: 10px;">
-                                        <div class="card-body text-center">
-                                            <h6 style="color: #007bff;"><i class="bi bi-people me-2"></i>Total Anggota Kena Denda</h6>
-                                            <p><strong>{{ $jumlahAnggotaDenda }} Anggota</strong></p>
                                         </div>
                                     </div>
                                 </div>
@@ -283,7 +275,7 @@
                     <div class="card shadow" style="border: 1px solid #435ebe;">
                         <div class="card-header bg-primary text-white">
                             <h5 class="mb-0 text-white">
-                                <i class="bi bi-table" style="margin-top: -30px;"></i> Data Laporan Denda
+                                <i class="bi bi-table" style="margin-top: -30px;"></i> Data Denda
                             </h5>
                         </div>
                         <div class="card-body">

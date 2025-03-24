@@ -246,7 +246,7 @@
                             </h5>
                             <hr style="border-top: 2px solid #25396f; border-radius: 5px;">
                             <div class="row hidden-content-right">
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <div class="card shadow" style="border-left: 5px solid #dc3545; border-radius: 10px;">
                                         <div class="card-body text-center">
                                             <h6 style="color: #dc3545;"><i class="bi bi-x-circle-fill me-2"></i>Jumlah Transaksi</h6>
@@ -254,7 +254,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <div class="card shadow" style="border-left: 5px solid #ffc107; border-radius: 10px;">
                                         <div class="card-body text-center">
                                             <h6 style="color: #ffc107;"><i class="bi bi-info-circle me-2"></i>Dalam Proses</h6>
@@ -262,19 +262,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <div class="card shadow" style="border-left: 5px solid #28a745; border-radius: 10px;">
                                         <div class="card-body text-center">
                                             <h6 style="color: #28a745;"><i class="bi bi-check-circle-fill me-2"></i>Berhasil</h6>
                                             <p><strong>Rp {{ number_format($totalDisetujui, 0, ',', '.') }}</strong></p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="card shadow" style="border-left: 5px solid #0d6efd; border-radius: 10px;">
-                                        <div class="card-body text-center">
-                                            <h6 style="color: #0d6efd;"><i class="bi bi-coin me-2"></i>Total Angsuran</h6>
-                                            <p><strong>Rp {{ number_format($jumlahTransaksi, 0, ',', '.') }}</strong></p>
                                         </div>
                                     </div>
                                 </div>
