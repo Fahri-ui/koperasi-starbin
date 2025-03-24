@@ -75,8 +75,8 @@
       <div class="container text-center">
         <div class="d-flex flex-column justify-content-center align-items-center">
           <h1 data-aos="fade-up">Selamat Datang di <span>Koperasi STARBIN</span></h1>
-          <p data-aos="fade-up" data-aos-delay="100">Solusi Simpan Pinjam Terpercaya untuk mendukung komunitas Sekolah<br>
-            Bersama, Kita Wujudkan impian Finansial Anda</p>
+          <p data-aos="fade-up" data-aos-delay="100">Solusi Simpan Pinjam Modern yang Aman dan Terpercaya<br>
+            Bersama Starbin, wujudkan tujuan finansialmu dengan lebih cerdas</p>
           <img src="{{asset('landing-template/assets/img/hero-services-img.png')}}" class="img-fluid hero-img" alt="" data-aos="zoom-out" data-aos-delay="300">
         </div>
       </div>
@@ -92,15 +92,14 @@
 
           <div class="col-lg-6 content" data-aos="fade-up" data-aos-delay="100">
             <p class="who-we-are">Tentang Kami</p>
-            <h3>Mengembangkan Komunitas dengan Solusi Keuangan yang Aman</h3>
+            <h3>Mendukung Komunitas Lewat Layanan Keuangan yang Aman dan Mudah</h3>
             <p class="fst-italic">
-              Starbin Koperasi hadir sebagai mitra keuangan terpercaya bagi komunitas sekolah. Kami mendukung anggota
-              untuk mencapai tujuan finansial mereka dengan layanan yang transparan dan mudah diakses.
+              Koperasi Starbin hadir sebagai partner keuangan terpercaya untuk komunitas sekolah. Kami berkomitmen membantu anggota mencapai target finansial mereka lewat layanan yang transparan, praktis, dan mudah dijangkau.
             </p>
             <ul>
-              <li><i class="bi bi-check-circle"></i> <span>Memberikan solusi simpan pinjam yang cepat dan aman.</span></li>
-              <li><i class="bi bi-check-circle"></i> <span>Menanamkan nilai kebersamaan dan gotong royong dalam komunitas.</span></li>
-              <li><i class="bi bi-check-circle"></i> <span>Mendukung berbagai kebutuhan finansial dengan layanan profesional dan ramah.</span></li>
+              <li><i class="bi bi-check-circle"></i> <span>Solusi simpan pinjam yang cepat, aman, dan tanpa ribet.</span></li>
+              <li><i class="bi bi-check-circle"></i> <span>Menumbuhkan semangat kebersamaan dan gotong royong di lingkungan komunitas.</span></li>
+              <li><i class="bi bi-check-circle"></i> <span>Melayani kebutuhan finansial dengan pendekatan profesional yang bersahabat.</span></li>
             </ul>
             <a href="{{route('registrasi')}}" class="read-more"><span>Daftar Sekarang</span><i class="bi bi-arrow-right"></i></a>
           </div>
@@ -174,10 +173,10 @@
                   <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                 </div>
                 <p>
-                  Dedikasi tinggi dalam memberikan bimbingan dan pengajaran kepada peserta didik membuat Koperasi STARBIN dikenal sebagai lembaga yang berkualitas dan terpercaya.
+                  Sebagai bagian dari tim Starbin, saya bangga bisa membantu anggota mencapai kestabilan finansial lewat layanan yang adil dan transparan.
                 </p>
                 <div class="profile mt-auto">
-                  <img src="{{asset('landing-template/assets/img/testimonials/testimonials-1.png')}}" class="testimonial-img" alt="">
+                  <img src="{{asset('landing-template/assets/img/testimonials/For-raiden.jpg')}}" class="testimonial-img" alt="">
                   <h3>R.Jihadi Nur Guardin</h3>
                 </div>
               </div>
@@ -189,10 +188,10 @@
                   <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                 </div>
                 <p>
-                  Dengan pendekatan yang penuh perhatian dan metode pengajaran modern, Koperasi STARBIN memastikan setiap peserta dapat berkembang sesuai potensinya.
+                  Kami percaya, koperasi bukan hanya soal uang—tapi juga soal kepercayaan dan kebersamaan. Itulah yang selalu kami jaga di Starbin.
                 </p>
                 <div class="profile mt-auto">
-                  <img src="{{asset('landing-template/assets/img/testimonials/testimonials-2.png')}}" class="testimonial-img" alt="">
+                  <img src="{{asset('landing-template/assets/img/testimonials/for-unknowteteh.jpeg')}}" class="testimonial-img" alt="">
                   <h3>Nia Kurnia</h3>
                 </div>
               </div>
@@ -204,10 +203,10 @@
                   <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                 </div>
                 <p>
-                  Kami percaya bahwa setiap anak memiliki keunikan. Oleh karena itu, staf Koperasi STARBIN bekerja keras untuk memberikan pengalaman belajar yang menyenangkan dan bermakna.
+                  Di Starbin, kami bekerja bukan sekadar menjalankan sistem, tapi ikut mewujudkan impian finansial setiap anggota—dengan sepenuh hati.
                 </p>
                 <div class="profile mt-auto">
-                  <img src="{{asset('landing-template/assets/img/testimonials/testimonials-3.png')}}" class="testimonial-img" alt="">
+                  <img src="{{asset('landing-template/assets/img/testimonials/for-ryan.jpg')}}" class="testimonial-img" alt="">
                   <h3>Ryan Nugraha</h3>
                 </div>
               </div>
@@ -219,11 +218,11 @@
                   <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                 </div>
                 <p>
-                  Program-program Koperasi STARBIN dirancang untuk mendukung pengembangan akademik dan spiritual para peserta didik, membantu mereka meraih kesuksesan dunia dan akhirat.
+                  Mengedepankan layanan tanpa bunga dan denda ringan adalah bentuk komitmen kami agar koperasi terasa lebih manusiawi dan membantu sesama.
                 </p>
                 <div class="profile mt-auto">
-                  <img src="{{asset('landing-template/assets/img/testimonials/testimonials-4.jpg')}}" class="testimonial-img" alt="">
-                  <h3>Ade Suhedin MT</h3>
+                  <img src="{{asset('landing-template/assets/img/testimonials/FOr-arya2.png')}}" class="testimonial-img" alt="">
+                  <h3>M. Arya Permadi</h3>
                 </div>
               </div>
             </div>
@@ -234,17 +233,18 @@
                   <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                 </div>
                 <p>
-                  Dengan kerja sama tim yang solid dan penuh semangat, Koperasi STARBIN terus berinovasi untuk memberikan pendidikan terbaik bagi setiap generasi penerus bangsa.
+                  Kami hadir bukan hanya sebagai staf, tapi sebagai mitra tumbuh bersama. Setiap anggota punya cerita, dan kami bangga menjadi bagian dari perjalanan itu.
                 </p>
                 <div class="profile mt-auto">
-                  <img src="{{asset('landing-template/assets/img/testimonials/testimonials-5.jpg')}}" class="testimonial-img" alt="">
-                  <h3>Lilik Sulistijanto Ekosaputro</h3>
+                  <img src="{{asset('landing-template/assets/img/testimonials/for-nia.jpg')}}" class="testimonial-img" alt="">
+                  <h3>Unknow teteh</h3>
                 </div>
               </div>
             </div>
 
           </div>
           <div class="swiper-pagination"></div>
+        </div>
 
 
     </section><!-- /end sectio staf kami Section -->
@@ -438,12 +438,12 @@
               <div class="accordion-item">
                 <h2 class="accordion-header" id="faqHeadingTwo">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseTwo" aria-expanded="false" aria-controls="faqCollapseTwo">
-                    Bagaimana cara menjadi anggota?
+                    Bagaimana Sistem Pinjaman?
                   </button>
                 </h2>
                 <div id="faqCollapseTwo" class="accordion-collapse collapse" aria-labelledby="faqHeadingTwo" data-bs-parent="#faqAccordion">
                   <div class="accordion-body">
-                    Anda dapat mendaftar dengan mengisi formulir pendaftaran di kantor kami atau melalui website resmi STARBIN.
+                    Pengajuan pinjaman di Starbin sangat mudah. Jatuh tempo akan otomatis ditetapkan 3 bulan sejak tanggal pencairan. Kami tidak memberlakukan bunga pinjaman. Namun, jika melewati jatuh tempo, akan dikenakan denda ringan sebesar 2% per minggu hingga pinjaman dilunasi.
                   </div>
                 </div>
               </div>
@@ -478,10 +478,9 @@
             <span class="sitename">Koperasi STARBIN</span>
           </a>
           <div class="footer-contact pt-3">
-            <p>Binong, Subang</p>
-            <p>Belakang Polsek Binong</p>
-            <p class="mt-3"><strong>Telepon:</strong> <span>62839320238692</span></p>
-            <p><strong>Email:</strong> <span>fahriabdurohman@gmail.com</span></p>
+            <p><strong>Alamat:</strong> {{ $kontak->firstWhere('key', 'alamat')->title ?? '-' }}</p>
+            <p class="mt-3"><strong>Telepon:</strong> <span>{{ $kontak->firstWhere('key', 'telepon')->value ?? '-' }}</span></p>
+            <p><strong>Email:</strong> <span>{{ $kontak->firstWhere('key', 'email')->value ?? '-' }}</span></p>
           </div>
           <div class="social-links d-flex mt-4">
             @foreach ($socialLinks as $link)

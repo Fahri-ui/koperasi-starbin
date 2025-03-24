@@ -30,7 +30,7 @@
                     <!-- Logo & Nama Koperasi -->
                     <div class="d-flex align-items-center ms-3 hidden-content">
                         <div class="logo" style="width: 40px; height: 40px;">
-                            <img src="{{ asset('dist/assets/images/logo/Logo Koperasi STARBIN REAL (1).png') }}" class="hidden-content" alt="Logo" style="width: 100%; height: 100%; object-fit: cover;">
+                            <img src="{{ asset('dist/assets/images/logo/Logo Koperasi STARBIN REAL (1).png') }}" alt="Logo" style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
                         <div class="ms-2 hidden-content">
                             <h6 class="mb-0 text-muted" style="font-size: 12px;">Koperasi</h6>

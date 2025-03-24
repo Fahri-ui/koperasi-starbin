@@ -166,145 +166,7 @@
                     onclick="this.parentElement.style.display='none';" aria-label="Close"></button>
             </div>
             @endif
-
-            @if (auth()->user()->status === 'Belum_Aktif')
-
-            <div class="container mt-4 hidden-content-right">
-                <!-- Card Peringatan -->
-                <div class="card shadow-sm mb-3 hidden-content-right" style="text-align: center; border: 1px solid #d9d9d9; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); margin-bottom: 20px;  padding: 20px;">
-                    <div class="card-body bg-warning text-dark">
-                        <div class="d-flex align-items-center">
-                            <i class="bi bi-exclamation-triangle-fill me-2 fs-4 hidden-content-right"></i>
-                            <div class="hidden-content-right">
-                                <strong>Akun Anda belum aktif!</strong> Untuk mengaktifkannya, silakan lakukan pembayaran simpanan anggota sesuai dengan ketentuan koperasi.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card Form Pembayaran -->
-                <div class="card shadow-sm hidden-content-right">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0" style="color: white;"><i class="bi bi-credit-card"></i> Pembayaran Simpanan Anggota</h5>
-                    </div>
-                    <div class="card-body hidden-content-right" style="margin-top: 30px; text-align: left;">
-                        <form action="{{ route('simpanan.bayar') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <div class="mb-3 hidden-content-right">
-                                <label for="nominal" class="form-label"><i class="bi bi-cash-stack"></i> Nominal Pembayaran</label>
-                                <input type="number" id="nominal" name="nominal" class="form-control" placeholder="Masukkan jumlah simpanan" min="500000" max="500000" required>
-                                <small class="text-muted"><i class="bi bi-info-circle"></i> Nominal wajib adalah Rp 500.000</small>
-                            </div>
-
-                            <div class="mb-3 hidden-content-right">
-                                <label for="metode" class="form-label"><i class="bi bi-wallet2"></i> Metode Pembayaran</label>
-                                <select id="metode" name="metode" class="form-select" required>
-                                    <option value="cash">Tunai (Bayar Langsung)</option>
-                                    <option value="bank">Transfer Bank</option>
-                                    <option value="ewallet">E-Wallet (Dana, OVO, Gopay)</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group hidden-content-right mb-3">
-                                <label for="payment-proof">Unggah Bukti Pembayaran</label>
-                                <input type="file" class="form-control" id="payment-proof" name="payment-proof" accept="image/*" required>
-                                <small class="text-muted" style="font-size:.8rem;"><i class="bi bi-image"></i> Format yang didukung: JPG, JPEG, PNG (max 2MB)</small>
-                            </div>
-
-                            <button type="submit" class="hidden-content-right btn btn-primary w-100"><i class="bi bi-send"></i> Bayar Sekarang</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            @elseif (auth()->user()->status === 'Ditolak')
-            <div class="container mt-4 hidden-content-right">
-                <!-- Card Peringatan Pengajuan Ditolak -->
-                <div class="card shadow-sm mb-3 hidden-content-right">
-                    <div class="card-body bg-danger text-white" style="padding: 30px; border-radius: 10px;">
-                        <div class="d-flex align-items-center hidden-content-right">
-                            <i class="bi bi-x-circle-fill me-4" style="font-size: 3rem; margin-top:-150px;"></i>
-                            <div class="hidden-content-right">
-                                <strong style="font-size: 2.5rem; display: block; margin-bottom: 10px;">Pengajuan Anda Ditolak!</strong>
-                                <p style="font-size: 1.2rem; line-height: 1.5; margin: 0;">
-                                    Mohon maaf, pengajuan simpanan anggota Anda tidak dapat diproses. Silakan periksa kembali data yang Anda kirimkan atau lakukan pembayaran ulang sesuai ketentuan koperasi.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card Form Pembayaran -->
-                <div class="card shadow-sm hidden-content-right">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0" style="color: white;"><i class="bi bi-credit-card"></i> Pembayaran Simpanan Anggota</h5>
-                    </div>
-                    <div class="card-body" style="margin-top: 30px; text-align: left;">
-                        <form action="{{ route('simpanan.bayar') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <div class="mb-3 hidden-content-right">
-                                <label for="nominal" class="form-label"><i class="bi bi-cash-stack"></i> Nominal Pembayaran</label>
-                                <input type="number" id="nominal" name="nominal" class="form-control" placeholder="Masukkan jumlah simpanan" min="500000" max="500000" required>
-                                <small class="text-muted"><i class="bi bi-info-circle"></i> Nominal wajib adalah Rp 500.000</small>
-                            </div>
-
-                            <div class="mb-3 hidden-content-right">
-                                <label for="metode" class="form-label"><i class="bi bi-wallet2"></i> Metode Pembayaran</label>
-                                <select id="metode" name="metode" class="form-select" required>
-                                    <option value="cash">Tunai (Bayar Langsung)</option>
-                                    <option value="bank">Transfer Bank</option>
-                                    <option value="ewallet">E-Wallet (Dana, OVO, Gopay)</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group hidden-content-right mb-3">
-                                <label for="payment-proof">Unggah Bukti Pembayaran</label>
-                                <input type="file" class="form-control" id="payment-proof" name="payment-proof" accept="image/*" required>
-                                <small class="text-muted" style="font-size:.8rem;"><i class="bi bi-image"></i> Format yang didukung: JPG, JPEG, PNG (max 2MB)</small>
-                            </div>
-
-                            <button type="submit" class="hidden-content-right btn btn-primary w-100"><i class="bi bi-send"></i> Bayar Sekarang</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            @elseif (auth()->user()->status === 'Pending')
-            <div class="alert p-4 shadow hidden-content-right" style="background-color: #435ebe; color: #fff; border-radius: 10px;">
-                <div class="d-flex align-items-start">
-                    <i class="bi bi-hourglass-split fs-1 me-3 hidden-content-right" style="color: #ffdd57; margin-top:-15px; padding-right:30px;"></i>
-                    <div class="hidden-content-right">
-                        <h4 class="text-white">Status Pengajuan: <span class="badge" style="background-color: #ffdd57; color: #435ebe;">Pending</span></h4>
-                        <p>Terima kasih telah mengajukan simpanan anggota. Formulir Anda sedang dalam proses verifikasi oleh admin.</p>
-                        <p><i class="bi bi-clock"></i> Estimasi waktu persetujuan: <strong>3 hari kerja</strong></p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card mt-3 shadow text-center hidden-content-right" style="border: 2px solid #435ebe; border-radius: 10px;">
-                <div class="card-header" style="background-color: #435ebe; color: #fff;">
-                    <h5 class="text-white">
-                        <i class="bi bi-file-text text-white hidden-content-right"></i> Detail Pengajuan
-                    </h5>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><strong>Jenis Simpanan:</strong> {{ $simpanan->jenis ?? '-' }}</li>
-                    <li class="list-group-item"><strong>Jumlah:</strong> Rp {{ number_format($simpanan->jumlah, 0, ',', '.') ?? '-' }}</li>
-                    <li class="list-group-item"><strong>Kode Transaksi:</strong> {{ $simpanan->kode_transaksi ?? '-' }}</li>
-                    <li class="list-group-item"><strong>Tanggal Transaksi:</strong>{{ \Carbon\Carbon::parse($simpanan->tanggal_pengajuan)->format('Y-m-d') }}</li>
-                    <li class="list-group-item"><strong>Bukti Pembayaran:</strong>
-                        @if($simpanan->bukti)
-                        <a href="{{ route('bukti.pembayaran', ['bukti' => basename($simpanan->bukti)]) }}" target="_blank" class="btn btn-outline-primary btn-sm" style="border-color: #435ebe; color: #435ebe;">
-                            <i class="bi bi-eye"></i> Lihat Bukti
-                        </a>
-                        @else
-                        Tidak ada
-                        @endif
-                    </li>
-                </ul>
-            </div>
-
-            @elseif (auth()->user()->status === 'Belum_Bayar_Simpanan_Wajib')
+            @if (auth()->user()->status === 'Belum_Bayar_Simpanan_Wajib')
 
             <div class="mb-4 pb-2 border-bottom text-center">
                 <h2 class="fw-bold">
@@ -315,7 +177,7 @@
                 </p>
             </div>
 
-            @if($pinjamanAktif->total_denda > 0)
+            @if($pinjamanAktif && $pinjamanAktif->total_denda > 0)
             <div class="card shadow-lg border-0 mb-4 hidden-content-right" style="text-align: center; border: 1px solid #d9d9d9; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); margin-bottom: 20px;  padding: 20px;">
                 <div class="card-body bg-warning text-dark" style="border: 1px solid #435ebe; border-radius: 10px;">
                     <div class="d-flex align-items-start hidden-content-right">

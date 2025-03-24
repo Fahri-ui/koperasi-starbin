@@ -237,7 +237,7 @@
                                 type="text"
                                 id="search-simpanan"
                                 class="form-control"
-                                placeholder="Cari berdasarkan ID, Nama, Status, dll..."
+                                placeholder="Cari berdasarkan ID, Nama, Status..."
                                 onkeyup="searchSimpanan()"
                                 style="box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);">
                             <button
@@ -258,6 +258,8 @@
                                     <th>ID Simpanan</th>
                                     <th>Nama Anggota</th>
                                     <th>Jumlah Simpanan</th>
+                                    <th>Metode</th>
+                                    <th>Bukti Pembayaran</th>
                                     <th>Tanggal Simpanan</th>
                                     <th>Status</th>
                                 </tr>
@@ -269,9 +271,21 @@
                                     <td class="hidden-content-right">{{ $simpanan->id }}</td>
                                     <td class="hidden-content-right">{{ $simpanan->user->fullname ?? 'Tidak Diketahui' }}</td>
                                     <td class="hidden-content-right">
-                                        <span class="badge bg-info">
+                                        <span class="badge bg-primary">
                                             <i class="bi bi-cash-stack"></i> Rp {{ number_format($simpanan->jumlah, 0, ',', '.') }}
                                         </span>
+                                    </td>
+                                    <td class="hidden-content-right">{{$simpanan->metode_pembayaran}}</td>
+                                    <td class="hidden-content-right">
+                                        @if ($simpanan->bukti)
+                                        <a href="{{ route('admin.bukti.pembayaran', ['bukti' => basename($simpanan->bukti)]) }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                                            <i class="bi bi-receipt"></i> Lihat Bukti
+                                        </a>
+                                        @else
+                                        <span class="badge bg-danger">
+                                            <i class="bi bi-x-circle"></i> <br>
+                                        </span>
+                                        @endif
                                     </td>
                                     <td class="hidden-content-right">{{ \Carbon\Carbon::parse($simpanan->tanggal_transaksi)->format('Y-m-d') }}</td>
                                     <td class="hidden-content-right">

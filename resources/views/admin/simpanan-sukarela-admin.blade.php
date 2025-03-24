@@ -232,7 +232,7 @@
 
                         <!-- Pencarian & Filter -->
                         <div class="row mb-3 hidden-content-right">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="input-group">
                                     <input type="text" id="search-simpanan-sukarela" class="form-control"
                                         placeholder="Cari berdasarkan ID, Nama, atau Jenis Transaksi..." onkeyup="searchSimpananSukarela()"
@@ -241,13 +241,6 @@
                                         <i class="bi bi-x-circle"></i> Bersihkan
                                     </button>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <select id="filter-jenis" class="form-select" onchange="searchSimpananSukarela()">
-                                    <option value="">Semua Transaksi</option>
-                                    <option value="penyetoran">penyetoran</option>
-                                    <option value="penarikan">Penarikan</option>
-                                </select>
                             </div>
                         </div>
 
@@ -260,8 +253,11 @@
                                         <th>ID Simpanan</th>
                                         <th>Nama Anggota</th>
                                         <th>Jumlah Simpanan</th>
+                                        <th>Metode</th>
+                                        <th>Bukti Pembayaran</th>
                                         <th>Tanggal Simpanan</th>
                                         <th>Jenis Transaksi</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tabel-simpanan-sukarela" class="hidden-content-right">
@@ -271,15 +267,43 @@
                                         <td class="hidden-content-right">{{ $simpanan->id }}</td>
                                         <td class="hidden-content-right">{{ $simpanan->user->fullname ?? 'Tidak Diketahui' }}</td>
                                         <td class="hidden-content-right">
-                                            <span class="badge bg-info">
+                                            <span class="badge bg-primary">
                                                 <i class="bi bi-cash-stack"></i> Rp {{ number_format($simpanan->jumlah, 0, ',', '.') }}
                                             </span>
                                         </td>
+                                        <td class="hidden-content-right">{{ $simpanan->metode_pembayaran }}</td>
+                                        <td class="hidden-content-right">
+                                            @if ($simpanan->bukti)
+                                            <a href="{{ route('admin.bukti.pembayaran', ['bukti' => basename($simpanan->bukti)]) }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                                                <i class="bi bi-receipt"></i> Lihat Bukti
+                                            </a>
+                                            @elseif ($simpanan->metode_pembayaran === 'cash')
+                                            <span class="badge bg-secondary">
+                                                <i class="bi bi-cash-stack"></i> Cash
+                                            </span>
+                                            @else
+                                            <span class="badge bg-warning">
+                                                <i class="bi bi-exclamation-circle"></i> Bukti Belum Ada
+                                            </span>
+                                            @endif
+                                        </td>
+
                                         <td class="hidden-content-right">{{ \Carbon\Carbon::parse($simpanan->tanggal_transaksi)->format('Y-m-d') }}</td>
                                         <td class="hidden-content-right">
                                             <span class="badge bg-{{ $simpanan->jenis_transaksi === 'penarikan' ? 'danger' : 'success' }}">
                                                 {{ ucfirst($simpanan->jenis_transaksi) }}
                                             </span>
+                                        </td>
+                                        <td class="hidden-content-right">
+                                            @php
+                                            $statusColors = [
+                                            'Berhasil' => 'success',
+                                            'Dalam Proses' => 'warning',
+                                            'Ditolak' => 'danger',
+                                            ];
+                                            $badgeColor = $statusColors[$simpanan->status] ?? 'secondary';
+                                            @endphp
+                                            <span class="badge bg-{{ $badgeColor }}">{{ ucfirst($simpanan->status) }}</span>
                                         </td>
                                     </tr>
                                     @empty
@@ -329,50 +353,28 @@
     <script src="{{asset('admin-page/assets/js/bootstrap.js')}}"></script>
     <script src="{{asset('admin-page/assets/js/app.js')}}"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const searchInput = document.getElementById("search-simpanan-sukarela");
-            const tableRows = document.querySelectorAll("#tabel-simpanan-sukarela tr");
-
-            searchInput.addEventListener("keyup", function() {
-                const searchText = searchInput.value.toLowerCase();
-
-                tableRows.forEach(row => {
-                    const id = row.cells[0].textContent.toLowerCase();
-                    const nama = row.cells[1].textContent.toLowerCase();
-                    const jenisTransaksi = row.cells[4].textContent.toLowerCase(); // Tambahkan jenis transaksi
-
-                    if (id.includes(searchText) || nama.includes(searchText) || jenisTransaksi.includes(searchText)) {
-                        row.style.display = "";
-                    } else {
-                        row.style.display = "none";
-                    }
-                });
-            });
-        });
-
         function searchSimpananSukarela() {
             let input = document.getElementById("search-simpanan-sukarela").value.toLowerCase();
-            let filterJenis = document.getElementById("filter-jenis").value.toLowerCase();
             let rows = document.querySelectorAll("#tabel-simpanan-sukarela tr");
 
             rows.forEach(row => {
-                let rowText = row.innerText.toLowerCase();
-                let jenisTransaksi = row.cells[5].innerText.toLowerCase();
+                let id = row.cells[1]?.textContent.toLowerCase() || "";
+                let nama = row.cells[2]?.textContent.toLowerCase() || "";
+                let jenisTransaksi = row.cells[7]?.textContent.toLowerCase() || "";
 
-                let matchSearch = rowText.includes(input);
-                let matchFilter = filterJenis === "" || jenisTransaksi.includes(filterJenis);
+                let matchSearch = id.includes(input) || nama.includes(input) || jenisTransaksi.includes(input);
 
-                row.style.display = matchSearch && matchFilter ? "" : "none";
+                row.style.display = matchSearch ? "" : "none";
             });
         }
 
         function resetSearchSimpananSukarela() {
             document.getElementById("search-simpanan-sukarela").value = "";
-            document.getElementById("filter-jenis").value = "";
             searchSimpananSukarela();
         }
     </script>
-     <script>
+
+    <script>
         document.addEventListener("DOMContentLoaded", function() {
             const hiddenElements = document.querySelectorAll(".hidden-content");
 

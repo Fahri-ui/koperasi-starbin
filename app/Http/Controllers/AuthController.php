@@ -61,7 +61,7 @@ class AuthController extends Controller
             'fullname' => 'required|min:5', // Nama lengkap wajib diisi dan minimal 5 karakter
             'email' => 'required|unique:users|email', // Email harus unik dan berbentuk email yang valid
             'password' => 'required|min:8', // Password minimal 8 karakter
-            'phone' => 'required|regex:/^62[0-9]{9,13}$/|min:10|max:15', // Harus dimulai dengan 62 dan panjang 9-13 angka
+            'phone' => 'required', // Harus dimulai dengan 62 dan panjang 9-13 angka
             'address' => 'required|min:15',
             'gambar' => 'required|image|mimes:jpeg,jpg,png,gif|max:2048', // File gambar wajib diunggah dengan format tertentu
         ], [

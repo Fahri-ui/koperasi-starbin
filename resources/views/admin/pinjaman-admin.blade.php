@@ -28,7 +28,7 @@
                 <div class="sidebar-footer d-flex align-items-center justify-content-between py-3 border-bottom hidden-content">
                     <!-- Logo & Nama Koperasi -->
                     <div class="d-flex align-items-center ms-3 hidden-content">
-                        <div class="logo hidden-content" style="width: 40px; height: 40px;">
+                        <div class="logo" style="width: 40px; height: 40px;">
                             <img src="{{ asset('dist/assets/images/logo/Logo Koperasi STARBIN REAL (1).png') }}" alt="Logo" style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
                         <div class="ms-2">
@@ -336,7 +336,7 @@
                                             <td>{{ $index + 1 }}</td>
                                             <td>{{ $item->id ?? 'N/A' }}</td>
                                             <td>{{ $item->user->fullname ?? 'Tidak Diketahui' }}</td>
-                                            <td><span class="badge bg-info">Rp {{ number_format($item->jumlah_pinjaman, 0, ',', '.') }}</span></td>
+                                            <td><span class="badge bg-primary">Rp {{ number_format($item->jumlah_pinjaman, 0, ',', '.') }}</span></td>
                                             <td>
                                                 <span class="badge {{ $item->total_denda > 0 ? 'bg-danger' : 'bg-primary' }}">
                                                     Rp {{ number_format($item->total_denda, 0, ',', '.') }}

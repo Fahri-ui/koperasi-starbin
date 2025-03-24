@@ -379,7 +379,7 @@
                                         </tr>
                                         @empty
                                         <tr>
-                                            <td class="hidden-content-right text-center" colspan="9" class="text-center">
+                                            <td class="hidden-content-right text-center" colspan="10" class="text-center">
                                                 <span class="badge bg-warning"><i class="bi bi-exclamation-circle"></i> Belum ada data pengajuan</span>
                                             </td>
                                         </tr>

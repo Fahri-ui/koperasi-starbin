@@ -55,7 +55,7 @@
 				</div>
 
 				<div class="form-wrapper">
-					<input type="text" name="phone" placeholder="Nomor HP diawali 62 dan terdiri dari 9-13 nomor." class="form-control" required pattern="^62[0-9]{9,13}$">
+					<input type="text" name="phone" placeholder="Nomor HP diawali 08 dan terdiri dari 9-13 nomor." class="form-control" required pattern="^08[0-9]{9,13}$">
 					<i class="zmdi zmdi-phone"></i>
 				</div>
 

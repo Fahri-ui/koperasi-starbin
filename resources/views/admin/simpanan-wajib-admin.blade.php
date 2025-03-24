@@ -30,7 +30,7 @@
                 <div class="sidebar-footer d-flex align-items-center justify-content-between py-3 border-bottom">
                     <!-- Logo & Nama Koperasi -->
                     <div class="d-flex align-items-center ms-3 hidden-content">
-                        <div class="logo hidden-content" style="width: 40px; height: 40px;">
+                        <div class="logo" style="width: 40px; height: 40px;">
                             <img src="{{ asset('dist/assets/images/logo/Logo Koperasi STARBIN REAL (1).png') }}" alt="Logo" style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
                         <div class="ms-2 hidden-content">
@@ -235,7 +235,7 @@
 
                             <!-- Pencarian & Filter -->
                             <div class="row mb-3 hidden-content-right">
-                                <div class="col-md-6 hidden-content-right">
+                                <div class="col-md-12 hidden-content-right">
                                     <div class="input-group">
                                         <input type="text" id="search-simpanan-wajib" class="form-control"
                                             placeholder="Cari ID, Nama, atau Status..." onkeyup="searchSimpananWajib()"
@@ -244,15 +244,6 @@
                                             <i class="bi bi-x-circle"></i> Bersihkan
                                         </button>
                                     </div>
-                                </div>
-                                <div class="col-md-6 hidden-content-right">
-                                    <select id="filter-status" class="form-select" onchange="searchSimpananWajib()">
-                                        <option value="" disabled selected>Filter Berdasarkan Status</option>
-                                        <option value="">Semua Status</option>
-                                        <option value="Ditolak">Ditolak</option>
-                                        <option value="Dalam Proses">Dalam Proses</option>
-                                        <option value="Berhasil">Berhasil</option>
-                                    </select>
                                 </div>
                             </div>
 
@@ -265,6 +256,8 @@
                                             <th>ID Simpanan</th>
                                             <th>Nama Anggota</th>
                                             <th>Jumlah Simpanan</th>
+                                            <th>Metode</th>
+                                            <th>Bukti Pembayaran</th>
                                             <th>Tanggal Simpanan</th>
                                             <th>Status</th>
                                         </tr>
@@ -276,9 +269,21 @@
                                             <td class="hidden-content-right">{{ $simpanan->id }}</td>
                                             <td class="hidden-content-right">{{ $simpanan->user->fullname ?? 'Tidak Diketahui' }}</td>
                                             <td class="hidden-content-right">
-                                                <span class="badge bg-info">
+                                                <span class="badge bg-primary">
                                                     <i class="bi bi-cash-stack"></i> Rp {{ number_format($simpanan->jumlah, 0, ',', '.') }}
                                                 </span>
+                                            </td>
+                                            <td class="hidden-content-right">{{$simpanan->metode_pembayaran}}</td>
+                                            <td class="hidden-content-right">
+                                                @if ($simpanan->bukti)
+                                                <a href="{{ route('admin.bukti.pembayaran', ['bukti' => basename($simpanan->bukti)]) }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                                                    <i class="bi bi-receipt"></i> Lihat Bukti
+                                                </a>
+                                                @else
+                                                <span class="badge bg-danger">
+                                                    <i class="bi bi-x-circle"></i> <br>
+                                                </span>
+                                                @endif
                                             </td>
                                             <td class="hidden-content-right">{{ \Carbon\Carbon::parse($simpanan->tanggal_transaksi)->format('Y-m-d') }}</td>
                                             <td class="hidden-content-right">
@@ -335,49 +340,27 @@
     <script src="{{asset('admin-page/assets/js/bootstrap.js')}}"></script>
     <script src="{{asset('admin-page/assets/js/app.js')}}"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const searchInput = document.getElementById("search-simpanan");
-            const tableRows = document.querySelectorAll("#tabel-simpanan tr");
-
-            searchInput.addEventListener("keyup", function() {
-                const searchText = searchInput.value.toLowerCase();
-
-                tableRows.forEach(row => {
-                    const id = row.cells[0].textContent.toLowerCase();
-                    const nama = row.cells[1].textContent.toLowerCase();
-
-                    if (id.includes(searchText) || nama.includes(searchText)) {
-                        row.style.display = "";
-                    } else {
-                        row.style.display = "none";
-                    }
-                });
-            });
-        });
-
         function searchSimpananWajib() {
             let input = document.getElementById("search-simpanan-wajib").value.toLowerCase();
-            let filterStatus = document.getElementById("filter-status").value.toLowerCase();
             let rows = document.querySelectorAll("#tabel-simpanan-wajib tr");
 
             rows.forEach(row => {
-                let rowText = row.innerText.toLowerCase();
-                let status = row.cells[5].innerText.toLowerCase();
+                let id = row.cells[1]?.textContent.toLowerCase() || "";
+                let nama = row.cells[2]?.textContent.toLowerCase() || "";
+                let status = row.cells[7]?.textContent.toLowerCase() || "";
 
-                let matchSearch = rowText.includes(input);
-                let matchFilter = filterStatus === "" || status.includes(filterStatus);
+                let matchSearch = id.includes(input) || nama.includes(input) || status.includes(input);
 
-                row.style.display = matchSearch && matchFilter ? "" : "none";
+                row.style.display = matchSearch ? "" : "none";
             });
         }
 
         function resetSearchSimpananWajib() {
             document.getElementById("search-simpanan-wajib").value = "";
-            document.getElementById("filter-status").value = "";
             searchSimpananWajib();
         }
     </script>
-     <script>
+    <script>
         document.addEventListener("DOMContentLoaded", function() {
             const hiddenElements = document.querySelectorAll(".hidden-content");
 

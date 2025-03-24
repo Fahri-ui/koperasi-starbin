@@ -78,6 +78,25 @@
                 <!-- Sidebar Menu -->
                 <div class="sidebar-menu">
                     <ul class="menu">
+                        @if (in_array(auth()->user()->status, ['Belum_Aktif', 'Pending', 'Ditolak']))
+                        <li class="sidebar-item active hidden-content">
+                            <a href="{{ route('user') }}" class='sidebar-link'>
+                                <i class="bi bi-person-fill-lock"></i>
+                                <span>Aktifasi Akun</span>
+                            </a>
+                        </li>
+
+                        <!-- KELUAR -->
+                        <li class="sidebar-item border-top pt-3 mt-4 hidden-content">
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn btn-link sidebar-link text-danger">
+                                    <i class="bi bi-box-arrow-right text-danger"></i>
+                                    <span>Keluar</span>
+                                </button>
+                            </form>
+                        </li>
+                        @else
                         <li class="sidebar-title mt-4 hidden-content">Menu</li>
 
                         <li class="sidebar-item active hidden-content">
@@ -145,6 +164,7 @@
                                 </button>
                             </form>
                         </li>
+                        @endif
                     </ul>
                 </div>
             </div>
@@ -330,7 +350,7 @@
                 <h2 class="mb-0 fw-bold hidden-content-right">Beranda</h2>
             </div>
 
-            @if($pinjamanAktif->total_denda > 0)
+            @if(optional($pinjamanAktif)->total_denda > 0)
             <div class="card shadow-lg border-0 mb-4 hidden-content-right" style="text-align: center; border: 1px solid #d9d9d9; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); margin-bottom: 20px;  padding: 20px;">
                 <div class="card-body bg-warning text-dark" style="border: 1px solid #435ebe; border-radius: 10px;">
                     <div class="d-flex align-items-start hidden-content-right">
@@ -798,9 +818,9 @@
                                             $statusColors = [
                                             'Dalam Proses' => 'warning',
                                             'Ditolak' => 'danger',
-                                            'Aktif' => 'primary',
+                                            'Aktif' => 'info',
                                             'Lunas' => 'success',
-                                            'Berhasil' => 'success'
+                                            'Berhasil' => 'primary'
                                             ];
                                             $badgeColor = $statusColors[$transaksi['status']] ?? 'secondary';
                                             @endphp
@@ -1020,9 +1040,9 @@
                                             $statusColors = [
                                             'Dalam Proses' => 'warning',
                                             'Ditolak' => 'danger',
-                                            'Aktif' => 'primary',
+                                            'Aktif' => 'info',
                                             'Lunas' => 'success',
-                                            'Berhasil' => 'success'
+                                            'Berhasil' => 'primary'
                                             ];
                                             $badgeColor = $statusColors[$transaksi['status']] ?? 'secondary';
                                             @endphp
