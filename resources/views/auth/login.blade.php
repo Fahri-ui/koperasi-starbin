@@ -1,90 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<title>Login</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<link href="images/Logo Koperasi STARBIN REAL (1).png" rel="icon">
-<!--===============================================================================================-->	
-	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
-<!--===============================================================================================-->
+	<!--===============================================================================================-->
+	<link rel="icon" type="image/png" href="images/icons/favicon.ico" />
+	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{asset('login-template/vendor/bootstrap/css/bootstrap.min.css')}}">
-<!--===============================================================================================-->
+	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{asset('login-template/fonts/font-awesome-4.7.0/css/font-awesome.min.css')}}">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{{asset('login-template/fonts/iconic/css/material-design-iconic-font.min.css')}}">
-<!--===============================================================================================-->
+	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{asset('login-template/vendor/animate/animate.css')}}">
-<!--===============================================================================================-->	
+	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{asset('login-template/vendor/css-hamburgers/hamburgers.min.css')}}">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{{asset('login-template/vendor/animsition/css/animsition.min.css')}}">
-<!--===============================================================================================-->
+	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{asset('login-template/vendor/select2/select2.min.css')}}">
-<!--===============================================================================================-->	
-	<link rel="stylesheet" type="text/css" href="{{asset('login-template/vendor/daterangepicker/daterangepicker.css')}}">
-<!--===============================================================================================-->
+	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{asset('login-template/css/util.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{asset('login-template/css/main.css')}}">
-<!--===============================================================================================-->
+	<!--===============================================================================================-->
 </head>
-<style>
-	.poto-profil {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin: 0 auto;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    margin-bottom: 30px;
-}
-
-.poto-profil img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-</style>
 <body>
-	
 	<div class="limiter">
-		<div class="container-login100" style="background-image: url('{{asset ("login-template/images/bg-01.jpg")}}');">
+		<div class="container-login100">
 			<div class="wrap-login100">
-				<form class="login100-form validate-form" method="POST" action="{{ route('login') }}">
-                    @csrf
-					<div class="poto-profil">
-						<img src="{{asset ('login-template/images/Logo Koperasi STARBIN.png')}}"></img>
-					</div>
+				<div class="login100-pic js-tilt" data-tilt>
+					<img src="{{ asset('login-template/images/Logo Koperasi STARBIN.png') }}" alt="IMG">
+				</div>
 
-					<span class="login100-form-title p-b-34 p-t-27">
+				<form class="login100-form validate-form" method="POST" action="{{ route('login') }}">
+					@csrf
+					<span class="login100-form-title">
 						Login
 					</span>
-					<!-- jika gagal -->
-					@if ($errors->any())
-                        <div class="alert alert-danger" style="background-color: salmon; color:aliceblue; border-radius:20px;">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
 
-                    <!--jika sukses  -->
-                    @if (Session::has('success'))
-                        <div class="alert alert-success"  style="background-color: lightgreen; color:aliceblue; border-radius:20px;">
-                            {{ Session::get('success') }}
-                        </div>
-                    @endif
-					<div class="wrap-input100 validate-input" data-validate = "Enter a valid email">
+					@if ($errors->any())
+					<div class="alert alert-danger" style="background-color: salmon; color: aliceblue; border-radius: 20px;">
+						<ul>
+							@foreach ($errors->all() as $error)
+							<li>{{ $error }}</li>
+							@endforeach
+						</ul>
+					</div>
+					@endif
+
+					@if (Session::has('success'))
+					<div class="alert alert-success" style="background-color: lightgreen; color: aliceblue; border-radius: 20px;">
+						{{ Session::get('success') }}
+					</div>
+					@endif
+
+					<div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
 						<input class="input100" type="email" name="email" placeholder="Email" required>
-						<span class="focus-input100" data-placeholder="&#xf207;"></span>
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-envelope" aria-hidden="true"></i>
+						</span>
 					</div>
 
-					<div class="wrap-input100 validate-input" data-validate="Enter password">
+					<div class="wrap-input100 validate-input" data-validate="Password is required">
 						<input class="input100" type="password" name="password" placeholder="Password" required>
-						<span class="focus-input100" data-placeholder="&#xf191;"></span>
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-lock" aria-hidden="true"></i>
+						</span>
 					</div>
 
 					<div class="container-login100-form-btn">
@@ -93,9 +75,9 @@
 						</button>
 					</div>
 
-					<div class="text-center p-t-90 ">
-						Belum punya akun? 
-						<a class="txt1 register " href="{{ route('registrasi') }}">
+					<div class="text-center p-t-90">
+						Belum punya akun?
+						<a class="txt1 register" style="color:aliceblue;" href="{{ route('registrasi') }}">
 							Registrasi Disini
 						</a>
 					</div>
@@ -103,26 +85,27 @@
 			</div>
 		</div>
 	</div>
-	
 
-	<div id="dropDownSelect1"></div>
-	
-<!--===============================================================================================-->
+
+
+
+	<!--===============================================================================================-->
 	<script src="{{asset('login-template/vendor/jquery/jquery-3.2.1.min.js')}}"></script>
-<!--===============================================================================================-->
-	<script src="{{asset('login-template/vendor/animsition/js/animsition.min.js')}}"></script>
-<!--===============================================================================================-->
+	<!--===============================================================================================-->
 	<script src="{{asset('login-template/vendor/bootstrap/js/popper.js')}}"></script>
 	<script src="{{asset('login-template/vendor/bootstrap/js/bootstrap.min.js')}}"></script>
-<!--===============================================================================================-->
+	<!--===============================================================================================-->
 	<script src="{{asset('login-template/vendor/select2/select2.min.js')}}"></script>
-<!--===============================================================================================-->
-	<script src="{{asset('login-template/vendor/daterangepicker/moment.min.js')}}"></script>
-	<script src="{{asset('login-template/vendor/daterangepicker/daterangepicker.js')}}"></script>
-<!--===============================================================================================-->
-	<script src="{{asset('login-template/vendor/countdowntime/countdowntime.js')}}"></script>
-<!--===============================================================================================-->
+	<!--===============================================================================================-->
+	<script src="{{asset('login-template/vendor/tilt/tilt.jquery.min.js')}}"></script>
+	<script>
+		$('.js-tilt').tilt({
+			scale: 1.1
+		})
+	</script>
+	<!--===============================================================================================-->
 	<script src="{{asset('login-template/js/main.js')}}"></script>
 
 </body>
+
 </html>

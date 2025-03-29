@@ -1,4 +1,4 @@
-/*--
+  /*--
 Author: Colorlib
 Author URL: https://colorlib.com
 License: Creative Commons Attribution 3.0 Unported
@@ -111,13 +111,14 @@ img {
 body {
   background:#254dff;
   /* fallback for old browsers */
-  background: -webkit-linear-gradient(to bottom, #254dff, #8cb0ff);
-  background: -moz-linear-gradient(to bottom,#254dff,#8cb0ff);
-  background: -o-linear-gradient(to bottom,#254dff,#8cb0ff);
-  background: linear-gradient(to bottom,#254dff,#8cb0ff);
-  background-size: cover;
-  background-attachment: fixed;
-  font-family: 'Roboto', sans-serif;
+   /* Tambahkan properti berikut untuk responsivitas */
+   background-size: cover;           /* Memastikan background memenuhi area */
+   background-position: center;      /* Memusatkan posisi background */
+   background-repeat: no-repeat;     /* Mencegah gambar berulang */
+   background: -webkit-linear-gradient(-135deg, 939dcf, #6a6afb);
+   background: -o-linear-gradient(-135deg, #939dcf, #6a6afb);
+   background: -moz-linear-gradient(-135deg, #939dcf, #6a6afb);
+   background: linear-gradient(-135deg, #939dcf, #6a6afb);
 }
 
 h1 {
@@ -144,6 +145,7 @@ h1 {
 
 .agileits-top {
   padding: 3em;
+  background: rgba(255, 255, 255, 0.2); /* Transparan agar blur terlihat */
 }
 
 input[type="text"], input[type="email"], input[type="password"] {
@@ -226,7 +228,7 @@ input[type="submit"]:hover {
   -o-transition: .5s all;
   -ms-transition: .5s all;
   transition: .5s all;
-  background:#8cb0ff;
+  background:#164dc4;
 }
 
 .agileits-top p {
