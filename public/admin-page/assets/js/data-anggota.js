@@ -27,56 +27,63 @@ function resetSearch() {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-  document.querySelectorAll(".role-select").forEach(select => {
-      select.addEventListener("change", function() {
-          let userId = this.getAttribute("data-user-id");
-          let newRole = this.value;
-          let originalRole = this.getAttribute("data-original-role");
-
-          Swal.fire({
-              title: 'Konfirmasi Ubah Role',
-              text: `Anda yakin ingin mengubah role pengguna ini menjadi ${newRole}?`,
-              icon: 'warning',
-              showCancelButton: true,
-              confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Ya, Ubah!',
-              cancelButtonText: 'Batal'
-          }).then((result) => {
-              if (result.isConfirmed) {
-                  fetch(updateRoleUrl, {
-                      method: "POST",
-                      headers: {
-                          "X-CSRF-TOKEN": csrfToken,
-                          "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify({
-                          id: userId,
-                          role: newRole
-                      })
-                  })
-                  .then(response => response.json())
-                  .then(data => {
-                      if (data.success) {
-                          Swal.fire('Berhasil!', data.message, 'success');
-                          select.setAttribute("data-original-role", newRole);
-                      } else {
-                          Swal.fire('Gagal!', 'Terjadi kesalahan saat mengubah role.', 'error');
-                          select.value = originalRole; // Kembalikan ke role sebelumnya jika gagal
-                      }
-                  })
-                  .catch(error => {
-                      console.error("Error:", error);
-                      Swal.fire('Error!', 'Terjadi kesalahan pada server.', 'error');
-                      select.value = originalRole;
-                  });
-              } else {
-                  select.value = originalRole;
-              }
-          });
-      });
-  });
-});
+    document.querySelectorAll(".role-select").forEach(select => {
+        select.addEventListener("change", function() {
+            let userId = this.getAttribute("data-user-id");
+            let newRole = this.value;
+            let originalRole = this.getAttribute("data-original-role");
+  
+            Swal.fire({
+                title: 'Konfirmasi Ubah Role',
+                text: `Anda yakin ingin mengubah role pengguna ini menjadi ${newRole}?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Ubah!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(updateRoleUrl, {
+                        method: "POST",
+                        headers: {
+                            "X-CSRF-TOKEN": csrfToken,
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            id: userId,
+                            role: newRole
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                title: 'Berhasil!',
+                                text: data.message,
+                                icon: 'success',
+                                timer: 1500,
+                                showConfirmButton: false
+                            }).then(() => {
+                                location.reload(); // REFRESH PAGE SETELAH BERHASIL
+                            });
+                        } else {
+                            Swal.fire('Gagal!', 'Terjadi kesalahan saat mengubah role.', 'error');
+                            select.value = originalRole; // Kembalikan ke role sebelumnya jika gagal
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        Swal.fire('Error!', 'Terjadi kesalahan pada server.', 'error');
+                        select.value = originalRole;
+                    });
+                } else {
+                    select.value = originalRole;
+                }
+            });
+        });
+    });
+  });  
 
 function getDetail(userId) {
   fetch(`/admin/user-summary/${userId}`)

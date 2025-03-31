@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pinjaman Koperasi STARBIN</title>
+    <title>Angsuran Koperasi STARBIN</title>
 
     <link rel="stylesheet" href="{{asset('admin-page/assets/css/main/app.css')}}">
     <link rel="stylesheet" href="{{asset('admin-page/assets/css/main/app-dark.css')}}">
@@ -89,13 +89,13 @@
                                 <li class="submenu-item"><a href="{{ route('simpanananggota') }}">Simpanan Anggota</a></li>
                             </ul>
                         </li>
-                        <li class="sidebar-item active hidden-content">
+                        <li class="sidebar-item  hidden-content">
                             <a href="{{ route('pinjamanadmin') }}" class="sidebar-link">
                                 <i class="bi bi-cash-stack"></i>
                                 <span>Data Pinjaman</span>
                             </a>
                         </li>
-                        <li class="sidebar-item hidden-content">
+                        <li class="sidebar-item active hidden-content">
                             <a href="{{ route('dataangsuran') }}" class="sidebar-link">
                                 <i class="bi bi-arrow-repeat"></i>
                                 <span>Data Angsuran</span>
@@ -218,13 +218,13 @@
                 @endif
                 <section class="mb-4">
                     <h3 class="text-center bold  hidden-content-right">
-                        <i class="bi bi-cash-stack"></i> Pinjaman
+                        <i class="bi bi-cash-stack"></i> Angsuran
                     </h3>
                     <hr style="border-top: 2px solid black; margin-bottom: 30px;">
                     <div class="card shadow" style="border: 1px solid #435ebe;">
                         <div class="card-header bg-primary text-white">
                             <h5 class="mb-0 text-white">
-                                <i class="bi bi-cash-stack"></i> Data Pinjaman Anggota
+                                <i class="bi bi-arrow-repeat"></i> Data Pinjaman Anggota
                             </h5>
                         </div>
                         <div class="card-body hidden-content-right">
@@ -249,65 +249,70 @@
                             </div>
 
                             <!-- Tabel Pinjaman -->
-                            <div style="max-height: 700px; overflow:auto; font-size:.8rem;">
-                                <table class="table table-striped hidden-content-right">
-                                    <thead class="table-dark hidden-content-right">
+                            <div style="max-height: 1000px; overflow:auto; font-size:.8rem;">
+                                <table class="table table-hover hidden-content-right">
+                                    <thead class="table-primary hidden-content-right">
                                         <tr>
                                             <th>No</th>
                                             <th>ID Pinjaman</th>
                                             <th>Nama</th>
-                                            <th>Jumlah</th>
-                                            <th>Denda</th>
+                                            <th>Nominal Bayar</th>
+                                            <th>Tanggal Bayar</th>
                                             <th>Sisa Angsuran</th>
-                                            <th>Tanggal Pengajuan</th>
-                                            <th>Tanggal Jatuh Tempo</th>
-                                            <th>Jenis Jaminan</th>
-                                            <th>Bukti Jaminan</th>
+                                            <th>Sisa Denda</th>
+                                            <th>Metode</th>
+                                            <th>Bukti</th>
                                             <th>Status</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="pinjaman-table-body hidden-content-right">
-                                        @forelse ($pinjaman as $index => $item)
+                                    <tbody class="hidden-content-right">
+                                        @forelse ($angsuran as $index => $data)
                                         <tr>
                                             <td class="hidden-content-right">{{ $index + 1 }}</td>
-                                            <td class="hidden-content-right">{{ $item->id ?? 'N/A' }}</td>
-                                            <td class="hidden-content-right">{{ $item->user->fullname ?? 'Tidak Diketahui' }}</td>
+                                            <td class="hidden-content-right">{{ $data->pinjaman_id }}</td>
+                                            <td class="hidden-content-right">{{ $data->user->fullname }}</td>
                                             <td class="hidden-content-right">
-                                                <span class="badge bg-info">
-                                                    Rp {{ number_format($item->jumlah_pinjaman, 0, ',', '.') }}
+                                                <span class="badge bg-success">
+                                                    Rp {{ number_format($data->jumlah_pembayaran, 0, ',', '.') }}
+                                                </span>
+                                            </td>
+                                            <td class="hidden-content-right">{{ \Carbon\Carbon::parse($data->tanggal_bayar)->format('d-m-Y') }}</td>
+                                            <td class="hidden-content-right">
+                                                <span class="badge {{ $data->pinjaman->sisa_angsuran > 0 ? 'bg-warning' : 'bg-primary' }}">
+                                                    {{ $data->pinjaman->sisa_angsuran > 0 ? 'Rp ' . number_format($data->pinjaman->sisa_angsuran, 0, ',', '.') : 'Sudah Lunas' }}
                                                 </span>
                                             </td>
                                             <td class="hidden-content-right">
-                                                <span class="badge {{ $item->total_denda > 0 ? 'bg-danger' : 'bg-primary' }}">
-                                                    Rp {{ number_format($item->total_denda, 0, ',', '.') }}
+                                                <span class="badge {{ $data->pinjaman->total_denda > 0 ? 'bg-danger' : 'bg-primary' }}">
+                                                    Rp {{ number_format($data->pinjaman->total_denda, 0, ',', '.') }}
                                                 </span>
                                             </td>
+                                            <td class="hidden-content-right">{{ $data->metode_pembayaran }}</td>
                                             <td class="hidden-content-right">
-                                                <span class="badge {{ $item->sisa_angsuran > 0 ? 'bg-warning' : 'bg-success' }}">
-                                                    {{ $item->sisa_angsuran > 0 ? 'Rp ' . number_format($item->sisa_angsuran, 0, ',', '.') : 'Sudah Lunas' }}
-                                                </span>
-                                            </td>
-                                            <td class="hidden-content-right">{{ \Carbon\Carbon::parse($item->tanggal_pengajuan)->format('d F Y') }}</td>
-                                            <td class="hidden-content-right">{{ \Carbon\Carbon::parse($item->tanggal_jatuh_tempo)->format('d F Y') }}</td>
-                                            <td>{{ $item->jenis_jaminan}}</td>
-                                            <td class="hidden-content-right">
-                                                @if($item->file_jaminan)
-                                                <a href="{{ route('bukti.jaminan.admin', ['bukti' => basename($item->file_jaminan)]) }}" target="_blank" class="btn btn-outline-info btn-sm"><i class="bi bi-eye"></i></a>
+                                                @if(!empty($data->bukti_pembayaran))
+                                                <a href="{{ route('admin.bukti.pembayaran', ['bukti' => basename($data->bukti_pembayaran)]) }}" target="_blank" class="btn btn-sm btn-outline-info">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
                                                 @else
                                                 <span class="badge bg-secondary">Tidak Ada</span>
                                                 @endif
                                             </td>
                                             <td class="hidden-content-right">
-                                                <span class="badge bg-{{ $item->status === 'Lunas' ? 'success' : ($item->status === 'Ditolak' ? 'danger' : 'primary') }}">
-                                                    {{ ucfirst($item->status ?? '-') }}
-                                                </span>
+                                                @php
+                                                $statusColors = [
+                                                'Dalam Proses' => 'warning',
+                                                'Ditolak' => 'danger',
+                                                'Berhasil' => 'success'
+                                                ];
+                                                $badgeColor = $statusColors[$data->status] ?? 'secondary';
+                                                @endphp
+                                                <span class="badge bg-{{ $badgeColor }}">{{ $data->status }}</span>
                                             </td>
-                                        </tr>
-                                        @empty
+                                            @empty
                                         <tr>
-                                            <td class="hidden-content-right" colspan="7" class="text-center">
+                                            <td class="hidden-content-right" colspan="12" class="text-center">
                                                 <span class="badge bg-warning">
-                                                    <i class="bi bi-exclamation-circle"></i> Tidak ada riwayat pinjaman.
+                                                    <i class="bi bi-exclamation-circle"></i> Belum ada data angsuran
                                                 </span>
                                             </td>
                                         </tr>
@@ -321,9 +326,9 @@
                                 <!-- Card Total Pinjaman -->
                                 <div class="card flex-fill text-center" style="box-shadow: 0 0px 7px 2px rgba(0, 0, 0, 0.1); min-width: 250px;">
                                     <div class="card-body">
-                                        <h4 class="fw-bold">Ditolak</h4>
+                                        <h4 class="fw-bold">jumlah data transaksi</h4>
                                         <h3 class="text-danger">
-                                            <i class="bi bi-x-circle-fill"></i>  {{ $jumlahProses }}
+                                            <i class="bi bi-x-circle-fill"></i> {{ number_format($jumlahTransaksi, 0, ',', '.') }} Transaksi
                                         </h3>
                                     </div>
                                 </div>
@@ -331,9 +336,9 @@
                                 <!-- Card Status Aktif -->
                                 <div class="card flex-fill text-center" style="box-shadow: 0 0px 7px 2px rgba(0, 0, 0, 0.1); min-width: 250px;">
                                     <div class="card-body">
-                                        <h4 class="fw-bold">Aktif</h4>
-                                        <h3 class="text-primary">
-                                            <i class="bi bi-check-circle-fill"></i> {{ $jumlahMenunggak }}
+                                        <h4 class="fw-bold">Dalam Proses</h4>
+                                        <h3 class="text-warning">
+                                            <i class="bi bi-info-circle"></i> Rp {{ number_format($totalTertunda, 0, ',', '.') }}
                                         </h3>
                                     </div>
                                 </div>
@@ -341,9 +346,9 @@
                                 <!-- Card Status Lunas -->
                                 <div class="card flex-fill text-center" style="box-shadow: 0 0px 7px 2px rgba(0, 0, 0, 0.1); min-width: 250px;">
                                     <div class="card-body">
-                                        <h4 class="fw-bold">Lunas</h4>
+                                        <h4 class="fw-bold">Berhasil</h4>
                                         <h3 class="text-success">
-                                            <i class="bi bi-check-lg"></i> {{ $jumlahLunas }}
+                                            <i class="bi bi-check-lg"></i> Rp {{ number_format($totalDisetujui, 0, ',', '.') }}
                                         </h3>
                                     </div>
                                 </div>
@@ -351,9 +356,9 @@
                                 <!-- Card Status Ditolak -->
                                 <div class="card flex-fill text-center" style="box-shadow: 0 0px 7px 2px rgba(0, 0, 0, 0.1); min-width: 250px;">
                                     <div class="card-body">
-                                        <h4 class="fw-bold">Total Pinjaman</h4>
-                                        <h3 class="text-info">
-                                            <i class="bi bi-currency-dollar"></i>  Rp {{ number_format($totalPinjaman, 0, ',', '.') }}
+                                        <h4 class="fw-bold">Total Angsuran</h4>
+                                        <h3 class="text-primary">
+                                            <i class="bi bi-currency-dollar"></i> Rp {{ number_format($jumlahTransaksi, 0, ',', '.') }}
                                         </h3>
                                     </div>
                                 </div>

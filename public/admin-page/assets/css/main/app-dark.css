@@ -1,3 +1,4 @@
+
 @charset "UTF-8";
 body.theme-dark {
     --bs-blue: #435ebe;
@@ -8437,3 +8438,11 @@ body.theme-dark .was-validated :invalid ~ .invalid-feedback,
 body.theme-dark .was-validated :invalid ~ .invalid-tooltip {
     display: block;
 }
+    html, body {
+        overflow-x: hidden; /* Hilangkan scroll horizontal */
+        width: 100vw; /* Pastikan lebar tetap sesuai layar */
+    }
+
+    * {
+        box-sizing: border-box; /* Hindari elemen melebar karena padding atau border */
+    }

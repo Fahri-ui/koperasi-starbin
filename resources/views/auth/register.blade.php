@@ -44,7 +44,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 								{{ Session::get('success') }}
 							</div>
 						@endif
-						<input class="text" type="text" name="fullname" placeholder="Nama Lengkap" style="border-radius: 20px;" required>
+						<input class="text" type="text" name="fullname" placeholder="Nama Lengkap" style="border-radius: 20px;" min="5" required>
 						<input class="text email" type="email" name="email" placeholder="Email" style="border-radius: 20px;" required>
 						<input class="text" type="password" name="password" placeholder="Password" style="border-radius: 20px;" required>
 						<input class="text" type="text" name="phone" placeholder="Nomor Telepon" style="border-radius: 20px; margin: 40px 0;" required>

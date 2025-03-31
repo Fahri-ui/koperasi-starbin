@@ -89,7 +89,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/Simpanan-Anggota', [SimpananAnggotaAdminController::class, 'simpanananggota'])->name('simpanananggota');
         // pinjaman
         Route::get('/admin/Pinjaman', [PinjmanAdminController::class, 'pinjamanadmin'])->name('pinjamanadmin');
-        // Angsuran
+        // angsuran
+        Route::get('/admin/DataAngsuran', [PinjmanAdminController::class, 'angsuran'])->name('dataangsuran');
+        // data pengajuan Angsuran
         Route::get('/admin/Angsuran', [AngsuranAdminController::class, 'index'])->name('angsuran');
         Route::post('/approve/{id}', [AngsuranAdminController::class, 'approve'])->name('admin.setujui.angsuran');
         Route::post('/reject/{id}', [AngsuranAdminController::class, 'reject'])->name('admin.tolak.angsuran');

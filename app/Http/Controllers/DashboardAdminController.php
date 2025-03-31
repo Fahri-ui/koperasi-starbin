@@ -64,7 +64,7 @@ class DashboardAdminController extends Controller
         $SeluruhtotalSimpananAnggota = Simpanan::where('jenis', 'anggota')
             ->where('status', 'Berhasil') // Hanya hitung yang berhasil
             ->sum('jumlah');
-        
+
         // Menghitung total pinjaman yang diajukan
         $totalPinjaman =  Pinjaman::whereIn('status', ['Aktif', 'Lunas'])->sum('jumlah_pinjaman');
 
@@ -110,12 +110,23 @@ class DashboardAdminController extends Controller
             ->pluck('total', 'bulan')
             ->toArray();
 
+        // Ambil data denda per bulan dari tabel pinjaman
+        $dendaBulanan = DB::table('pinjaman')
+            ->select(DB::raw('DATE_FORMAT(created_at, "%b") as bulan'), DB::raw('SUM(total_denda) as total'))
+            ->whereYear('created_at', date('Y')) // Ambil hanya data dalam tahun ini
+            ->whereNotNull('total_denda') // Pastikan hanya data yang memiliki denda
+            ->groupBy('bulan')
+            ->orderBy(DB::raw('STR_TO_DATE(bulan, "%b")')) // Urutkan sesuai urutan bulan
+            ->pluck('total', 'bulan')
+            ->toArray();
+
 
         return view('admin.dashboard-admin', compact(
             'jumlahAnggota',
             'jumlahSimpananWajib',
             'jumlahSimpananSukarela',
             'jumlahPinjaman',
+            'dendaBulanan',
             'jumlahAngsuran',
             'jumlahPengajuan',
             'totalSimpananWajib',
