@@ -19,28 +19,28 @@
         <div id="sidebar" class="active">
             <div class="sidebar-wrapper active">
                 <div class="sidebar-header position-relative ">
-                    <div class="user-info text-center mt-3 pb-3">
-                        <img src="{{ asset('picture/account/' . Auth::user()->gambar) }}" class="rounded-circle" alt="User Avatar" style="width: 150px; height: 150px; object-fit: cover;">
-                        <h3 class="mt-2 mb-0 ">{{ Auth::user()->fullname }}</h3>
-                        <small class="text-muted">{{ Auth::user()->role }}</small>
+                    <div class="user-info text-center mt-3 pb-3 hidden-content">
+                        <img src="{{ asset('picture/account/' . Auth::user()->gambar) }}" class="rounded-circle hidden-content" alt="User Avatar" style="width: 150px; height: 150px; object-fit: cover;">
+                        <h3 class="mt-2 mb-0 hidden-content">{{ Auth::user()->fullname }}</h3>
+                        <small class="text-muted hidden-content">{{ Auth::user()->role }}</small>
                     </div>
                 </div>
 
 
                 <div class="sidebar-footer d-flex align-items-center justify-content-between py-3 border-bottom">
                     <!-- Logo & Nama Koperasi -->
-                    <div class="d-flex align-items-center ms-3">
-                        <div class="logo" style="width: 40px; height: 40px;">
+                    <div class="d-flex align-items-center ms-3 hidden-content">
+                        <div class="logo hidden-content" style="width: 40px; height: 40px;">
                             <img src="{{ asset('dist/assets/images/logo/Logo Koperasi STARBIN REAL (1).png') }}" alt="Logo" style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
-                        <div class="ms-2">
+                        <div class="ms-2 hidden-content">
                             <h6 class="mb-0 text-muted" style="font-size: 12px;">Koperasi</h6>
                             <h5 class="mb-0 text-primary fw-bold" style="font-size: 14px;">STARBIN</h5>
                         </div>
                     </div>
 
                     <!-- Theme Toggle -->
-                    <div class="theme-toggle d-flex align-items-center gap-2 me-3">
+                    <div class="theme-toggle d-flex align-items-center gap-2 me-3 hidden-content">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 21 21">
                             <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M10.5 14.5c2.219 0 4-1.763 4-3.982a4.003 4.003 0 0 0-4-4.018c-2.219 0-4 1.781-4 4c0 2.219 1.781 4 4 4zM4.136 4.136L5.55 5.55m9.9 9.9l1.414 1.414M1.5 10.5h2m14 0h2M4.135 16.863L5.55 15.45m9.899-9.9l1.414-1.415M10.5 19.5v-2m0-14v-2"></path>
@@ -58,14 +58,14 @@
                 <div class="sidebar-menu">
                     <ul class="menu">
                         <!-- MENU UTAMA -->
-                        <li class="sidebar-title border-bottom pb-2 text-uppercase text-secondary fw-bold fs-6 pt-3">Menu Utama</li>
-                        <li class="sidebar-item ">
+                        <li class="hidden-content sidebar-title border-bottom pb-2 text-uppercase text-secondary fw-bold fs-6 pt-3">Menu Utama</li>
+                        <li class="sidebar-item  hidden-content">
                             <a href="{{ route('min') }}" class="sidebar-link">
                                 <i class="bi bi-house-door-fill"></i>
                                 <span>Beranda</span>
                             </a>
                         </li>
-                        <li class="sidebar-item mb-4">
+                        <li class="sidebar-item mb-4 hidden-content">
                             <a href="{{ route('profiladmin') }}" class="sidebar-link">
                                 <i class="bi bi-person-badge-fill"></i>
                                 <span>Profil</span>
@@ -73,14 +73,14 @@
                         </li>
 
                         <!-- PENGELOLAAN DATA -->
-                        <li class="sidebar-title border-top border-bottom pb-2 pt-3 mt-4 text-uppercase text-secondary fw-bold fs-6">Pengelolaan Data</li>
-                        <li class="sidebar-item">
+                        <li class="hidden-content sidebar-title border-top border-bottom pb-2 pt-3 mt-4 text-uppercase text-secondary fw-bold fs-6">Pengelolaan Data</li>
+                        <li class="sidebar-item hidden-content">
                             <a href="{{ route('dataanggota') }}" class="sidebar-link">
                                 <i class="bi bi-person-lines-fill"></i>
                                 <span>Data Anggota</span>
                             </a>
                         </li>
-                        <li class="sidebar-item has-sub active">
+                        <li class="sidebar-item has-sub active hidden-content">
                             <a href="#" class="sidebar-link">
                                 <i class="bi bi-wallet-fill"></i>
                                 <span>Data Simpanan</span>
@@ -91,19 +91,25 @@
                                 <li class="submenu-item"><a href="{{ route('simpanananggota') }}">Simpanan Anggota</a></li>
                             </ul>
                         </li>
-                        <li class="sidebar-item">
+                        <li class="sidebar-item hidden-content">
                             <a href="{{ route('pinjamanadmin') }}" class="sidebar-link">
                                 <i class="bi bi-cash-stack"></i>
                                 <span>Data Pinjaman</span>
                             </a>
                         </li>
-                        <li class="sidebar-item">
+                        <li class="sidebar-item hidden-content">
                             <a href="{{ route('denda') }}" class="sidebar-link">
                                 <i class="bi bi-exclamation-circle"></i>
                                 <span>Data Denda Pinjaman</span>
                             </a>
                         </li>
-                        <li class="sidebar-item">
+                        <li class="sidebar-item hidden-content">
+                            <a href="{{ route('dataangsuran') }}" class="sidebar-link">
+                                <i class="bi bi-arrow-repeat"></i>
+                                <span>Data Angsuran</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item hidden-content">
                             <a href="{{ route('simpanans') }}" class="sidebar-link position-relative">
                                 <i class="bi bi-wallet-fill"></i>
                                 <span>Data Pengajuan Simpanan</span>
@@ -114,7 +120,7 @@
                                 @endif
                             </a>
                         </li>
-                        <li class="sidebar-item">
+                        <li class="sidebar-item hidden-content">
                             <a href="{{ route('pangajuan') }}" class="sidebar-link position-relative">
                                 <i class="bi bi-file-earmark-medical-fill"></i>
                                 <span>Data Pengajuan Pinjaman</span>
@@ -125,7 +131,7 @@
                                 @endif
                             </a>
                         </li>
-                        <li class="sidebar-item ">
+                        <li class="sidebar-item  hidden-content">
                             <a href="{{ route('angsuran') }}" class="sidebar-link position-relative">
                                 <i class="bi bi-coin"></i>
                                 <span>Data Pengajuan Angsuran</span>
@@ -139,26 +145,26 @@
 
 
                         <!-- KOMUNIKASI -->
-                        <li class="sidebar-title border-top border-bottom pb-2 pt-3 mt-4 text-uppercase text-secondary fw-bold fs-6">Komunikasi</li>
-                        <li class="sidebar-item">
+                        <li class="hidden-content sidebar-title border-top border-bottom pb-2 pt-3 mt-4 text-uppercase text-secondary fw-bold fs-6">Komunikasi</li>
+                        <li class="sidebar-item hidden-content">
                             <a href="{{ route('kontakkoperasi') }}" class="sidebar-link">
                                 <i class="bi bi-envelope-paper"></i>
                                 <span>Kelola Kontak Koperasi</span>
                             </a>
                         </li>
-                        <li class="sidebar-item">
+                        <li class="sidebar-item hidden-content">
                             <a href="{{ route('sosmed') }}" class="sidebar-link">
                                 <i class="bi bi-link-45deg"></i>
                                 <span>Kelola Sosial Media</span>
                             </a>
                         </li>
-                        <li class="sidebar-item">
+                        <li class="sidebar-item hidden-content">
                             <a href="{{ route('admin.sharemassage') }}" class="sidebar-link">
                                 <i class="bi bi-send"></i>
                                 <span>Kelola Pesan</span>
                             </a>
                         </li>
-                        <li class="sidebar-item">
+                        <li class="sidebar-item hidden-content">
                             <a href="{{ route('notifikasiadmin') }}" class="sidebar-link position-relative">
                                 <i class="bi bi-bell-fill"></i>
                                 <span>Notifikasi</span>
@@ -171,7 +177,7 @@
                         </li>
 
                         <!-- KELUAR -->
-                        <li class="sidebar-item border-top pt-3 mt-4">
+                        <li class="sidebar-item border-top pt-3 mt-4 hidden-content">
                             <form action="{{ route('logout') }}" method="POST">
                                 @csrf
                                 <button type="submit" class="btn btn-link sidebar-link text-danger">
@@ -213,12 +219,12 @@
 
             <div class="data-simpanan-container">
                 <!-- Judul -->
-                <h3 class="text-center bold">
+                <h3 class="text-center bold hidden-content-right">
                     <i class="bi bi-wallet2"></i> Simpanan Wajib
                 </h3>
-                <hr style="border-top: 2px solid black; margin-bottom: 30px;">
+                <hr style="border-top: 2px solid black; margin-bottom: 30px;" class="hidden-content-right">
 
-                <section class="mb-4">
+                <section class="mb-4 hidden-content-right">
                     <div class="card shadow" style="border: 1px solid #435ebe;">
                         <div class="card-header bg-primary text-white">
                             <h5 class="mb-0 text-white">
@@ -228,8 +234,8 @@
                         <div class="card-body">
 
                             <!-- Pencarian & Filter -->
-                            <div class="row mb-3">
-                                <div class="col-md-6">
+                            <div class="row mb-3 hidden-content-right">
+                                <div class="col-md-6 hidden-content-right">
                                     <div class="input-group">
                                         <input type="text" id="search-simpanan-wajib" class="form-control"
                                             placeholder="Cari ID, Nama, atau Status..." onkeyup="searchSimpananWajib()"
@@ -239,7 +245,7 @@
                                         </button>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-6 hidden-content-right">
                                     <select id="filter-status" class="form-select" onchange="searchSimpananWajib()">
                                         <option value="" disabled selected>Filter Berdasarkan Status</option>
                                         <option value="">Semua Status</option>
@@ -251,9 +257,9 @@
                             </div>
 
                             <!-- Tabel Simpanan Wajib -->
-                            <div style="max-height: 450px; overflow:auto; font-size:.9rem;">
+                            <div style="max-height: 700px; overflow:auto; font-size:.9rem;">
                                 <table class="table table-striped">
-                                    <thead class="table-dark">
+                                    <thead class="table-dark hidden-content-right">
                                         <tr>
                                             <th>No</th>
                                             <th>ID Simpanan</th>
@@ -263,19 +269,19 @@
                                             <th>Status</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="tabel-simpanan-wajib">
+                                    <tbody id="tabel-simpanan-wajib" class="hidden-content-right">
                                         @forelse($simpananWajib as $index => $simpanan)
                                         <tr>
-                                            <td>{{ $index + 1 }}</td>
-                                            <td>{{ $simpanan->id }}</td>
-                                            <td>{{ $simpanan->user->fullname ?? 'Tidak Diketahui' }}</td>
-                                            <td>
+                                            <td class="hidden-content-right">{{ $index + 1 }}</td>
+                                            <td class="hidden-content-right">{{ $simpanan->id }}</td>
+                                            <td class="hidden-content-right">{{ $simpanan->user->fullname ?? 'Tidak Diketahui' }}</td>
+                                            <td class="hidden-content-right">
                                                 <span class="badge bg-info">
                                                     <i class="bi bi-cash-stack"></i> Rp {{ number_format($simpanan->jumlah, 0, ',', '.') }}
                                                 </span>
                                             </td>
-                                            <td>{{ \Carbon\Carbon::parse($simpanan->tanggal_transaksi)->format('Y-m-d') }}</td>
-                                            <td>
+                                            <td class="hidden-content-right">{{ \Carbon\Carbon::parse($simpanan->tanggal_transaksi)->format('Y-m-d') }}</td>
+                                            <td class="hidden-content-right">
                                                 <span class="badge bg-{{ $simpanan->status === 'Berhasil' ? 'success' : 'secondary' }}">
                                                     {{ ucfirst($simpanan->status) }}
                                                 </span>
@@ -295,10 +301,10 @@
                             </div>
 
                             <!-- Total Simpanan -->
-                            <div class="card mt-3" style="box-shadow: 0 0px 7px 2px rgba(0, 0, 0, 0.1);">
-                                <div class="card-body text-center">
-                                    <h4>Total Simpanan Wajib</h4>
-                                    <h3 class="text-primary">
+                            <div class="card mt-3 hidden-content-right" style="box-shadow: 0 0px 7px 2px rgba(0, 0, 0, 0.1);">
+                                <div class="card-body text-center hidden-content-right">
+                                    <h4 class="hidden-content-right">Total Simpanan Wajib</h4>
+                                    <h3 class="hidden-content-right text-primary">
                                         <i class="bi bi-coin"></i> Rp {{ number_format($totalSimpananWajib, 0, ',', '.') }}
                                     </h3>
                                 </div>
@@ -371,7 +377,72 @@
             searchSimpananWajib();
         }
     </script>
-    </div>
+     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const hiddenElements = document.querySelectorAll(".hidden-content");
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("show-content");
+                    } else {
+                        entry.target.classList.remove("show-content"); // Sembunyikan kembali saat keluar dari layar
+                    }
+                });
+            }, {
+                threshold: 0.2
+            });
+
+            hiddenElements.forEach(el => observer.observe(el));
+        });
+    </script>
+
+    <style>
+        .hidden-content {
+            opacity: 0;
+            transform: translateX(-50px);
+            /* Awalnya elemen bergeser ke kiri */
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .show-content {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const rightHiddenElements = document.querySelectorAll(".hidden-content-right");
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("show-content-right");
+                    } else {
+                        entry.target.classList.remove("show-content-right"); // Sembunyikan kembali saat keluar dari layar
+                    }
+                });
+            }, {
+                threshold: 0.2
+            });
+
+            rightHiddenElements.forEach(el => observer.observe(el));
+        });
+    </script>
+
+    <style>
+        .hidden-content-right {
+            opacity: 0;
+            transform: translateX(50px);
+            /* Awalnya elemen bergeser ke kanan */
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .show-content-right {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    </style>
 </body>
 
 </html>

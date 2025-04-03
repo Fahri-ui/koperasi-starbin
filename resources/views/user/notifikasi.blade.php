@@ -25,21 +25,21 @@
 
 <body>
     <div id="app">
-    <div id="sidebar" class="active">
+        <div id="sidebar" class="active">
             <div class="sidebar-wrapper active">
                 <!-- Sidebar Header -->
-                <div class="sidebar-header position-relative border-bottom ">
+                <div class="sidebar-header position-relative border-bottom hidden-content">
                     <div class="user-info text-center mt-3 pb-3">
-                        <img src="{{ asset('picture/account/' . Auth::user()->gambar) }}" class="rounded-circle" alt="User Avatar" style="width: 150px; height: 150px; object-fit: cover;">
-                        <h3 class="mt-2 mb-0">{{ Auth::user()->fullname }}</h3>
-                        <small class="text-muted">Anggota Koperasi</small>
+                        <img src="{{ asset('picture/account/' . Auth::user()->gambar) }}" class="rounded-circle hidden-content" alt="User Avatar" style="width: 150px; height: 150px; object-fit: cover;">
+                        <h3 class="mt-2 mb-0 hidden-content">{{ Auth::user()->fullname }}</h3>
+                        <small class="text-muted hidden-content">Anggota Koperasi</small>
                     </div>
                 </div>
 
                 <!-- Theme Toggle Dipindahkan ke Bawah -->
-                <div class="sidebar-footer d-flex align-items-center justify-content-between py-3 border-bottom">
+                <div class="sidebar-footer d-flex align-items-center justify-content-between py-3 border-bottom hidden-content">
                     <!-- Logo & Nama -->
-                    <div class="d-flex align-items-center" style="margin-left: 20px;">
+                    <div class="d-flex align-items-center hidden-content" style="margin-left: 20px;">
                         <div class="logo" style="width: 40px; height: 40px;">
                             <img src="{{ asset('dist/assets/images/logo/Logo Koperasi STARBIN REAL (1).png') }}" alt="Logo" style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
@@ -50,7 +50,7 @@
                     </div>
 
                     <!-- Theme Toggle -->
-                    <div class="theme-toggle d-flex align-items-center gap-2" style="margin-right: 20px;">
+                    <div class="theme-toggle d-flex align-items-center gap-2 hidden-content" style="margin-right: 20px;">
                         <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" class="iconify iconify--system-uicons" width="20" height="20" viewBox="0 0 21 21">
                             <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M10.5 14.5c2.219 0 4-1.763 4-3.982a4.003 4.003 0 0 0-4-4.018c-2.219 0-4 1.781-4 4c0 2.219 1.781 4 4 4zM4.136 4.136L5.55 5.55m9.9 9.9l1.414 1.414M1.5 10.5h2m14 0h2M4.135 16.863L5.55 15.45m9.899-9.9l1.414-1.415M10.5 19.5v-2m0-14v-2"></path>
@@ -69,23 +69,23 @@
                 <!-- Sidebar Menu -->
                 <div class="sidebar-menu">
                     <ul class="menu">
-                        <li class="sidebar-title mt-4">Menu</li>
+                        <li class="hidden-content sidebar-title mt-4">Menu</li>
 
-                        <li class="sidebar-item ">
+                        <li class="sidebar-item  hidden-content">
                             <a href="{{route('user')}}" class='sidebar-link'>
                                 <i class="bi bi-house-door-fill"></i>
                                 <span>Dashboard</span>
                             </a>
                         </li>
 
-                        <li class="sidebar-item">
+                        <li class="sidebar-item hidden-content">
                             <a href="{{route('profil')}}" class='sidebar-link'>
                                 <i class="bi bi-person-circle"></i>
                                 <span>Profil</span>
                             </a>
                         </li>
 
-                        <li class="sidebar-item has-sub">
+                        <li class="sidebar-item has-sub hidden-content">
                             <a href="#" class='sidebar-link'>
                                 <i class="bi bi-piggy-bank-fill"></i>
                                 <span>Simpanan</span>
@@ -100,14 +100,14 @@
                             </ul>
                         </li>
 
-                        <li class="sidebar-item">
+                        <li class="sidebar-item hidden-content">
                             <a href="{{route('pinjaman')}}" class='sidebar-link'>
                                 <i class="bi bi-cash-coin"></i>
                                 <span>Pinjaman</span>
                             </a>
                         </li>
 
-                        <li class="sidebar-item position-relative active">
+                        <li class="sidebar-item position-relative active hidden-content">
                             <a href="{{ route('notifikasi') }}" class="sidebar-link">
                                 <i class="bi bi-bell-fill"></i>
                                 <span>Notifikasi</span>
@@ -120,7 +120,7 @@
                             </a>
                         </li>
 
-                        <li class="sidebar-item">
+                        <li class="sidebar-item hidden-content">
                             <a href="{{route('bantuan')}}" class='sidebar-link'>
                                 <i class="bi bi-question-circle-fill"></i>
                                 <span>Bantuan</span>
@@ -133,7 +133,7 @@
                 <div class="sidebar-footer text-center py-3 border-top">
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
-                        <button type="submit" class="btn btn-link text-danger" style="text-decoration: none;">
+                        <button type="submit" class="hidden-content btn btn-link text-danger" style="text-decoration: none;">
                             <i class="bi bi-box-arrow-right"></i>
                             <span>Log Out</span>
                         </button>
@@ -147,15 +147,24 @@
                     <i class="bi bi-justify fs-3"></i>
                 </a>
             </header>
+            @if (Session::has('success'))
+            <div class="alert alert-success d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #66cc66, #33b233); color: #fff; border-radius: 20px; border: 2px solid #33b233;">
+                <i class="bi bi-check-circle-fill me-3 fs-4" style="margin-top: -20px;"></i>
+                <div>
+                    <h5 class="mb-1">🌟 Yeay! Berhasil</h5>
+                    <p class="mb-0">✅ {{ Session::get('success') }}</p>
+                </div>
+            </div>
+            @endif
             @if (auth()->user()->status === 'Belum_Aktif')
 
-            <div class="container mt-4">
+            <div class="container mt-4 hidden-content-right">
                 <!-- Card Peringatan -->
-                <div class="card shadow-sm mb-3" style="text-align: center; border: 1px solid #d9d9d9; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); margin-bottom: 20px;  padding: 20px;">
+                <div class="card shadow-sm mb-3 hidden-content-right" style="text-align: center; border: 1px solid #d9d9d9; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); margin-bottom: 20px;  padding: 20px;">
                     <div class="card-body bg-warning text-dark">
                         <div class="d-flex align-items-center">
-                            <i class="bi bi-exclamation-triangle-fill me-2 fs-4"></i>
-                            <div>
+                            <i class="bi bi-exclamation-triangle-fill me-2 fs-4 hidden-content-right"></i>
+                            <div class="hidden-content-right">
                                 <strong>Akun Anda belum aktif!</strong> Untuk mengaktifkannya, silakan lakukan pembayaran simpanan anggota sesuai dengan ketentuan koperasi.
                             </div>
                         </div>
@@ -163,20 +172,20 @@
                 </div>
 
                 <!-- Card Form Pembayaran -->
-                <div class="card shadow-sm">
+                <div class="card shadow-sm hidden-content-right">
                     <div class="card-header bg-primary text-white">
                         <h5 class="mb-0" style="color: white;"><i class="bi bi-credit-card"></i> Pembayaran Simpanan Anggota</h5>
                     </div>
-                    <div class="card-body" style="margin-top: 30px; text-align: left;">
+                    <div class="card-body hidden-content-right" style="margin-top: 30px; text-align: left;">
                         <form action="{{ route('simpanan.bayar') }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <div class="mb-3">
+                            <div class="mb-3 hidden-content-right">
                                 <label for="nominal" class="form-label"><i class="bi bi-cash-stack"></i> Nominal Pembayaran</label>
                                 <input type="number" id="nominal" name="nominal" class="form-control" placeholder="Masukkan jumlah simpanan" min="500000" max="500000" required>
                                 <small class="text-muted"><i class="bi bi-info-circle"></i> Nominal wajib adalah Rp 500.000</small>
                             </div>
 
-                            <div class="mb-3">
+                            <div class="mb-3 hidden-content-right">
                                 <label for="metode" class="form-label"><i class="bi bi-wallet2"></i> Metode Pembayaran</label>
                                 <select id="metode" name="metode" class="form-select" required>
                                     <option value="cash">Tunai (Bayar Langsung)</option>
@@ -185,26 +194,26 @@
                                 </select>
                             </div>
 
-                            <div class="form-group mb-3">
+                            <div class="form-group mb-3 hidden-content-right">
                                 <label for="payment-proof">Unggah Bukti Pembayaran</label>
                                 <input type="file" class="form-control" id="payment-proof" name="payment-proof" accept="image/*" required>
                                 <small class="text-muted" style="font-size:.8rem;"><i class="bi bi-image"></i> Format yang didukung: JPG, JPEG, PNG (max 2MB)</small>
                             </div>
 
-                            <button type="submit" class="btn btn-primary w-100"><i class="bi bi-send"></i> Bayar Sekarang</button>
+                            <button type="submit" class="hidden-content-right btn btn-primary w-100"><i class="bi bi-send"></i> Bayar Sekarang</button>
                         </form>
                     </div>
                 </div>
             </div>
 
             @elseif (auth()->user()->status === 'Ditolak')
-            <div class="container mt-4">
+            <div class="container mt-4 hidden-content-right">
                 <!-- Card Peringatan Pengajuan Ditolak -->
-                <div class="card shadow-sm mb-3">
-                    <div class="card-body bg-danger text-white" style="padding: 30px; border-radius: 10px;text-align:center;">
-                        <div class="d-flex align-items-center">
+                <div class="card shadow-sm mb-3 hidden-content-right">
+                    <div class="card-body bg-danger text-white" style="padding: 30px; border-radius: 10px;">
+                        <div class="d-flex align-items-center hidden-content-right">
                             <i class="bi bi-x-circle-fill me-4" style="font-size: 3rem; margin-top:-150px;"></i>
-                            <div>
+                            <div class="hidden-content-right">
                                 <strong style="font-size: 2.5rem; display: block; margin-bottom: 10px;">Pengajuan Anda Ditolak!</strong>
                                 <p style="font-size: 1.2rem; line-height: 1.5; margin: 0;">
                                     Mohon maaf, pengajuan simpanan anggota Anda tidak dapat diproses. Silakan periksa kembali data yang Anda kirimkan atau lakukan pembayaran ulang sesuai ketentuan koperasi.
@@ -215,20 +224,20 @@
                 </div>
 
                 <!-- Card Form Pembayaran -->
-                <div class="card shadow-sm">
+                <div class="card shadow-sm hidden-content-right">
                     <div class="card-header bg-primary text-white">
                         <h5 class="mb-0" style="color: white;"><i class="bi bi-credit-card"></i> Pembayaran Simpanan Anggota</h5>
                     </div>
                     <div class="card-body" style="margin-top: 30px; text-align: left;">
                         <form action="{{ route('simpanan.bayar') }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <div class="mb-3">
+                            <div class="mb-3 hidden-content-right">
                                 <label for="nominal" class="form-label"><i class="bi bi-cash-stack"></i> Nominal Pembayaran</label>
                                 <input type="number" id="nominal" name="nominal" class="form-control" placeholder="Masukkan jumlah simpanan" min="500000" max="500000" required>
                                 <small class="text-muted"><i class="bi bi-info-circle"></i> Nominal wajib adalah Rp 500.000</small>
                             </div>
 
-                            <div class="mb-3">
+                            <div class="mb-3 hidden-content-right">
                                 <label for="metode" class="form-label"><i class="bi bi-wallet2"></i> Metode Pembayaran</label>
                                 <select id="metode" name="metode" class="form-select" required>
                                     <option value="cash">Tunai (Bayar Langsung)</option>
@@ -237,23 +246,23 @@
                                 </select>
                             </div>
 
-                            <div class="form-group mb-3">
+                            <div class="form-group mb-3 hidden-content-right">
                                 <label for="payment-proof">Unggah Bukti Pembayaran</label>
                                 <input type="file" class="form-control" id="payment-proof" name="payment-proof" accept="image/*" required>
                                 <small class="text-muted" style="font-size:.8rem;"><i class="bi bi-image"></i> Format yang didukung: JPG, JPEG, PNG (max 2MB)</small>
                             </div>
 
-                            <button type="submit" class="btn btn-primary w-100"><i class="bi bi-send"></i> Bayar Sekarang</button>
+                            <button type="submit" class="hidden-content-right btn btn-primary w-100"><i class="bi bi-send"></i> Bayar Sekarang</button>
                         </form>
                     </div>
                 </div>
             </div>
 
             @elseif (auth()->user()->status === 'Pending')
-            <div class="alert p-4 shadow" style="background-color: #435ebe; color: #fff; border-radius: 10px;">
+            <div class="alert p-4 shadow hidden-content-right" style="background-color: #435ebe; color: #fff; border-radius: 10px;">
                 <div class="d-flex align-items-start">
-                    <i class="bi bi-hourglass-split fs-1 me-3" style="color: #ffdd57; margin-top:-15px; padding-right:30px;"></i>
-                    <div>
+                    <i class="bi bi-hourglass-split fs-1 me-3 hidden-content-right" style="color: #ffdd57; margin-top:-15px; padding-right:30px;"></i>
+                    <div class="hidden-content-right">
                         <h4 class="text-white">Status Pengajuan: <span class="badge" style="background-color: #ffdd57; color: #435ebe;">Pending</span></h4>
                         <p>Terima kasih telah mengajukan simpanan anggota. Formulir Anda sedang dalam proses verifikasi oleh admin.</p>
                         <p><i class="bi bi-clock"></i> Estimasi waktu persetujuan: <strong>3 hari kerja</strong></p>
@@ -261,10 +270,10 @@
                 </div>
             </div>
 
-            <div class="card mt-3 shadow text-center" style="border: 2px solid #435ebe; border-radius: 10px;">
+            <div class="card mt-3 shadow text-center hidden-content-right" style="border: 2px solid #435ebe; border-radius: 10px;">
                 <div class="card-header" style="background-color: #435ebe; color: #fff;">
                     <h5 class="text-white">
-                        <i class="bi bi-file-text text-white"></i> Detail Pengajuan
+                        <i class="bi bi-file-text text-white hidden-content-right"></i> Detail Pengajuan
                     </h5>
                 </div>
                 <ul class="list-group list-group-flush">
@@ -285,69 +294,71 @@
             </div>
 
             @elseif (auth()->user()->status === 'Belum_Bayar_Simpanan_Wajib')
+
             <div class="mb-4 pb-2 border-bottom">
                 <h2 class="text-center fw-bold">
-                    <i class="bi bi-bell-fill me-2"></i> Halaman Notifikasi
+                    <i class="bi bi-bell-fill me-2 "></i> Halaman Notifikasi
                 </h2>
             </div>
+
             @if ($statusWajib && $statusWajib->status === 'Dalam Proses')
-            <!-- Jika pembayaran masih dalam proses -->
-            <div class="alert alert-warning shadow-sm" role="alert" style="border-radius: 10px;">
+            <div class="alert alert-warning shadow-sm hidden-content-right" role="alert" style="border-radius: 10px;">
                 <!-- Header -->
                 <div class="d-flex align-items-center p-3" style="border-bottom: 2px solid #d1a900; color:black;">
                     <i class="bi bi-hourglass-split me-3 fs-2" style="margin-top: -40px;"></i>
                     <h5 class="mb-0 fw-bold " style="color:black;">Pengajuan Dalam Proses</h5>
                 </div>
+
                 <!-- Isi Section -->
-                <div class="p-3" style="text-align: justify; border-bottom: 2px solid #d1a900;">
+                <div class="p-3 hidden-content-right" style="text-align: justify; border-bottom: 2px solid #d1a900;">
                     <p class="mb-2">
                         Pengajuan penyetoran simpanan wajib Anda saat ini <strong>sedang dalam tahap verifikasi oleh admin</strong>.
                         Proses ini bertujuan untuk memastikan keakuratan data sebelum dana dikonfirmasi.
                     </p>
-                    <p class="mb-2">
+                    <p class="mb-2 hidden-content-right">
                         <i class="bi bi-clock-history"></i> <strong>Estimasi waktu:</strong> 1-2 hari kerja.
                     </p>
                 </div>
 
                 <!-- Footer -->
-                <div class="p-3 text-center" style="border-top: 2px solid #d1a900;">
-                    <p class="mb-0">
+                <div class="p-3 text-center hidden-content-right" style="border-top: 2px solid #d1a900;">
+                    <p class="mb-0 hidden-content-right">
                         Silakan <strong>periksa status pembayaran Anda secara berkala</strong>. Jika membutuhkan bantuan lebih lanjut,
                         hubungi <strong>admin koperasi</strong> atau kunjungi kantor kami.
                     </p>
                 </div>
             </div>
             @elseif ($statusWajib && $statusWajib->status === 'Ditolak')
-            <div class="alert alert-danger shadow-sm" role="alert" style="border-radius: 10px;">
+            <div class="alert alert-danger shadow-sm hidden-content-right" role="alert" style="border-radius: 10px;">
                 <!-- Header -->
-                <div class="d-flex align-items-center p-3" style="border-bottom: 2px solid #a94442;">
+                <div class="d-flex align-items-center p-3 hidden-content-right" style="border-bottom: 2px solid #a94442;">
                     <i class="bi bi-x-circle me-3 fs-2 text-white" style="margin-top: -40px; padding-right:30px;"></i>
                     <h5 class="mb-0 fw-bold text-white">Pengajuan Ditolak</h5>
                 </div>
 
                 <!-- Isi Section -->
-                <div class="p-3" style="text-align: justify; border-bottom: 2px solid #a94442;">
+                <div class="p-3 hidden-content-right" style="text-align: justify; border-bottom: 2px solid #a94442;">
                     <p class="mb-2">
                         Pengajuan penyetoran simpanan wajib Anda <strong>ditolak oleh admin</strong>. Hal ini dapat terjadi karena beberapa alasan berikut:
                     </p>
-                    <div class="mb-2">
+                    <div class="mb-2 hidden-content-right">
                         <p><i class="bi bi-exclamation-triangle-fill text-white"></i> Data atau bukti pembayaran tidak valid.</p>
                         <p><i class="bi bi-x-circle-fill text-white"></i> Kesalahan dalam metode pembayaran atau transfer yang tidak terdeteksi.</p>
                     </div>
-                    <p class="mb-2">
+                    <p class="mb-2 hidden-content-right">
                         Silakan periksa kembali data Anda dan lakukan pengajuan ulang sesuai dengan ketentuan yang berlaku.
                     </p>
                 </div>
 
                 <!-- Footer -->
-                <div class="p-3 text-center" style="border-top: 2px solid #a94442;">
+                <div class="p-3 text-center hidden-content-right" style="border-top: 2px solid #a94442;">
                     <p class="mb-0">
                         Jika Anda memerlukan bantuan, silakan hubungi <strong>admin koperasi</strong> atau datang langsung ke kantor kami untuk verifikasi lebih lanjut.
                     </p>
                 </div>
             </div>
             <!-- Card Form Pembayaran Simpanan -->
-            <div class="card shadow-lg border-0" id="bayar">
+            <div class="card shadow-lg border-0 hidden-content-right" id="bayar">
                 <div class="card-header bg-gradient bg-primary text-white">
                     <h5 class="mb-0 text-white"><i class="bi bi-wallet-fill"></i> Form Pembayaran Simpanan</h5>
                 </div>
@@ -357,20 +368,20 @@
                         <input type="hidden" name="jenis" value="wajib">
                         <input type="hidden" name="validasi" value="100000">
 
-                        <div class="mb-3">
+                        <div class="mb-3 hidden-content-right">
                             <label for="jenis_transaksi" class="form-label"><i class="bi bi-shuffle"></i> Jenis Transaksi</label>
                             <select name="jenis_transaksi" id="jenis_transaksi" class="form-select" required>
                                 <option value="penyetoran">Penyetoran</option>
                             </select>
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3 hidden-content-right">
                             <label for="jumlah" class="form-label"><i class="bi bi-cash"></i> Jumlah (Rp)</label>
                             <input type="number" name="jumlah" id="jumlah" class="form-control" required min="100000" max="100000" placeholder="Masukan Nominal Bayar">
                             <small class="text-muted"><i class="bi bi-info-circle"></i>Total bayar adalah tunggakan simpanan wajib 2 bulan, yaitu 100.000</small>
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3 hidden-content-right">
                             <label for="metode_pembayaran" class="form-label"><i class="bi bi-credit-card"></i> Metode Pembayaran</label>
                             <select name="metode_pembayaran" id="metode_pembayaran" class="form-select" required>
                                 <option value="cash">Tunai (Bayar Langsung)</option>
@@ -379,13 +390,13 @@
                             </select>
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3 hidden-content-right">
                             <label for="bukti" class="form-label"><i class="bi bi-upload"></i> Unggah Bukti Pembayaran</label>
                             <input type="file" name="bukti" id="bukti" class="form-control" required accept="image/jpeg, image/png, image/jpg">
                             <small class="text-muted"><i class="bi bi-image"></i> Format yang didukung: JPG, JPEG, PNG.</small>
                         </div>
 
-                        <button type="submit" class="btn btn-primary w-100">
+                        <button type="submit" class="hidden-content-right btn btn-primary w-100">
                             <i class="bi bi-check-circle-fill"></i> Konfirmasi Pembayaran
                         </button>
                     </form>
@@ -393,14 +404,14 @@
             </div>
             @else
             <!-- Section Peringatan Keterlambatan -->
-            <div class="card shadow-lg border-0 mb-4" style="text-align: center; border: 1px solid #d9d9d9; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); margin-bottom: 20px;  padding: 20px;">
+            <div class="card shadow-lg border-0 mb-4 hidden-content-right" style="text-align: center; border: 1px solid #d9d9d9; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); margin-bottom: 20px;  padding: 20px;">
                 <div class="card-body bg-warning text-dark" style="border: 1px solid #435ebe; border-radius: 10px;">
-                    <div class="d-flex align-items-start">
-                        <i class="bi bi-info-circle-fill text-primary fs-1 me-3" style="margin-top:-20px;"></i>
+                    <div class="d-flex align-items-start hidden-content-right">
+                        <i class="bi bi-info-circle-fill text-primary fs-1 me-3 hidden-content-right" style="margin-top:-20px;"></i>
                         <div>
-                            <h4 class="fw-bold"> Peringatan: Keterlambatan Pembayaran Simpanan Wajib</h4>
+                            <h4 class="fw-bold hidden-content-right"> Peringatan: Keterlambatan Pembayaran Simpanan Wajib</h4>
                             <hr style="border: 2px solid rgb(0, 0, 0);">
-                            <p style="color:rgb(80, 83, 85);">
+                            <p class="hidden-content-right" style="color:rgb(80, 83, 85);">
                                 Anda memiliki keterlambatan pembayaran simpanan wajib selama <strong>2 bulan</strong> dengan total sebesar <strong>Rp 100.000</strong>.
                                 Mohon segera melunasi sebelum <strong>bulan depan</strong> untuk mencegah akun menjadi <strong>nonaktif</strong>.
                                 Jika tidak dapat membayar simpanan wajib, <strong>segera tarik simpanan sukarela</strong> Anda sebelum akun dinonaktifkan.
@@ -415,7 +426,7 @@
             </div>
 
             <!-- Card Form Pembayaran Simpanan -->
-            <div class="card shadow-lg border-0" id="bayar">
+            <div class="card shadow-lg border-0 hidden-content-right" id="bayar">
                 <div class="card-header bg-gradient bg-primary text-white">
                     <h5 class="mb-0 text-white"><i class="bi bi-wallet-fill"></i> Form Pembayaran Simpanan</h5>
                 </div>
@@ -425,20 +436,20 @@
                         <input type="hidden" name="jenis" value="wajib">
                         <input type="hidden" name="validasi" value="100000">
 
-                        <div class="mb-3">
+                        <div class="mb-3 hidden-content-right">
                             <label for="jenis_transaksi" class="form-label"><i class="bi bi-shuffle"></i> Jenis Transaksi</label>
                             <select name="jenis_transaksi" id="jenis_transaksi" class="form-select" required>
                                 <option value="penyetoran">Penyetoran</option>
                             </select>
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3 hidden-content-right">
                             <label for="jumlah" class="form-label"><i class="bi bi-cash"></i> Jumlah (Rp)</label>
                             <input type="number" name="jumlah" id="jumlah" class="form-control" required min="100000" max="100000" placeholder="Masukan Nominal Bayar">
                             <small class="text-muted"><i class="bi bi-info-circle"></i>Total bayar adalah tunggakan simpanan wajib 2 bulan, yaitu 100.000</small>
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3 hidden-content-right">
                             <label for="metode_pembayaran" class="form-label"><i class="bi bi-credit-card"></i> Metode Pembayaran</label>
                             <select name="metode_pembayaran" id="metode_pembayaran" class="form-select" required>
                                 <option value="cash">Tunai (Bayar Langsung)</option>
@@ -447,13 +458,13 @@
                             </select>
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3 hidden-content-right">
                             <label for="bukti" class="form-label"><i class="bi bi-upload"></i> Unggah Bukti Pembayaran</label>
                             <input type="file" name="bukti" id="bukti" class="form-control" required accept="image/jpeg, image/png, image/jpg">
                             <small class="text-muted"><i class="bi bi-image"></i> Format yang didukung: JPG, JPEG, PNG.</small>
                         </div>
 
-                        <button type="submit" class="btn btn-primary w-100">
+                        <button type="submit" class="hidden-content-right btn btn-primary w-100">
                             <i class="bi bi-check-circle-fill"></i> Konfirmasi Pembayaran
                         </button>
                     </form>
@@ -461,11 +472,11 @@
             </div>
             @endif
 
-            <div class="container">
-                <div class="d-flex flex-column align-items-center">
+            <div class="container ">
+                <div class="d-flex flex-column align-items-center ">
                     @foreach ($notifikasiPerBulan as $bulan => $notifikasi)
-                    <div class="w-100">
-                        <h4 class="text-primary fw-bold mt-4 border-bottom pb-2">
+                    <div class="w-100 hidden-content-right">
+                        <h4 class="text-primary fw-bold mt-4 border-bottom pb-2 hidden-content-right">
                             <i class="bi bi-calendar3 me-2"></i>
                             {{ \Carbon\Carbon::parse($bulan . '-01')->translatedFormat('F Y') }}
                         </h4>
@@ -473,31 +484,31 @@
 
                     @foreach ($notifikasi as $item)
                     @if ($item->type !== 'info')
-                    <div class="card shadow-sm p-0 mb-4 rounded border-1 {{ $item->is_read ? '' : 'border-primary' }}">
+                    <div class="card shadow-sm p-0 mb-4 rounded border-1 {{ $item->is_read ? '' : 'border-primary' }} hidden-content-right">
                         <!-- Header notifikasi dengan warna sesuai tipe -->
                         <div class="card-header bg-{{ $item->type }} text-white">
-                            <h4 class="fw-bold mb-0 text-white">
+                            <h4 class="fw-bold mb-0 text-white hidden-content-right">
                                 <i class="bi {{ $item->icon }} me-2"></i>
                                 {{ $item->user_id == 0 ? 'Pesan Umum' : 'Pesan Untuk Anda' }}
                             </h4>
                         </div>
 
                         <!-- Isi notifikasi -->
-                        <div class="card-body" style="margin-top: 20px;">
-                            <p class="mb-3 pb-2 border-bottom">
+                        <div class="card-body hidden-content-right" style="margin-top: 20px;">
+                            <p class="mb-3 pb-2 border-bottom hidden-content-right">
                                 {{ $item->message }}
                                 @if (!$item->is_read)
-                                <span class="badge bg-primary ms-2">Baru</span>
+                                <span class="badge bg-primary ms-2 hidden-content-right">Baru</span>
                                 @endif
                             </p>
 
                             <!-- Bagian tanggal diterima -->
-                            <div class="d-flex justify-content-between align-items-center">
-                                <small class="text-muted">
-                                    <i class="bi bi-clock-history me-1"></i>
+                            <div class="d-flex justify-content-between align-items-center hidden-content-right">
+                                <small class="text-muted hidden-content-right">
+                                    <i class="bi bi-clock-history me-1 "></i>
                                     Diterima: {{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d F Y - H:i') }}
                                 </small>
-                                <small class="text-muted">
+                                <small class="text-muted hidden-content-right">
                                     <i class="bi bi-eye{{ $item->is_read ? '-fill' : '' }} me-1"></i>
                                     {{ $item->is_read ? 'Sudah Dibaca' : 'Belum Dibaca' }}
                                 </small>
@@ -509,7 +520,7 @@
                     @endforeach
 
                     @if ($notifikasiPerBulan->isEmpty())
-                    <div class="alert alert-info text-center mt-4">
+                    <div class="alert alert-info text-center mt-4 hidden-content-right">
                         <i class="bi bi-info-circle-fill"></i> Tidak ada notifikasi terbaru.
                     </div>
                     @endif
@@ -523,7 +534,7 @@
 
             @else
             <div class="container">
-                <div class="mb-4 pb-2 border-bottom">
+                <div class="mb-4 pb-2 border-bottom hidden-content-right">
                     <h2 class="text-center fw-bold">
                         <i class="bi bi-bell-fill me-2 "></i> Halaman Notifikasi
                     </h2>
@@ -531,7 +542,7 @@
 
                 <div class="d-flex flex-column align-items-center">
                     @foreach ($notifikasiPerBulan as $bulan => $notifikasi)
-                    <div class="w-100">
+                    <div class="w-100 hidden-content-right">
                         <h4 class="text-primary fw-bold mt-4 border-bottom pb-2">
                             <i class="bi bi-calendar3 me-2"></i>
                             {{ \Carbon\Carbon::parse($bulan . '-01')->translatedFormat('F Y') }}
@@ -540,18 +551,18 @@
 
                     @foreach ($notifikasi as $item)
                     @if ($item->type !== 'info')
-                    <div class="card shadow mb-4 rounded border-1 {{ $item->is_read ? '' : 'border-primary' }}">
+                    <div class="card shadow mb-4 rounded border-1 {{ $item->is_read ? '' : 'border-primary' }} hidden-content-right">
                         <!-- Header notifikasi dengan warna sesuai tipe -->
                         <div class="card-header bg-{{ $item->type }} text-white">
-                            <h4 class="fw-bold mb-0 text-white">
+                            <h4 class="fw-bold mb-0 text-white hidden-content-right">
                                 <i class="bi {{ $item->icon }} me-2"></i>
                                 {{ $item->user_id == 0 ? 'Pesan Umum' : 'Pesan Untuk Anda' }}
                             </h4>
                         </div>
 
                         <!-- Isi notifikasi -->
-                        <div class="card-body" style="margin-top: 20px;">
-                            <p class="mb-3 pb-2 border-bottom">
+                        <div class="card-body hidden-content-right" style="margin-top: 20px;">
+                            <p class="mb-3 pb-2 border-bottom hidden-content-right">
                                 {{ $item->message }}
                                 @if (!$item->is_read)
                                 <span class="badge bg-primary ms-2">Baru</span>
@@ -559,8 +570,8 @@
                             </p>
 
                             <!-- Bagian tanggal diterima -->
-                            <div class="d-flex justify-content-between align-items-center">
-                                <small class="text-muted">
+                            <div class="d-flex justify-content-between align-items-center hidden-content-right">
+                                <small class="text-muted ">
                                     <i class="bi bi-clock-history me-1"></i>
                                     Diterima: {{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d F Y - H:i') }}
                                 </small>
@@ -619,6 +630,74 @@
             //     e.target.value = value;
             // });
         </script>
+        <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const hiddenElements = document.querySelectorAll(".hidden-content");
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("show-content");
+                    } else {
+                        entry.target.classList.remove("show-content"); // Sembunyikan kembali saat keluar dari layar
+                    }
+                });
+            }, {
+                threshold: 0.2
+            });
+
+            hiddenElements.forEach(el => observer.observe(el));
+        });
+    </script>
+
+    <style>
+        .hidden-content {
+            opacity: 0;
+            transform: translateX(-50px);
+            /* Awalnya elemen bergeser ke kiri */
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .show-content {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    </style>
+    
+
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const rightHiddenElements = document.querySelectorAll(".hidden-content-right");
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("show-content-right");
+                    } else {
+                        entry.target.classList.remove("show-content-right"); // Sembunyikan kembali saat keluar dari layar
+                    }
+                });
+            }, {
+                threshold: 0.2
+            });
+
+            rightHiddenElements.forEach(el => observer.observe(el));
+        });
+    </script>
+
+    <style>
+        .hidden-content-right {
+            opacity: 0;
+            transform: translateX(50px);
+            /* Awalnya elemen bergeser ke kanan */
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .show-content-right {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    </style>
 </body>
 
 </html>

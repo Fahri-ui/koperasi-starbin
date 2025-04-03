@@ -20,17 +20,17 @@
     <div id="app">
         <div id="sidebar" class="active">
             <div class="sidebar-wrapper active">
-                <div class="sidebar-header position-relative">
+                <div class="sidebar-header position-relative hidden-content">
                     <div class="user-info text-center mt-3 pb-3">
-                        <img src="{{ asset('picture/account/' . Auth::user()->gambar) }}" class="rounded-circle" alt="User Avatar" style="width: 150px; height: 150px; object-fit: cover;">
-                        <h3 class="mt-2 mb-0 ">{{ Auth::user()->fullname }}</h3>
-                        <small class="text-muted">{{ Auth::user()->role }}</small>
+                        <img src="{{ asset('picture/account/' . Auth::user()->gambar) }}" class="rounded-circle hidden-content" alt="User Avatar" style="width: 150px; height: 150px; object-fit: cover;">
+                        <h3 class="mt-2 mb-0 hidden-content">{{ Auth::user()->fullname }}</h3>
+                        <small class="text-muted hidden-content">{{ Auth::user()->role }}</small>
                     </div>
                 </div>
 
-                <div class="sidebar-footer d-flex align-items-center justify-content-between py-3 border-bottom">
+                <div class="sidebar-footer d-flex align-items-center justify-content-between py-3 border-bottomhidden-content">
                     <!-- Logo & Nama Koperasi -->
-                    <div class="d-flex align-items-center ms-3">
+                    <div class="d-flex align-items-center ms-3 hidden-content">
                         <div class="logo" style="width: 40px; height: 40px;">
                             <img src="{{ asset('dist/assets/images/logo/Logo Koperasi STARBIN REAL (1).png') }}" alt="Logo" style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
@@ -41,7 +41,7 @@
                     </div>
 
                     <!-- Theme Toggle -->
-                    <div class="theme-toggle d-flex align-items-center gap-2 me-3">
+                    <div class="theme-toggle d-flex align-items-center gap-2 me-3 hidden-content">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 21 21">
                             <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M10.5 14.5c2.219 0 4-1.763 4-3.982a4.003 4.003 0 0 0-4-4.018c-2.219 0-4 1.781-4 4c0 2.219 1.781 4 4 4zM4.136 4.136L5.55 5.55m9.9 9.9l1.414 1.414M1.5 10.5h2m14 0h2M4.135 16.863L5.55 15.45m9.899-9.9l1.414-1.415M10.5 19.5v-2m0-14v-2"></path>
@@ -59,14 +59,14 @@
                 <div class="sidebar-menu">
                     <ul class="menu">
                         <!-- MENU UTAMA -->
-                        <li class="sidebar-title border-bottom pb-2 text-uppercase text-secondary fw-bold fs-6 pt-3">Menu Utama</li>
-                        <li class="sidebar-item ">
+                        <li class="hidden-content sidebar-title border-bottom pb-2 text-uppercase text-secondary fw-bold fs-6 pt-3">Menu Utama</li>
+                        <li class="sidebar-item  hidden-content">
                             <a href="{{ route('min') }}" class="sidebar-link">
                                 <i class="bi bi-house-door-fill"></i>
                                 <span>Beranda</span>
                             </a>
                         </li>
-                        <li class="sidebar-item mb-4">
+                        <li class="sidebar-item mb-4 hidden-content">
                             <a href="{{ route('profiladmin') }}" class="sidebar-link">
                                 <i class="bi bi-person-badge-fill"></i>
                                 <span>Profil</span>
@@ -74,14 +74,14 @@
                         </li>
 
                         <!-- PENGELOLAAN DATA -->
-                        <li class="sidebar-title border-top border-bottom pb-2 pt-3 mt-4 text-uppercase text-secondary fw-bold fs-6">Pengelolaan Data</li>
-                        <li class="sidebar-item">
+                        <li class="hidden-content sidebar-title border-top border-bottom pb-2 pt-3 mt-4 text-uppercase text-secondary fw-bold fs-6">Pengelolaan Data</li>
+                        <li class="sidebar-item hidden-content">
                             <a href="{{ route('dataanggota') }}" class="sidebar-link">
                                 <i class="bi bi-person-lines-fill"></i>
                                 <span>Data Anggota</span>
                             </a>
                         </li>
-                        <li class="sidebar-item has-sub">
+                        <li class="sidebar-item has-sub hidden-content">
                             <a href="#" class="sidebar-link">
                                 <i class="bi bi-wallet-fill"></i>
                                 <span>Data Simpanan</span>
@@ -92,20 +92,26 @@
                                 <li class="submenu-item"><a href="{{ route('simpanananggota') }}">Simpanan Anggota</a></li>
                             </ul>
                         </li>
-                        <li class="sidebar-item">
+                        <li class="sidebar-item hidden-content">
                             <a href="{{ route('pinjamanadmin') }}" class="sidebar-link">
                                 <i class="bi bi-cash-stack"></i>
                                 <span>Data Pinjaman</span>
                             </a>
                         </li>
-                        <li class="sidebar-item">
+                        <li class="sidebar-item hidden-content">
+                            <a href="{{ route('dataangsuran') }}" class="sidebar-link">
+                                <i class="bi bi-arrow-repeat"></i>
+                                <span>Data Angsuran</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item hidden-content">
                             <a href="{{ route('denda') }}" class="sidebar-link">
                                 <i class="bi bi-exclamation-circle"></i>
                                 <span>Data Denda Pinjaman</span>
                             </a>
                         </li>
 
-                        <li class="sidebar-item">
+                        <li class="sidebar-item hidden-content">
                             <a href="{{ route('simpanans') }}" class="sidebar-link position-relative">
                                 <i class="bi bi-wallet-fill"></i>
                                 <span>Data Pengajuan Simpanan</span>
@@ -116,7 +122,7 @@
                                 @endif
                             </a>
                         </li>
-                        <li class="sidebar-item active">
+                        <li class="sidebar-item active hidden-content">
                             <a href="{{ route('pangajuan') }}" class="sidebar-link position-relative">
                                 <i class="bi bi-file-earmark-medical-fill"></i>
                                 <span>Data Pengajuan Pinjaman</span>
@@ -127,7 +133,7 @@
                                 @endif
                             </a>
                         </li>
-                        <li class="sidebar-item ">
+                        <li class="sidebar-item  hidden-content">
                             <a href="{{ route('angsuran') }}" class="sidebar-link position-relative">
                                 <i class="bi bi-coin"></i>
                                 <span>Data Pengajuan Angsuran</span>
@@ -140,26 +146,26 @@
                         </li>
 
                         <!-- KOMUNIKASI -->
-                        <li class="sidebar-title border-top border-bottom pb-2 pt-3 mt-4 text-uppercase text-secondary fw-bold fs-6">Komunikasi</li>
-                        <li class="sidebar-item">
+                        <li class="hidden-content sidebar-title border-top border-bottom pb-2 pt-3 mt-4 text-uppercase text-secondary fw-bold fs-6">Komunikasi</li>
+                        <li class="sidebar-item hidden-content">
                             <a href="{{ route('kontakkoperasi') }}" class="sidebar-link">
                                 <i class="bi bi-envelope-paper"></i>
                                 <span>Kelola Kontak Koperasi</span>
                             </a>
                         </li>
-                        <li class="sidebar-item">
+                        <li class="sidebar-item hidden-content">
                             <a href="{{ route('sosmed') }}" class="sidebar-link">
                                 <i class="bi bi-link-45deg"></i>
                                 <span>Kelola Sosial Media</span>
                             </a>
                         </li>
-                        <li class="sidebar-item">
+                        <li class="sidebar-item hidden-content">
                             <a href="{{ route('admin.sharemassage') }}" class="sidebar-link">
                                 <i class="bi bi-send"></i>
                                 <span>Kelola Pesan</span>
                             </a>
                         </li>
-                        <li class="sidebar-item">
+                        <li class="sidebar-item hidden-content">
                             <a href="{{ route('notifikasiadmin') }}" class="sidebar-link position-relative">
                                 <i class="bi bi-bell-fill"></i>
                                 <span>Notifikasi</span>
@@ -172,7 +178,7 @@
                         </li>
 
                         <!-- KELUAR -->
-                        <li class="sidebar-item border-top pt-3 mt-4">
+                        <li class="sidebar-item border-top pt-3 mt-4 hidden-content">
                             <form action="{{ route('logout') }}" method="POST">
                                 @csrf
                                 <button type="submit" class="btn btn-link sidebar-link text-danger">
@@ -211,24 +217,40 @@
             </div>
             @endif
             <div class="container mt-4">
-                <div class="page-header mb-4">
+                <div class="page-header mb-4 hidden-content-right">
                     <h3 class="fw-bold">
                         <i class="bi bi-clipboard-data"></i> Kelola Pengajuan Pinjaman
                     </h3>
                 </div>
                 <hr style="border-top: 2px solid #435ebe; margin-bottom: 30px;">
 
-                <!-- Ringkasan Statistik -->
                 <section class="mb-4">
-                    <div class="card shadow" style="border: 1px solid #435ebe;">
+                    <div class="card shadow hidden-content-right" style="border: 1px solid #435ebe;">
                         <div class="card-body">
+                            <h5 class="fw-bold d-flex align-items-center hidden-content-right">
+                                <i class="bi bi-info-circle me-2" style="margin-top: -10px;"></i> Deskripsi
+                            </h5>
+                            <hr style="border-top: 2px solid #25396f; border-radius: 5px;">
+                            <p class="hidden-content-right">
+                                Halaman ini digunakan untuk mengelola pengajuan Pinjaman. Di dalamnya terdapat daftar pengajuan, status persetujuan. Admin dapat menyetujui, atau menolak pengajuan sesuai kebijakan yang berlaku.
+                                <br><br>
+                                Catatan : Semua data yang tampil dihalaman ini <span class="badge bg-info">Di reset setiap hari</span>
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Ringkasan Statistik -->
+                <section class="mb-4 hidden-content-right">
+                    <div class="card shadow" style="border: 1px solid #435ebe;">
+                        <div class="card-body hidden-content-right">
                             <h5 class="fw-bold d-flex align-items-center">
                                 <i class="bi bi-bar-chart-line me-2"></i> Statistik Ringkasan Pengajuan
                             </h5>
                             <hr style="border-top: 2px solid #25396f; border-radius: 5px;">
 
-                            <div class="row">
-                                <div class="col-md-3">
+                            <div class="row hidden-content-right">
+                                <div class="col-md-3 hidden-content-right">
                                     <div class="card shadow" style="border-left: 5px solid #007bff; border-radius: 10px;">
                                         <div class="card-body text-center">
                                             <h6 style="color: #007bff;"><i class="bi bi-clipboard-plus"></i> Total Pengajuan</h6>
@@ -236,7 +258,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-3 hidden-content-right">
                                     <div class="card shadow" style="border-left: 5px solid #ffc107; border-radius: 10px;">
                                         <div class="card-body text-center">
                                             <h6 style="color: #ffc107;"><i class="bi bi-hourglass-split"></i> Menunggu Persetujuan</h6>
@@ -244,7 +266,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-3 hidden-content-right">
                                     <div class="card shadow" style="border-left: 5px solid #28a745; border-radius: 10px;">
                                         <div class="card-body text-center">
                                             <h6 style="color: #28a745;"><i class="bi bi-check-circle"></i> Pengajuan Disetujui</h6>
@@ -252,7 +274,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-3 hidden-content-right">
                                     <div class="card shadow" style="border-left: 5px solid #dc3545; border-radius: 10px;">
                                         <div class="card-body text-center">
                                             <h6 style="color: #dc3545;"><i class="bi bi-x-circle"></i> Pengajuan Ditolak</h6>
@@ -267,42 +289,48 @@
                 </section>
 
                 <!-- Tabel Data Pengajuan -->
-                <section class="mb-4">
-                    <div class="card shadow" style="border: 1px solid #435ebe;">
+                <section class="mb-4 hidden-content-right">
+                    <div class="card shadow hidden-content-right" style="border: 1px solid #435ebe;">
                         <div class="card-header bg-primary text-white">
                             <h5 class="mb-0 text-white"><i class="bi bi-table"></i> Data Pengajuan Pinjaman</h5>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body hidden-content-right">
                             <div style="max-height: 450px; overflow: auto; font-size: .9rem;">
-                                <table class="table table-hover">
-                                    <thead class="table-primary">
+                                <table class="table table-hover hidden-content-right">
+                                    <thead class="table-primary hidden-content-right">
                                         <tr>
                                             <th>No</th>
-                                            <th>Nama Anggota</th>
-                                            <th>Tanggal Pengajuan</th>
-                                            <th>Jumlah Pengajuan</th>
+                                            <th>Nama</th>
+                                            <th>Tanggal</th>
+                                            <th>Jatuh Tempo</th>
+                                            <th>Jumlah</th>
                                             <th>Jenis Jaminan</th>
-                                            <th>Bukti Jaminan</th>
+                                            <th>Bukti</th>
                                             <th>Status</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody class="hidden-content-right">
                                         @forelse($pengajuan as $index => $item)
                                         <tr>
-                                            <td>{{ $index + 1 }}</td>
-                                            <td>{{ $item->user->fullname ?? '-' }}</td>
-                                            <td>{{ $item->tanggal_pengajuan ?? '-' }}</td>
-                                            <td>Rp {{ number_format($item->jumlah_pinjaman, 0, ',', '.') }}</td>
-                                            <td>{{ $item->jenis_jaminan ?? '-' }}</td>
-                                            <td>
+                                            <td class="hidden-content-right">{{ $index + 1 }}</td>
+                                            <td class="hidden-content-right">{{ $item->user->fullname ?? '-' }}</td>
+                                            <td class="hidden-content-right">{{ $item->tanggal_pengajuan ?? '-' }}</td>
+                                            <td class="hidden-content-right">{{ $item->tanggal_jatuh_tempo ?? '-' }}</td>
+                                            <td class="hidden-content-right">
+                                                <span class="badge bg-primary">
+                                                    Rp {{ number_format($item->jumlah_pinjaman, 0, ',', '.') }}
+                                                </span>
+                                            </td>
+                                            <td class="hidden-content-right">{{ $item->jenis_jaminan ?? '-' }}</td>
+                                            <td class="hidden-content-right">
                                                 @if($item->file_jaminan)
-                                                <a href="{{ route('bukti.jaminan.admin', ['bukti' => basename($item->file_jaminan)]) }}" target="_blank" class="btn btn-outline-info btn-sm">Lihat Jaminan</a>
+                                                <a href="{{ route('bukti.jaminan.admin', ['bukti' => basename($item->file_jaminan)]) }}" target="_blank" class="btn btn-outline-info btn-sm"><i class="bi bi-eye"></i></a>
                                                 @else
                                                 <span class="badge bg-secondary">Tidak Ada</span>
                                                 @endif
                                             </td>
-                                            <td>
+                                            <td class="hidden-content-right">
                                                 @php
                                                 $statusColors = [
                                                 'Dalam Proses' => 'warning',
@@ -313,7 +341,7 @@
                                                 @endphp
                                                 <span class="badge bg-{{ $badgeColor }}">{{ $item->status }}</span>
                                             </td>
-                                            <td>
+                                            <td class="hidden-content-right">
                                                 @if($item->status == 'Dalam Proses')
                                                 <button class="btn btn-success btn-sm btn-ubah-status" data-id="{{ $item->id }}" data-status="Aktif">
                                                     <i class="bi bi-check-circle"></i> Setujui
@@ -328,7 +356,7 @@
                                         </tr>
                                         @empty
                                         <tr>
-                                            <td colspan="8" class="text-center">
+                                            <td class="hidden-content-right text-center" colspan="8" class="text-center">
                                                 <span class="badge bg-warning"><i class="bi bi-exclamation-circle"></i> Belum ada data pengajuan</span>
                                             </td>
                                         </tr>
@@ -342,7 +370,7 @@
             </div>
 
             <footer>
-                <div class="footer clearfix mb-0 text-muted">
+                <div class="footer clearfix mb-0 text-muted hidden-content-right">
                     <div class="float-start">
                         <p>2025 &copy; STARBIN</p>
                     </div>
@@ -400,6 +428,72 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Link Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const hiddenElements = document.querySelectorAll(".hidden-content");
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("show-content");
+                    } else {
+                        entry.target.classList.remove("show-content"); // Sembunyikan kembali saat keluar dari layar
+                    }
+                });
+            }, {
+                threshold: 0.2
+            });
+
+            hiddenElements.forEach(el => observer.observe(el));
+        });
+    </script>
+
+    <style>
+        .hidden-content {
+            opacity: 0;
+            transform: translateX(-50px);
+            /* Awalnya elemen bergeser ke kiri */
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .show-content {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const rightHiddenElements = document.querySelectorAll(".hidden-content-right");
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("show-content-right");
+                    } else {
+                        entry.target.classList.remove("show-content-right"); // Sembunyikan kembali saat keluar dari layar
+                    }
+                });
+            }, {
+                threshold: 0.2
+            });
+
+            rightHiddenElements.forEach(el => observer.observe(el));
+        });
+    </script>
+
+    <style>
+        .hidden-content-right {
+            opacity: 0;
+            transform: translateX(50px);
+            /* Awalnya elemen bergeser ke kanan */
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .show-content-right {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    </style>
 </body>
 
 </html>

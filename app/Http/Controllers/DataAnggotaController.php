@@ -52,11 +52,23 @@ class DataAnggotaController extends Controller
         ]);
 
         $user = User::findOrFail($request->id);
+
+        if ($user->role === 'user' && $request->role === 'admin') {
+            // Simpan status lama sebelum berubah ke admin
+            $user->status_sebelumnya = $user->status;
+            $user->status = 'Aktif'; // Admin selalu aktif
+        } elseif ($user->role === 'admin' && $request->role === 'user') {
+            // Kembalikan status sebelumnya saat turun jabatan ke user
+            $user->status = $user->status_sebelumnya;
+            $user->status_sebelumnya = null; // Kosongkan status_sebelumnya
+        }
+
         $user->role = $request->role;
         $user->save();
 
         return response()->json(['success' => true, 'message' => 'Role berhasil diperbarui.']);
     }
+
 
     // Get Tampilan Pou-up
     public function getUserSummary($id)
@@ -80,7 +92,6 @@ class DataAnggotaController extends Controller
         ]);
     }
 
-    // Get Aksi Tambah Anggota
     public function store(Request $request)
     {
         try {
@@ -91,12 +102,18 @@ class DataAnggotaController extends Controller
                 'phone' => 'required|regex:/^62[0-9]{9,13}$/|min:10|max:15',
                 'address' => 'required|min:15',
                 'gambar' => 'required|image|mimes:jpeg,jpg,png,gif|max:2048',
+                'role' => 'required|in:user,admin'
             ]);
 
+            // Upload gambar
             $gambar_file = $request->file('gambar');
             $nama_gambar = date('ymdhis') . '.' . $gambar_file->getClientOriginalExtension();
             $gambar_file->move(public_path('picture/account'), $nama_gambar);
 
+            // Tentukan status berdasarkan role
+            $status = $request->role === 'admin' ? 'Aktif' : 'Belum_Aktif';
+
+            // Simpan data ke database
             User::create([
                 'fullname' => $request->fullname,
                 'email' => $request->email,
@@ -104,7 +121,8 @@ class DataAnggotaController extends Controller
                 'phone' => $request->phone,
                 'address' => $request->address,
                 'gambar' => $nama_gambar,
-                'role' => $request->role ?? 'user',
+                'role' => $request->role,
+                'status' => $status
             ]);
 
             return response()->json(['success' => true, 'message' => 'Anggota baru berhasil ditambahkan!']);

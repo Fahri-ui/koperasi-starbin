@@ -9,6 +9,7 @@ use App\Models\User;
 
 class PinjmanAdminController extends Controller
 {
+
     public function pinjamanadmin()
     {
         // Ambil semua data pinjaman dengan relasi ke user
@@ -24,5 +25,16 @@ class PinjmanAdminController extends Controller
         $jumlahMenunggak = $pinjaman->where('status', 'Aktif')->count();
 
         return view('admin.pinjaman-admin', compact('pinjaman', 'totalPinjaman', 'totalSisaPinjaman', 'jumlahLunas', 'jumlahProses', 'jumlahMenunggak'));
+    }
+
+    public function Angsuran()
+    {
+        $angsuran = RiwayatPembayaran::with('user', 'pinjaman')->get();
+
+        $totalDisetujui = $angsuran->where('status', 'Berhasil')->count();
+        $totalTertunda = $angsuran->where('status', 'Dalam Proses')->sum('jumlah_pembayaran');
+        $jumlahTransaksi = $angsuran->count();
+
+        return view('admin.angsuran', compact('angsuran', 'totalDisetujui', 'totalTertunda', 'jumlahTransaksi'));
     }
 }
