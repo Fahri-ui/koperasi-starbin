@@ -75,9 +75,9 @@
 						</button>
 					</div>
 
-					<div class="text-center p-t-90">
+					<div class="text-center m-t-20">
 						Belum punya akun?
-						<a class="txt1 register" style="color:aliceblue;" href="{{ route('registrasi') }}">
+						<a class="txt1 register" href="{{ route('registrasi') }}">
 							Registrasi Disini
 						</a>
 					</div>

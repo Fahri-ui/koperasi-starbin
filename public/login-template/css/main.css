@@ -58,7 +58,7 @@ a:focus {
 
 a:hover {
 	text-decoration: none;
-  color: #57b846;
+  color: #ffffff;
 }
 
 /*---------------------------------------------*/
@@ -137,7 +137,7 @@ iframe {
   font-family: Poppins-Regular;
   font-size: 13px;
   line-height: 1.5;
-  color: #999999;
+  color: #272727;
 }
 
 .txt2 {
@@ -325,7 +325,6 @@ iframe {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  padding-top: 20px;
 }
 
 .login100-form-btn {
