@@ -6,6 +6,8 @@ use App\Models\Notifikasi;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Simpanan;
+use App\Models\RiwayatPembayaran;
+use App\Models\Pinjaman;
 use App\Models\Setting; // Tambahkan model Setting
 
 class BantuanController extends Controller
@@ -15,14 +17,24 @@ class BantuanController extends Controller
         $kontak = Setting::whereIn('key', ['alamat', 'telepon', 'email'])->get();
         $simpanan = Simpanan::where('user_id', auth()->id())->latest()->first();
 
-        $statusWajib = Simpanan::where('user_id', auth()->id())
-        ->where('jenis', 'wajib')
-        ->whereMonth('created_at', now()->month)
-        ->whereYear('created_at', now()->year)
-        ->latest('updated_at') // Ambil data terbaru berdasarkan updated_at
-        ->first();
+        $userId = Auth::id();
 
-        return view('user/bantuan', compact('statusWajib', 'simpanan', 'kontak'));
+        $pinjamanAktif = Pinjaman::where('user_id', $userId)
+            ->where('status', 'Aktif')
+            ->first();
+
+        $pembayaranProses = RiwayatPembayaran::where('user_id', auth()->id())
+            ->where('status', 'Dalam Proses')
+            ->exists();
+
+        $statusWajib = Simpanan::where('user_id', auth()->id())
+            ->where('jenis', 'wajib')
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->latest('updated_at') // Ambil data terbaru berdasarkan updated_at
+            ->first();
+
+        return view('user/bantuan', compact('statusWajib', 'simpanan', 'kontak', 'pinjamanAktif', 'pembayaranProses'));
     }
 
     public function kirimPesan(Request $request)

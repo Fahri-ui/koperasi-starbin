@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Simpanan;
 use App\Models\Pinjaman;
+use App\Models\RiwayatPembayaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,6 +16,16 @@ class ProfilController extends Controller
     {
         // Ambil user yang sedang login
         $user = Auth::user();
+
+        $userId = Auth::id();
+
+        $pinjamanAktif = Pinjaman::where('user_id', $userId)
+            ->where('status', 'Aktif')
+            ->first();
+
+        $pembayaranProses = RiwayatPembayaran::where('user_id', auth()->id())
+            ->where('status', 'Dalam Proses')
+            ->exists();
 
         $statusWajib = Simpanan::where('user_id', auth()->id())
             ->where('jenis', 'wajib')
@@ -36,7 +47,7 @@ class ProfilController extends Controller
             ->sum('jumlah_pinjaman');
 
         // Kirim variabel ke view
-        return view('user.profil', compact('statusWajib', 'totalSukarela', 'totalPinjaman', 'simpanan'));
+        return view('user.profil', compact('statusWajib', 'totalSukarela', 'totalPinjaman', 'simpanan', 'pinjamanAktif', 'pembayaranProses'));
     }
 
     public function update(Request $request)

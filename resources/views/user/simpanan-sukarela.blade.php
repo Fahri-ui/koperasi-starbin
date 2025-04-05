@@ -138,34 +138,35 @@
             </header>
 
             @if (Session::has('error'))
-            <div class="alert alert-danger d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #ff7f7f, #ff4d4d); color: #fff; border-radius: 20px; border: 2px solid #ff4d4d;">
-                <i class="bi bi-exclamation-triangle-fill me-3 fs-4" style="margin-top: -20px;"></i>
-                <div>
-                    <h5 class="mb-1">🚨 Oops! Terjadi Kesalahan</h5>
-                    <p class="mb-0">⚠️ {{ Session::get('error') }}</p>
+            <div class="flash-message alert alert-danger shadow p-3 mb-3"
+                style="background: linear-gradient(135deg, #ff7f7f, #ff4d4d); color: #fff; border-radius: 20px; border: 2px solid #ff4d4d; position: relative;">
+                <div class="d-flex align-items-start">
+                    <i class="bi bi-exclamation-triangle-fill me-3 fs-4 mt-1"></i>
+                    <div>
+                        <h5 class="mb-1">🚨 Oops! Terjadi Kesalahan</h5>
+                        <p class="mb-0">⚠️ {{ Session::get('error') }}</p>
+                    </div>
                 </div>
+                <button type="button" class="btn-close position-absolute top-0 end-0 m-3"
+                    onclick="this.parentElement.style.display='none';" aria-label="Close"></button>
             </div>
             @endif
 
             @if (Session::has('success'))
-            <div class="alert alert-success d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #66cc66, #33b233); color: #fff; border-radius: 20px; border: 2px solid #33b233;">
-                <i class="bi bi-check-circle-fill me-3 fs-4" style="margin-top: -20px;"></i>
-                <div>
-                    <h5 class="mb-1">🌟 Yeay! Berhasil</h5>
-                    <p class="mb-0">✅ {{ Session::get('success') }}</p>
+            <div class="flash-message alert alert-success shadow p-3 mb-3"
+                style="background: linear-gradient(135deg, #66cc66, #33b233); color: #fff; border-radius: 20px; border: 2px solid #33b233; position: relative;">
+                <div class="d-flex align-items-start">
+                    <i class="bi bi-check-circle-fill me-3 fs-4 mt-1"></i>
+                    <div>
+                        <h5 class="mb-1">🌟 Yeay! Berhasil</h5>
+                        <p class="mb-0">✅ {{ Session::get('success') }}</p>
+                    </div>
                 </div>
+                <button type="button" class="btn-close position-absolute top-0 end-0 m-3"
+                    onclick="this.parentElement.style.display='none';" aria-label="Close"></button>
             </div>
             @endif
 
-            @if (Session::has('success'))
-            <div class="alert alert-success d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #66cc66, #33b233); color: #fff; border-radius: 20px; border: 2px solid #33b233;">
-                <i class="bi bi-check-circle-fill me-3 fs-4" style="margin-top: -20px;"></i>
-                <div>
-                    <h5 class="mb-1">🌟 Yeay! Berhasil</h5>
-                    <p class="mb-0">✅ {{ Session::get('success') }}</p>
-                </div>
-            </div>
-            @endif
             @if (auth()->user()->status === 'Belum_Aktif')
 
             <div class="container mt-4 hidden-content-right">
@@ -311,7 +312,130 @@
                 </h2>
             </div>
 
-            @if ($statusWajib && $statusWajib->status === 'Dalam Proses')
+            @if($pinjamanAktif->total_denda > 0)
+            <div class="card shadow-lg border-0 mb-4 hidden-content-right" style="text-align: center; border: 1px solid #d9d9d9; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); margin-bottom: 20px;  padding: 20px;">
+                <div class="card-body bg-warning text-dark" style="border: 1px solid #435ebe; border-radius: 10px;">
+                    <div class="d-flex align-items-start hidden-content-right">
+                        <i class="bi bi-info-circle-fill text-primary fs-1 me-3 hidden-content-right" style="margin-top:-20px;"></i>
+                        <div>
+                            <h4 class="fw-bold hidden-content-right"> Peringatan: Keterlambatan Pembayaran Simpanan Wajib</h4>
+                            <hr style="border: 2px solid rgb(0, 0, 0);">
+                            <p class="hidden-content-right" style="color:rgb(80, 83, 85);">
+                                Anda memiliki keterlambatan pembayaran simpanan wajib selama <strong>2 bulan</strong> dengan total sebesar <strong>Rp 100.000</strong>.
+                                Mohon segera melunasi sebelum <strong>bulan depan</strong> untuk mencegah akun menjadi <strong>nonaktif</strong>.
+                                Jika tidak dapat membayar simpanan wajib, <strong>segera tarik simpanan sukarela</strong> Anda sebelum akun dinonaktifkan.
+                                Apabila akun <strong>nonaktif</strong>, jaminan pada pinjaman aktif akan kami <strong>ambil</strong>.
+                                Jika Anda memiliki saldo <strong>simpanan sukarela</strong>, Anda dapat mengunjungi kantor kami dengan membawa bukti tangkapan layar <strong>pada halaman Simpanan Sukarela</strong>.
+                                <br><br>
+                                Pastikan pembayaran tepat waktu agar status keanggotaan Anda tetap aktif.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <section class="mb-4 hidden-content-right">
+                <div class="card shadow" style="border: 1px solid #435ebe;">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0 text-white hidden-content-right">
+                            <i class="bi bi-cash-coin" style="margin-top: -30px;"></i> Formulir Pembayaran Pinjaman
+                        </h5>
+                    </div>
+                    <div class="card-body hidden-content-right">
+                        @if ($pembayaranProses)
+                        <!-- Notifikasi jika ada pembayaran dalam proses -->
+                        <div class="alert text-center p-4 rounded hidden-content-right" style="border: 1px solid #0dcaf0; background-color: #d1f2fa;">
+                            <h4 class="fw-bold text-uppercase text-info hidden-content-right">
+                                <i class="bi bi-hourglass-split"></i> Menunggu Konfirmasi Admin
+                            </h4>
+                            <hr>
+                            <p class="mb-2 hidden-content-right">
+                                Pengajuan <strong>pembayaran denda</strong> Anda telah berhasil dikirim dan saat ini sedang dalam proses pemeriksaan oleh <strong>admin kami</strong>.
+                            </p>
+                            <p class="mb-2 hidden-content-right">
+                                Mohon tunggu untuk proses verifikasi. Setelah disetujui, Anda melanjutkan transaksi berikutnya.
+                            </p>
+                            <p class="mb-2 hidden-content-right">
+                                Jika Anda tidak kunjung menerima konfirmasi dalam waktu yang cukup lama, silakan hubungi tim administrasi melalui <strong>halaman Bantuan</strong> atau kunjungi kantor kami secara langsung.
+                            </p>
+                            <p class="fw-bold text-info hidden-content-right">
+                                Trimakasih telah mengikuti ketentuan koperasi kami
+                            </p>
+                        </div>
+                        @else
+                        <!-- Info Denda -->
+                        <div class="alert text-center p-4 rounded hidden-content-right" style="border: 1px solid #dc3545; background-color: #f8d7da;">
+                            <h4 class="fw-bold text-uppercase text-danger hidden-content-right">
+                                <i class="bi bi-exclamation-triangle-fill"></i> Perhatian!
+                            </h4>
+                            <hr>
+                            <p class="mb-2 hidden-content-right">
+                                <strong>Ini bukan formulir pembayaran Simpanan Wajib, melainkan formulir pembayaran pinjaman.</strong>
+                            </p>
+                            <p class="mb-2 hidden-content-right">
+                                Anda memiliki denda pada pinjaman yang belum diselesaikan sebesar
+                                <strong>Rp {{ number_format($pinjamanAktif->total_denda, 0, ',', '.') }}</strong>. Oleh karena itu, pembayaran Simpanan Wajib
+                                tidak dapat dilakukan sebelum Anda melunasi denda terlebih dahulu.
+                            </p>
+                            <p class="mb-2 hidden-content-right">
+                                Jika Simpanan Wajib tidak dibayarkan hingga batas waktu yang telah ditentukan (Bulan Depan), akun Anda berisiko
+                                dinonaktifkan dan jaminan pinjaman aktif dapat digunakan sebagai kompensasi. Mohon segera selesaikan
+                                kewajiban Anda untuk menghindari konsekuensi lebih lanjut.
+                            </p>
+                            <hr>
+                            <h5 class="fw-bold text-primary hidden-content-right">
+                                <i class="bi bi-info-circle-fill"></i> Informasi Pembayaran
+                            </h5>
+                            <p class="mb-2 hidden-content-right">
+                                Anda <strong>tidak perlu membayar total angsuran</strong> pada tahap ini. Saat ini, Anda hanya diwajibkan untuk
+                                melunasi <strong>total denda</strong> yang masih tertunggak.
+                            </p>
+                            <p class="mb-2 hidden-content-right">
+                                Setelah denda dilunasi, Anda dapat kembali melakukan pembayaran Simpanan Wajib sesuai ketentuan yang berlaku.
+                            </p>
+                            <p class="fw-bold text-primary hidden-content-right">
+                                Silakan selesaikan pembayaran denda terlebih dahulu untuk menghindari kendala pada transaksi berikutnya.
+                            </p>
+                        </div>
+
+                        <form action="{{ route('pinjaman.bayar') }}" method="POST" enctype="multipart/form-data" style="margin-top: 20px;">
+                            @csrf
+                            <div class="row hidden-content-right">
+                                <div class="col-md-6 mb-3 hidden-content-right">
+                                    <label for="loan-code" class="form-label">Kode Pinjaman</label>
+                                    <input type="text" class="form-control" id="loan-code" name="loan-code" value="{{ $pinjamanAktif->id }}" readonly>
+                                </div>
+                                <div class="col-md-6 mb-3 hidden-content-right">
+                                    <label for="payment-amount" class="form-label">Jumlah Pembayaran</label>
+                                    <input type="number" class="form-control" id="payment-amount" name="payment-amount" placeholder="Masukkan jumlah pembayaran" min="10000" step="10000" required>
+                                    <small class="text-muted"><i class="bi bi-info-circle"></i> Minimal Rp 10.000 dan kelipatan Rp 10.000.</small>
+                                </div>
+                            </div>
+                            <div class="row hidden-content-right">
+                                <div class="col-md-6 mb-3 hidden-content-right">
+                                    <label for="payment-method" class="form-label">Pilih Metode Pembayaran</label>
+                                    <select class="form-select" id="payment-method" name="payment-method" required>
+                                        <option value="cash">Tunai (Bayar Langsung)</option>
+                                        <option value="transfer-bank">Transfer Bank</option>
+                                        <option value="ewallet">E-Wallet (OVO, GoPay, Dana)</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3 hidden-content-right">
+                                    <label for="payment-proof" class="form-label">Unggah Bukti Pembayaran</label>
+                                    <input type="file" class="form-control" id="payment-proof" name="payment-proof" accept="image/*" required>
+                                </div>
+                            </div>
+                            <div class="form-group text-center mt-4 hidden-content-right">
+                                <button type="submit" class="hidden-content-right btn btn-success">
+                                    <i class="bi bi-check-circle"></i> Konfirmasi Pembayaran
+                                </button>
+                            </div>
+                        </form>
+                        @endif
+                    </div>
+                </div>
+            </section>
+            @elseif ($statusWajib && $statusWajib->status === 'Dalam Proses')
             <div class="alert alert-warning shadow-sm hidden-content-right" role="alert" style="border-radius: 10px;">
                 <!-- Header -->
                 <div class="d-flex align-items-center p-3" style="border-bottom: 2px solid #d1a900; color:black;">
@@ -1102,6 +1226,15 @@
             transform: translateX(0);
         }
     </style>
+    <script>
+        setTimeout(() => {
+            document.querySelectorAll('.flash-message').forEach(el => {
+                el.style.transition = "opacity 0.5s ease";
+                el.style.opacity = "0";
+                setTimeout(() => el.remove(), 500); // hapus elemen dari DOM setelah transisi
+            });
+        }, 5000); // auto hide setelah 5 detik
+    </script>
 
 </body>
 

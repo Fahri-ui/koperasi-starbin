@@ -170,10 +170,7 @@ iframe {
   background-size: cover;           /* Memastikan background memenuhi area */
   background-position: center;      /* Memusatkan posisi background */
   background-repeat: no-repeat;     /* Mencegah gambar berulang */
-  background: -webkit-linear-gradient(-135deg, 939dcf, #6a6afb);
-  background: -o-linear-gradient(-135deg, #939dcf, #6a6afb);
-  background: -moz-linear-gradient(-135deg, #939dcf, #6a6afb);
-  background: linear-gradient(-135deg, #939dcf, #6a6afb);
+  background: linear-gradient(-135deg, #405dff, #005bd3);
 }
 
 .wrap-login100 {
@@ -337,7 +334,7 @@ iframe {
   width: 100%;
   height: 50px;
   border-radius: 25px;
-  background: #2e82ff;
+  background: #1b32ff;
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-box;
@@ -354,7 +351,7 @@ iframe {
 }
 
 .login100-form-btn:hover {
-  background: #3968de;
+  background: #0019a5;
 }
 
 

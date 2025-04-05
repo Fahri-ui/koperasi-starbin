@@ -17,6 +17,7 @@ class PinjamanController extends Controller
     public function pinjaman()
     {
         $userId = Auth::id();
+        
         $tanggalHariIni = Carbon::today();
 
         $telatwajib = Simpanan::where('user_id', auth()->id())

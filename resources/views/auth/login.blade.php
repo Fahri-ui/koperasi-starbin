@@ -23,6 +23,7 @@
 	<link rel="stylesheet" type="text/css" href="{{asset('login-template/css/main.css')}}">
 	<!--===============================================================================================-->
 </head>
+
 <body>
 	<div class="limiter">
 		<div class="container-login100">
@@ -38,20 +39,21 @@
 					</span>
 
 					@if ($errors->any())
-					<div class="alert alert-danger" style="background-color: salmon; color: aliceblue; border-radius: 20px;">
-						<ul>
+					<div class="alert alert-danger flash-message" style="background-color: salmon; color: #fff; border-radius: 20px; position: relative;">
+						<ul class="mb-0">
 							@foreach ($errors->all() as $error)
-							<li>{{ $error }}</li>
+							{{ $error }}
 							@endforeach
 						</ul>
 					</div>
 					@endif
 
 					@if (Session::has('success'))
-					<div class="alert alert-success" style="background-color: lightgreen; color: aliceblue; border-radius: 20px;">
+					<div class="alert alert-success flash-message" style="background-color: #33b233; color: #fff; border-radius: 20px; position: relative;">
 						{{ Session::get('success') }}
 					</div>
 					@endif
+
 
 					<div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
 						<input class="input100" type="email" name="email" placeholder="Email" required>
@@ -74,6 +76,11 @@
 							Login
 						</button>
 					</div>
+					<div class="text-center m-t-10">
+						<a class="txt1 register" href="{{ route('ForgetPassword') }}">
+							Rubah kata sandi jika lupa 
+						</a>
+					</div>
 
 					<div class="text-center m-t-20">
 						Belum punya akun?
@@ -85,9 +92,6 @@
 			</div>
 		</div>
 	</div>
-
-
-
 
 	<!--===============================================================================================-->
 	<script src="{{asset('login-template/vendor/jquery/jquery-3.2.1.min.js')}}"></script>
@@ -105,6 +109,17 @@
 	</script>
 	<!--===============================================================================================-->
 	<script src="{{asset('login-template/js/main.js')}}"></script>
+	<script>
+		// Auto-hide flash message setelah 5 detik
+		setTimeout(() => {
+			document.querySelectorAll('.flash-message').forEach(el => {
+				el.style.transition = "opacity 0.5s ease";
+				el.style.opacity = "0";
+				setTimeout(() => el.remove(), 500);
+			});
+		}, 4000);
+	</script>
+
 
 </body>
 

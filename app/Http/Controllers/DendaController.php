@@ -13,7 +13,7 @@ class DendaController extends Controller
     public function denda()
     {
         // Ambil semua pinjaman yang belum lunas & memiliki denda
-        $laporanDenda = Pinjaman::whereIn('pinjaman.status', ['Aktif', 'Menunggak'])
+        $laporanDenda = Pinjaman::where('pinjaman.status', ['Aktif', 'Menunggak'])
             ->where('pinjaman.total_denda', '>', 0)
             ->join('users', 'pinjaman.user_id', '=', 'users.id')
             ->leftJoin('riwayat_pembayaran', 'pinjaman.id', '=', 'riwayat_pembayaran.pinjaman_id')
@@ -22,7 +22,7 @@ class DendaController extends Controller
                 'pinjaman.id as id_pinjaman',
                 'pinjaman.jumlah_pinjaman',
                 'pinjaman.tanggal_jatuh_tempo',
-                'pinjaman.status',
+                'pinjaman.status_denda',
                 'pinjaman.sisa_angsuran',
                 DB::raw('COALESCE(pinjaman.total_denda, 0) as denda'),
                 DB::raw('(pinjaman.jumlah_pinjaman + COALESCE(pinjaman.total_denda, 0)) as total_bayar')

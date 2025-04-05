@@ -203,22 +203,32 @@
                 </a>
             </header>
             @if (Session::has('error'))
-            <div class="alert alert-danger d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #ff7f7f, #ff4d4d); color: #fff; border-radius: 20px; border: 2px solid #ff4d4d;">
-                <i class="bi bi-exclamation-triangle-fill me-3 fs-4" style="margin-top: -20px;"></i>
-                <div>
-                    <h5 class="mb-1">🚨 Oops! Terjadi Kesalahan</h5>
-                    <p class="mb-0">⚠️ {{ Session::get('error') }}</p>
+            <div class="flash-message alert alert-danger shadow p-3 mb-3"
+                style="background: linear-gradient(135deg, #ff7f7f, #ff4d4d); color: #fff; border-radius: 20px; border: 2px solid #ff4d4d; position: relative;">
+                <div class="d-flex align-items-start">
+                    <i class="bi bi-exclamation-triangle-fill me-3 fs-4 mt-1"></i>
+                    <div>
+                        <h5 class="mb-1">🚨 Oops! Terjadi Kesalahan</h5>
+                        <p class="mb-0">⚠️ {{ Session::get('error') }}</p>
+                    </div>
                 </div>
+                <button type="button" class="btn-close position-absolute top-0 end-0 m-3"
+                    onclick="this.parentElement.style.display='none';" aria-label="Close"></button>
             </div>
             @endif
 
             @if (Session::has('success'))
-            <div class="alert alert-success d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #66cc66, #33b233); color: #fff; border-radius: 20px; border: 2px solid #33b233;">
-                <i class="bi bi-check-circle-fill me-3 fs-4" style="margin-top: -20px;"></i>
-                <div>
-                    <h5 class="mb-1">🌟 Yeay! Berhasil</h5>
-                    <p class="mb-0">✅ {{ Session::get('success') }}</p>
+            <div class="flash-message alert alert-success shadow p-3 mb-3"
+                style="background: linear-gradient(135deg, #66cc66, #33b233); color: #fff; border-radius: 20px; border: 2px solid #33b233; position: relative;">
+                <div class="d-flex align-items-start">
+                    <i class="bi bi-check-circle-fill me-3 fs-4 mt-1"></i>
+                    <div>
+                        <h5 class="mb-1">🌟 Yeay! Berhasil</h5>
+                        <p class="mb-0">✅ {{ Session::get('success') }}</p>
+                    </div>
                 </div>
+                <button type="button" class="btn-close position-absolute top-0 end-0 m-3"
+                    onclick="this.parentElement.style.display='none';" aria-label="Close"></button>
             </div>
             @endif
 
@@ -269,7 +279,7 @@
                                         <form action="{{ route('notifikasi.tandaiSudahDibalas', $item->id) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('PATCH')
-                                            <button type="submit" class="btn btn-sm btn-primary">Tandai Telah Dibalas</button>
+                                            <button type="submit" class="btn btn-sm btn-warning">Tandai Telah Dibalas</button>
                                         </form>
                                         @else
                                         <span class="badge bg-success">Sudah Dibalas</span>
@@ -378,6 +388,15 @@
             transform: translateX(0);
         }
     </style>
+    <script>
+        setTimeout(() => {
+            document.querySelectorAll('.flash-message').forEach(el => {
+                el.style.transition = "opacity 0.5s ease";
+                el.style.opacity = "0";
+                setTimeout(() => el.remove(), 500); // hapus elemen dari DOM setelah transisi
+            });
+        }, 5000); // auto hide setelah 5 detik
+    </script>
 
 </body>
 

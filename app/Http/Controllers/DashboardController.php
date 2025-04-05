@@ -32,11 +32,19 @@ class DashboardController extends Controller
             ->whereYear('tanggal_transaksi', $currentYear)
             ->sum('jumlah');
 
+        $totalSimpananSeluruh = Simpanan::where('user_id', $user->id)
+            ->whereNotIn('status', ['Ditolak', 'Dalam Proses'])
+            ->sum('jumlah');
+
         // Hitung total pinjaman yang diambil user (hanya bulan ini)
         $totalPinjaman = Pinjaman::where('user_id', $user->id)
             ->whereIn('status', ['Aktif', 'Lunas'])
             ->whereMonth('tanggal_pengajuan', $currentMonth)
             ->whereYear('tanggal_pengajuan', $currentYear)
+            ->sum('jumlah_pinjaman');
+
+        $totalPinjamanSeluruh = Pinjaman::where('user_id', $user->id)
+            ->whereIn('status', ['Aktif', 'Lunas'])
             ->sum('jumlah_pinjaman');
 
         $statusWajib = Simpanan::where('user_id', auth()->id())
@@ -126,6 +134,10 @@ class DashboardController extends Controller
         $pinjamanAktif = Pinjaman::where('user_id', $userId)
             ->where('status', 'Aktif')
             ->first();
+
+        $pembayaranProses = RiwayatPembayaran::where('user_id', auth()->id())
+            ->where('status', 'Dalam Proses')
+            ->exists();
 
 
         $user = User::find($userId);
@@ -305,6 +317,6 @@ class DashboardController extends Controller
         }
 
         // Kirim ke view
-        return view('user.dashboard', compact('statusWajib', 'totalSimpanan', 'totalPinjaman', 'riwayatTransaksi', 'riwayatTransaksis', 'jumlahNotifikasiBaru', 'simpanan'));
+        return view('user.dashboard', compact('statusWajib', 'totalSimpanan', 'totalPinjaman', 'riwayatTransaksi', 'riwayatTransaksis', 'jumlahNotifikasiBaru', 'simpanan', 'pinjamanAktif', 'totalSimpananSeluruh', 'totalPinjamanSeluruh', 'pembayaranProses'));
     }
 }

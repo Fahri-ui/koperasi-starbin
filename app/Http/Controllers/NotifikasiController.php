@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Notifikasi;
 use App\Models\Simpanan;
+use App\Models\Pinjaman;
+use App\Models\RiwayatPembayaran;
 use Illuminate\Support\Facades\Auth;
 
 class NotifikasiController extends Controller
@@ -13,6 +15,13 @@ class NotifikasiController extends Controller
     public function notifikasi()
     {
         $userId = auth()->id();
+
+        $pinjamanAktif = Pinjaman::where('user_id', $userId)
+            ->where('status', 'Aktif')
+            ->first();
+        $pembayaranProses = RiwayatPembayaran::where('user_id', auth()->id())
+            ->where('status', 'Dalam Proses')
+            ->exists();
 
         // Tandai semua notifikasi sebagai telah dibaca saat user membuka halaman
         Notifikasi::where(function ($query) use ($userId) {
@@ -46,6 +55,6 @@ class NotifikasiController extends Controller
 
         $simpanan = Simpanan::where('user_id', auth()->id())->latest()->first();
 
-        return view('user.notifikasi', compact('statusWajib', 'notifikasiPerBulan', 'simpanan'));
+        return view('user.notifikasi', compact('statusWajib', 'notifikasiPerBulan', 'simpanan', 'pinjamanAktif', 'pembayaranProses'));
     }
 }

@@ -130,6 +130,9 @@ class SimpananController extends Controller
         $pinjamanAktif = Pinjaman::where('user_id', $userId)
             ->where('status', 'Aktif')
             ->first();
+        $pembayaranProses = RiwayatPembayaran::where('user_id', auth()->id())
+            ->where('status', 'Dalam Proses')
+            ->exists();
 
 
         $user = User::find($userId);
@@ -287,11 +290,22 @@ class SimpananController extends Controller
         // Pengingat
         $pengingat = "Anda akan menerima pengingat otomatis setiap awal bulan jika belum melakukan pembayaran.";
 
-        return view('user.simpanan-wajib', compact('statusWajibtelat', 'statusWajibDitolak', 'statusWajibDalamproses', 'wajib', 'simpananWajib', 'statusWajib', 'simpanan', 'totalWajib', 'statusPembayaran', 'statusPesan', 'pengingat', 'sudahBayarBulanIni'));
+        return view('user.simpanan-wajib', compact('statusWajibtelat', 'pembayaranProses', 'statusWajibDitolak', 'statusWajibDalamproses', 'wajib', 'simpananWajib', 'statusWajib', 'simpanan', 'totalWajib', 'statusPembayaran', 'statusPesan', 'pengingat', 'sudahBayarBulanIni', 'pinjamanAktif'));
     }
 
     public function simpanansukarela()
     {
+
+        $userId = Auth::id();
+
+        $pinjamanAktif = Pinjaman::where('user_id', $userId)
+            ->where('status', 'Aktif')
+            ->first();
+
+        $pembayaranProses = RiwayatPembayaran::where('user_id', auth()->id())
+            ->where('status', 'Dalam Proses')
+            ->exists();
+
         // Ambil semua data simpanan sukarela milik user yang sedang login
         $sukarela = Simpanan::where('jenis', 'sukarela')
             ->where('user_id', auth()->id())
@@ -352,7 +366,7 @@ class SimpananController extends Controller
         // Jika ada data terbaru, cek apakah masih "Dalam Proses"
         $isDitolak = $statusWajibDitolak && $statusWajibDitolak->status === 'Ditolak';
         // Kirim data ke view
-        return view('user.simpanan-sukarela', compact('telatwajib', 'isDitolak', 'statusWajibDitolak', 'statusWajibinfo', 'statusWajibDalamproses', 'statusWajibinfo', 'statusWajib', 'sukarela', 'statusSukarela', 'totalSukarela', 'simpanan'));
+        return view('user.simpanan-sukarela', compact('telatwajib', 'isDitolak', 'statusWajibDitolak', 'statusWajibinfo', 'statusWajibDalamproses', 'statusWajibinfo', 'statusWajib', 'sukarela', 'statusSukarela', 'totalSukarela', 'simpanan', 'pinjamanAktif', 'pembayaranProses'));
     }
 
     public function store(Request $request)

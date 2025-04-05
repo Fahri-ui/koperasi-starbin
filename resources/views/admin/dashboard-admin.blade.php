@@ -197,22 +197,32 @@
                 </a>
             </header>
             @if (Session::has('error'))
-            <div class="alert alert-danger d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #ff7f7f, #ff4d4d); color: #fff; border-radius: 20px; border: 2px solid #ff4d4d;">
-                <i class="bi bi-exclamation-triangle-fill me-3 fs-4" style="margin-top: -20px;"></i>
-                <div>
-                    <h5 class="mb-1">🚨 Oops! Terjadi Kesalahan</h5>
-                    <p class="mb-0">⚠️ {{ Session::get('error') }}</p>
+            <div class="flash-message alert alert-danger shadow p-3 mb-3"
+                style="background: linear-gradient(135deg, #ff7f7f, #ff4d4d); color: #fff; border-radius: 20px; border: 2px solid #ff4d4d; position: relative;">
+                <div class="d-flex align-items-start">
+                    <i class="bi bi-exclamation-triangle-fill me-3 fs-4 mt-1"></i>
+                    <div>
+                        <h5 class="mb-1">🚨 Oops! Terjadi Kesalahan</h5>
+                        <p class="mb-0">⚠️ {{ Session::get('error') }}</p>
+                    </div>
                 </div>
+                <button type="button" class="btn-close position-absolute top-0 end-0 m-3"
+                    onclick="this.parentElement.style.display='none';" aria-label="Close"></button>
             </div>
             @endif
 
             @if (Session::has('success'))
-            <div class="alert alert-success d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #66cc66, #33b233); color: #fff; border-radius: 20px; border: 2px solid #33b233;">
-                <i class="bi bi-check-circle-fill me-3 fs-4" style="margin-top: -20px;"></i>
-                <div>
-                    <h5 class="mb-1">🌟 Yeay! Berhasil</h5>
-                    <p class="mb-0">✅ {{ Session::get('success') }}</p>
+            <div class="flash-message alert alert-success shadow p-3 mb-3"
+                style="background: linear-gradient(135deg, #66cc66, #33b233); color: #fff; border-radius: 20px; border: 2px solid #33b233; position: relative;">
+                <div class="d-flex align-items-start">
+                    <i class="bi bi-check-circle-fill me-3 fs-4 mt-1"></i>
+                    <div>
+                        <h5 class="mb-1">🌟 Yeay! Berhasil</h5>
+                        <p class="mb-0">✅ {{ Session::get('success') }}</p>
+                    </div>
                 </div>
+                <button type="button" class="btn-close position-absolute top-0 end-0 m-3"
+                    onclick="this.parentElement.style.display='none';" aria-label="Close"></button>
             </div>
             @endif
 
@@ -274,13 +284,18 @@
                     <div class="col-12">
                         <div class="card shadow p-4 text-center position-relative" style="border-radius: 12px; color: #435ebe; border: 1px solid #435ebe;">
                             <h5 class="fw-bold text-primary">
-                                <i class="bi  bi-bank me-2"></i>Total Keuangan
+                                <i class="bi bi-bank me-2"></i>Total Keuangan
                             </h5>
                             <h1 class="fw-bold" id="animatedAmount" style="color: #28a745;">Rp 0</h1>
                             <p class="text-secondary" style="font-size: 1rem;">Total saldo keuangan saat ini</p>
+                            <p class="text-muted mt-2" style="font-size: 0.9rem;">
+                                Nominal ini dihitung dari Total Simpanan Sukarela, Total Simpanan Wajib, Total Simpanan Anggota, dan Total Angsuran, 
+                                ditambah Total Denda, kemudian dikurangi Total Pinjaman.
+                            </p>
                         </div>
                     </div>
                 </div>
+
 
                 <div class="row hidden-content-right">
                     <!-- Statistik Keuangan (Bar Chart) -->
@@ -388,6 +403,7 @@
             // Pastikan data dari backend tersedia
             let pinjamanData = {!! json_encode($pinjamanBulanan) !!};
             let angsuranData = {!! json_encode($angsuranBulanan) !!};
+            let dendaBulanan = {!! json_encode($dendaBulanan) !!};
             let totalSimpananWajib = {{ $totalSimpananWajib }};
             let totalSimpananSukarela = {{ $totalSimpananSukarela }};
             let totalSimpananAnggota = {{ $totalSimpananAnggota }};
@@ -430,7 +446,7 @@
                         },
                         {
                             label: "Denda",
-                            data: Array(labelsBulan.length).fill(totalDenda / labelsBulan.length),
+                            data: Object.values(dendaBulanan),
                             backgroundColor: "rgba(255, 99, 132, 0.2)",
                             borderColor: "rgba(255, 99, 132, 1)",
                             borderWidth: 2,
@@ -626,6 +642,15 @@
             transform: translateX(0);
         }
     </style>
+    <script>
+        setTimeout(() => {
+            document.querySelectorAll('.flash-message').forEach(el => {
+                el.style.transition = "opacity 0.5s ease";
+                el.style.opacity = "0";
+                setTimeout(() => el.remove(), 500); // hapus elemen dari DOM setelah transisi
+            });
+        }, 5000); // auto hide setelah 5 detik
+    </script>
 
 </body>
 

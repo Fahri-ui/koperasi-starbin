@@ -231,7 +231,8 @@
                             </h5>
                             <hr style="border-top: 2px solid #25396f; border-radius: 5px;">
                             <p class="hidden-content-right">
-                                Laporan denda berisi daftar anggota yang terkena denda akibat keterlambatan pembayaran pinjaman. Admin dapat memantau jumlah denda, status pembayaran, dan sisa angsuran untuk pengelolaan lebih lanjut. 
+                                Laporan denda berisi daftar anggota yang terkena denda akibat keterlambatan pembayaran pinjaman. Admin dapat memantau jumlah denda, status pembayaran, dan sisa angsuran untuk pengelolaan lebih lanjut. <br><br>
+                                <span class="badge bg-info">Tidak termasuk pinjaman yang telah lunas</span>
                             </p>
                         </div>
                     </div>
@@ -244,7 +245,7 @@
                             <h5 class="fw-bold d-flex align-items-center hidden-content-right">
                                 <i class="bi bi-bar-chart me-2" style="margin-top: -10px;"></i> Ringkasan Denda
                             </h5>
-                            <hr style="border-top: 2px solid #25396f; border-radius: 5px;">
+                            <hr style="border-top: 2pxwarning solid #25396f; border-radius: 5px;">
 
                             <div class="row hidden-content-right">
                                 <div class="col-md-4">
@@ -316,7 +317,7 @@
                                             <th>Denda</th>
                                             <th>Total Bayar</th>
                                             <th>Sisa Angsuran</th>
-                                            <th>Status</th>
+                                            <th>Status Denda</th>
                                         </tr>
                                     </thead>
                                     <tbody id="denda-table-body" class="hidden-content-right">
@@ -327,26 +328,35 @@
                                             <td class="hidden-content-right">{{ $data->id_pinjaman }}</td>
                                             <td class="hidden-content-right">
                                                 <span class="badge bg-info">
-                                                    <i class="bi bi-cash-stack"></i> Rp {{ number_format($data->jumlah_pinjaman, 0, ',', '.') }}
+                                                    Rp {{ number_format($data->jumlah_pinjaman, 0, ',', '.') }}
                                                 </span>
                                             </td>
                                             <td class="hidden-content-right">
                                                 <span class="badge bg-danger">
-                                                    <i class="bi bi-x-circle"></i> Rp {{ number_format($data->denda, 0, ',', '.') }}
+                                                    Rp {{ number_format($data->denda, 0, ',', '.') }}
                                                 </span>
                                             </td>
-                                            <td class="hidden-content-right">Rp {{ number_format($data->total_bayar, 0, ',', '.') }}</td>
-                                            <td class="hidden-content-right">Rp {{ number_format($data->sisa_angsuran, 0, ',', '.') }}</td>
                                             <td class="hidden-content-right">
-                                                <span class="badge bg-{{ $data->status === 'Lunas' ? 'success' : 'warning' }}">
-                                                    {{ ucfirst($data->status) }}
+                                                <span class="badge bg-primary">
+                                                    Rp {{ number_format($data->total_bayar, 0, ',', '.') }}
                                                 </span>
+                                            </td>
+                                            <td class="hidden-content-right">
+                                                <span class="badge bg-warning">
+                                                    Rp {{ number_format($data->sisa_angsuran, 0, ',', '.') }}
+                                                </span>
+                                            </td>
+                                            <td class="hidden-content-right">
+                                                <span class="badge bg-secondary">{{ $data->status_denda }}</span>
+                                            </td>
+                                            <td class="hidden-content-right">
+                                                <span class="badge bg-secondary">{{ $data->status_denda }}</span>
                                             </td>
                                         </tr>
                                         @empty
                                         <tr>
                                             <td class="hidden-content-right text-center" colspan="9">
-                                                <span class="badge bg-warning">
+                                                <span class="badge bg-">
                                                     <i class="bi bi-exclamation-circle"></i> Belum ada data denda
                                                 </span>
                                             </td>

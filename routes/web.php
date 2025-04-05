@@ -15,6 +15,7 @@ use App\Http\Controllers\KontakController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\LogAktivitasController;
+use App\Http\Controllers\LupaSandiController;
 use App\Http\Controllers\NotifikasiAdminController;
 use App\Http\Controllers\NotifikasiController;
 use App\Http\Controllers\PengajuanSimmpanansController;
@@ -48,13 +49,24 @@ use Illuminate\Support\Facades\Route;
 
 // Midlleware Guest Untuk Pengunjung
 Route::middleware(['guest'])->group(function () {
+    // Landing
     Route::get('/', [LandingPageController::class, 'index'])->name('landing');
 
+    // Login
     Route::get('/Login', [AuthController::class, 'index'])->name('login');
     Route::post('/Login', [AuthController::class, 'login']);
 
+    // Register
     Route::get('/Registrasi', [AuthController::class, 'create'])->name('registrasi');
     Route::post('/Registrasi', [AuthController::class, 'register']);
+
+    // Lupa Sandi
+    Route::get('/LupaSandi', [LupaSandiController::class, 'index'])->name('ForgetPassword');
+    Route::post('/LupaSandi/check', [LupaSandiController::class, 'checkEmail'])->name('ForgetPassword.check');
+
+    // Rubah Sandi
+    Route::get('/RubahPassword', [LupaSandiController::class, 'showResetForm'])->name('rubahpassword');
+    Route::post('/RubahPassword/simpan', [LupaSandiController::class, 'updatePassword'])->name('rubahpassword.simpan');
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -70,7 +82,7 @@ Route::middleware(['auth'])->group(function () {
     // Grup Route untuk Admin (userAkses:admin)
     Route::middleware(['userAkses:admin'])->group(function () {
         // Dashboard
-        Route::get('/admin/Dashboard', [DashboardAdminController::class, 'dashboard'])->name('min');
+        Route::get('/admin', [DashboardAdminController::class, 'dashboard'])->name('min');
         // Profil
         Route::get('/admin/Profil', [ProfilAdminController::class, 'profiladmin'])->name('profiladmin');
         Route::put('/profil/edit', [ProfilAdminController::class, 'update'])->name('profil.update');
@@ -123,7 +135,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/Kontak-Koperasi', [KontakController::class, 'kontakkoperasi'])->name('kontakkoperasi');
         Route::post('/Kontak-Koperasi', [KontakController::class, 'store'])->name('kontakkoperasi.store');
         Route::put('/kontak-koperasi/update/{id}', [KontakController::class, 'update'])->name('kontakkoperasi.update');
-        Route::delete('/kontak-koperasi/destroy', [KontakController::class, 'destroy'])->name('kontakkoperasi.destroy');        
+        Route::delete('/kontak-koperasi/destroy', [KontakController::class, 'destroy'])->name('kontakkoperasi.destroy');
         // Bukti Pembayaram
         Route::get('/admin/admin/bukti/{bukti}', [BuktiPembayaranController::class, 'showAdmin'])->name('admin.bukti.pembayaran');
         Route::get('admin//jaminan/{bukti}', [BuktiPembayaranController::class, 'showjaminanadmin'])->name('bukti.jaminan.admin');
@@ -132,7 +144,7 @@ Route::middleware(['auth'])->group(function () {
     // Grup Route untuk User (userAkses:user)
     Route::middleware(['userAkses:user'])->group(function () {
         // Dashboard
-        Route::get('/user/Dashboard', [DashboardController::class, 'dashboard'])->name('user');
+        Route::get('/user', [DashboardController::class, 'dashboard'])->name('user');
         // Profil
         Route::get('/user/Profil', [ProfilController::class, 'profil'])->name('profil');
         Route::put('/userprofil', [ProfilController::class, 'update'])->name('edit.profil');
