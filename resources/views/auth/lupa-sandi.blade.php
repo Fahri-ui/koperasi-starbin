@@ -47,13 +47,9 @@
         <h4 class="text-center mb-3 fw-bold text-primary">Lupa Password</h4>
         <p class="text-center mb-4 text-muted">Masukkan email terdaftar untuk mengganti password Anda</p>
 
-        @if ($errors->any())
+        @if (Session::has('error'))
         <div class="alert alert-danger flash-message" style="background-color: salmon; color: #fff; border-radius: 20px; position: relative;">
-            <ul class="mb-0">
-                @foreach ($errors->all() as $error)
-                {{ $error }}
-                @endforeach
-            </ul>
+            {{ Session::get('error') }}
         </div>
         @endif
 
