@@ -24,7 +24,7 @@
                     <div class="user-info text-center mt-3 pb-3 hidden-content">
                         <img src="{{ asset('picture/account/' . Auth::user()->gambar) }}" class="rounded-circle hidden-content" alt="User Avatar" style="width: 150px; height: 150px; object-fit: cover;">
                         <h3 class="mt-2 mb-0 hidden-content">{{ Auth::user()->fullname }}</h3>
-                        <small class="text-muted hidden-content">{{ Auth::user()->role }}</small>
+                        <small class="text-muted hidden-content">Admin</small>
                     </div>
                 </div>
 
@@ -228,7 +228,7 @@
 
             <div class="page-heading d-flex align-items-center pb-3 border-bottom hidden-content-right">
                 <i class="bi bi-house-door me-2 fs-3 text-primary" style="margin-top: -30px; padding-right: 30px;"></i>
-                <h5 class="mb-0 fw-bold">Selamat Datang, Admin</h5>
+                <h5 class="mb-0 fw-bold">Beranda</h5>
             </div>
 
             <div class="container mt-4" style="font-size: .7rem;">

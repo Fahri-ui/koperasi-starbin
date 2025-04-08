@@ -18,7 +18,7 @@
 <style>
     .card {
         width: 100%;
-        max-width: 900px;
+        max-width: 1000px;
         min-width: 400px;
     }
 </style>
@@ -74,7 +74,7 @@
                         <li class="sidebar-item  hidden-content">
                             <a href="{{route('user')}}" class='sidebar-link'>
                                 <i class="bi bi-house-door-fill"></i>
-                                <span>Dashboard</span>
+                                <span>Beranda</span>
                             </a>
                         </li>
 
@@ -126,18 +126,17 @@
                                 <span>Bantuan</span>
                             </a>
                         </li>
+                        <!-- KELUAR -->
+                        <li class="sidebar-item border-top pt-3 mt-4 hidden-content">
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn btn-link sidebar-link text-danger">
+                                    <i class="bi bi-box-arrow-right text-danger"></i>
+                                    <span>Keluar</span>
+                                </button>
+                            </form>
+                        </li>
                     </ul>
-                </div>
-
-                <!-- Logout -->
-                <div class="sidebar-footer text-center py-3 border-top">
-                    <form action="{{ route('logout') }}" method="POST">
-                        @csrf
-                        <button type="submit" class="hidden-content btn btn-link text-danger" style="text-decoration: none;">
-                            <i class="bi bi-box-arrow-right"></i>
-                            <span>Log Out</span>
-                        </button>
-                    </form>
                 </div>
             </div>
         </div>
@@ -147,7 +146,6 @@
                     <i class="bi bi-justify fs-3"></i>
                 </a>
             </header> 
-            @endif
             @if (auth()->user()->status === 'Belum_Aktif')
 
             <div class="container mt-4 hidden-content-right">

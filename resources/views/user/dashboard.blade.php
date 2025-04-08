@@ -135,18 +135,17 @@
                                 <span>Bantuan</span>
                             </a>
                         </li>
+                        <!-- KELUAR -->
+                        <li class="sidebar-item border-top pt-3 mt-4 hidden-content">
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn btn-link sidebar-link text-danger">
+                                    <i class="bi bi-box-arrow-right text-danger"></i>
+                                    <span>Keluar</span>
+                                </button>
+                            </form>
+                        </li>
                     </ul>
-                </div>
-
-                <!-- Logout -->
-                <div class="sidebar-footer text-center py-3 border-top hidden-content">
-                    <form action="{{ route('logout') }}" method="POST">
-                        @csrf
-                        <button type="submit" class="btn btn-link text-danger" style="text-decoration: none;">
-                            <i class="bi bi-box-arrow-right"></i>
-                            <span>Keluar</span>
-                        </button>
-                    </form>
                 </div>
             </div>
         </div>

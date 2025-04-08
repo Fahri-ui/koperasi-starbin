@@ -22,7 +22,7 @@
                     <div class="user-info text-center mt-3 pb-3">
                         <img src="{{ asset('picture/account/' . Auth::user()->gambar) }}" class="rounded-circle hidden-content" alt="User Avatar" style="width: 150px; height: 150px; object-fit: cover;">
                         <h3 class="mt-2 mb-0 hidden-content">{{ Auth::user()->fullname }}</h3>
-                        <small class="text-muted hidden-content">{{ Auth::user()->role }}</small>
+                        <small class="text-muted hidden-content">Admin</small>
                     </div>
                 </div>
                 <div class="sidebar-footer d-flex align-items-center justify-content-between py-3 border-bottom hidden-content">

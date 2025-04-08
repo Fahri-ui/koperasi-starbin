@@ -61,7 +61,7 @@ Route::middleware(['guest'])->group(function () {
     Route::post('/Registrasi', [AuthController::class, 'register']);
 
     // Lupa Sandi
-    Route::get('/LupaSandi', [LupaSandiController::class, 'index'])->name('ForgetPassword');
+    Route::get('/LupaPassword', [LupaSandiController::class, 'index'])->name('ForgetPassword');
     Route::post('/LupaSandi/check', [LupaSandiController::class, 'checkEmail'])->name('ForgetPassword.check');
 
     // Rubah Sandi

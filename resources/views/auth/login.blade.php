@@ -77,8 +77,9 @@
 						</button>
 					</div>
 					<div class="text-center m-t-10">
+						Lupa kata sandi?
 						<a class="txt1 register" href="{{ route('ForgetPassword') }}">
-							Rubah kata sandi jika lupa 
+							Rubah Disini
 						</a>
 					</div>
 

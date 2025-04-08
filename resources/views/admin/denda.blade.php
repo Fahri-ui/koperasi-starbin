@@ -23,7 +23,7 @@
                     <div class="user-info text-center mt-3 pb-3">
                         <img src="{{ asset('picture/account/' . Auth::user()->gambar) }}" class="rounded-circle hidden-content" alt="User Avatar" style="width: 150px; height: 150px; object-fit: cover;">
                         <h3 class="mt-2 mb-0 hidden-content">{{ Auth::user()->fullname }}</h3>
-                        <small class="text-muted hidden-content">{{ Auth::user()->role }}</small>
+                        <small class="text-muted hidden-content">Admin</small>
                     </div>
                 </div>
 
@@ -356,7 +356,7 @@
                                         @empty
                                         <tr>
                                             <td class="hidden-content-right text-center" colspan="9">
-                                                <span class="badge bg-">
+                                                <span class="badge bg-warning">
                                                     <i class="bi bi-exclamation-circle"></i> Belum ada data denda
                                                 </span>
                                             </td>
