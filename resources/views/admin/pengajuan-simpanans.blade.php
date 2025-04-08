@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Data Pengajuan Koperasi STARBIN</title>
+    <title>Data Pengajuan Simpanan Koperasi STARBIN</title>
 
     <link rel="stylesheet" href="{{asset('admin-page/assets/css/main/app.css')}}">
     <link rel="stylesheet" href="{{asset('admin-page/assets/css/main/app-dark.css')}}">

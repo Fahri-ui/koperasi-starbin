@@ -196,67 +196,119 @@
                 </a>
             </header>
 
-            <div class="pinjaman-container">
-                @if (Session::has('error'))
-                <div class="alert alert-danger d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #ff7f7f, #ff4d4d); color: #fff; border-radius: 20px; border: 2px solid #ff4d4d;">
-                    <i class="bi bi-exclamation-triangle-fill me-3 fs-4" style="margin-top: -20px;"></i>
-                    <div>
-                        <h5 class="mb-1">🚨 Oops! Terjadi Kesalahan</h5>
-                        <p class="mb-0">⚠️ {{ Session::get('error') }}</p>
-                    </div>
+            @if (Session::has('error'))
+            <div class="alert alert-danger d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #ff7f7f, #ff4d4d); color: #fff; border-radius: 20px; border: 2px solid #ff4d4d;">
+                <i class="bi bi-exclamation-triangle-fill me-3 fs-4" style="margin-top: -20px;"></i>
+                <div>
+                    <h5 class="mb-1">🚨 Oops! Terjadi Kesalahan</h5>
+                    <p class="mb-0">⚠️ {{ Session::get('error') }}</p>
                 </div>
-                @endif
+            </div>
+            @endif
 
-                @if (Session::has('success'))
-                <div class="alert alert-success d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #66cc66, #33b233); color: #fff; border-radius: 20px; border: 2px solid #33b233;">
-                    <i class="bi bi-check-circle-fill me-3 fs-4" style="margin-top: -20px;"></i>
-                    <div>
-                        <h5 class="mb-1">🌟 Yeay! Berhasil</h5>
-                        <p class="mb-0">✅ {{ Session::get('success') }}</p>
-                    </div>
+            @if (Session::has('success'))
+            <div class="alert alert-success d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #66cc66, #33b233); color: #fff; border-radius: 20px; border: 2px solid #33b233;">
+                <i class="bi bi-check-circle-fill me-3 fs-4" style="margin-top: -20px;"></i>
+                <div>
+                    <h5 class="mb-1">🌟 Yeay! Berhasil</h5>
+                    <p class="mb-0">✅ {{ Session::get('success') }}</p>
                 </div>
-                @endif
+            </div>
+            @endif
+            <div class="container mt-4">
+                <!-- Judul Halaman -->
+                <div class="page-header mb-4 hidden-content-right">
+                    <h3 class="fw-bold"><i class="bi bi-cash-stack"></i> Angsuran</h3>
+                </div>
+                <hr style="border-top: 2px solid black; margin-bottom: 30px;">
+
+                <!-- Definisi Angsuran -->
                 <section class="mb-4">
-                    <h3 class="text-center bold  hidden-content-right">
-                        <i class="bi bi-cash-stack"></i> Angsuran
-                    </h3>
-                    <hr style="border-top: 2px solid black; margin-bottom: 30px;">
+                    <div class="card shadow hidden-content-right" style="border: 1px solid #435ebe;">
+                        <div class="card-body">
+                            <h5 class="fw-bold d-flex align-items-center hidden-content-right">
+                                <i class="bi bi-info-circle me-2" style="margin-top: -10px;"></i> Definisi Angsuran
+                            </h5>
+                            <hr style="border-top: 2px solid #25396f; border-radius: 5px;">
+                            <p class="hidden-content-right">
+                                Halaman ini menampilkan daftar pembayaran angsuran pinjaman oleh anggota, termasuk informasi jumlah pembayaran, sisa angsuran, sisa denda, metode, serta status pembayaran. Admin dapat memantau pembayaran berhasil, tertunda, serta total transaksi.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Ringkasan Angsuran -->
+                <section class="mb-4 hidden-content-right">
+                    <div class="card shadow hidden-content-right" style="border: 1px solid #435ebe;">
+                        <div class="card-body hidden-content-right">
+                            <h5 class="fw-bold d-flex align-items-center hidden-content-right">
+                                <i class="bi bi-bar-chart me-2" style="margin-top: -10px;"></i> Ringkasan Angsuran
+                            </h5>
+                            <hr style="border-top: 2px solid #25396f; border-radius: 5px;">
+                            <div class="row hidden-content-right">
+                                <div class="col-md-3">
+                                    <div class="card shadow" style="border-left: 5px solid #dc3545; border-radius: 10px;">
+                                        <div class="card-body text-center">
+                                            <h6 style="color: #dc3545;"><i class="bi bi-x-circle-fill me-2"></i>Jumlah Transaksi</h6>
+                                            <p><strong>{{ number_format($jumlahTransaksi, 0, ',', '.') }} Transaksi</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card shadow" style="border-left: 5px solid #ffc107; border-radius: 10px;">
+                                        <div class="card-body text-center">
+                                            <h6 style="color: #ffc107;"><i class="bi bi-info-circle me-2"></i>Dalam Proses</h6>
+                                            <p><strong>Rp {{ number_format($totalTertunda, 0, ',', '.') }}</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card shadow" style="border-left: 5px solid #28a745; border-radius: 10px;">
+                                        <div class="card-body text-center">
+                                            <h6 style="color: #28a745;"><i class="bi bi-check-circle-fill me-2"></i>Berhasil</h6>
+                                            <p><strong>Rp {{ number_format($totalDisetujui, 0, ',', '.') }}</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card shadow" style="border-left: 5px solid #0d6efd; border-radius: 10px;">
+                                        <div class="card-body text-center">
+                                            <h6 style="color: #0d6efd;"><i class="bi bi-coin me-2"></i>Total Angsuran</h6>
+                                            <p><strong>Rp {{ number_format($jumlahTransaksi, 0, ',', '.') }}</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Tabel Data Angsuran -->
+                <section class="mb-4 hidden-content-right">
                     <div class="card shadow" style="border: 1px solid #435ebe;">
                         <div class="card-header bg-primary text-white">
-                            <h5 class="mb-0 text-white">
-                                <i class="bi bi-arrow-repeat"></i> Data Angsuran Pinjaman
-                            </h5>
+                            <h5 class="mb-0 text-white"><i class="bi bi-table"></i> Data Angsuran</h5>
                         </div>
-                        <div class="card-body hidden-content-right">
-
+                        <div class="card-body">
                             <!-- Input Pencarian -->
                             <div style="margin-bottom: 20px; position: relative;">
                                 <div class="input-group hidden-content-right">
-                                    <input
-                                        type="text"
-                                        id="search-pinjaman"
-                                        class="form-control"
-                                        placeholder="Cari berdasarkan ID, Nama, Status, dll..."
-                                        onkeyup="searchPinjaman()"
-                                        style="box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);">
-                                    <button
-                                        class="btn btn-danger"
-                                        onclick="resetSearchPinjaman()"
-                                        style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
+                                    <input type="text" id="search-pinjaman" class="form-control" placeholder="Pencarian berdasarkan ID, Nama, Status, dll..." onkeyup="searchPinjaman()" style="box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);">
+                                    <button class="btn btn-danger" onclick="resetSearchPinjaman()" style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
                                         <i class="bi bi-x-circle"></i> Bersihkan
                                     </button>
                                 </div>
                             </div>
 
-                            <!-- Tabel Pinjaman -->
-                            <div style="max-height: 1000px; overflow:auto; font-size:.8rem;">
+                            <!-- Tabel Angsuran -->
+                            <div style="max-height: 750px; overflow:auto; font-size:.9rem;">
                                 <table class="table table-hover hidden-content-right">
                                     <thead class="table-primary hidden-content-right">
                                         <tr>
                                             <th>No</th>
                                             <th>ID Pinjaman</th>
                                             <th>Nama</th>
-                                            <th>Nominal Bayar</th>
+                                            <th>Nominal</th>
                                             <th>Tanggal Bayar</th>
                                             <th>Sisa Angsuran</th>
                                             <th>Sisa Denda</th>
@@ -268,27 +320,23 @@
                                     <tbody id="pinjaman-table-body" class="hidden-content-right">
                                         @forelse ($angsuran as $index => $data)
                                         <tr>
-                                            <td class="hidden-content-right">{{ $index + 1 }}</td>
-                                            <td class="hidden-content-right">{{ $data->pinjaman_id }}</td>
-                                            <td class="hidden-content-right">{{ $data->user->fullname }}</td>
-                                            <td class="hidden-content-right">
-                                                <span class="badge bg-success">
-                                                    Rp {{ number_format($data->jumlah_pembayaran, 0, ',', '.') }}
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ $data->pinjaman_id }}</td>
+                                            <td>{{ $data->user->fullname }}</td>
+                                            <td><span class="badge bg-success">Rp {{ number_format($data->jumlah_pembayaran, 0, ',', '.') }}</span></td>
+                                            <td>{{ \Carbon\Carbon::parse($data->tanggal_bayar)->format('d F Y') }}</td>
+                                            <td>
+                                                <span class="badge {{ $data->pinjaman->sisa_angsuran > 0 ? 'bg-warning' : 'bg-success' }}">
+                                                    {{ $data->pinjaman->sisa_angsuran > 0 ? 'Rp' . number_format($data->pinjaman->sisa_angsuran, 0, ',', '.') : 'Sudah Lunas' }}
                                                 </span>
                                             </td>
-                                            <td class="hidden-content-right">{{ \Carbon\Carbon::parse($data->tanggal_bayar)->format('d-m-Y') }}</td>
-                                            <td class="hidden-content-right">
-                                                <span class="badge {{ $data->pinjaman->sisa_angsuran > 0 ? 'bg-warning' : 'bg-primary' }}">
-                                                    {{ $data->pinjaman->sisa_angsuran > 0 ? 'Rp ' . number_format($data->pinjaman->sisa_angsuran, 0, ',', '.') : 'Sudah Lunas' }}
-                                                </span>
-                                            </td>
-                                            <td class="hidden-content-right">
+                                            <td>
                                                 <span class="badge {{ $data->pinjaman->total_denda > 0 ? 'bg-danger' : 'bg-primary' }}">
                                                     Rp {{ number_format($data->pinjaman->total_denda, 0, ',', '.') }}
                                                 </span>
                                             </td>
-                                            <td class="hidden-content-right">{{ $data->metode_pembayaran }}</td>
-                                            <td class="hidden-content-right">
+                                            <td>{{ $data->metode_pembayaran }}</td>
+                                            <td>
                                                 @if(!empty($data->bukti_pembayaran))
                                                 <a href="{{ route('admin.bukti.pembayaran', ['bukti' => basename($data->bukti_pembayaran)]) }}" target="_blank" class="btn btn-sm btn-outline-info">
                                                     <i class="bi bi-eye"></i>
@@ -297,78 +345,29 @@
                                                 <span class="badge bg-secondary">Tidak Ada</span>
                                                 @endif
                                             </td>
-                                            <td class="hidden-content-right">
+                                            <td>
                                                 @php
-                                                $statusColors = [
-                                                'Dalam Proses' => 'warning',
-                                                'Ditolak' => 'danger',
-                                                'Berhasil' => 'success'
-                                                ];
+                                                $statusColors = ['Dalam Proses' => 'warning', 'Ditolak' => 'danger', 'Berhasil' => 'success'];
                                                 $badgeColor = $statusColors[$data->status] ?? 'secondary';
                                                 @endphp
                                                 <span class="badge bg-{{ $badgeColor }}">{{ $data->status }}</span>
                                             </td>
-                                            @empty
+                                        </tr>
+                                        @empty
                                         <tr>
-                                            <td class="hidden-content-right" colspan="12" class="text-center">
-                                                <span class="badge bg-warning">
-                                                    <i class="bi bi-exclamation-circle"></i> Belum ada data angsuran
-                                                </span>
+                                            <td colspan="10" class="text-center">
+                                                <span class="badge bg-warning"><i class="bi bi-exclamation-circle"></i> Belum ada data angsuran</span>
                                             </td>
                                         </tr>
                                         @endforelse
                                     </tbody>
                                 </table>
                             </div>
-
-                            <!-- Statistik Pinjaman -->
-                            <div class="d-flex flex-wrap justify-content-between gap-3 mt-3">
-                                <!-- Card Total Pinjaman -->
-                                <div class="card flex-fill text-center" style="box-shadow: 0 0px 7px 2px rgba(0, 0, 0, 0.1); min-width: 250px;">
-                                    <div class="card-body">
-                                        <h4 class="fw-bold">jumlah data transaksi</h4>
-                                        <h3 class="text-danger">
-                                            <i class="bi bi-x-circle-fill"></i> {{ number_format($jumlahTransaksi, 0, ',', '.') }} Transaksi
-                                        </h3>
-                                    </div>
-                                </div>
-
-                                <!-- Card Status Aktif -->
-                                <div class="card flex-fill text-center" style="box-shadow: 0 0px 7px 2px rgba(0, 0, 0, 0.1); min-width: 250px;">
-                                    <div class="card-body">
-                                        <h4 class="fw-bold">Dalam Proses</h4>
-                                        <h3 class="text-warning">
-                                            <i class="bi bi-info-circle"></i> Rp {{ number_format($totalTertunda, 0, ',', '.') }}
-                                        </h3>
-                                    </div>
-                                </div>
-
-                                <!-- Card Status Lunas -->
-                                <div class="card flex-fill text-center" style="box-shadow: 0 0px 7px 2px rgba(0, 0, 0, 0.1); min-width: 250px;">
-                                    <div class="card-body">
-                                        <h4 class="fw-bold">Berhasil</h4>
-                                        <h3 class="text-success">
-                                            <i class="bi bi-check-lg"></i> Rp {{ number_format($totalDisetujui, 0, ',', '.') }}
-                                        </h3>
-                                    </div>
-                                </div>
-
-                                <!-- Card Status Ditolak -->
-                                <div class="card flex-fill text-center" style="box-shadow: 0 0px 7px 2px rgba(0, 0, 0, 0.1); min-width: 250px;">
-                                    <div class="card-body">
-                                        <h4 class="fw-bold">Total Angsuran</h4>
-                                        <h3 class="text-primary">
-                                            <i class="bi bi-coin"></i> Rp {{ number_format($jumlahTransaksi, 0, ',', '.') }}
-                                        </h3>
-                                    </div>
-                                </div>
-                            </div>
-
                         </div>
                     </div>
-
                 </section>
             </div>
+
 
             <footer>
                 <div class="footer clearfix mb-0 text-muted">

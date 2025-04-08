@@ -196,39 +196,103 @@
                 </a>
             </header>
 
-            <div class="pinjaman-container">
-                @if (Session::has('error'))
-                <div class="alert alert-danger d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #ff7f7f, #ff4d4d); color: #fff; border-radius: 20px; border: 2px solid #ff4d4d;">
-                    <i class="bi bi-exclamation-triangle-fill me-3 fs-4" style="margin-top: -20px;"></i>
-                    <div>
-                        <h5 class="mb-1">🚨 Oops! Terjadi Kesalahan</h5>
-                        <p class="mb-0">⚠️ {{ Session::get('error') }}</p>
-                    </div>
+            @if (Session::has('error'))
+            <div class="alert alert-danger d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #ff7f7f, #ff4d4d); color: #fff; border-radius: 20px; border: 2px solid #ff4d4d;">
+                <i class="bi bi-exclamation-triangle-fill me-3 fs-4" style="margin-top: -20px;"></i>
+                <div>
+                    <h5 class="mb-1">🚨 Oops! Terjadi Kesalahan</h5>
+                    <p class="mb-0">⚠️ {{ Session::get('error') }}</p>
                 </div>
-                @endif
+            </div>
+            @endif
 
-                @if (Session::has('success'))
-                <div class="alert alert-success d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #66cc66, #33b233); color: #fff; border-radius: 20px; border: 2px solid #33b233;">
-                    <i class="bi bi-check-circle-fill me-3 fs-4" style="margin-top: -20px;"></i>
-                    <div>
-                        <h5 class="mb-1">🌟 Yeay! Berhasil</h5>
-                        <p class="mb-0">✅ {{ Session::get('success') }}</p>
-                    </div>
+            @if (Session::has('success'))
+            <div class="alert alert-success d-flex align-items-center shadow p-3 mb-3" style="background: linear-gradient(135deg, #66cc66, #33b233); color: #fff; border-radius: 20px; border: 2px solid #33b233;">
+                <i class="bi bi-check-circle-fill me-3 fs-4" style="margin-top: -20px;"></i>
+                <div>
+                    <h5 class="mb-1">🌟 Yeay! Berhasil</h5>
+                    <p class="mb-0">✅ {{ Session::get('success') }}</p>
                 </div>
-                @endif
-                <section class="mb-4">
-                    <h3 class="text-center bold  hidden-content-right">
+            </div>
+            @endif
+            <div class="container mt-4">
+                <div class="page-header mb-4 hidden-content-right">
+                    <h3 class="fw-bold">
                         <i class="bi bi-cash-stack"></i> Pinjaman
                     </h3>
-                    <hr style="border-top: 2px solid black; margin-bottom: 30px;">
+                </div>
+                <hr style="border-top: 2px solid black; margin-bottom: 30px;">
+
+                <!-- Definisi -->
+                <section class="mb-4">
+                    <div class="card shadow hidden-content-right" style="border: 1px solid #435ebe;">
+                        <div class="card-body">
+                            <h5 class="fw-bold d-flex align-items-center hidden-content-right">
+                                <i class="bi bi-info-circle me-2" style="margin-top: -10px;"></i> Definisi Pinjaman
+                            </h5>
+                            <hr style="border-top: 2px solid #25396f; border-radius: 5px;">
+                            <p class="hidden-content-right">
+                                Halaman ini menampilkan daftar pinjaman anggota, termasuk informasi jumlah pinjaman, status, sisa angsuran, dan jaminan. Admin dapat memantau pinjaman yang aktif, lunas, dan ditolak serta total pinjaman keseluruhan.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Statistik Pinjaman -->
+                <section class="mb-4 hidden-content-right">
+                    <div class="card shadow hidden-content-right" style="border: 1px solid #435ebe;">
+                        <div class="card-body hidden-content-right">
+                            <h5 class="fw-bold d-flex align-items-center hidden-content-right">
+                                <i class="bi bi-bar-chart me-2" style="margin-top: -10px;"></i> Ringkasan Pinjaman
+                            </h5>
+                            <hr style="border-top: 2px solid #25396f; border-radius: 5px;">
+                            <div class="row hidden-content-right">
+                                <div class="col-md-3">
+                                    <div class="card shadow" style="border-left: 5px solid #dc3545; border-radius: 10px;">
+                                        <div class="card-body text-center">
+                                            <h6 style="color: #dc3545;"><i class="bi bi-x-circle-fill me-2"></i>Ditolak</h6>
+                                            <p><strong>{{ $jumlahProses }}</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card shadow" style="border-left: 5px solid #007bff; border-radius: 10px;">
+                                        <div class="card-body text-center">
+                                            <h6 style="color: #007bff;"><i class="bi bi-check-circle-fill me-2"></i>Aktif</h6>
+                                            <p><strong>{{ $jumlahMenunggak }}</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card shadow" style="border-left: 5px solid #28a745; border-radius: 10px;">
+                                        <div class="card-body text-center">
+                                            <h6 style="color: #28a745;"><i class="bi bi-check-lg me-2"></i>Lunas</h6>
+                                            <p><strong>{{ $jumlahLunas }}</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card shadow" style="border-left: 5px solid #17a2b8; border-radius: 10px;">
+                                        <div class="card-body text-center">
+                                            <h6 style="color: #17a2b8;"><i class="bi bi-coin me-2"></i>Total Pinjaman</h6>
+                                            <p><strong>Rp {{ number_format($totalPinjaman, 0, ',', '.') }}</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Tabel Pinjaman -->
+                <section class="mb-4 hidden-content-right">
                     <div class="card shadow" style="border: 1px solid #435ebe;">
                         <div class="card-header bg-primary text-white">
                             <h5 class="mb-0 text-white">
-                                <i class="bi bi-cash-stack"></i> Data Pinjaman Anggota
+                                <i class="bi bi-table" style="margin-top: -30px;"></i> Data Pinjaman Anggota
                             </h5>
                         </div>
-                        <div class="card-body hidden-content-right">
-
+                        <div class="card-body">
                             <!-- Input Pencarian -->
                             <div style="margin-bottom: 20px; position: relative;">
                                 <div class="input-group hidden-content-right">
@@ -248,10 +312,10 @@
                                 </div>
                             </div>
 
-                            <!-- Tabel Pinjaman -->
-                            <div style="max-height: 700px; overflow:auto; font-size:.8rem;">
-                                <table class="table table-striped hidden-content-right">
-                                    <thead class="table-dark hidden-content-right">
+                            <!-- Tabel -->
+                            <div style="max-height: 750px; overflow:auto; font-size:.9rem; text-align:left;">
+                                <table class="table table-hover hidden-content-right">
+                                    <thead class="table-primary hidden-content-right">
                                         <tr>
                                             <th>No</th>
                                             <th>ID Pinjaman</th>
@@ -269,35 +333,31 @@
                                     <tbody id="pinjaman-table-body" class="hidden-content-right">
                                         @forelse ($pinjaman as $index => $item)
                                         <tr>
-                                            <td class="hidden-content-right">{{ $index + 1 }}</td>
-                                            <td class="hidden-content-right">{{ $item->id ?? 'N/A' }}</td>
-                                            <td class="hidden-content-right">{{ $item->user->fullname ?? 'Tidak Diketahui' }}</td>
-                                            <td class="hidden-content-right">
-                                                <span class="badge bg-info">
-                                                    Rp {{ number_format($item->jumlah_pinjaman, 0, ',', '.') }}
-                                                </span>
-                                            </td>
-                                            <td class="hidden-content-right">
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ $item->id ?? 'N/A' }}</td>
+                                            <td>{{ $item->user->fullname ?? 'Tidak Diketahui' }}</td>
+                                            <td><span class="badge bg-info">Rp {{ number_format($item->jumlah_pinjaman, 0, ',', '.') }}</span></td>
+                                            <td>
                                                 <span class="badge {{ $item->total_denda > 0 ? 'bg-danger' : 'bg-primary' }}">
                                                     Rp {{ number_format($item->total_denda, 0, ',', '.') }}
                                                 </span>
                                             </td>
-                                            <td class="hidden-content-right">
+                                            <td>
                                                 <span class="badge {{ $item->sisa_angsuran > 0 ? 'bg-warning' : 'bg-success' }}">
                                                     {{ $item->sisa_angsuran > 0 ? 'Rp ' . number_format($item->sisa_angsuran, 0, ',', '.') : 'Sudah Lunas' }}
                                                 </span>
                                             </td>
-                                            <td class="hidden-content-right">{{ \Carbon\Carbon::parse($item->tanggal_pengajuan)->format('d F Y') }}</td>
-                                            <td class="hidden-content-right">{{ \Carbon\Carbon::parse($item->tanggal_jatuh_tempo)->format('d F Y') }}</td>
-                                            <td>{{ $item->jenis_jaminan}}</td>
-                                            <td class="hidden-content-right">
+                                            <td>{{ \Carbon\Carbon::parse($item->tanggal_pengajuan)->format('d F Y') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($item->tanggal_jatuh_tempo)->format('d F Y') }}</td>
+                                            <td>{{ $item->jenis_jaminan }}</td>
+                                            <td>
                                                 @if($item->file_jaminan)
                                                 <a href="{{ route('bukti.jaminan.admin', ['bukti' => basename($item->file_jaminan)]) }}" target="_blank" class="btn btn-outline-info btn-sm"><i class="bi bi-eye"></i></a>
                                                 @else
                                                 <span class="badge bg-secondary">Tidak Ada</span>
                                                 @endif
                                             </td>
-                                            <td class="hidden-content-right">
+                                            <td>
                                                 <span class="badge bg-{{ $item->status === 'Lunas' ? 'success' : ($item->status === 'Ditolak' ? 'danger' : 'primary') }}">
                                                     {{ ucfirst($item->status ?? '-') }}
                                                 </span>
@@ -305,7 +365,7 @@
                                         </tr>
                                         @empty
                                         <tr>
-                                            <td class="hidden-content-right" colspan="7" class="text-center">
+                                            <td colspan="11" class="text-center">
                                                 <span class="badge bg-warning">
                                                     <i class="bi bi-exclamation-circle"></i> Tidak ada riwayat pinjaman.
                                                 </span>
@@ -315,53 +375,8 @@
                                     </tbody>
                                 </table>
                             </div>
-
-                            <!-- Statistik Pinjaman -->
-                            <div class="d-flex flex-wrap justify-content-between gap-3 mt-3">
-                                <!-- Card Total Pinjaman -->
-                                <div class="card flex-fill text-center" style="box-shadow: 0 0px 7px 2px rgba(0, 0, 0, 0.1); min-width: 250px;">
-                                    <div class="card-body">
-                                        <h4 class="fw-bold">Ditolak</h4>
-                                        <h3 class="text-danger">
-                                            <i class="bi bi-x-circle-fill"></i>  {{ $jumlahProses }}
-                                        </h3>
-                                    </div>
-                                </div>
-
-                                <!-- Card Status Aktif -->
-                                <div class="card flex-fill text-center" style="box-shadow: 0 0px 7px 2px rgba(0, 0, 0, 0.1); min-width: 250px;">
-                                    <div class="card-body">
-                                        <h4 class="fw-bold">Aktif</h4>
-                                        <h3 class="text-primary">
-                                            <i class="bi bi-check-circle-fill"></i> {{ $jumlahMenunggak }}
-                                        </h3>
-                                    </div>
-                                </div>
-
-                                <!-- Card Status Lunas -->
-                                <div class="card flex-fill text-center" style="box-shadow: 0 0px 7px 2px rgba(0, 0, 0, 0.1); min-width: 250px;">
-                                    <div class="card-body">
-                                        <h4 class="fw-bold">Lunas</h4>
-                                        <h3 class="text-success">
-                                            <i class="bi bi-check-lg"></i> {{ $jumlahLunas }}
-                                        </h3>
-                                    </div>
-                                </div>
-
-                                <!-- Card Status Ditolak -->
-                                <div class="card flex-fill text-center" style="box-shadow: 0 0px 7px 2px rgba(0, 0, 0, 0.1); min-width: 250px;">
-                                    <div class="card-body">
-                                        <h4 class="fw-bold">Total Pinjaman</h4>
-                                        <h3 class="text-info">
-                                            <i class="bi bi-coin"></i>  Rp {{ number_format($totalPinjaman, 0, ',', '.') }}
-                                        </h3>
-                                    </div>
-                                </div>
-                            </div>
-
                         </div>
                     </div>
-
                 </section>
             </div>
 
