@@ -266,7 +266,7 @@
                                             <th>Status</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="pinjaman-table-body hidden-content-right">
+                                    <tbody id="pinjaman-table-body" class="hidden-content-right">
                                         @forelse ($pinjaman as $index => $item)
                                         <tr>
                                             <td class="hidden-content-right">{{ $index + 1 }}</td>
@@ -353,7 +353,7 @@
                                     <div class="card-body">
                                         <h4 class="fw-bold">Total Pinjaman</h4>
                                         <h3 class="text-info">
-                                            <i class="bi bi-currency-dollar"></i>  Rp {{ number_format($totalPinjaman, 0, ',', '.') }}
+                                            <i class="bi bi-coin"></i>  Rp {{ number_format($totalPinjaman, 0, ',', '.') }}
                                         </h3>
                                     </div>
                                 </div>

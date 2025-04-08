@@ -224,7 +224,7 @@
                     <div class="card shadow" style="border: 1px solid #435ebe;">
                         <div class="card-header bg-primary text-white">
                             <h5 class="mb-0 text-white">
-                                <i class="bi bi-arrow-repeat"></i> Data Pinjaman Anggota
+                                <i class="bi bi-arrow-repeat"></i> Data Angsuran Pinjaman
                             </h5>
                         </div>
                         <div class="card-body hidden-content-right">
@@ -265,7 +265,7 @@
                                             <th>Status</th>
                                         </tr>
                                     </thead>
-                                    <tbody class="hidden-content-right">
+                                    <tbody id="pinjaman-table-body" class="hidden-content-right">
                                         @forelse ($angsuran as $index => $data)
                                         <tr>
                                             <td class="hidden-content-right">{{ $index + 1 }}</td>
@@ -358,7 +358,7 @@
                                     <div class="card-body">
                                         <h4 class="fw-bold">Total Angsuran</h4>
                                         <h3 class="text-primary">
-                                            <i class="bi bi-currency-dollar"></i> Rp {{ number_format($jumlahTransaksi, 0, ',', '.') }}
+                                            <i class="bi bi-coin"></i> Rp {{ number_format($jumlahTransaksi, 0, ',', '.') }}
                                         </h3>
                                     </div>
                                 </div>

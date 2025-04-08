@@ -237,7 +237,7 @@
                                 type="text"
                                 id="search-simpanan"
                                 class="form-control"
-                                placeholder="Cari berdasarkan ID, Nama, Jenis Transaksi, dll..."
+                                placeholder="Cari berdasarkan ID, Nama, Status, dll..."
                                 onkeyup="searchSimpanan()"
                                 style="box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);">
                             <button
