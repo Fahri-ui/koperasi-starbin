@@ -628,7 +628,7 @@
                             <div>
                                 {{ $statusPesan }}
                                 @if($statusPembayaran === 'warning')
-                                <a href="#bayar" class="alert-link">Bayar Sekarang</a>.
+                                <strong>Bayar Sekarang</strong>
                                 @endif
                             </div>
                         </div>

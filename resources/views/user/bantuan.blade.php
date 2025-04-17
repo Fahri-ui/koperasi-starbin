@@ -492,12 +492,12 @@
                         <!-- Pertanyaan 3 -->
                         <div class="accordion-item hidden-content-right">
                             <h2 class="accordion-header hidden-content-right" id="headingThree">
-                                <button class="accordion-button collapsed bg-success text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                <button class="accordion-button collapsed bg-primary text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                                     <i class="bi bi-journal-check me-2"></i> Bagaimana cara mengajukan pinjaman?
                                 </button>
                             </h2>
                             <div id="collapseThree " class="accordion-collapse collapse hidden-content-right" aria-labelledby="headingThree" data-bs-parent="#helpAccordion">
-                                <div class="accordion-body border-bottom" style="background: #e6f9ed; border-left: 5px solid #198754; padding: 15px;">
+                                <div class="accordion-body border-bottom" style="background:rgb(230, 231, 249); border-left: 5px solid rgb(13, 0, 197); padding: 15px;">
                                     Anda dapat mengajukan pinjaman melalui halaman pinjaman di sistem kami atau datang langsung ke kantor koperasi untuk konsultasi.
                                 </div>
                             </div>
@@ -506,12 +506,12 @@
                         <!-- Pertanyaan 2 -->
                         <div class="accordion-item hidden-content-right">
                             <h2 class="accordion-header hidden-content-right" id="headingTwo">
-                                <button class="accordion-button collapsed bg-warning text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                <button class="accordion-button collapsed bg-primary text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                     <i class="bi bi-exclamation-triangle me-2"></i> Apakah ada denda keterlambatan pembayaran angsuran?
                                 </button>
                             </h2>
                             <div id="collapseTwo" class="accordion-collapse collapse hidden-content-right" aria-labelledby="headingTwo" data-bs-parent="#helpAccordion">
-                                <div class="accordion-body border-bottom hidden-content-right" style="background:rgb(252, 255, 205); border-left: 5px solid rgb(255, 239, 15); padding: 15px;">
+                                <div class="accordion-body border-bottom hidden-content-right" style="background:rgb(230, 231, 249); border-left: 5px solid rgb(13, 0, 197); padding: 15px;">
                                     Ya, denda dihitung sejak lewat tanggal jatuh tempo sebesar 2%, nilai ini akan terus naik 2% perminggu nya. jika pinjaman Aktif memiliki denda, pembayaran akan mengitung denda terlebih dahulu sebelum menghitung sisa angsuran
                                 </div>
                             </div>
@@ -519,12 +519,12 @@
 
                         <div class="accordion-item hidden-content-right">
                             <h2 class="accordion-header hidden-content-right" id="headingThree">
-                                <button class="accordion-button collapsed bg-danger text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapsefor" aria-expanded="false" aria-controls="collapseThree">
+                                <button class="accordion-button collapsed bg-primary text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapsefor" aria-expanded="false" aria-controls="collapseThree">
                                     <i class="bi bi-journal-check me-2"></i> Apa yang terjadi ketika akun dinonaktifkan
                                 </button>
                             </h2>
                             <div id="collapsefor hidden-content-right" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#helpAccordion">
-                                <div class="accordion-body border-bottom hidden-content-right" style="background:rgb(249, 230, 230); border-left: 5px solid rgb(211, 2, 2); padding: 15px;">
+                                <div class="accordion-body border-bottom hidden-content-right" style="background:rgb(230, 231, 249); border-left: 5px solid rgb(13, 0, 197); padding: 15px;">
                                     Anda tidak akan bisa login dan jika ada pinjaman aktif, jaminan darinya kita sita.
                                 </div>
                             </div>
@@ -657,12 +657,12 @@
                         <!-- Pertanyaan 3 -->
                         <div class="accordion-item">
                             <h2 class="accordion-header hidden-content-right" id="headingThree">
-                                <button class="accordion-button collapsed bg-success text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                <button class="accordion-button collapsed bg-primary text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                                     <i class="bi bi-journal-check me-2"></i> Bagaimana cara mengajukan pinjaman?
                                 </button>
                             </h2>
                             <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#helpAccordion">
-                                <div class="accordion-body border-bottom" style="background: #e6f9ed; border-left: 5px solid #198754; padding: 15px;">
+                                <div class="accordion-body border-bottom" style="background:rgb(230, 231, 249); border-left: 5px solid rgb(13, 0, 197); padding: 15px;">
                                     Anda dapat mengajukan pinjaman melalui halaman pinjaman di sistem kami atau datang langsung ke kantor koperasi untuk konsultasi.
                                 </div>
                             </div>
@@ -671,12 +671,12 @@
                         <!-- Pertanyaan 2 -->
                         <div class="accordion-item">
                             <h2 class="accordion-header hidden-content-right" id="headingTwo">
-                                <button class="accordion-button collapsed bg-warning text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                <button class="accordion-button collapsed bg-primary text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                     <i class="bi bi-exclamation-triangle me-2"></i> Apakah ada denda keterlambatan pembayaran angsuran?
                                 </button>
                             </h2>
                             <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#helpAccordion">
-                                <div class="accordion-body border-bottom" style="background:rgb(252, 255, 205); border-left: 5px solid rgb(255, 239, 15); padding: 15px;">
+                                <div class="accordion-body border-bottom" style="background:rgb(230, 231, 249); border-left: 5px solid rgb(13, 0, 197); padding: 15px;">
                                     Ya, denda dihitung sejak lewat tanggal jatuh tempo sebesar 2%, nilai ini akan terus naik 2% perminggu nya. jika pinjaman Aktif memiliki denda, pembayaran akan mengitung denda terlebih dahulu sebelum menghitung sisa angsuran
                                 </div>
                             </div>
@@ -684,12 +684,12 @@
 
                         <div class="accordion-item">
                             <h2 class="accordion-header hidden-content-right" id="headingThree">
-                                <button class="accordion-button collapsed bg-danger text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapsefor" aria-expanded="false" aria-controls="collapseThree">
+                                <button class="accordion-button collapsed bg-primary text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapsefor" aria-expanded="false" aria-controls="collapseThree">
                                     <i class="bi bi-journal-check me-2"></i> Apa yang terjadi ketika akun dinonaktifkan
                                 </button>
                             </h2>
                             <div id="collapsefor" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#helpAccordion">
-                                <div class="accordion-body border-bottom" style="background:rgb(249, 230, 230); border-left: 5px solid rgb(211, 2, 2); padding: 15px;">
+                                <div class="accordion-body border-bottom" style="background:rgb(230, 231, 249); border-left: 5px solid rgb(13, 0, 197); padding: 15px;">
                                     Anda tidak akan bisa login dan jika ada pinjaman aktif, jaminan darinya kita sita.
                                 </div>
                             </div>

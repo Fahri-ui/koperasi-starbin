@@ -311,18 +311,18 @@
                                     <tbody id="pinjaman-table-body" class="hidden-content-right">
                                         @forelse ($angsuran as $index => $data)
                                         <tr>
-                                            <td>{{ $index + 1 }}</td>
-                                            <td>{{ $data->pinjaman_id }}</td>
-                                            <td>{{ $data->user->fullname }}</td>
-                                            <td><span class="badge bg-success">Rp {{ number_format($data->jumlah_pembayaran, 0, ',', '.') }}</span></td>
-                                            <td>{{ \Carbon\Carbon::parse($data->tanggal_bayar)->format('d F Y') }}</td>
-                                            <td>
+                                            <td class="hidden-content-right">{{ $index + 1 }}</td>
+                                            <td class="hidden-content-right">{{ $data->pinjaman_id }}</td>
+                                            <td class="hidden-content-right">{{ $data->user->fullname }}</td>
+                                            <td class="hidden-content-right"><span class="badge bg-success">Rp {{ number_format($data->jumlah_pembayaran, 0, ',', '.') }}</span></td>
+                                            <td class="hidden-content-right">{{ \Carbon\Carbon::parse($data->tanggal_bayar)->format('d F Y') }}</td>
+                                            <td class="hidden-content-right">
                                                 <span class="badge {{ $data->pinjaman->sisa_angsuran > 0 ? 'bg-warning' : 'bg-success' }}">
                                                     {{ $data->pinjaman->sisa_angsuran > 0 ? 'Rp' . number_format($data->pinjaman->sisa_angsuran, 0, ',', '.') : 'Sudah Lunas' }}
                                                 </span>
                                             </td>
-                                            <td>{{ $data->metode_pembayaran }}</td>
-                                            <td>
+                                            <td class="hidden-content-right">{{ $data->metode_pembayaran }}</td>
+                                            <td class="hidden-content-right">
                                                 @if(!empty($data->bukti_pembayaran))
                                                 <a href="{{ route('admin.bukti.pembayaran', ['bukti' => basename($data->bukti_pembayaran)]) }}" target="_blank" class="btn btn-sm btn-outline-info">
                                                     <i class="bi bi-eye"></i>
@@ -331,7 +331,7 @@
                                                 <span class="badge bg-secondary">Tidak Ada</span>
                                                 @endif
                                             </td>
-                                            <td>
+                                            <td class="hidden-content-right">
                                                 @php
                                                 $statusColors = ['Dalam Proses' => 'warning', 'Ditolak' => 'danger', 'Berhasil' => 'success'];
                                                 $badgeColor = $statusColors[$data->status] ?? 'secondary';

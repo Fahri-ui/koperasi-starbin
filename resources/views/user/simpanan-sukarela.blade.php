@@ -860,7 +860,6 @@
             <div class="card shadow mb-3 hidden-content-right">
                 <div class="card-body bg-danger text-white hidden-content-right" style="padding: 30px; border-radius: 10px;text-align:center;">
                     <div class="d-flex align-items-center hidden-content-right">
-                        <i class="bi bi-x-circle-fill me-4" style="font-size: 2rem; margin-top:-150px;"></i>
                         <div>
                             <strong style="font-size: 2rem; display: block; margin-bottom: 10px;">Pengajuan Simpanan Wajib Anda Ditolak!</strong>
                             <p style="font-size: 1.2rem; line-height: 1.5; margin: 0;" class="hidden-content-right">

@@ -15,7 +15,7 @@ class SimpananWajibAdminController extends Controller
         $simpananWajib = Simpanan::where('jenis', 'wajib')->get();
 
         // Hitung total simpanan wajib
-        $totalSimpananWajib = $simpananWajib->sum('jumlah');
+        $totalSimpananWajib = $simpananWajib->where('status', 'Berhasil')->sum('jumlah');
 
         return view('admin.simpanan-wajib-admin', compact('simpananWajib', 'totalSimpananWajib'));
     }

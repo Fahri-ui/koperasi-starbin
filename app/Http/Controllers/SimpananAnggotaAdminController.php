@@ -16,7 +16,7 @@ class SimpananAnggotaAdminController extends Controller
         $simpanananggota = Simpanan::where('jenis', 'anggota')->get();
     
         // Hitung total simpanan sukarela
-        $totalSimpanananggota = $simpanananggota->sum('jumlah');
+        $totalSimpanananggota = $simpanananggota->where('status', 'Berhasil')->sum('jumlah');
     
         return view('admin.simpanan-anggota-admin', compact('simpanananggota', 'totalSimpanananggota'));
     }    

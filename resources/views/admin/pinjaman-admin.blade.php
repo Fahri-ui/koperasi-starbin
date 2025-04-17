@@ -333,31 +333,31 @@
                                     <tbody id="pinjaman-table-body" class="hidden-content-right">
                                         @forelse ($pinjaman as $index => $item)
                                         <tr>
-                                            <td>{{ $index + 1 }}</td>
-                                            <td>{{ $item->id ?? 'N/A' }}</td>
-                                            <td>{{ $item->user->fullname ?? 'Tidak Diketahui' }}</td>
-                                            <td><span class="badge bg-primary">Rp {{ number_format($item->jumlah_pinjaman, 0, ',', '.') }}</span></td>
-                                            <td>
+                                            <td class="hidden-content-right">{{ $index + 1 }}</td>
+                                            <td class="hidden-content-right">{{ $item->id ?? 'N/A' }}</td>
+                                            <td class="hidden-content-right">{{ $item->user->fullname ?? 'Tidak Diketahui' }}</td>
+                                            <td class="hidden-content-right"><span class="badge bg-primary">Rp {{ number_format($item->jumlah_pinjaman, 0, ',', '.') }}</span></td>
+                                            <td class="hidden-content-right">
                                                 <span class="badge {{ $item->total_denda > 0 ? 'bg-danger' : 'bg-primary' }}">
                                                     Rp {{ number_format($item->total_denda, 0, ',', '.') }}
                                                 </span>
                                             </td>
-                                            <td>
+                                            <td class="hidden-content-right">
                                                 <span class="badge {{ $item->sisa_angsuran > 0 ? 'bg-warning' : 'bg-success' }}">
                                                     {{ $item->sisa_angsuran > 0 ? 'Rp ' . number_format($item->sisa_angsuran, 0, ',', '.') : 'Sudah Lunas' }}
                                                 </span>
                                             </td>
-                                            <td>{{ \Carbon\Carbon::parse($item->tanggal_pengajuan)->format('d F Y') }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($item->tanggal_jatuh_tempo)->format('d F Y') }}</td>
-                                            <td>{{ $item->jenis_jaminan }}</td>
-                                            <td>
+                                            <td class="hidden-content-right">{{ \Carbon\Carbon::parse($item->tanggal_pengajuan)->format('d F Y') }}</td>
+                                            <td class="hidden-content-right">{{ \Carbon\Carbon::parse($item->tanggal_jatuh_tempo)->format('d F Y') }}</td>
+                                            <td class="hidden-content-right">{{ $item->jenis_jaminan }}</td>
+                                            <td class="hidden-content-right">
                                                 @if($item->file_jaminan)
                                                 <a href="{{ route('bukti.jaminan.admin', ['bukti' => basename($item->file_jaminan)]) }}" target="_blank" class="btn btn-outline-info btn-sm"><i class="bi bi-eye"></i></a>
                                                 @else
                                                 <span class="badge bg-secondary">Tidak Ada</span>
                                                 @endif
                                             </td>
-                                            <td>
+                                            <td class="hidden-content-right">
                                                 <span class="badge bg-{{ $item->status === 'Lunas' ? 'success' : ($item->status === 'Ditolak' ? 'danger' : 'primary') }}">
                                                     {{ ucfirst($item->status ?? '-') }}
                                                 </span>
