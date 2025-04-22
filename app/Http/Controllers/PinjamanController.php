@@ -275,7 +275,7 @@ class PinjamanController extends Controller
     {
         $request->validate([
             'loan-code' => 'required',
-            'payment-amount' => 'required|numeric|min:10000',
+            'payment-amount' => 'required|numeric|min:1000',
             'payment-method' => 'required|string',
             'payment-proof' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);

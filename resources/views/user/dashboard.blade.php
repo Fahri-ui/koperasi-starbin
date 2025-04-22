@@ -262,7 +262,7 @@
                 <div class="card shadow-sm mb-3 hidden-content-right">
                     <div class="card-body bg-danger text-white" style="padding: 30px; border-radius: 10px;">
                         <div class="d-flex align-items-center hidden-content-right">
-                            <i class="bi bi-x-circle-fill me-4" style="font-size: 3rem; margin-top:-150px;"></i>
+                            <i class="bi bi-exclamation me-4" style="font-size: 3rem; margin-top:-170px; "></i>
                             <div class="hidden-content-right">
                                 <strong style="font-size: 2.5rem; display: block; margin-bottom: 10px;">Pengajuan Anda Ditolak!</strong>
                                 <p style="font-size: 1.2rem; line-height: 1.5; margin: 0;">
@@ -731,9 +731,6 @@
                                     <i class="bi bi-graph-up me-2 text-primary hidden-content-right" style="margin-top: -15px;padding-right:20px;"></i> Statistik Simpanan dan Pinjaman
                                 </h5>
                                 <canvas id="financialChart"></canvas>
-                                <p class="text-muted mt-3 hidden-content-right" style="font-size: 13px;">
-                                    <i class="bi bi-calendar3"></i> Direset per bulan
-                                </p>
                             </div>
                         </div>
                     </div>
@@ -953,9 +950,6 @@
                                     <i class="bi bi-graph-up me-2 text-primary" style="margin-top: -15px;padding-right:20px;"></i> Statistik Simpanan dan Pinjaman
                                 </h5>
                                 <canvas id="financialChart" class="hidden-content-right"></canvas>
-                                <p class="text-muted mt-3 hidden-content-right" style="font-size: 13px;">
-                                    <i class="bi bi-calendar3"></i> Direset per bulan
-                                </p>
                             </div>
                         </div>
                     </div>

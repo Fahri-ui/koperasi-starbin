@@ -296,7 +296,7 @@
                     </div>
                 </div>
             </section>
-            @elseif ($statusWajib && $statusWajib->status === 'Dalam Proses')
+            @elseif ($statusWajibDalamproses && $statusWajibDalamproses->status === 'Dalam Proses')
             <div class="alert alert-warning shadow-sm hidden-content-right" role="alert" style="border-radius: 10px;">
                 <!-- Header -->
                 <div class="d-flex align-items-center p-3" style="border-bottom: 2px solid #d1a900; color:black;">
@@ -323,7 +323,7 @@
                     </p>
                 </div>
             </div>
-            @elseif ($statusWajib && $statusWajib->status === 'Ditolak')
+            @elseif ($statusWajibDitolak && $statusWajibDitolak->status === 'Ditolak')
             <div class="alert alert-danger shadow-sm hidden-content-right" role="alert" style="border-radius: 10px;">
                 <!-- Header -->
                 <div class="d-flex align-items-center p-3 hidden-content-right" style="border-bottom: 2px solid #a94442;">
@@ -766,8 +766,8 @@
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label for="payment-amount" class="form-label">Jumlah Pembayaran</label>
-                                        <input type="number" class="form-control" id="payment-amount" name="payment-amount" placeholder="Masukkan jumlah pembayaran" min="10000" step="10000" required>
-                                        <small class="text-muted"><i class="bi bi-info-circle"></i> Minimal Rp 10.000 dan kelipatan Rp 10.000.</small>
+                                        <input type="number" class="form-control" id="payment-amount" name="payment-amount" placeholder="Masukkan jumlah pembayaran" min="1000" step="1000" required>
+                                        <small class="text-muted"><i class="bi bi-info-circle"></i> Minimal Rp 1.000 dan kelipatan Rp 1.000.</small>
                                     </div>
                                 </div>
                                 <div class="row hidden-content-right">
@@ -1164,8 +1164,8 @@
                                     </div>
                                     <div class="col-md-6 mb-3 hidden-content-right">
                                         <label for="payment-amount" class="form-label">Jumlah Pembayaran</label>
-                                        <input type="number" class="form-control" id="payment-amount" name="payment-amount" placeholder="Masukkan jumlah pembayaran" min="10000" step="10000" required>
-                                        <small class="text-muted"><i class="bi bi-info-circle"></i> Minimal Rp 10.000 dan kelipatan Rp 10.000.</small>
+                                        <input type="number" class="form-control" id="payment-amount" name="payment-amount" placeholder="Masukkan jumlah pembayaran" min="1000" step="1000" required>
+                                        <small class="text-muted"><i class="bi bi-info-circle"></i> Minimal Rp 1.000 dan kelipatan Rp 1.000.</small>
                                     </div>
                                 </div>
                                 <div class="row hidden-content-right">

@@ -236,7 +236,7 @@
                             </p>
                         </div>
                     </div>
-                </section>n
+                </section>
 
                 <!-- Ringkasan Denda -->
                 <section class="mb-4 hidden-content-right">

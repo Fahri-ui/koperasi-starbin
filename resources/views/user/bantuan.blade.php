@@ -137,14 +137,18 @@
                 </a>
             </header>
 
-            @if (Session::has('error'))
+            @if ($errors->any())
             <div class="flash-message alert alert-danger shadow p-3 mb-3"
                 style="background: linear-gradient(135deg, #ff7f7f, #ff4d4d); color: #fff; border-radius: 20px; border: 2px solid #ff4d4d; position: relative;">
                 <div class="d-flex align-items-start">
                     <i class="bi bi-exclamation-triangle-fill me-3 fs-4 mt-1"></i>
                     <div>
                         <h5 class="mb-1">🚨 Oops! Terjadi Kesalahan</h5>
-                        <p class="mb-0">⚠️ {{ Session::get('error') }}</p>
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                            <li>⚠️ {{ $error }}</li>
+                            @endforeach
+                        </ul>
                     </div>
                 </div>
                 <button type="button" class="btn-close position-absolute top-0 end-0 m-3"

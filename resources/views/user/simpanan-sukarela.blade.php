@@ -296,7 +296,7 @@
                     </div>
                 </div>
             </section>
-            @elseif ($statusWajib && $statusWajib->status === 'Dalam Proses')
+            @elseif ($statusWajibDalamproses && $statusWajibDalamproses->status === 'Dalam Proses')
             <div class="alert alert-warning shadow-sm hidden-content-right" role="alert" style="border-radius: 10px;">
                 <!-- Header -->
                 <div class="d-flex align-items-center p-3" style="border-bottom: 2px solid #d1a900; color:black;">
@@ -323,7 +323,7 @@
                     </p>
                 </div>
             </div>
-            @elseif ($statusWajib && $statusWajib->status === 'Ditolak')
+            @elseif ($statusWajibDitolak && $statusWajibDitolak->status === 'Ditolak')
             <div class="alert alert-danger shadow-sm hidden-content-right" role="alert" style="border-radius: 10px;">
                 <!-- Header -->
                 <div class="d-flex align-items-center p-3 hidden-content-right" style="border-bottom: 2px solid #a94442;">

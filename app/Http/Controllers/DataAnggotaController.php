@@ -125,7 +125,7 @@ class DataAnggotaController extends Controller
                 'status' => $status
             ]);
 
-            return response()->json(['success' => true, 'message' => 'Anggota baru berhasil ditambahkan!']);
+            return response()->json(['success' => true, 'message' => 'Data baru berhasil ditambahkan!']);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()]);
         }

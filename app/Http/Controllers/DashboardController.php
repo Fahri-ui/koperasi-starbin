@@ -32,9 +32,6 @@ class DashboardController extends Controller
             ->whereYear('tanggal_transaksi', $currentYear)
             ->sum('jumlah');
 
-        $totalSimpananSeluruh = Simpanan::where('user_id', $user->id)
-            ->whereNotIn('status', ['Ditolak', 'Dalam Proses'])
-            ->sum('jumlah');
 
         // Hitung total pinjaman yang diambil user (hanya bulan ini)
         $totalPinjaman = Pinjaman::where('user_id', $user->id)
@@ -43,6 +40,9 @@ class DashboardController extends Controller
             ->whereYear('tanggal_pengajuan', $currentYear)
             ->sum('jumlah_pinjaman');
 
+        $totalSimpananSeluruh = Simpanan::where('user_id', $user->id)
+            ->whereNotIn('status', ['Ditolak', 'Dalam Proses'])
+            ->sum('jumlah');
         $totalPinjamanSeluruh = Pinjaman::where('user_id', $user->id)
             ->whereIn('status', ['Aktif', 'Lunas'])
             ->sum('jumlah_pinjaman');

@@ -58,7 +58,7 @@ class ProfilController extends Controller
             'password' => 'nullable|min:8',
             'confirm_password' => 'same:password',
             'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'phone' => 'required|regex:/^62[0-9]{9,13}$/|min:10|max:15',
+            'phone' => 'required|regex:/^08[0-9]{9,13}$/|min:10|max:15',
             'address' => 'required|min:15',
         ], [
             'fullname.required' => 'Nama wajib diisi.',

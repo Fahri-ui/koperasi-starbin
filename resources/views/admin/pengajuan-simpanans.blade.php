@@ -244,7 +244,7 @@
                             </h5>
                             <hr style="border-top: 2px solid #25396f; border-radius: 5px;">
                             <p class="hidden-content-right">
-                                    Halaman ini digunakan untuk mengelola pengajuan simpanan dari berbagai jenis simpanan Anggota, Wajib, Sukarela. Di dalamnya terdapat daftar pengajuan, status persetujuan. Admin dapat menyetujui, atau menolak pengajuan sesuai kebijakan yang berlaku.
+                                Halaman ini digunakan untuk mengelola pengajuan simpanan dari berbagai jenis simpanan Anggota, Wajib, Sukarela. Di dalamnya terdapat daftar pengajuan, status persetujuan. Admin dapat menyetujui, atau menolak pengajuan sesuai kebijakan yang berlaku.
                                 <br><br>
                                 Catatan : Semua data yang tampil dihalaman ini <span class="badge bg-info">Di reset setiap hari</span>
                             </p>
@@ -345,11 +345,15 @@
                                             <td class="hidden-content-right">
                                                 @if ($data->bukti)
                                                 <a href="{{ route('admin.bukti.pembayaran', ['bukti' => basename($data->bukti)]) }}" target="_blank" class="btn btn-outline-primary btn-sm">
-                                                    <i class="bi bi-eye"></i>
+                                                    <i class="bi bi-receipt"></i> Lihat Bukti
                                                 </a>
+                                                @elseif ($data->metode_pembayaran === 'cash')
+                                                <span class="badge bg-secondary">
+                                                    <i class="bi bi-cash-stack"></i> Cash
+                                                </span>
                                                 @else
-                                                <span class="badge bg-danger">
-                                                    <i class="bi bi-x-circle"></i> <br>
+                                                <span class="badge bg-warning">
+                                                    <i class="bi bi-exclamation-circle"></i> Bukti Belum Ada
                                                 </span>
                                                 @endif
                                             </td>
