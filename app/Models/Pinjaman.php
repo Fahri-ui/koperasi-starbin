@@ -10,7 +10,7 @@ class Pinjaman extends Model
 {
     use HasFactory;
 
-    protected $table = 'pinjaman'; // Pastikan ini sesuai dengan nama tabel di database
+    protected $table = 'pinjaman'; 
 
     protected static function boot()
     {
@@ -20,7 +20,6 @@ class Pinjaman extends Model
             if ($pinjaman->isDirty('status')) {
                 $statusLama = $pinjaman->getOriginal('status');
 
-                // Paksa update ke database tanpa memicu event
                 Pinjaman::where('id', $pinjaman->id)->update([
                     'status_sebelumnya' => $statusLama
                 ]);
@@ -36,7 +35,7 @@ class Pinjaman extends Model
     public function hitungDenda()
     {
         if ($this->status !== 'Aktif') {
-            return 0; // Denda hanya berlaku untuk pinjaman aktif
+            return 0; 
         }
 
         $tanggalJatuhTempo = Carbon::parse($this->tanggal_jatuh_tempo);

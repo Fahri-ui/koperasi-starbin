@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Simpanan;
 use App\Models\User;
 use Carbon\Carbon;
-use App\Models\Notifikasi; // Tambahkan ini di atas
+use App\Models\Notifikasi;   // Tambahkan ini di atas
 
 class PinjamanController extends Controller
 {
