@@ -19,10 +19,10 @@
     <div id="app">
         <div id="sidebar" class="active">
             <div class="sidebar-wrapper active">
-                <div class="sidebar-header position-relative bg-primary">
+                <div class="sidebar-header position-relative ">
                     <div class="user-info text-center mt-3 pb-3">
                         <img src="{{ asset('picture/account/' . Auth::user()->gambar) }}" class="rounded-circle" alt="User Avatar" style="width: 90px; height: 90px; object-fit: cover;">
-                        <h3 class="mt-2 mb-0 text-white">{{ Auth::user()->fullname }}</h3>
+                        <h3 class="mt-2 mb-0 ">{{ Auth::user()->fullname }}</h3>
                         <small class="text-muted">{{ Auth::user()->role }}</small>
                     </div>
                 </div>

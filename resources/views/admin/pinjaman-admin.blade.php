@@ -18,10 +18,10 @@
     <div id="app">
         <div id="sidebar" class="active">
             <div class="sidebar-wrapper active">
-                <div class="sidebar-header position-relative bg-primary">
+                <div class="sidebar-header position-relative ">
                     <div class="user-info text-center mt-3 pb-3">
                         <img src="{{ asset('picture/account/' . Auth::user()->gambar) }}" class="rounded-circle" alt="User Avatar" style="width: 150px; height: 150px; object-fit: cover;">
-                        <h3 class="mt-2 mb-0 text-white">{{ Auth::user()->fullname }}</h3>
+                        <h3 class="mt-2 mb-0 ">{{ Auth::user()->fullname }}</h3>
                         <small class="text-muted">{{ Auth::user()->role }}</small>
                     </div>
                 </div>
@@ -243,7 +243,7 @@
                             </div>
 
                             <!-- Tabel Pinjaman -->
-                            <div style="max-height: 450px; overflow:auto; font-size:.9rem;">
+                            <div style="max-height: 450px; overflow:auto; font-size:.8rem;">
                                 <table class="table table-striped">
                                     <thead class="table-dark">
                                         <tr>
@@ -253,6 +253,7 @@
                                             <th>Jumlah Pinjaman</th>
                                             <th>Sisa Angsuran</th>
                                             <th>Tanggal Pengajuan</th>
+                                            <th>Tanggal Jatuh Tempo</th>
                                             <th>Jaminan</th>
                                             <th>Status</th>
                                         </tr>
@@ -266,6 +267,7 @@
                                             <td>Rp {{ number_format($item->jumlah_pinjaman, 0, ',', '.') }}</td>
                                             <td>Rp {{ number_format($item->sisa_angsuran ?? $item->jumlah_pinjaman, 0, ',', '.') }}</td>
                                             <td>{{ \Carbon\Carbon::parse($item->tanggal_pengajuan)->format('d F Y') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($item->tanggal_jatuh_tempo)->format('d F Y') }}</td>
                                             <td>
                                                 @if($item->file_jaminan)
                                                 <a href="{{ route('bukti.jaminan.admin', ['bukti' => basename($item->file_jaminan)]) }}" target="_blank" class="btn btn-outline-info btn-sm">Lihat Jaminan</a>

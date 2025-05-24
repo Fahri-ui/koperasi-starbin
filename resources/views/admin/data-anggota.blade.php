@@ -20,10 +20,10 @@
     <div id="app">
         <div id="sidebar" class="active">
             <div class="sidebar-wrapper active">
-                <div class="sidebar-header position-relative bg-primary">
+                <div class="sidebar-header position-relative ">
                     <div class="user-info text-center mt-3 pb-3">
                         <img src="{{ asset('picture/account/' . Auth::user()->gambar) }}" class="rounded-circle" alt="User Avatar" style="width: 150px; height: 150px; object-fit: cover;">
-                        <h3 class="mt-2 mb-0 text-white">{{ Auth::user()->fullname }}</h3>
+                        <h3 class="mt-2 mb-0 ">{{ Auth::user()->fullname }}</h3>
                         <small class="text-muted">{{ Auth::user()->role }}</small>
                     </div>
                 </div>
@@ -415,8 +415,8 @@
                 <div class="modal-content border-0 shadow-lg">
                     <!-- Header -->
                     <div class="modal-header bg-primary text-white">
-                        <h5 class="modal-title fw-bold" id="modalDetailLabel">
-                            <i class="bi bi-person-circle me-2"></i> Detail Anggota
+                        <h5 class="modal-title fw-bold text-white" id="modalDetailLabel" style="font-size: 1.1rem;">
+                            <i class="bi bi-person-circle me-2 text-white" style="font-size:1.5rem;"></i> Detail Anggota
                         </h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>

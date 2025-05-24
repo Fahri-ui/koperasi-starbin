@@ -18,10 +18,10 @@
         <div id="sidebar" class="active">
             <div class="sidebar-wrapper active">
                 <!-- Sidebar Header -->
-                <div class="sidebar-header position-relative border-bottom bg-primary">
+                <div class="sidebar-header position-relative border-bottom">
                     <div class="user-info text-center mt-3 pb-3">
                         <img src="{{ asset('picture/account/' . Auth::user()->gambar) }}" class="rounded-circle" alt="User Avatar" style="width: 150px; height: 150px; object-fit: cover;">
-                        <h3 class="mt-2 mb-0 text-white">{{ Auth::user()->fullname }}</h3>
+                        <h3 class="mt-2 mb-0">{{ Auth::user()->fullname }}</h3>
                         <small class="text-muted">Anggota Koperasi</small>
                     </div>
                 </div>
@@ -537,55 +537,66 @@
                         </div>
                     </div>
 
-                    <!-- Kotak Ketiga: Formulir Edit Profil -->
-                    <div class="card mb-4 shadow" style="border: 1px solid #007bff; border-radius: 10px;">
-                        <div class="card-header bg-primary text-white">
-                            <h5 class="text-white"><i class="bi bi-pencil-square me-2"></i> Edit Profil</h5>
+                    <!-- Formulir Edit Profil -->
+                    <section class="mb-4">
+                        <div class="card shadow" style="border: 1px solid #435ebe;">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0 text-white">
+                                    <i class="bi bi-person-lines-fill"></i> Edit Profil
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="edit-profile-form" enctype="multipart/form-data" method="POST" action="{{ route('edit.profil') }}">
+                                    @csrf
+                                    <input type="hidden" name="_method" value="PUT">
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="fullname" class="form-label">Nama</label>
+                                            <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Nama Lengkap" value="{{ old('fullname', Auth::user()->fullname) }}" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="email" class="form-label">Email</label>
+                                            <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="{{ old('email', Auth::user()->email) }}" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="password" class="form-label">Password (Opsional)</label>
+                                            <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan password baru">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="confirm-password" class="form-label">Konfirmasi Password</label>
+                                            <input type="password" class="form-control" id="confirm-password" name="confirm_password" placeholder="Konfirmasi password baru">
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="phone" class="form-label">Nomor Telepon</label>
+                                            <input type="tel" class="form-control" id="phone" name="phone" placeholder="Nomor Telepon" value="{{ old('phone', Auth::user()->phone) }}" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="gambar" class="form-label">Foto Profil</label>
+                                            <input type="file" class="form-control" id="gambar" name="gambar" accept="image/*">
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="address" class="form-label">Alamat</label>
+                                        <textarea class="form-control" id="address" name="address" rows="4" placeholder="Alamat" required>{{ old('address', Auth::user()->address) }}</textarea>
+                                    </div>
+
+                                    <div class="text-center mt-4">
+                                        <button type="subphp mit" class="btn btn-success">
+                                            <i class="bi bi-check-circle"></i> Konfirmasi Edit Profil
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <form id="edit-profile-form" enctype="multipart/form-data" method="POST" action="{{ route('edit.profil') }}">
-                                @csrf
-                                <input type="hidden" name="_method" value="PUT">
-
-                                <!-- Nama -->
-                                <div class="mb-3">
-                                    <label for="fullname" class="form-label"><i class="bi bi-person"></i> Nama</label>
-                                    <input type="text" class="form-control" id="fullname" name="fullname" value="{{ old('fullname', Auth::user()->fullname) }}" required>
-                                </div>
-
-                                <!-- Email -->
-                                <div class="mb-3">
-                                    <label for="email" class="form-label"><i class="bi bi-envelope"></i> Email</label>
-                                    <input type="email" class="form-control" id="email" name="email" value="{{ old('email', Auth::user()->email) }}" required>
-                                </div>
-
-                                <!-- Gambar -->
-                                <div class="mb-3">
-                                    <label for="gambar" class="form-label"><i class="bi bi-camera"></i> Foto Profil</label>
-                                    <input type="file" class="form-control" id="gambar" name="gambar" accept="image/*">
-                                </div>
-
-                                <!-- Nomor Telepon -->
-                                <div class="mb-3">
-                                    <label for="phone" class="form-label"><i class="bi bi-telephone"></i> Nomor Telepon</label>
-                                    <input type="tel" class="form-control" id="phone" name="phone" value="{{ old('phone', Auth::user()->phone) }}" required>
-                                </div>
-
-                                <!-- Alamat -->
-                                <div class="mb-3">
-                                    <label for="address" class="form-label"><i class="bi bi-geo-alt"></i> Alamat</label>
-                                    <textarea class="form-control" id="address" name="address" rows="5" required>{{ old('address', Auth::user()->address) }}</textarea>
-                                </div>
-
-                                <!-- Tombol Submit -->
-                                <div class="text-end">
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="bi bi-check-circle me-2"></i> Konfirmasi Edit Profil
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+                    </section>
                 </div>
             </div>
 
@@ -667,55 +678,66 @@
                         </div>
                     </div>
 
-                    <!-- Kotak Ketiga: Formulir Edit Profil -->
-                    <div class="card mb-4 shadow" style="border: 1px solid #007bff; border-radius: 10px;">
-                        <div class="card-header bg-primary text-white">
-                            <h5 class="text-white"><i class="bi bi-pencil-square me-2"></i> Edit Profil</h5>
+                    <!-- Formulir Edit Profil -->
+                    <section class="mb-4">
+                        <div class="card shadow" style="border: 1px solid #435ebe;">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0 text-white">
+                                    <i class="bi bi-person-lines-fill"></i> Edit Profil
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="edit-profile-form" enctype="multipart/form-data" method="POST" action="{{ route('edit.profil') }}">
+                                    @csrf
+                                    <input type="hidden" name="_method" value="PUT">
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="fullname" class="form-label">Nama</label>
+                                            <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Nama Lengkap" value="{{ old('fullname', Auth::user()->fullname) }}" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="email" class="form-label">Email</label>
+                                            <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="{{ old('email', Auth::user()->email) }}" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="password" class="form-label">Password (Opsional)</label>
+                                            <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan password baru">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="confirm-password" class="form-label">Konfirmasi Password</label>
+                                            <input type="password" class="form-control" id="confirm-password" name="confirm_password" placeholder="Konfirmasi password baru">
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="phone" class="form-label">Nomor Telepon</label>
+                                            <input type="tel" class="form-control" id="phone" name="phone" placeholder="Nomor Telepon" value="{{ old('phone', Auth::user()->phone) }}" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="gambar" class="form-label">Foto Profil</label>
+                                            <input type="file" class="form-control" id="gambar" name="gambar" accept="image/*">
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="address" class="form-label">Alamat</label>
+                                        <textarea class="form-control" id="address" name="address" rows="4" placeholder="Alamat" required>{{ old('address', Auth::user()->address) }}</textarea>
+                                    </div>
+
+                                    <div class="text-center mt-4">
+                                        <button type="subphp mit" class="btn btn-success">
+                                            <i class="bi bi-check-circle"></i> Konfirmasi Edit Profil
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <form id="edit-profile-form" enctype="multipart/form-data" method="POST" action="{{ route('edit.profil') }}">
-                                @csrf
-                                <input type="hidden" name="_method" value="PUT">
-
-                                <!-- Nama -->
-                                <div class="mb-3">
-                                    <label for="fullname" class="form-label"><i class="bi bi-person"></i> Nama</label>
-                                    <input type="text" class="form-control" id="fullname" name="fullname" value="{{ old('fullname', Auth::user()->fullname) }}" required>
-                                </div>
-
-                                <!-- Email -->
-                                <div class="mb-3">
-                                    <label for="email" class="form-label"><i class="bi bi-envelope"></i> Email</label>
-                                    <input type="email" class="form-control" id="email" name="email" value="{{ old('email', Auth::user()->email) }}" required>
-                                </div>
-
-                                <!-- Gambar -->
-                                <div class="mb-3">
-                                    <label for="gambar" class="form-label"><i class="bi bi-camera"></i> Foto Profil</label>
-                                    <input type="file" class="form-control" id="gambar" name="gambar" accept="image/*">
-                                </div>
-
-                                <!-- Nomor Telepon -->
-                                <div class="mb-3">
-                                    <label for="phone" class="form-label"><i class="bi bi-telephone"></i> Nomor Telepon</label>
-                                    <input type="tel" class="form-control" id="phone" name="phone" value="{{ old('phone', Auth::user()->phone) }}" required>
-                                </div>
-
-                                <!-- Alamat -->
-                                <div class="mb-3">
-                                    <label for="address" class="form-label"><i class="bi bi-geo-alt"></i> Alamat</label>
-                                    <textarea class="form-control" id="address" name="address" rows="5" required>{{ old('address', Auth::user()->address) }}</textarea>
-                                </div>
-
-                                <!-- Tombol Submit -->
-                                <div class="text-end">
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="bi bi-check-circle me-2"></i> Konfirmasi Edit Profil
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+                    </section>
                 </div>
             </div>
             @endif

@@ -10,7 +10,7 @@ class ShareMassageController extends Controller
 {
     public function sharemassage()
     {
-        $notifikasi = Notifikasi::where('type', 'announcement')
+        $notifikasi = Notifikasi::where('type', 'primary')
             ->with('user') // Pastikan relasi user dimuat
             ->orderBy('created_at', 'desc')
             ->get();
@@ -57,7 +57,6 @@ class ShareMassageController extends Controller
 
         return redirect()->back()->with('success', 'Pesan berhasil dikirim!');
     }
-
 
     public function destroy($id)
     {
