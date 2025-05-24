@@ -28,21 +28,43 @@ class DashboardAdminController extends Controller
 
         // Menghitung jumlah pengajuan dengan status 'Dalam Proses'
         $jumlahPengajuan = Pinjaman::where('status', 'Dalam Proses')->count();
- 
+
+        $currentMonth = now()->month;
+        $currentYear = now()->year;
+
         // Hitung saldo dari simpaan sukarela
         $totalSimpananSukarela = Simpanan::where('jenis', 'sukarela')
             ->where('status', 'Berhasil') // Hanya hitung yang berhasil
+            ->whereMonth('tanggal_transaksi', $currentMonth)
+            ->whereYear('tanggal_transaksi', $currentYear)
             ->sum('jumlah');
-            
+
         // Menghitung total saldo simpanan wajib 
         $totalSimpananWajib = Simpanan::where('jenis', 'wajib')
             ->where('status', 'Berhasil') // Hanya hitung yang berhasil
+            ->whereMonth('tanggal_transaksi', $currentMonth)
+            ->whereYear('tanggal_transaksi', $currentYear)
             ->sum('jumlah');
-            
-        $totalSimpananAnggota = Simpanan::where('jenis', 'anggota') 
+
+        $totalSimpananAnggota = Simpanan::where('jenis', 'anggota')
+            ->where('status', 'Berhasil') // Hanya hitung yang berhasil
+            ->whereMonth('tanggal_transaksi', $currentMonth)
+            ->whereYear('tanggal_transaksi', $currentYear)
+            ->sum('jumlah');
+
+        $SeluruhtotalSimpananSukarela = Simpanan::where('jenis', 'sukarela')
             ->where('status', 'Berhasil') // Hanya hitung yang berhasil
             ->sum('jumlah');
-            
+
+        // Menghitung total saldo simpanan wajib 
+        $SeluruhtotalSimpananWajib = Simpanan::where('jenis', 'wajib')
+            ->where('status', 'Berhasil') // Hanya hitung yang berhasil
+            ->sum('jumlah');
+
+        $SeluruhtotalSimpananAnggota = Simpanan::where('jenis', 'anggota')
+            ->where('status', 'Berhasil') // Hanya hitung yang berhasil
+            ->sum('jumlah');
+        
         // Menghitung total pinjaman yang diajukan
         $totalPinjaman =  Pinjaman::whereIn('status', ['Aktif', 'Lunas'])->sum('jumlah_pinjaman');
 
@@ -55,6 +77,14 @@ class DashboardAdminController extends Controller
         // Menghitung total denda keseluruhan
         $totalDenda = Pinjaman::whereNotNull('total_denda')->sum('total_denda');
 
+        $totalKeuangan =
+            $SeluruhtotalSimpananSukarela +
+            $SeluruhtotalSimpananWajib +
+            $SeluruhtotalSimpananAnggota +
+            $totalAngsuran +
+            $totalDenda -
+            $totalPinjaman;
+
         // Menghitung jumlah anggota yang memiliki denda
         $jumlahAnggotaDenda = Pinjaman::whereNotNull('total_denda')
             ->where('total_denda', '>', 0)
@@ -64,6 +94,7 @@ class DashboardAdminController extends Controller
         $pinjamanBulanan = DB::table('pinjaman')
             ->select(DB::raw('DATE_FORMAT(tanggal_pengajuan, "%b") as bulan'), DB::raw('SUM(jumlah_pinjaman) as total'))
             ->whereYear('tanggal_pengajuan', date('Y')) // Ambil tahun ini saja
+            ->whereIn('status', ['Aktif', 'Lunas']) // Hanya ambil pinjaman dengan status tertentu
             ->groupBy('bulan')
             ->orderBy(DB::raw('STR_TO_DATE(bulan, "%b")')) // Urutkan sesuai urutan bulan
             ->pluck('total', 'bulan')
@@ -73,6 +104,7 @@ class DashboardAdminController extends Controller
         $angsuranBulanan = DB::table('riwayat_pembayaran')
             ->select(DB::raw('DATE_FORMAT(tanggal_pembayaran, "%b") as bulan'), DB::raw('SUM(jumlah_pembayaran) as total'))
             ->whereYear('tanggal_pembayaran', date('Y'))
+            ->where('status', 'Berhasil') // Hanya ambil angsuran yang statusnya berhasil
             ->groupBy('bulan')
             ->orderBy(DB::raw('STR_TO_DATE(bulan, "%b")'))
             ->pluck('total', 'bulan')
@@ -89,13 +121,17 @@ class DashboardAdminController extends Controller
             'totalSimpananWajib',
             'totalSimpananSukarela',
             'totalSimpananAnggota',
+            'SeluruhtotalSimpananWajib',
+            'SeluruhtotalSimpananSukarela',
+            'SeluruhtotalSimpananAnggota',
             'totalPinjaman',
             'totalAngsuran',
             'totalPengajuan',
             'totalDenda',
             'jumlahAnggotaDenda',
             'pinjamanBulanan',
-            'angsuranBulanan'
+            'angsuranBulanan',
+            'totalKeuangan'
         ));
     }
 }

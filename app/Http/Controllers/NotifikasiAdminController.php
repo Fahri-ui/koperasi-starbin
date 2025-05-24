@@ -10,28 +10,28 @@ class NotifikasiAdminController extends Controller
 {
     public function notifikasiadmin()
     {
-
         // Tandai semua notifikasi yang belum dibaca (is_read = false) untuk admin
-        Notifikasi::where('user_id', null) // Hanya untuk pesan dari user ke admin
-            ->where('is_read', false) // Hanya yang belum dibaca
-            ->update(['is_read' => true]); // Ubah status is_read menjadi true
-
+        Notifikasi::where('user_id', null)
+            ->where('is_read', false)
+            ->update(['is_read' => true]);
+    
         // Hapus notifikasi lebih dari 1 tahun
         Notifikasi::where('created_at', '<', now()->subYear())->delete();
-
-        // 🔥 Ambil notifikasi dari user (HANYA yang user_id NULL)
-        $notifikasi = Notifikasi::whereNull('user_id') // ✅ Hanya pesan dari user ke admin
+    
+        // Ambil notifikasi dari user ke admin (user_id NULL) dalam 1 tahun terakhir
+        $notifikasi = Notifikasi::whereNull('user_id')
             ->where('created_at', '>=', now()->subYear())
-            ->orderBy('created_at', 'desc')
+            ->with('user')
+            ->orderBy('created_at', 'desc') // Urutkan dari yang terbaru
             ->get();
-
-        // Kelompokkan berdasarkan bulan dan tahun
+    
+        // Kelompokkan berdasarkan bulan dan tahun, lalu dalam setiap bulan, urutkan lagi dari yang terbaru
         $notifikasiPerBulan = $notifikasi->groupBy(function ($item) {
             return \Carbon\Carbon::parse($item->created_at)->format('Y-m');
         });
-
+    
         return view('admin.notifikasi-admin', compact('notifikasiPerBulan'));
-    }
+    }    
 
     public function tandaiSudahDibalas($id)
     {

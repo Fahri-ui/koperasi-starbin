@@ -173,3 +173,10 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   });
 });
+
+function showProfile(image, name, email) {
+    document.getElementById('profileImage').src = image;
+    document.getElementById('profileName').textContent = name;
+    document.getElementById('profileEmail').textContent = "Email: " + email;
+    
+}

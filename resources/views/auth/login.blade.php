@@ -93,9 +93,9 @@
 						</button>
 					</div>
 
-					<div class="text-center p-t-90">
+					<div class="text-center p-t-90 ">
 						Belum punya akun? 
-						<a class="txt1" href="{{ route('registrasi') }}">
+						<a class="txt1 register " href="{{ route('registrasi') }}">
 							Registrasi Disini
 						</a>
 					</div>

@@ -25,10 +25,10 @@ class ProfilController extends Controller
 
         $simpanan = Simpanan::where('user_id', auth()->id())->latest()->first();
 
-        // Hitung total saldo simpanan sukarela milik user yang sedang login
+        // Hitung total saldo simpanan sukarela (hanya bulan ini)
         $totalSukarela = Simpanan::where('user_id', $user->id)
-            ->where('jenis', 'sukarela') // Hanya ambil simpanan jenis sukarela
-            ->sum('jumlah'); // Menjumlahkan semua transaksi sukarela user
+            ->whereNotIn('status', ['Ditolak', 'Dalam Proses'])
+            ->sum('jumlah');
 
         // Hitung total pinjaman yang diambil user (hanya yang statusnya tidak "Ditolak")
         $totalPinjaman = Pinjaman::where('user_id', $user->id)

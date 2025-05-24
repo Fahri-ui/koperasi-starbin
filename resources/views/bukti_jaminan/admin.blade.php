@@ -48,7 +48,7 @@
 </head>
 <body>
     <div class="container">
-        <h2>Bukti Pembayaran</h2>
+        <h2>Bukti Jaminan</h2>
         <img src="{{ $buktiFile }}" alt="Bukti Pembayaran">
     </div>
 </body>
