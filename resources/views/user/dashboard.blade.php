@@ -861,7 +861,7 @@
                         </div>
 
                         <div style="max-height: 450px; overflow:auto; font-size:.9rem;">
-                            <table class="table table-hover">
+                            <table class="table table-hover" style="text-align: left;">
                                 <thead class="table-primary">
                                     <tr>
                                         <th>No</th>
