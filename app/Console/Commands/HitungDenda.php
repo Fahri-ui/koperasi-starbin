@@ -22,13 +22,6 @@ class HitungDenda extends Command
             $p->update(['total_denda' => $denda]);
         }
 
-        // Cek user Nonaktif dan ambil jaminan
-        $usersNonaktif = User::where('status', 'Nonaktif')->get();
-
-        foreach ($usersNonaktif as $user) {
-            $this->ambilJaminan($user);
-        }
-
         $this->info('Denda berhasil diperbarui dan jaminan diambil untuk user Nonaktif.');
         $this->info('Status user berhasil diperbarui untuk simpanan wajib.');
     }

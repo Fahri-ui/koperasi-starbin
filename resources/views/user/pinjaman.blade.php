@@ -496,28 +496,6 @@
                     </div>
                 </section>
 
-                @if ($pinjamanAktif)
-                <section class="mb-4 hidden-content-right">
-                    <div class="card" style="border: 2px solid #ff6b6b; border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-                        <div class="card-body text-center p-5" style=" color: #ff6b6b; border-radius: 15px;">
-                            <div class="d-flex flex-column align-items-center hidden-content-right">
-                                <i class="bi bi-exclamation-triangle-fill fs-1 mb-3" style="color: #ff6b6b; padding-bottom:50px;"></i>
-                                <h1 style="font-weight: bold; text-shadow: 1px 1px 6px rgba(255, 107, 107, 0.2);"> Tidak Bisa Memulai Pinjaman </h1>
-                            </div>
-                            <hr style="border: 1px solid #ff6b6b; margin: 20px auto; width: 60%;">
-                            <div class="p-3 hidden-content-right" style="border-radius: 10px; border: 1px solid #ffb3b3;">
-                                <h5 style="font-weight: 500; color: #d9534f;">
-                                    Anda masih memiliki angsuran yang belum diselesaikan.<br>
-                                    Segera lunasi angsuran Anda untuk mengajukan pinjaman baru.
-                                </h5>
-                            </div>
-                            <br>
-                        </div>
-                    </div>
-                </section>
-
-                @endif
-
                 @if ($pinjamandalamproses)
                 <section class="d-flex align-items-center justify-content-center p-4 hidden-content-right" style=" margin-bottom: 40px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);">
                     <div class="w-100 hidden-content-right" style="border: 1px solid rgb(255, 213, 44); border-radius: 15px; overflow: hidden;  box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.06);">
@@ -536,24 +514,6 @@
                                     <span style="color: #777; font-size: 1rem;">Lihat halaman Notifikasi</span>
                                 </div>
                             </a>
-                        </div>
-                    </div>
-                </section>
-                @endif
-
-                @if(!$statusWajib)
-                <section class="d-flex hidden-content-right align-items-center justify-content-center p-4 shadow" style=" margin-bottom: 40px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);">
-                    <div class="w-100 hidden-content-right" style="border: 1px solid #ff6b6b; border-radius: 15px; overflow: hidden; box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.06);">
-                        <div class="text-center hidden-content-right p-4 d-flex flex-column align-items-center justify-content-center" style="background: linear-gradient(135deg, #ff6b6b, #ff8787); border-radius: 15px 15px 0 0; position: relative;">
-                            <h2 style="text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1); margin-top: 10px;">🚫 Simpanan Wajib Belum Dibayar</h2>
-                        </div>
-                        <div class="p-3 text-center" style=" border-radius: 0 0 15px 15px;">
-                            <p class="mb-3 hidden-content-right" style="font-size: 1.2rem;">
-                                Anda belum melakukan pembayaran simpanan wajib untuk bulan ini. Pembayaran simpanan wajib adalah syarat utama untuk mengajukan pinjaman.
-                            </p>
-                            <p style="font-size: 1rem;" class="hidden-content-right">
-                                Segera lakukan pembayaran agar pengajuan pinjaman Anda dapat diproses tanpa kendala.
-                            </p>
                         </div>
                     </div>
                 </section>
@@ -609,18 +569,18 @@
                 @if ($pinjamanAktif)
                 <section class="mb-4 hidden-content-right">
                     <div class="card shadow p-4" style="border: 1px solid #435ebe;">
-                        <h5 class="text-center hidden-content-right mb-3  fw-bold d-flex align-items-center pb-3" style="border-bottom: 2px solid #e0e0e0;">
+                        <h5 class="text-center hidden-content-right mb-3 fw-bold d-flex align-items-center pb-3" style="border-bottom: 2px solid #e0e0e0;">
                             <i class="bi bi-list-check me-2" style="margin-top: -10px; padding-right:20px;"></i> Detail Pinjaman Aktif
                         </h5>
                         <div class="row g-3 hidden-content-right" style="font-size: 1.1rem;">
-                            <div class="col-12 hidden-content-right">
+                            <div class="col-12">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="fw-bold"><i class="bi bi-tag me-2"></i>Kode Pinjaman</div>
                                     <div class="text-primary">{{ $pinjamanAktif->id }}</div>
                                 </div>
                                 <hr>
                             </div>
-                            <div class="col-12 hidden-content-right">
+                            <div class="col-12">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="fw-bold"><i class="bi bi-cash-stack me-2"></i>Jumlah Pinjaman</div>
                                     <div class="text-success">Rp {{ number_format($pinjamanAktif->jumlah_pinjaman, 0, ',', '.') }}</div>
@@ -629,651 +589,630 @@
                             </div>
                             <div class="col-12 hidden-content-right">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <div class="fw-bold"><i class="bi bi-arrow-down-circle me-2"></i>Sisa Angsuran</div>
-                                    <div class="text-warning">Rp {{ number_format($pinjamanAktif->sisa_angsuran > 0 ? $pinjamanAktif->sisa_angsuran : $pinjamanAktif->jumlah_pinjaman, 0, ',', '.') }}</div>
+                                    <div class="fw-bold hidden-content-right"><i class="bi bi-arrow-down-circle me-2"></i>Sisa Angsuran</div>
+                                    <div class="text-warning hidden-content-right">Rp {{ number_format($pinjamanAktif->sisa_angsuran > 0 ? $pinjamanAktif->sisa_angsuran : $pinjamanAktif->jumlah_pinjaman, 0, ',', '.') }}</div>
                                 </div>
                                 <hr>
                             </div>
-                            @if ($pinjamanAktif->total_denda < 0)
-                                <div class="col-12 hidden-content-right">
+                            @if($pinjamanAktif->total_denda > 0)
+                            <div class="col-12 hidden-content-right">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <div class="fw-bold"><i class="bi bi-arrow-down-circle me-2"></i>Total Denda</div>
-                                    <div class="text-warning">Rp {{ number_format($pinjamanAktif->total_denda > 0 ? $pinjamanAktif->total_denda : 0) }}
+                                    <div class="fw-bold hidden-content-right"><i class="bi bi-arrow-down-circle me-2"></i>Total Denda</div>
+                                    <div class="text-danger hidden-content-right">Rp {{ number_format($pinjamanAktif->total_denda > 0 ? $pinjamanAktif->total_denda : 0) }}
                                     </div>
                                 </div>
                                 <hr>
-                        </div>
-                        @endif
-                        <div class="col-12 hidden-content-right">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="fw-bold"><i class="bi bi-info-circle me-2"></i>Status</div>
-                                <div class="text-danger">{{ $pinjamanAktif->status }}</div>
                             </div>
-                            <hr>
-                        </div>
-                        <div class="col-12 hidden-content-right">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="fw-bold"><i class="bi bi-calendar-event me-2"></i>Tanggal Jatuh Tempo</div>
-                                <div class="text-info">{{ \Carbon\Carbon::parse($pinjamanAktif->tanggal_jatuh_tempo)->format('d F Y') }}</div>
+                            @endif
+                            <div class="col-12 hidden-content-right">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="fw-bold hidden-content-right"><i class="bi bi-info-circle me-2"></i>Status</div>
+                                    <div class="text-info hidden-content-right">{{ $pinjamanAktif->status }}</div>
+                                </div>
+                                <hr>
+                            </div>
+                            <div class="col-12 hidden-content-right">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="fw-bold hidden-content-right"><i class="bi bi-calendar-event me-2"></i>Tanggal Jatuh Tempo</div>
+                                    <div class="text-info hidden-content-right">{{ \Carbon\Carbon::parse($pinjamanAktif->tanggal_jatuh_tempo)->format('d F Y') }}</div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </section>
+                @endif
+
+                <!-- Riwayat Transaksi (Pengajuan dan Pembayaran) -->
+                <section class="mb-4 hidden-content-right">
+                    <div class="card shadow" style="border: 1px solid #435ebe;">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0 text-white hidden-content-right">
+                                <i class="bi bi-clock-history"></i> Riwayat Transaksi Pinjaman
+                            </h5>
+                        </div>
+                        <div class="card-body hidden-content-right">
+                            <!-- Input Pencarian -->
+                            <div style="margin-bottom: 20px; position: relative;">
+                                <div class="input-group hidden-content-right">
+                                    <input
+                                        type="text"
+                                        id="search-transaksi"
+                                        class="form-control"
+                                        placeholder="Cari berdasarkan ID Pinjaman, Tanggal, atau Status..."
+                                        onkeyup="searchTransaksi()"
+                                        style="box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);">
+                                    <button
+                                        class="btn btn-danger"
+                                        onclick="resetSearchTransaksi()"
+                                        style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
+                                        <i class="bi bi-x-circle"></i> Bersihkan
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div style="max-height: 700px; overflow:auto; font-size:.8rem;">
+                                <table class="table table-hover hidden-content-right">
+                                    <thead class="table-primary hidden-content-right">
+                                        <tr>
+                                            <th>No</th>
+                                            <th>ID Pinjaman</th>
+                                            <th>Tanggal</th>
+                                            <th>Jumlah</th>
+                                            <th>Tipe</th>
+                                            <th>Jenis Jaminan</th>
+                                            <th>Bukti Jaminan</th>
+                                            <th>Bukti Pembayaran</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="data-transaksi" class="hidden-content-right">
+                                        @forelse ($riwayatTransaksi as $index => $transaksi)
+                                        <tr>
+                                            <td class="hidden-content-right">{{ $index + 1 }}</td>
+                                            <td class="hidden-content-right">{{ $transaksi['kode'] }}</td>
+                                            <td class="hidden-content-right">{{ \Carbon\Carbon::parse($transaksi->tanggal)->format('Y-m-d') }}</td>
+                                            <td class="hidden-content-right">
+                                                <span class="badge bg-{{ $transaksi['jumlah'] >= 0 ? 'success' : 'danger' }}">
+                                                    Rp {{ number_format($transaksi['jumlah'], 0, ',', '.') }}
+                                                </span>
+                                            </td>
+                                            <td class="hidden-content-right">{{ $transaksi['tipe'] }}</td>
+                                            <td class="hidden-content-right">{{ $transaksi['jenis_jaminan'] ?? '-' }}</td>
+                                            <td class="hidden-content-right">
+                                                @if($transaksi->file_jaminan)
+                                                <a href="{{ route('bukti.jaminan', ['bukti' => basename($transaksi->file_jaminan)]) }}" target="_blank" class="btn btn-sm btn-outline-info">
+                                                    <i class="bi bi-file-earmark-text"></i>
+                                                </a>
+                                                @else
+                                                <span class="badge bg-secondary">Tidak Ada</span>
+                                                @endif
+                                            </td>
+                                            <td class="hidden-content-right">
+                                                @if(!empty($transaksi->bukti))
+                                                <a href="{{ route('bukti.pembayaran', ['bukti' => basename($transaksi->bukti)]) }}" target="_blank" class="btn btn-sm btn-outline-success">
+                                                    <i class="bi bi-file-earmark-text"></i>
+                                                </a>
+                                                @else
+                                                <span class="badge bg-secondary">Tidak Ada</span>
+                                                @endif
+                                            </td>
+                                            <td class="hidden-content-right">
+                                                @php
+                                                $statusColors = [
+                                                'Dalam Proses' => 'warning',
+                                                'Ditolak' => 'danger',
+                                                'Aktif' => 'info',
+                                                'Lunas' => 'success',
+                                                'Berhasil' => 'primary'
+                                                ];
+                                                $badgeColor = $statusColors[$transaksi['status']] ?? 'secondary';
+                                                @endphp
+                                                <span class="badge bg-{{ $badgeColor }}">{{ $transaksi['status'] }}</span>
+                                            </td>
+                                        </tr>
+                                        @empty
+                                        <tr>
+                                            <td colspan="9" class="text-center">
+                                                <span class="badge bg-warning">
+                                                    <i class="bi bi-exclamation-circle"></i> Belum ada transaksi
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Formulir Pembayaran Pinjaman -->
+                @if ($pinjamanAktif)
+                <section class="mb-4 hidden-content-right">
+                    <div class="card shadow" style="border: 1px solid #435ebe;">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0 text-white hidden-content-right">
+                                <i class="bi bi-cash-coin" style="margin-top: -30px;"></i> Formulir Pembayaran Pinjaman
+                            </h5>
+                        </div>
+                        <div class="card-body hidden-content-right">
+                            @if($pembayaranProses)
+                            <!-- Notifikasi jika ada pembayaran dalam proses -->
+                            <div class="alert alert-warning d-flex align-items-center hidden-content-right" role="alert">
+                                <i class="bi bi-hourglass-split me-2" style="font-size: 1.5rem;"></i>
+                                <div>
+                                    <h5 class="alert-heading hidden-content-right">Pembayaran Sedang Diproses</h5>
+                                    <p class="hidden-content-right">
+                                        Anda sudah mengajukan pembayaran sebelumnya dan saat ini masih dalam proses verifikasi. Silakan tunggu hingga pembayaran diverifikasi oleh admin sebelum mengajukan pembayaran baru.
+                                    </p>
+                                </div>
+                            </div>
+                            @else
+                            <!-- Info Denda -->
+                            @if($pinjamanAktif->total_denda > 0)
+                            <div class="alert alert-warning hidden-content-right">
+                                <strong>Info Denda:</strong> Anda memiliki denda sebesar
+                                <b>Rp {{ number_format($pinjamanAktif->total_denda, 0, ',', '.') }}</b>.
+                            </div>
+                            @endif
+
+                            <!-- Form Pembayaran -->
+                            <form action="{{ route('pinjaman.bayar') }}" method="POST" enctype="multipart/form-data" style="margin-top: 20px;">
+                                @csrf
+                                <div class="row hidden-content-right">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="loan-code" class="form-label">Kode Pinjaman</label>
+                                        <input type="text" class="form-control" id="loan-code" name="loan-code" value="{{ $pinjamanAktif->id }}" readonly>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="payment-amount" class="form-label">Jumlah Pembayaran</label>
+                                        <input type="number" class="form-control" id="payment-amount" name="payment-amount" placeholder="Masukkan jumlah pembayaran" min="10000" step="10000" required>
+                                        <small class="text-muted"><i class="bi bi-info-circle"></i> Minimal Rp 10.000 dan kelipatan Rp 10.000.</small>
+                                    </div>
+                                </div>
+                                <div class="row hidden-content-right">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="payment-method" class="form-label">Pilih Metode Pembayaran</label>
+                                        <select class="form-select" id="payment-method" name="payment-method" required>
+                                            <option value="cash">Tunai (Bayar Langsung)</option>
+                                            <option value="transfer-bank">Transfer Bank</option>
+                                            <option value="ewallet">E-Wallet (OVO, GoPay, Dana)</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="payment-proof" class="form-label">Unggah Bukti Pembayaran</label>
+                                        <input type="file" class="form-control" id="payment-proof" name="payment-proof" accept="image/*" required>
+                                    </div>
+                                </div>
+                                <div class="form-group text-center mt-4">
+                                    <button type="submit" class="hidden-content-right btn btn-success">
+                                        <i class="bi bi-check-circle"></i> Konfirmasi Pembayaran
+                                    </button>
+                                </div>
+                            </form>
+                            @endif
+                        </div>
+                    </div>
+                </section>
+                @endif
             </div>
-            </section>
-            @endif
 
-            <!-- Riwayat Transaksi (Pengajuan dan Pembayaran) -->
-            <section class="mb-4 hidden-content-right">
-                <div class="card shadow" style="border: 1px solid #435ebe;">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0 text-white hidden-content-right">
-                            <i class="bi bi-clock-history"></i> Riwayat Transaksi Pinjaman
-                        </h5>
-                    </div>
-                    <div class="card-body hidden-content-right">
-                        <!-- Input Pencarian -->
-                        <div style="margin-bottom: 20px; position: relative;">
-                            <div class="input-group hidden-content-right">
-                                <input
-                                    type="text"
-                                    id="search-transaksi"
-                                    class="form-control"
-                                    placeholder="Cari berdasarkan ID Pinjaman, Tanggal, atau Status..."
-                                    onkeyup="searchTransaksi()"
-                                    style="box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);">
-                                <button
-                                    class="btn btn-danger"
-                                    onclick="resetSearchTransaksi()"
-                                    style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
-                                    <i class="bi bi-x-circle"></i> Bersihkan
-                                </button>
-                            </div>
-                        </div>
+            @elseif (auth()->user()->status === 'Nonaktif')
+            {{-- Tampilkan pesan akun nonaktif --}}
+            <h3 class="text-red-500 text-center">Akun Anda Nonaktif. Silakan hubungi admin untuk informasi lebih lanjut.</h3>
 
-                        <div style="max-height: 700px; overflow:auto; font-size:.8rem;">
-                            <table class="table table-hover hidden-content-right">
-                                <thead class="table-primary hidden-content-right">
-                                    <tr>
-                                        <th>No</th>
-                                        <th>ID Pinjaman</th>
-                                        <th>Tanggal</th>
-                                        <th>Jumlah</th>
-                                        <th>Tipe</th>
-                                        <th>Jenis Jaminan</th>
-                                        <th>Bukti Jaminan</th>
-                                        <th>Bukti Pembayaran</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="data-transaksi" class="hidden-content-right">
-                                    @forelse ($riwayatTransaksi as $index => $transaksi)
-                                    <tr>
-                                        <td class="hidden-content-right">{{ $index + 1 }}</td>
-                                        <td class="hidden-content-right">{{ $transaksi['kode'] }}</td>
-                                        <td class="hidden-content-right">{{ \Carbon\Carbon::parse($transaksi->tanggal)->format('Y-m-d') }}</td>
-                                        <td class="hidden-content-right">
-                                            <span class="badge bg-{{ $transaksi['jumlah'] >= 0 ? 'success' : 'danger' }}">
-                                                Rp {{ number_format($transaksi['jumlah'], 0, ',', '.') }}
-                                            </span>
-                                        </td>
-                                        <td class="hidden-content-right">{{ $transaksi['tipe'] }}</td>
-                                        <td class="hidden-content-right">{{ $transaksi['jenis_jaminan'] ?? '-' }}</td>
-                                        <td class="hidden-content-right">
-                                            @if($transaksi->file_jaminan)
-                                            <a href="{{ route('bukti.jaminan', ['bukti' => basename($transaksi->file_jaminan)]) }}" target="_blank" class="btn btn-sm btn-outline-info">
-                                                <i class="bi bi-file-earmark-text"></i>
-                                            </a>
-                                            @else
-                                            <span class="badge bg-secondary">Tidak Ada</span>
-                                            @endif
-                                        </td>
-                                        <td class="hidden-content-right">
-                                            @if(!empty($transaksi->bukti))
-                                            <a href="{{ route('bukti.pembayaran', ['bukti' => basename($transaksi->bukti)]) }}" target="_blank" class="btn btn-sm btn-outline-success">
-                                                <i class="bi bi-file-earmark-text"></i>
-                                            </a>
-                                            @else
-                                            <span class="badge bg-secondary">Tidak Ada</span>
-                                            @endif
-                                        </td>
-                                        <td class="hidden-content-right">
-                                            @php
-                                            $statusColors = [
-                                            'Dalam Proses' => 'warning',
-                                            'Ditolak' => 'danger',
-                                            'Aktif' => 'info',
-                                            'Lunas' => 'success',
-                                            'Berhasil' => 'primary'
-                                            ];
-                                            $badgeColor = $statusColors[$transaksi['status']] ?? 'secondary';
-                                            @endphp
-                                            <span class="badge bg-{{ $badgeColor }}">{{ $transaksi['status'] }}</span>
-                                        </td>
-                                    </tr>
-                                    @empty
-                                    <tr>
-                                        <td colspan="9" class="text-center">
-                                            <span class="badge bg-warning">
-                                                <i class="bi bi-exclamation-circle"></i> Belum ada transaksi
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
+            @else
+
+            <div class="page-heading d-flex align-items-center pb-3 border-bottom hidden-content-right">
+                <i class="bi bi-cash-coin me-2 fs-3 text-primary" style="margin-top: -30px; padding-right: 30px;"></i>
+                <h2 class="mb-0 fw-bold">Pinjaman</h2>
+            </div>
+
+            <div class="container mt-5" style="font-size:.9rem;">
+                <!-- Definisi Pinjaman -->
+                <section class="mb-4 hidden-content-right">
+                    <div class="card shadow" style="border: 1px solid #435ebe;">
+                        <div class="card-body hidden-content-right">
+                            <h5 class="fw-bold d-flex align-items-center hidden-content-right">
+                                <i class="bi bi-book me-2" style="margin-top: -10px;"></i> Definisi Pinjaman
+                            </h5>
+                            <hr style="border-top: 2px solid #25396f; border-radius: 5px;">
+                            <p class="hidden-content-right">
+                                Pinjaman adalah fasilitas yang diberikan kepada anggota koperasi untuk memenuhi kebutuhan finansial mereka dengan ketentuan bunga ringan. Semua anggota dapat mengajukan pinjaman sesuai plafon yang ditentukan.
+                            </p>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
 
-            <!-- Formulir Pembayaran Pinjaman -->
-            @if ($pinjamanAktif)
-            <section class="mb-4 hidden-content-right">
-                <div class="card shadow" style="border: 1px solid #435ebe;">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0 text-white hidden-content-right">
-                            <i class="bi bi-cash-coin" style="margin-top: -30px;"></i> Formulir Pembayaran Pinjaman
-                        </h5>
+                <!-- Total Pinjaman -->
+                <section class="mb-4 hidden-content-right">
+                    <div class="card shadow" style="border: 1px solid #435ebe;">
+                        <div class="card-body text-center hidden-content-right">
+                            <h5 class="fw-bold d-flex align-items-center justify-content-center hidden-content-right">
+                                <i class="bi bi-cash-stack me-2" style="margin-top: -10px;"></i> Total Pinjaman Anda
+                            </h5>
+                            <hr>
+                            <h2 class="font-extrabold mt-3 hidden-content-right">Rp {{ number_format($totalPinjaman, 0, ',', '.') }}</h2>
+                        </div>
                     </div>
-                    <div class="card-body hidden-content-right">
-                        @if($pembayaranProses)
-                        <!-- Notifikasi jika ada pembayaran dalam proses -->
-                        <div class="alert alert-warning d-flex align-items-center hidden-content-right" role="alert">
-                            <i class="bi bi-hourglass-split me-2" style="font-size: 1.5rem;"></i>
+                </section>
+
+                @if ($pinjamandalamproses)
+                <div class="card shadow-lg border-0 mb-4 text-center hidden-content-right" style="border: 1px solid rgb(255, 213, 44); border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); padding: 20px;">
+                    <div class="card-body bg-warning text-dark" style="border: 1px solid rgb(255, 200, 40); border-radius: 10px;">
+                        <div class="d-flex align-items-start justify-content-center hidden-content-right">
                             <div>
-                                <h5 class="alert-heading hidden-content-right">Pembayaran Sedang Diproses</h5>
+                                <h4 class="fw-bold hidden-content-right">⏳ Pengajuan Pinjaman Sedang Diproses</h4>
+                                <hr style="border: 1px solid rgb(0, 0, 0);">
                                 <p class="hidden-content-right">
-                                    Anda sudah mengajukan pembayaran sebelumnya dan saat ini masih dalam proses verifikasi. Silakan tunggu hingga pembayaran diverifikasi oleh admin sebelum mengajukan pembayaran baru.
+                                    Mohon bersabar, pengajuan Anda sedang menunggu persetujuan admin.
+                                    <br> <span class="fw-bold">Notifikasi akan muncul secara otomatis</span> jika ada pembaruan terbaru dari kami terkait status pengajuan Anda.
                                 </p>
                             </div>
                         </div>
-                        @else
-                        <!-- Info Denda -->
-                        @if($pinjamanAktif->total_denda > 0)
-                        <div class="alert alert-warning hidden-content-right">
-                            <strong>Info Denda:</strong> Anda memiliki denda sebesar
-                            <b>Rp {{ number_format($pinjamanAktif->total_denda, 0, ',', '.') }}</b>.
+                        <div class="mt-3 hidden-content-right">
+                            <a href="{{ route('notifikasi') }}" class="d-flex justify-content-center align-items-center text-decoration-none">
+                                <i class="bi bi-bell-fill text-dark me-2 fs-5" style="margin-top: -10px;"></i>
+                                <span style="color: #555; font-size: 1rem;">Lihat halaman Notifikasi</span>
+                            </a>
                         </div>
-                        @endif
-
-                        <!-- Form Pembayaran -->
-                        <form action="{{ route('pinjaman.bayar') }}" method="POST" enctype="multipart/form-data" style="margin-top: 20px;">
-                            @csrf
-                            <div class="row hidden-content-right">
-                                <div class="col-md-6 mb-3">
-                                    <label for="loan-code" class="form-label">Kode Pinjaman</label>
-                                    <input type="text" class="form-control" id="loan-code" name="loan-code" value="{{ $pinjamanAktif->id }}" readonly>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="payment-amount" class="form-label">Jumlah Pembayaran</label>
-                                    <input type="number" class="form-control" id="payment-amount" name="payment-amount" placeholder="Masukkan jumlah pembayaran" min="10000" step="10000" required>
-                                    <small class="text-muted"><i class="bi bi-info-circle"></i> Minimal Rp 10.000 dan kelipatan Rp 10.000.</small>
-                                </div>
-                            </div>
-                            <div class="row hidden-content-right">
-                                <div class="col-md-6 mb-3">
-                                    <label for="payment-method" class="form-label">Pilih Metode Pembayaran</label>
-                                    <select class="form-select" id="payment-method" name="payment-method" required>
-                                        <option value="cash">Tunai (Bayar Langsung)</option>
-                                        <option value="transfer-bank">Transfer Bank</option>
-                                        <option value="ewallet">E-Wallet (OVO, GoPay, Dana)</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="payment-proof" class="form-label">Unggah Bukti Pembayaran</label>
-                                    <input type="file" class="form-control" id="payment-proof" name="payment-proof" accept="image/*" required>
-                                </div>
-                            </div>
-                            <div class="form-group text-center mt-4">
-                                <button type="submit" class="hidden-content-right btn btn-success">
-                                    <i class="bi bi-check-circle"></i> Konfirmasi Pembayaran
-                                </button>
-                            </div>
-                        </form>
-                        @endif
                     </div>
                 </div>
-            </section>
-            @endif
-        </div>
+                @endif
 
-        @elseif (auth()->user()->status === 'Nonaktif')
-        {{-- Tampilkan pesan akun nonaktif --}}
-        <h3 class="text-red-500 text-center">Akun Anda Nonaktif. Silakan hubungi admin untuk informasi lebih lanjut.</h3>
+                @if($statusWajibDalamproses)
+                <div class="card shadow-lg border-0 mb- hidden-content-right4" style="text-align: center; border: 1px solid #d9d9d9; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); margin-bottom: 20px; padding: 20px;">
+                    <div class="card-body bg-info text-dark" style="border: 1px solid #17a2b8; border-radius: 10px;">
+                        <div class="d-flex align-items-start hidden-content-right">
+                            <i class="bi bi-hourglass-split text-white fs-1 me-3" style="margin-top: -20px;"></i>
+                            <div>
+                                <h4 class="fw-bold hidden-content-right">Pembayaran Simpanan Wajib Sedang Diproses</h4>
+                                <hr style="border: 2px solid #17a2b8;">
+                                <p class="hidden-content-right">
+                                    Terima kasih telah melakukan pembayaran simpanan wajib bulan ini. Saat ini, pembayaran Anda sedang dalam proses verifikasi oleh admin.
+                                    Harap bersabar, proses ini biasanya memakan waktu sekitar <strong>1-2 hari kerja</strong>.
+                                    <br><br>
+                                    Anda akan menerima notifikasi otomatis setelah pembayaran berhasil diverifikasi. Jika ada kendala, silakan hubungi kami melalui <strong>halaman Bantuan</strong>.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endif
 
-        @else
+                @if(!$statusWajibinfo && !$pinjamanAktif)
+                <div class="card shadow-lg border-0 mb-4 hidden-content-right" style="text-align: center; border: 1px solid #d9d9d9; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); margin-bottom: 20px; padding: 20px;">
+                    <div class="card-body bg-danger text-white" style="border: 1px solid #ff6b6b; border-radius: 10px;">
+                        <div class="d-flex align-items-start hidden-content-right">
+                            <i class="bi bi-exclamation-circle text-white fs-1 me-3" style="margin-top: -20px;"></i>
+                            <div>
+                                <h4 class="fw-bold hidden-content-right">Simpanan Wajib Belum Dibayar</h4>
+                                <hr style="border: 2px solid #ff6b6b;">
+                                <p class="hidden-content-right">
+                                    Anda belum melakukan pembayaran simpanan wajib untuk bulan ini. Pembayaran simpanan wajib adalah syarat utama untuk mengajukan pinjaman.
+                                    <br><br>
+                                    Segera lakukan pembayaran agar pengajuan pinjaman Anda dapat diproses tanpa kendala.
+                                    Jika membutuhkan bantuan, silakan kunjungi <strong>halaman Bantuan</strong>.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endif
 
-        <div class="page-heading d-flex align-items-center pb-3 border-bottom hidden-content-right">
-            <i class="bi bi-cash-coin me-2 fs-3 text-primary" style="margin-top: -30px; padding-right: 30px;"></i>
-            <h2 class="mb-0 fw-bold">Pinjaman</h2>
-        </div>
+                @if($isDitolak)
+                <!-- Card Peringatan Pengajuan Ditolak -->
+                <div class="card shadow mb-3 hidden-content-right">
+                    <div class="card-body bg-danger text-white hidden-content-right" style="padding: 30px; border-radius: 10px;text-align:center;">
+                        <div class="d-flex align-items-center hidden-content-right">
+                            <div>
+                                <strong style="font-size: 2rem; display: block; margin-bottom: 10px;">Pengajuan Simpanan Wajib Anda Ditolak!</strong>
+                                <p style="font-size: 1.2rem; line-height: 1.5; margin: 0;" class="hidden-content-right">
+                                    Mohon maaf, pengajuan simpanan wajib Anda tidak dapat diproses. Silakan periksa kembali data yang Anda kirimkan atau lakukan pembayaran ulang sesuai ketentuan koperasi.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endif
 
-        <div class="container mt-5" style="font-size:.9rem;">
-            <!-- Definisi Pinjaman -->
-            <section class="mb-4 hidden-content-right">
-                <div class="card shadow" style="border: 1px solid #435ebe;">
-                    <div class="card-body hidden-content-right">
-                        <h5 class="fw-bold d-flex align-items-center hidden-content-right">
-                            <i class="bi bi-book me-2" style="margin-top: -10px;"></i> Definisi Pinjaman
+                <!-- Formulir Pengajuan Pinjaman -->
+                @if (!$pinjamanAktif && !$pinjamandalamproses && $statusWajib)
+                <section class="mb-4 hidden-content-right">
+                    <div class="card mb-4 shadow" style="border: 1px solid #435ebe; border-radius: 10px;">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="text-white hidden-content-right"><i class="bi bi-file-earmark-text me-2"></i> Formulir Pengajuan Pinjaman</h5>
+                        </div>
+                        <div class="card-body hidden-content-right" style="margin-top: 20px;">
+                            <form action="{{ route('pinjaman.ajukan') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <!-- Jumlah Pinjaman -->
+                                <div class="mb-3 hidden-content-right">
+                                    <label for="loan-amount" class="form-label"><i class="bi bi-cash"></i> Jumlah Pinjaman</label>
+                                    <input type="number" class="form-control" id="loan-amount" name="jumlah_pinjaman" placeholder="Masukkan jumlah pinjaman" min="100000" step="50000" required>
+                                    <small class="text-muted"><i class="bi bi-info-circle"></i> Minimal Rp 100.000 dan kelipatan Rp 50.000.</small>
+                                </div>
+
+                                <!-- Jenis Jaminan -->
+                                <div class="mb-3 hidden-content-right">
+                                    <label for="jenis-jaminan" class="form-label"><i class="bi bi-shield-lock"></i> Jenis Jaminan</label>
+                                    <select class="form-control" id="jenis-jaminan" name="jenis_jaminan" required>
+                                        <option value="" disabled selected>Pilih jenis jaminan</option>
+                                        <option value="BPKB Kendaraan">BPKB Kendaraan</option>
+                                        <option value="Sertifikat Tanah">Sertifikat Tanah</option>
+                                        <option value="Kartu Keluarga">Kartu Keluarga</option>
+                                        <option value="Sertifikat Rumah">Sertifikat Rumah</option>
+                                    </select>
+                                </div>
+
+                                <!-- Upload Jaminan -->
+                                <div class="mb-3 hidden-content-right">
+                                    <label for="file-jaminan" class="form-label"><i class="bi bi-upload"></i> Upload Jaminan (JPG, PNG, JPEG, maks 2MB)</label>
+                                    <input type="file" class="form-control" id="jaminan-proof" name="jaminan-proof" accept="image/*" required>
+                                </div>
+
+                                <!-- Tombol Submit -->
+                                <div class="text-end">
+                                    <button type="submit" class="hidden-content-right btn btn-primary">
+                                        <i class="bi bi-send me-2"></i> Ajukan Pinjaman
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+                @endif
+
+                <!-- Status Pinjaman Aktif -->
+                @if ($pinjamanAktif)
+                <section class="mb-4 hidden-content-right">
+                    <div class="card shadow p-4" style="border: 1px solid #435ebe;">
+                        <h5 class="text-center hidden-content-right mb-3 fw-bold d-flex align-items-center pb-3" style="border-bottom: 2px solid #e0e0e0;">
+                            <i class="bi bi-list-check me-2" style="margin-top: -10px; padding-right:20px;"></i> Detail Pinjaman Aktif
                         </h5>
-                        <hr style="border-top: 2px solid #25396f; border-radius: 5px;">
-                        <p class="hidden-content-right">
-                            Pinjaman adalah fasilitas yang diberikan kepada anggota koperasi untuk memenuhi kebutuhan finansial mereka dengan ketentuan bunga ringan. Semua anggota dapat mengajukan pinjaman sesuai plafon yang ditentukan.
+                        <div class="row g-3 hidden-content-right" style="font-size: 1.1rem;">
+                            <div class="col-12">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="fw-bold"><i class="bi bi-tag me-2"></i>Kode Pinjaman</div>
+                                    <div class="text-primary">{{ $pinjamanAktif->id }}</div>
+                                </div>
+                                <hr>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="fw-bold"><i class="bi bi-cash-stack me-2"></i>Jumlah Pinjaman</div>
+                                    <div class="text-success">Rp {{ number_format($pinjamanAktif->jumlah_pinjaman, 0, ',', '.') }}</div>
+                                </div>
+                                <hr>
+                            </div>
+                            <div class="col-12 hidden-content-right">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="fw-bold hidden-content-right"><i class="bi bi-arrow-down-circle me-2"></i>Sisa Angsuran</div>
+                                    <div class="text-warning hidden-content-right">Rp {{ number_format($pinjamanAktif->sisa_angsuran > 0 ? $pinjamanAktif->sisa_angsuran : $pinjamanAktif->jumlah_pinjaman, 0, ',', '.') }}</div>
+                                </div>
+                                <hr>
+                            </div>
+                            @if($pinjamanAktif->total_denda > 0)
+                            <div class="col-12 hidden-content-right">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="fw-bold hidden-content-right"><i class="bi bi-arrow-down-circle me-2"></i>Total Denda</div>
+                                    <div class="text-danger hidden-content-right">Rp {{ number_format($pinjamanAktif->total_denda > 0 ? $pinjamanAktif->total_denda : 0) }}
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                            @endif
+                            <div class="col-12 hidden-content-right">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="fw-bold hidden-content-right"><i class="bi bi-info-circle me-2"></i>Status</div>
+                                    <div class="text-info hidden-content-right">{{ $pinjamanAktif->status }}</div>
+                                </div>
+                                <hr>
+                            </div>
+                            <div class="col-12 hidden-content-right">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="fw-bold hidden-content-right"><i class="bi bi-calendar-event me-2"></i>Tanggal Jatuh Tempo</div>
+                                    <div class="text-info hidden-content-right">{{ \Carbon\Carbon::parse($pinjamanAktif->tanggal_jatuh_tempo)->format('d F Y') }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                @endif
+
+                <!-- Riwayat Transaksi (Pengajuan dan Pembayaran) -->
+                <section class="mb-4 hidden-content-right">
+                    <div class="card shadow" style="border: 1px solid #435ebe;">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0 text-white hidden-content-right">
+                                <i class="bi bi-clock-history"></i> Riwayat Transaksi Pinjaman
+                            </h5>
+                        </div>
+                        <div class="card-body hidden-content-right">
+                            <!-- Input Pencarian -->
+                            <div style="margin-bottom: 20px; position: relative;">
+                                <div class="input-group hidden-content-right">
+                                    <input
+                                        type="text"
+                                        id="search-transaksi"
+                                        class="form-control"
+                                        placeholder="Cari berdasarkan ID Pinjaman, Tanggal, atau Status..."
+                                        onkeyup="searchTransaksi()"
+                                        style="box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);">
+                                    <button
+                                        class="btn btn-danger"
+                                        onclick="resetSearchTransaksi()"
+                                        style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
+                                        <i class="bi bi-x-circle"></i> Bersihkan
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div style="max-height: 700px; overflow:auto; font-size:.8rem;">
+                                <table class="table table-hover hidden-content-right">
+                                    <thead class="table-primary hidden-content-right">
+                                        <tr>
+                                            <th>No</th>
+                                            <th>ID Pinjaman</th>
+                                            <th>Tanggal</th>
+                                            <th>Jumlah</th>
+                                            <th>Tipe</th>
+                                            <th>Jenis Jaminan</th>
+                                            <th>Bukti Jaminan</th>
+                                            <th>Bukti Pembayaran</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="data-transaksi">
+                                        @forelse ($riwayatTransaksi as $index => $transaksi)
+                                        <tr>
+                                            <td class="hidden-content-right">{{ $index + 1 }}</td>
+                                            <td class="hidden-content-right">{{ $transaksi['kode'] }}</td>
+                                            <td class="hidden-content-right">{{ \Carbon\Carbon::parse($transaksi->tanggal)->format('Y-m-d') }}</td>
+                                            <td class="hidden-content-right">
+                                                <span class="badge bg-{{ $transaksi['jumlah'] >= 0 ? 'success' : 'danger' }}">
+                                                    Rp {{ number_format($transaksi['jumlah'], 0, ',', '.') }}
+                                                </span>
+                                            </td>
+                                            <td class="hidden-content-right">{{ $transaksi['tipe'] }}</td>
+                                            <td class="hidden-content-right">{{ $transaksi['jenis_jaminan'] ?? '-' }}</td>
+                                            <td class="hidden-content-right">
+                                                @if($transaksi->file_jaminan)
+                                                <a href="{{ route('bukti.jaminan', ['bukti' => basename($transaksi->file_jaminan)]) }}" target="_blank" class="btn btn-sm btn-outline-info">
+                                                    <i class="bi bi-file-earmark-text"></i>
+                                                </a>
+                                                @else
+                                                <span class="badge bg-secondary">Tidak Ada</span>
+                                                @endif
+                                            </td>
+                                            <td class="hidden-content-right">
+                                                @if(!empty($transaksi->bukti))
+                                                <a href="{{ route('bukti.pembayaran', ['bukti' => basename($transaksi->bukti)]) }}" target="_blank" class="btn btn-sm btn-outline-success">
+                                                    <i class="bi bi-file-earmark-text"></i>
+                                                </a>
+                                                @else
+                                                <span class="badge bg-secondary">Tidak Ada</span>
+                                                @endif
+                                            </td>
+                                            <td class="hidden-content-right">
+                                                @php
+                                                $statusColors = [
+                                                'Dalam Proses' => 'warning',
+                                                'Ditolak' => 'danger',
+                                                'Aktif' => 'info',
+                                                'Lunas' => 'success',
+                                                'Berhasil' => 'primary'
+                                                ];
+                                                $badgeColor = $statusColors[$transaksi['status']] ?? 'secondary';
+                                                @endphp
+                                                <span class="badge bg-{{ $badgeColor }}">{{ $transaksi['status'] }}</span>
+                                            </td>
+                                        </tr>
+                                        @empty
+                                        <tr>
+                                            <td colspan="9" class="text-center">
+                                                <span class="badge bg-warning">
+                                                    <i class="bi bi-exclamation-circle"></i> Belum ada transaksi
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Formulir Pembayaran Pinjaman -->
+                @if ($pinjamanAktif)
+                <section class="mb-4 hidden-content-right">
+                    <div class="card shadow" style="border: 1px solid #435ebe;">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0 text-white hidden-content-right">
+                                <i class="bi bi-cash-coin" style="margin-top: -30px;"></i> Formulir Pembayaran Pinjaman
+                            </h5>
+                        </div>
+                        <div class="card-body hidden-content-right">
+                            @if($pembayaranProses)
+                            <!-- Notifikasi jika ada pembayaran dalam proses -->
+                            <div class="alert alert-warning d-flex align-items-center hidden-content-right" role="alert">
+                                <i class="bi bi-hourglass-split me-2" style="font-size: 1.5rem;"></i>
+                                <div>
+                                    <h5 class="alert-heading hidden-content-right">Pembayaran Sedang Diproses</h5>
+                                    <p class="hidden-content-right">
+                                        Anda sudah mengajukan pembayaran sebelumnya dan saat ini masih dalam proses verifikasi. Silakan tunggu hingga pembayaran diverifikasi oleh admin sebelum mengajukan pembayaran baru.
+                                    </p>
+                                </div>
+                            </div>
+                            @else
+                            <!-- Info Denda -->
+                            @if($pinjamanAktif->total_denda > 0)
+                            <div class="alert alert-warning hidden-content-right">
+                                <strong>Info Denda:</strong> Anda memiliki denda sebesar
+                                <b>Rp {{ number_format($pinjamanAktif->total_denda, 0, ',', '.') }}</b>.
+                            </div>
+                            @endif
+
+                            <!-- Form Pembayaran -->
+                            <form action="{{ route('pinjaman.bayar') }}" method="POST" enctype="multipart/form-data" style="margin-top: 20px;">
+                                @csrf
+                                <div class="row hidden-content-right">
+                                    <div class="col-md-6 mb-3 hidden-content-right">
+                                        <label for="loan-code" class="form-label">Kode Pinjaman</label>
+                                        <input type="text" class="form-control" id="loan-code" name="loan-code" value="{{ $pinjamanAktif->id }}" readonly>
+                                    </div>
+                                    <div class="col-md-6 mb-3 hidden-content-right">
+                                        <label for="payment-amount" class="form-label">Jumlah Pembayaran</label>
+                                        <input type="number" class="form-control" id="payment-amount" name="payment-amount" placeholder="Masukkan jumlah pembayaran" min="10000" step="10000" required>
+                                        <small class="text-muted"><i class="bi bi-info-circle"></i> Minimal Rp 10.000 dan kelipatan Rp 10.000.</small>
+                                    </div>
+                                </div>
+                                <div class="row hidden-content-right">
+                                    <div class="col-md-6 mb-3 hidden-content-right">
+                                        <label for="payment-method" class="form-label">Pilih Metode Pembayaran</label>
+                                        <select class="form-select" id="payment-method" name="payment-method" required>
+                                            <option value="cash">Tunai (Bayar Langsung)</option>
+                                            <option value="transfer-bank">Transfer Bank</option>
+                                            <option value="ewallet">E-Wallet (OVO, GoPay, Dana)</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3 hidden-content-right">
+                                        <label for="payment-proof" class="form-label">Unggah Bukti Pembayaran</label>
+                                        <input type="file" class="form-control" id="payment-proof" name="payment-proof" accept="image/*" required>
+                                    </div>
+                                </div>
+                                <div class="form-group text-center mt-4 hidden-content-right">
+                                    <button type="submit" class="hidden-content-right btn btn-success">
+                                        <i class="bi bi-check-circle"></i> Konfirmasi Pembayaran
+                                    </button>
+                                </div>
+                            </form>
+                            @endif
+                        </div>
+                    </div>
+                </section>
+                @endif
+            </div>
+            @endif
+
+            <footer>
+                <div class="footer clearfix mb-0 text-muted">
+                    <div class="float-start">
+                        <p>2025 &copy; SATRBIN</p>
+                    </div>
+                    <div class="float-end" style="margin-right: 30px;">
+                        <p>Dibuat dengan
+                            <span class="text-danger"><i class="bi bi-heart"></i></span>
+                            oleh
+                            <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
+                            &
+                            <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
                         </p>
                     </div>
                 </div>
-            </section>
-
-            <!-- Total Pinjaman -->
-            <section class="mb-4 hidden-content-right">
-                <div class="card shadow" style="border: 1px solid #435ebe;">
-                    <div class="card-body text-center hidden-content-right">
-                        <h5 class="fw-bold d-flex align-items-center justify-content-center hidden-content-right">
-                            <i class="bi bi-cash-stack me-2" style="margin-top: -10px;"></i> Total Pinjaman Anda
-                        </h5>
-                        <hr>
-                        <h2 class="font-extrabold mt-3 hidden-content-right">Rp {{ number_format($totalPinjaman, 0, ',', '.') }}</h2>
-                    </div>
-                </div>
-            </section>
-
-            @if ($pinjamanAktif)
-            <section class="mb-4 hidden-content-right">
-                <div class="card" style="border: 2px solid #ff6b6b; border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-                    <div class="card-body text-center p-5 hidden-content-right" style=" color: #ff6b6b; border-radius: 15px;">
-                        <div class="d-flex flex-column align-items-center hidden-content-right">
-                            <i class="bi bi-exclamation-triangle-fill fs-1 mb-3" style="color: #ff6b6b; padding-bottom:50px;"></i>
-                            <h1 style="font-weight: bold; text-shadow: 1px 1px 6px rgba(255, 107, 107, 0.2);"> Tidak Bisa Memulai Pinjaman </h1>
-                        </div>
-                        <hr style="border: 1px solid #ff6b6b; margin: 20px auto; width: 60%;">
-                        <div class="p-3 hidden-content-right" style="border-radius: 10px; border: 1px solid #ffb3b3;">
-                            <h5 style="font-weight: 500; color: #d9534f;">
-                                Anda masih memiliki angsuran yang belum diselesaikan.<br>
-                                Segera lunasi angsuran Anda untuk mengajukan pinjaman baru.
-                            </h5>
-                        </div>
-                        <br>
-                    </div>
-                </div>
-            </section>
-            @endif
-
-            @if ($pinjamandalamproses)
-            <div class="card shadow-lg border-0 mb-4 text-center hidden-content-right" style="border: 1px solid rgb(255, 213, 44); border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); padding: 20px;">
-                <div class="card-body bg-warning text-dark" style="border: 1px solid rgb(255, 200, 40); border-radius: 10px;">
-                    <div class="d-flex align-items-start justify-content-center hidden-content-right">
-                        <div>
-                            <h4 class="fw-bold hidden-content-right">⏳ Pengajuan Pinjaman Sedang Diproses</h4>
-                            <hr style="border: 1px solid rgb(0, 0, 0);">
-                            <p class="hidden-content-right">
-                                Mohon bersabar, pengajuan Anda sedang menunggu persetujuan admin.
-                                <br> <span class="fw-bold">Notifikasi akan muncul secara otomatis</span> jika ada pembaruan terbaru dari kami terkait status pengajuan Anda.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="mt-3 hidden-content-right">
-                        <a href="{{ route('notifikasi') }}" class="d-flex justify-content-center align-items-center text-decoration-none">
-                            <i class="bi bi-bell-fill text-dark me-2 fs-5" style="margin-top: -10px;"></i>
-                            <span style="color: #555; font-size: 1rem;">Lihat halaman Notifikasi</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            @endif
-
-            @if($statusWajibDalamproses)
-            <div class="card shadow-lg border-0 mb- hidden-content-right4" style="text-align: center; border: 1px solid #d9d9d9; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); margin-bottom: 20px; padding: 20px;">
-                <div class="card-body bg-info text-dark" style="border: 1px solid #17a2b8; border-radius: 10px;">
-                    <div class="d-flex align-items-start hidden-content-right">
-                        <i class="bi bi-hourglass-split text-white fs-1 me-3" style="margin-top: -20px;"></i>
-                        <div>
-                            <h4 class="fw-bold hidden-content-right">Pembayaran Simpanan Wajib Sedang Diproses</h4>
-                            <hr style="border: 2px solid #17a2b8;">
-                            <p class="hidden-content-right">
-                                Terima kasih telah melakukan pembayaran simpanan wajib bulan ini. Saat ini, pembayaran Anda sedang dalam proses verifikasi oleh admin.
-                                Harap bersabar, proses ini biasanya memakan waktu sekitar <strong>1-2 hari kerja</strong>.
-                                <br><br>
-                                Anda akan menerima notifikasi otomatis setelah pembayaran berhasil diverifikasi. Jika ada kendala, silakan hubungi kami melalui <strong>halaman Bantuan</strong>.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @endif
-
-            @if(!$statusWajibinfo)
-            <div class="card shadow-lg border-0 mb-4 hidden-content-right" style="text-align: center; border: 1px solid #d9d9d9; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); margin-bottom: 20px; padding: 20px;">
-                <div class="card-body bg-danger text-white" style="border: 1px solid #ff6b6b; border-radius: 10px;">
-                    <div class="d-flex align-items-start hidden-content-right">
-                        <i class="bi bi-exclamation-circle text-white fs-1 me-3" style="margin-top: -20px;"></i>
-                        <div>
-                            <h4 class="fw-bold hidden-content-right">Simpanan Wajib Belum Dibayar</h4>
-                            <hr style="border: 2px solid #ff6b6b;">
-                            <p class="hidden-content-right">
-                                Anda belum melakukan pembayaran simpanan wajib untuk bulan ini. Pembayaran simpanan wajib adalah syarat utama untuk mengajukan pinjaman.
-                                <br><br>
-                                Segera lakukan pembayaran agar pengajuan pinjaman Anda dapat diproses tanpa kendala.
-                                Jika membutuhkan bantuan, silakan kunjungi <strong>halaman Bantuan</strong>.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @endif
-
-            @if($isDitolak)
-            <!-- Card Peringatan Pengajuan Ditolak -->
-            <div class="card shadow mb-3 hidden-content-right">
-                <div class="card-body bg-danger text-white hidden-content-right" style="padding: 30px; border-radius: 10px;text-align:center;">
-                    <div class="d-flex align-items-center hidden-content-right">
-                        <div>
-                            <strong style="font-size: 2rem; display: block; margin-bottom: 10px;">Pengajuan Simpanan Wajib Anda Ditolak!</strong>
-                            <p style="font-size: 1.2rem; line-height: 1.5; margin: 0;" class="hidden-content-right">
-                                Mohon maaf, pengajuan simpanan wajib Anda tidak dapat diproses. Silakan periksa kembali data yang Anda kirimkan atau lakukan pembayaran ulang sesuai ketentuan koperasi.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @endif
-
-            <!-- Formulir Pengajuan Pinjaman -->
-            @if (!$pinjamanAktif && !$pinjamandalamproses && $statusWajib)
-            <section class="mb-4 hidden-content-right">
-                <div class="card mb-4 shadow" style="border: 1px solid #435ebe; border-radius: 10px;">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="text-white hidden-content-right"><i class="bi bi-file-earmark-text me-2"></i> Formulir Pengajuan Pinjaman</h5>
-                    </div>
-                    <div class="card-body hidden-content-right" style="margin-top: 20px;">
-                        <form action="{{ route('pinjaman.ajukan') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <!-- Jumlah Pinjaman -->
-                            <div class="mb-3 hidden-content-right">
-                                <label for="loan-amount" class="form-label"><i class="bi bi-cash"></i> Jumlah Pinjaman</label>
-                                <input type="number" class="form-control" id="loan-amount" name="jumlah_pinjaman" placeholder="Masukkan jumlah pinjaman" min="100000" step="50000" required>
-                                <small class="text-muted"><i class="bi bi-info-circle"></i> Minimal Rp 100.000 dan kelipatan Rp 50.000.</small>
-                            </div>
-
-                            <!-- Jenis Jaminan -->
-                            <div class="mb-3 hidden-content-right">
-                                <label for="jenis-jaminan" class="form-label"><i class="bi bi-shield-lock"></i> Jenis Jaminan</label>
-                                <select class="form-control" id="jenis-jaminan" name="jenis_jaminan" required>
-                                    <option value="" disabled selected>Pilih jenis jaminan</option>
-                                    <option value="BPKB Kendaraan">BPKB Kendaraan</option>
-                                    <option value="Sertifikat Tanah">Sertifikat Tanah</option>
-                                    <option value="Kartu Keluarga">Kartu Keluarga</option>
-                                    <option value="Sertifikat Rumah">Sertifikat Rumah</option>
-                                </select>
-                            </div>
-
-                            <!-- Upload Jaminan -->
-                            <div class="mb-3 hidden-content-right">
-                                <label for="file-jaminan" class="form-label"><i class="bi bi-upload"></i> Upload Jaminan (JPG, PNG, JPEG, maks 2MB)</label>
-                                <input type="file" class="form-control" id="jaminan-proof" name="jaminan-proof" accept="image/*" required>
-                            </div>
-
-                            <!-- Tombol Submit -->
-                            <div class="text-end">
-                                <button type="submit" class="hidden-content-right btn btn-primary">
-                                    <i class="bi bi-send me-2"></i> Ajukan Pinjaman
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </section>
-            @endif
-
-            <!-- Status Pinjaman Aktif -->
-            @if ($pinjamanAktif)
-            <section class="mb-4 hidden-content-right">
-                <div class="card shadow p-4" style="border: 1px solid #435ebe;">
-                    <h5 class="text-center hidden-content-right mb-3 fw-bold d-flex align-items-center pb-3" style="border-bottom: 2px solid #e0e0e0;">
-                        <i class="bi bi-list-check me-2" style="margin-top: -10px; padding-right:20px;"></i> Detail Pinjaman Aktif
-                    </h5>
-                    <div class="row g-3 hidden-content-right" style="font-size: 1.1rem;">
-                        <div class="col-12">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="fw-bold"><i class="bi bi-tag me-2"></i>Kode Pinjaman</div>
-                                <div class="text-primary">{{ $pinjamanAktif->id }}</div>
-                            </div>
-                            <hr>
-                        </div>
-                        <div class="col-12">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="fw-bold"><i class="bi bi-cash-stack me-2"></i>Jumlah Pinjaman</div>
-                                <div class="text-success">Rp {{ number_format($pinjamanAktif->jumlah_pinjaman, 0, ',', '.') }}</div>
-                            </div>
-                            <hr>
-                        </div>
-                        <div class="col-12 hidden-content-right">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="fw-bold hidden-content-right"><i class="bi bi-arrow-down-circle me-2"></i>Sisa Angsuran</div>
-                                <div class="text-warning hidden-content-right">Rp {{ number_format($pinjamanAktif->sisa_angsuran > 0 ? $pinjamanAktif->sisa_angsuran : $pinjamanAktif->jumlah_pinjaman, 0, ',', '.') }}</div>
-                            </div>
-                            <hr>
-                        </div>
-                        @if($pinjamanAktif->total_denda > 0)
-                        <div class="col-12 hidden-content-right">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="fw-bold hidden-content-right"><i class="bi bi-arrow-down-circle me-2"></i>Total Denda</div>
-                                <div class="text-danger hidden-content-right">Rp {{ number_format($pinjamanAktif->total_denda > 0 ? $pinjamanAktif->total_denda : 0) }}
-                                </div>
-                            </div>
-                            <hr>
-                        </div>
-                        @endif
-                        <div class="col-12 hidden-content-right">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="fw-bold hidden-content-right"><i class="bi bi-info-circle me-2"></i>Status</div>
-                                <div class="text-info hidden-content-right">{{ $pinjamanAktif->status }}</div>
-                            </div>
-                            <hr>
-                        </div>
-                        <div class="col-12 hidden-content-right">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="fw-bold hidden-content-right"><i class="bi bi-calendar-event me-2"></i>Tanggal Jatuh Tempo</div>
-                                <div class="text-info hidden-content-right">{{ \Carbon\Carbon::parse($pinjamanAktif->tanggal_jatuh_tempo)->format('d F Y') }}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            @endif
-
-            <!-- Riwayat Transaksi (Pengajuan dan Pembayaran) -->
-            <section class="mb-4 hidden-content-right">
-                <div class="card shadow" style="border: 1px solid #435ebe;">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0 text-white hidden-content-right">
-                            <i class="bi bi-clock-history"></i> Riwayat Transaksi Pinjaman
-                        </h5>
-                    </div>
-                    <div class="card-body hidden-content-right">
-                        <!-- Input Pencarian -->
-                        <div style="margin-bottom: 20px; position: relative;">
-                            <div class="input-group hidden-content-right">
-                                <input
-                                    type="text"
-                                    id="search-transaksi"
-                                    class="form-control"
-                                    placeholder="Cari berdasarkan ID Pinjaman, Tanggal, atau Status..."
-                                    onkeyup="searchTransaksi()"
-                                    style="box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);">
-                                <button
-                                    class="btn btn-danger"
-                                    onclick="resetSearchTransaksi()"
-                                    style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
-                                    <i class="bi bi-x-circle"></i> Bersihkan
-                                </button>
-                            </div>
-                        </div>
-
-                        <div style="max-height: 700px; overflow:auto; font-size:.8rem;">
-                            <table class="table table-hover hidden-content-right">
-                                <thead class="table-primary hidden-content-right">
-                                    <tr>
-                                        <th>No</th>
-                                        <th>ID Pinjaman</th>
-                                        <th>Tanggal</th>
-                                        <th>Jumlah</th>
-                                        <th>Tipe</th>
-                                        <th>Jenis Jaminan</th>
-                                        <th>Bukti Jaminan</th>
-                                        <th>Bukti Pembayaran</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="data-transaksi">
-                                    @forelse ($riwayatTransaksi as $index => $transaksi)
-                                    <tr>
-                                        <td class="hidden-content-right">{{ $index + 1 }}</td>
-                                        <td class="hidden-content-right">{{ $transaksi['kode'] }}</td>
-                                        <td class="hidden-content-right">{{ \Carbon\Carbon::parse($transaksi->tanggal)->format('Y-m-d') }}</td>
-                                        <td class="hidden-content-right">
-                                            <span class="badge bg-{{ $transaksi['jumlah'] >= 0 ? 'success' : 'danger' }}">
-                                                Rp {{ number_format($transaksi['jumlah'], 0, ',', '.') }}
-                                            </span>
-                                        </td>
-                                        <td class="hidden-content-right">{{ $transaksi['tipe'] }}</td>
-                                        <td class="hidden-content-right">{{ $transaksi['jenis_jaminan'] ?? '-' }}</td>
-                                        <td class="hidden-content-right">
-                                            @if($transaksi->file_jaminan)
-                                            <a href="{{ route('bukti.jaminan', ['bukti' => basename($transaksi->file_jaminan)]) }}" target="_blank" class="btn btn-sm btn-outline-info">
-                                                <i class="bi bi-file-earmark-text"></i>
-                                            </a>
-                                            @else
-                                            <span class="badge bg-secondary">Tidak Ada</span>
-                                            @endif
-                                        </td>
-                                        <td class="hidden-content-right">
-                                            @if(!empty($transaksi->bukti))
-                                            <a href="{{ route('bukti.pembayaran', ['bukti' => basename($transaksi->bukti)]) }}" target="_blank" class="btn btn-sm btn-outline-success">
-                                                <i class="bi bi-file-earmark-text"></i>
-                                            </a>
-                                            @else
-                                            <span class="badge bg-secondary">Tidak Ada</span>
-                                            @endif
-                                        </td>
-                                        <td class="hidden-content-right">
-                                            @php
-                                            $statusColors = [
-                                            'Dalam Proses' => 'warning',
-                                            'Ditolak' => 'danger',
-                                            'Aktif' => 'info',
-                                            'Lunas' => 'success',
-                                            'Berhasil' => 'primary'
-                                            ];
-                                            $badgeColor = $statusColors[$transaksi['status']] ?? 'secondary';
-                                            @endphp
-                                            <span class="badge bg-{{ $badgeColor }}">{{ $transaksi['status'] }}</span>
-                                        </td>
-                                    </tr>
-                                    @empty
-                                    <tr>
-                                        <td colspan="9" class="text-center">
-                                            <span class="badge bg-warning">
-                                                <i class="bi bi-exclamation-circle"></i> Belum ada transaksi
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Formulir Pembayaran Pinjaman -->
-            @if ($pinjamanAktif)
-            <section class="mb-4 hidden-content-right">
-                <div class="card shadow" style="border: 1px solid #435ebe;">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0 text-white hidden-content-right">
-                            <i class="bi bi-cash-coin" style="margin-top: -30px;"></i> Formulir Pembayaran Pinjaman
-                        </h5>
-                    </div>
-                    <div class="card-body hidden-content-right">
-                        @if($pembayaranProses)
-                        <!-- Notifikasi jika ada pembayaran dalam proses -->
-                        <div class="alert alert-warning d-flex align-items-center hidden-content-right" role="alert">
-                            <i class="bi bi-hourglass-split me-2" style="font-size: 1.5rem;"></i>
-                            <div>
-                                <h5 class="alert-heading hidden-content-right">Pembayaran Sedang Diproses</h5>
-                                <p class="hidden-content-right">
-                                    Anda sudah mengajukan pembayaran sebelumnya dan saat ini masih dalam proses verifikasi. Silakan tunggu hingga pembayaran diverifikasi oleh admin sebelum mengajukan pembayaran baru.
-                                </p>
-                            </div>
-                        </div>
-                        @else
-                        <!-- Info Denda -->
-                        @if($pinjamanAktif->total_denda > 0)
-                        <div class="alert alert-warning hidden-content-right">
-                            <strong>Info Denda:</strong> Anda memiliki denda sebesar
-                            <b>Rp {{ number_format($pinjamanAktif->total_denda, 0, ',', '.') }}</b>.
-                        </div>
-                        @endif
-
-                        <!-- Form Pembayaran -->
-                        <form action="{{ route('pinjaman.bayar') }}" method="POST" enctype="multipart/form-data" style="margin-top: 20px;">
-                            @csrf
-                            <div class="row hidden-content-right">
-                                <div class="col-md-6 mb-3 hidden-content-right">
-                                    <label for="loan-code" class="form-label">Kode Pinjaman</label>
-                                    <input type="text" class="form-control" id="loan-code" name="loan-code" value="{{ $pinjamanAktif->id }}" readonly>
-                                </div>
-                                <div class="col-md-6 mb-3 hidden-content-right">
-                                    <label for="payment-amount" class="form-label">Jumlah Pembayaran</label>
-                                    <input type="number" class="form-control" id="payment-amount" name="payment-amount" placeholder="Masukkan jumlah pembayaran" min="10000" step="10000" required>
-                                    <small class="text-muted"><i class="bi bi-info-circle"></i> Minimal Rp 10.000 dan kelipatan Rp 10.000.</small>
-                                </div>
-                            </div>
-                            <div class="row hidden-content-right">
-                                <div class="col-md-6 mb-3 hidden-content-right">
-                                    <label for="payment-method" class="form-label">Pilih Metode Pembayaran</label>
-                                    <select class="form-select" id="payment-method" name="payment-method" required>
-                                        <option value="cash">Tunai (Bayar Langsung)</option>
-                                        <option value="transfer-bank">Transfer Bank</option>
-                                        <option value="ewallet">E-Wallet (OVO, GoPay, Dana)</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6 mb-3 hidden-content-right">
-                                    <label for="payment-proof" class="form-label">Unggah Bukti Pembayaran</label>
-                                    <input type="file" class="form-control" id="payment-proof" name="payment-proof" accept="image/*" required>
-                                </div>
-                            </div>
-                            <div class="form-group text-center mt-4 hidden-content-right">
-                                <button type="submit" class="hidden-content-right btn btn-success">
-                                    <i class="bi bi-check-circle"></i> Konfirmasi Pembayaran
-                                </button>
-                            </div>
-                        </form>
-                        @endif
-                    </div>
-                </div>
-            </section>
-            @endif
+            </footer>
         </div>
-        @endif
-
-        <footer>
-            <div class="footer clearfix mb-0 text-muted">
-                <div class="float-start">
-                    <p>2025 &copy; SATRBIN</p>
-                </div>
-                <div class="float-end" style="margin-right: 30px;">
-                    <p>Dibuat dengan
-                        <span class="text-danger"><i class="bi bi-heart"></i></span>
-                        oleh
-                        <a href="https://bagas2908.github.io/Portofolio-Bagas-Adi/" target="_blank"> Bagas</a>
-                        &
-                        <a href="https://fahri-ui.github.io/Personal-Website-fahri/" target="_blank"> Fahri</a>
-                    </p>
-                </div>
-            </div>
-        </footer>
-    </div>
     </div>
     <script src="{{asset('dist/assets/js/bootstrap.js')}}"></script>
     <script src="{{asset('dist/assets/js/app.js')}}"></script>

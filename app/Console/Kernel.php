@@ -18,8 +18,8 @@ class Kernel extends ConsoleKernel
             Notifikasi::where('expired_at', '<', now())->delete();
         })->daily();
 
-        $schedule->command('hitung:denda')->daily();
-        $schedule->command('cek:status-simpanan')->monthlyOn(1, '00:00');        
+        $schedule->command('hitung:denda')->everyMinute();
+        $schedule->command('cek:status-simpanan')->everyMinute();        
     }
 
     /**
